@@ -1,0 +1,1900 @@
+<!DOCTYPE html>
+<html lang="en"><head><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="theme-color" content="#050B1A"><link rel="manifest" href="manifest.json"><link rel="apple-touch-icon" href="icon-192.png"><meta name="apple-mobile-web-app-capable" content="yes"><meta name="mobile-web-app-capable" content="yes"><meta name="apple-mobile-web-app-status-bar-style" content="black-translucent"><title>MOSTWIN88</title>
+<style>
+:root{--bg:#050B1A;--gold:#FFD23F;--g:#00E676;--b:#2F8CFF;--t:#EAF0FF;--m:#8E9BB8;--gl:rgba(255,255,255,.06);--bd:rgba(255,255,255,.11)}
+*{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent}
+html,body{background:var(--bg);color:var(--t);font:14px/1.45 system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;overflow-x:hidden}
+body{background:radial-gradient(circle at 85% -5%,#1c3f8c55,transparent 45%),radial-gradient(circle at 0 45%,#ffd23f14,transparent 40%),var(--bg);min-height:100vh}
+#app{max-width:768px;margin:auto;padding-bottom:calc(84px + env(safe-area-inset-bottom))}
+button{font:inherit;color:inherit;border:0;background:none;cursor:pointer}
+header{position:sticky;top:0;z-index:20;display:grid;grid-template-columns:1fr auto 1fr;align-items:center;padding:calc(8px + env(safe-area-inset-top)) 12px 8px;background:rgba(5,11,26,.88);backdrop-filter:blur(14px);border-bottom:1px solid var(--bd)}
+.ib{width:42px;height:42px;border-radius:12px;background:var(--gl);border:1px solid var(--bd);display:grid;place-items:center;font-size:18px;position:relative}
+.logo{font-weight:900;font-size:21px;letter-spacing:1px;background:linear-gradient(180deg,#fff2b3,var(--gold) 55%,#c98a00);-webkit-background-clip:text;background-clip:text;color:transparent;text-shadow:0 0 18px #ffd23f55}
+.hr{display:flex;gap:8px;justify-content:flex-end}
+.bdg{position:absolute;top:-4px;right:-4px;min-width:18px;height:18px;border-radius:9px;background:#ff3b5c;font-size:10px;font-weight:700;display:grid;place-items:center;padding:0 4px}
+.av{width:42px;height:42px;border-radius:50%;background:linear-gradient(135deg,var(--gold),#ff9d00);display:grid;place-items:center;font-size:20px;border:2px solid #ffd23f88;box-shadow:0 0 14px #ffd23f55}
+main{padding:14px 14px 0}
+.screen{animation:in .3s ease}
+@keyframes in{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:none}}
+.card{background:var(--gl);border:1px solid var(--bd);border-radius:18px;padding:14px;backdrop-filter:blur(12px);margin-bottom:14px}
+h2{font-size:16px;margin:4px 0 10px;display:flex;justify-content:space-between;align-items:center}
+h2 a{font-size:12px;color:var(--gold);font-weight:600;cursor:pointer}
+.sub{color:var(--m);font-size:12px}
+.row{display:flex;align-items:center;gap:12px}.sp{justify-content:space-between}
+.btn{min-height:46px;padding:0 18px;border-radius:14px;font-weight:700;display:inline-flex;align-items:center;justify-content:center;gap:6px;transition:.2s;width:100%}
+.btn:active{transform:scale(.97)}
+.bg{background:linear-gradient(135deg,#00E676,#00b85a);color:#02210f;box-shadow:0 0 16px #00e67655}
+.bb{background:linear-gradient(135deg,#2F8CFF,#1558d6);box-shadow:0 0 16px #2f8cff55}
+.bgold{background:linear-gradient(135deg,#ffe27a,var(--gold) 50%,#e49a00);color:#2a1c00;box-shadow:0 0 18px #ffd23f66}
+.sm{min-height:36px;padding:0 14px;width:auto;font-size:13px;border-radius:11px}
+.wallet{background:linear-gradient(145deg,#12275a,#0a1534 60%,#1a1530);border:1px solid #ffd23f55;box-shadow:0 0 28px #ffd23f22,inset 0 0 30px #2f8cff18}
+.tot{font-size:32px;font-weight:900;color:var(--gold);text-shadow:0 0 18px #ffd23f55;letter-spacing:.5px}
+.mini{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin:12px 0}
+.mini div{background:#ffffff0d;border-radius:12px;padding:10px}.mini b{display:block;font-size:16px}
+.two{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.pill{display:inline-flex;gap:5px;align-items:center;padding:3px 10px;border-radius:20px;font-size:11px;font-weight:700}
+.vip{background:linear-gradient(135deg,#ffe27a,#e49a00);color:#2a1c00}
+.on{color:var(--g)}.dot{width:8px;height:8px;border-radius:50%;background:var(--g);box-shadow:0 0 8px var(--g);display:inline-block}
+.car{display:flex;overflow-x:auto;scroll-snap-type:x mandatory;gap:10px;scrollbar-width:none;border-radius:20px;margin-bottom:8px}
+.car::-webkit-scrollbar{display:none}
+.sl{flex:0 0 100%;scroll-snap-align:center;min-height:170px;border-radius:20px;padding:18px;position:relative;overflow:hidden;border:1px solid #ffd23f66}
+.sl h3{font-size:22px;line-height:1.15;color:#fff;max-width:68%;text-shadow:0 2px 10px #0008}.sl h3 em{font-style:normal;color:var(--gold)}
+.sl p{font-size:12px;color:#dce6ff;margin:6px 0 12px;max-width:65%}
+.sl .art{position:absolute;right:10px;bottom:-6px;font-size:84px;filter:drop-shadow(0 0 18px #ffd23f)}
+.s1{background:linear-gradient(120deg,#0b1d52,#2a1a6e 70%,#5b2a8a)}.s2{background:linear-gradient(120deg,#062f2a,#0b4d5e 70%,#0e2f6e)}.s3{background:linear-gradient(120deg,#3a1a05,#6b2c0a 70%,#8a1d4a)}
+.dots{display:flex;justify-content:center;gap:6px;margin-bottom:14px}.dots i{width:7px;height:7px;border-radius:4px;background:#ffffff33;transition:.3s}.dots i.a{width:20px;background:var(--gold)}
+.grid{display:grid;grid-template-columns:repeat(4,1fr);gap:10px}
+@media(max-width:380px){.grid{grid-template-columns:repeat(2,1fr)}}
+.q{background:var(--gl);border:1px solid var(--bd);border-radius:16px;padding:12px 4px;text-align:center;font-size:11px;font-weight:600;min-height:84px;transition:.2s}
+.q span{display:block;font-size:24px;margin-bottom:4px;filter:drop-shadow(0 0 6px #ffd23f66)}
+.q:active{border-color:var(--gold);transform:scale(.96)}
+.pr{display:flex;gap:12px;align-items:center}.pr .ic{font-size:30px;width:52px;height:52px;border-radius:14px;background:#ffd23f1c;display:grid;place-items:center;flex:none}
+.pr>div:nth-child(2){flex:1;min-width:0}.pr b{display:block}
+.tx{display:flex;align-items:center;gap:10px;padding:10px 0;border-bottom:1px solid var(--bd)}.tx:last-child{border:0}
+.tx .ic{width:38px;height:38px;border-radius:11px;background:#ffffff10;display:grid;place-items:center;flex:none}
+.tx>div:nth-child(2){flex:1;min-width:0}.tx small{display:block;color:var(--m);font-size:11px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.tx .am{text-align:right;font-weight:700}
+.Success{background:#00e67622;color:var(--g)}.Pending{background:#ffd23f22;color:var(--gold)}.Failed{background:#ff3b5c22;color:#ff6b84}
+.pos{color:var(--g)}.neg{color:#ff6b84}
+nav{position:fixed;bottom:0;left:50%;transform:translateX(-50%);width:100%;max-width:768px;z-index:20;display:grid;grid-template-columns:repeat(5,1fr);background:rgba(7,14,32,.94);backdrop-filter:blur(16px);border-top:1px solid #ffd23f44;padding:6px 6px calc(6px + env(safe-area-inset-bottom))}
+nav button{display:flex;flex-direction:column;align-items:center;gap:2px;min-height:54px;justify-content:center;color:var(--m);font-size:11px;font-weight:600;transition:.25s}
+nav button span{font-size:22px;filter:grayscale(1) opacity(.7);transition:.25s}
+nav button.on2{color:var(--gold)}nav button.on2 span{filter:none;transform:translateY(-3px) scale(1.15);text-shadow:0 0 14px var(--gold)}
+.ov{position:fixed;inset:0;background:#000a;z-index:30;opacity:0;pointer-events:none;transition:.3s}.ov.o{opacity:1;pointer-events:auto}
+aside{position:fixed;top:0;bottom:0;left:0;width:min(82vw,320px);z-index:31;background:#08122b;border-right:1px solid #ffd23f55;transform:translateX(-102%);transition:transform .3s;overflow-y:auto;padding:calc(16px + env(safe-area-inset-top)) 12px 20px}
+aside.o{transform:none}
+aside button{width:100%;text-align:left;padding:12px;border-radius:12px;display:flex;gap:12px;align-items:center;font-weight:600;min-height:46px}
+aside button:active,aside button.cur{background:#ffd23f1c;color:var(--gold)}
+label{display:block;font-size:12px;color:var(--m);margin:10px 0 6px}
+input{width:100%;min-height:48px;border-radius:12px;border:1px solid var(--bd);background:#0a1530;color:var(--t);padding:0 14px;font-size:16px;outline:0}
+input:focus{border-color:var(--gold);box-shadow:0 0 0 3px #ffd23f22}
+.chips{display:flex;gap:8px;flex-wrap:wrap}.chip{padding:10px 14px;border-radius:12px;background:var(--gl);border:1px solid var(--bd);font-weight:600;min-height:42px}
+.chip.s{border-color:var(--gold);color:var(--gold);background:#ffd23f18;box-shadow:0 0 12px #ffd23f33}
+.bar{height:10px;border-radius:6px;background:#ffffff14;overflow:hidden;margin:8px 0}.bar i{display:block;height:100%;background:linear-gradient(90deg,var(--g),var(--gold));box-shadow:0 0 10px var(--gold)}
+.back{display:flex;align-items:center;gap:10px;margin-bottom:12px;font-size:18px;font-weight:800}.back button{width:38px;height:38px;border-radius:11px;background:var(--gl);border:1px solid var(--bd)}
+.tg{width:46px;height:26px;border-radius:13px;background:#ffffff22;position:relative;flex:none;transition:.25s}.tg:after{content:"";position:absolute;top:3px;left:3px;width:20px;height:20px;border-radius:50%;background:#fff;transition:.25s}.tg.on3{background:var(--g)}.tg.on3:after{left:23px}
+details{border-bottom:1px solid var(--bd);padding:12px 0}summary{font-weight:600;cursor:pointer}details p{color:var(--m);margin-top:8px}
+#toast{position:fixed;left:50%;bottom:96px;transform:translate(-50%,20px);background:#0e1c40;border:1px solid var(--gold);padding:11px 18px;border-radius:14px;z-index:50;opacity:0;transition:.3s;max-width:90vw;text-align:center;font-weight:600}
+#toast.o{opacity:1;transform:translate(-50%,0)}
+.gm{background:var(--gl);border:1px solid var(--bd);border-radius:18px;padding:14px;text-align:center}.gm span{font-size:42px;display:block;filter:drop-shadow(0 0 10px #ffd23f88)}.gm b{display:block;margin:4px 0 8px}
+@media(prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
+
+.card,.q,.gm{background:linear-gradient(160deg,#ffffff1c,#ffffff08);border-color:#ffd23f33;box-shadow:inset 0 1px 0 #ffffff2e,inset 0 -2px 0 #0006,0 8px 18px #0007}
+.btn{border-top:1px solid #fff7;box-shadow:inset 0 2px 1px #fff7,inset 0 -4px 0 #0003,0 5px 0 #0005,0 10px 16px #0007}
+.btn:active{transform:translateY(3px);box-shadow:inset 0 2px 1px #fff5,0 2px 0 #0005}
+.out{background:#0a1228;border:2px solid var(--gold);color:var(--gold)}
+.q span{font-size:28px;filter:drop-shadow(0 3px 0 #8a5200) drop-shadow(0 0 8px #ffd23f88)}
+.logo{filter:drop-shadow(0 2px 0 #8a5200) drop-shadow(0 4px 6px #000c);text-align:center;line-height:1.05}
+.logo i{display:block;font-style:normal;font-size:15px}.logo small{display:block;font-size:7px;letter-spacing:2px;font-weight:700}
+.logo.lg2{font-size:26px;padding:4px 0 16px}.logo.lg2 small{font-size:9px}
+.cw{flex-wrap:wrap}.cw .btn{flex:1;min-width:110px}
+.dbn{background:linear-gradient(120deg,#2a1070,#6b2ca0);border:1px solid #ffd23f77;border-radius:18px;padding:12px;display:flex;align-items:center;gap:12px;margin-bottom:14px;box-shadow:0 8px 18px #0007}
+.st{display:flex;gap:12px;align-items:center;padding:14px;border-radius:16px;border:1px solid var(--c);background:linear-gradient(150deg,color-mix(in srgb,var(--c) 24%,#0a1230),#0a1230);box-shadow:inset 0 1px 0 #fff3,0 8px 18px #0007,0 0 14px color-mix(in srgb,var(--c) 30%,transparent)}
+.st span{font-size:34px;filter:drop-shadow(0 3px 0 #0006)}.st small{display:block;color:var(--m);font-size:12px}.st b{font-size:18px;color:var(--c)}
+#ins{position:fixed;top:calc(8px + env(safe-area-inset-top));left:50%;width:min(94vw,520px);transform:translate(-50%,-160%);z-index:60;display:flex;align-items:center;gap:10px;padding:12px;border-radius:18px;background:#0b1630f2;border:1px solid var(--gold);box-shadow:0 0 24px #ffd23f55,0 12px 30px #000a;transition:transform .4s}
+#ins.o{transform:translate(-50%,0)}#ins>div{flex:1;min-width:0}
+aside button.cur{background:linear-gradient(135deg,#ffe27a,#e49a00);color:#2a1c00}
+.dk,.hdk{display:none}
+@media(min-width:900px){
+#app{max-width:none;padding:0 0 30px 250px}nav,.hb,header .logo,.mb,.ov{display:none!important}
+header{display:flex;justify-content:flex-end;padding-left:22px;padding-right:22px}.hr{align-items:center;gap:14px}
+.hdk{display:flex;align-items:center;gap:6px;font-weight:600}.wn{flex-direction:column;align-items:flex-start;gap:0;font-size:12px;color:var(--m)}.wn b{color:var(--t);font-size:14px}
+.hdk.lc{padding:0 10px;min-height:42px}.av{order:1}.wn{order:2}
+aside{transform:none!important;width:250px;z-index:25;background:linear-gradient(180deg,#0a1634,#050B1A)}
+main{padding:18px 22px;max-width:1300px;margin:auto}
+.hm{display:grid;grid-template-columns:minmax(0,1fr) 290px;gap:16px}.mn{min-width:0}
+.dk{display:block}.stats.dk,.two.dk{display:grid}.stats{grid-template-columns:repeat(4,1fr);gap:12px;margin:14px 0}
+.qg{grid-template-columns:repeat(8,1fr)}.sl{min-height:210px}.sl h3{font-size:30px}.sl .art{font-size:120px}
+.screen>*:not(.hm){max-width:640px;margin-left:auto;margin-right:auto}
+}
+.cr{width:1em;height:1em;fill:var(--gold);vertical-align:-.12em}.vip .cr,aside button.cur .cr{fill:#2a1c00}
+.pinfo{margin-top:12px;background:#ffffff0d;border:1px dashed #ffd23f66;border-radius:14px;padding:12px}.pinfo ol,.rules{padding-left:18px;color:var(--m);font-size:12px;line-height:1.8;margin-top:8px}
+.pf{padding:12px;gap:12px;cursor:pointer}.pf .av{width:52px;height:52px;font-size:26px;flex:none}.pi2{flex:1;min-width:0}.pi2 b{display:block;font-size:15px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}.pi2 .row{gap:8px;margin-top:3px;flex-wrap:nowrap;font-size:12px;white-space:nowrap}.chev{font-size:30px;line-height:1;color:var(--gold);flex:none}.pill{white-space:nowrap}
+.tot{font-size:clamp(22px,7vw,32px)}
+@media(max-width:480px){
+main{padding:12px 12px 0}h2{font-size:15px}
+header{padding-left:10px;padding-right:10px}.ib,.av{width:38px;height:38px;font-size:17px}.logo{font-size:clamp(16px,5.2vw,21px)}
+.sl{min-height:148px;padding:14px}.sl h3{font-size:clamp(16px,5vw,20px);max-width:72%}.sl p{font-size:11px;margin:4px 0 10px;max-width:66%}.sl .art{font-size:64px;right:8px}.sl .btn{min-height:38px;font-size:13px}
+.cw{padding:12px;gap:10px}.cw>div:first-child{font-size:28px!important}.cw .btn{min-width:0;min-height:40px;font-size:13px;padding:0 10px}
+.q{min-height:76px;font-size:10.5px;padding:10px 2px}.q span{font-size:24px}
+.dbn{gap:10px;padding:10px}.dbn>div:first-child{font-size:34px!important}.dbn i{font-size:17px!important}.dbn .btn{font-size:12px;padding:0 10px}
+.tx .am{font-size:13px}.card{padding:12px}
+}
+.logo .r{background:linear-gradient(180deg,#ff8a8a,#ff2038 55%,#a30018);-webkit-background-clip:text;background-clip:text;color:transparent}
+.btn{min-height:42px}.btn.sm{min-height:34px}
+.hbal{gap:10px;padding:4px 14px;min-height:42px;border-radius:14px;border:1px solid #ffd23f77;background:linear-gradient(160deg,#ffd23f26,#ffffff08);box-shadow:inset 0 1px 0 #ffffff2e,0 0 14px #ffd23f2b;text-align:left}.hbal small{display:block;font-size:10px;color:var(--m);line-height:1.1}.hbal b{display:block;color:var(--gold);font-size:16px;line-height:1.2}
+.hbal{display:flex;align-items:center}.hbal .em{font-size:22px}
+.nb{display:flex;align-items:center;gap:10px;height:36px;padding:0 12px;margin-bottom:14px;border-radius:12px;border:1px solid #ffd23f44;background:linear-gradient(90deg,#ffd23f24,#ffffff08);overflow:hidden;box-shadow:inset 0 1px 0 #ffffff22,0 4px 12px #0006}
+.nbt{flex:1;overflow:hidden;white-space:nowrap;-webkit-mask-image:linear-gradient(90deg,transparent,#000 4%,#000 96%,transparent);mask-image:linear-gradient(90deg,transparent,#000 4%,#000 96%,transparent)}
+.nbt span{display:inline-block;padding-left:100%;animation:mq 25s linear infinite;color:var(--gold);font-weight:600;font-size:13px}
+@keyframes mq{to{transform:translateX(-100%)}}
+@media(max-width:899px){header{display:flex;gap:10px}header .av{display:none}header .logo{text-align:left;white-space:nowrap;font-size:clamp(15px,4.8vw,21px)}header .logo small{letter-spacing:1px}.hr{margin-left:auto;gap:6px;align-items:center}.hbal{order:2;padding:3px 10px;min-height:38px;border-radius:12px}.hbal .em{display:none}.hbal b{font-size:13px}}
+@media(min-width:900px){header .av{display:grid}}
+@media(prefers-reduced-motion:reduce){.nbt span{padding-left:0}}
+.av img{width:100%;height:100%;border-radius:50%;object-fit:cover}
+.grid.gg{grid-template-columns:none;grid-template-rows:repeat(2,auto);grid-auto-flow:column;grid-auto-columns:94px;overflow-x:auto;scrollbar-width:none;padding-bottom:4px}.gg::-webkit-scrollbar{display:none}@media(min-width:900px){.grid.gg{grid-template-columns:repeat(10,1fr);grid-template-rows:none;grid-auto-flow:row;grid-auto-columns:auto;overflow:visible}}
+.pg{display:flex;gap:12px;overflow-x:auto;scroll-snap-type:x mandatory;scrollbar-width:none;margin-bottom:14px;padding:2px 0 8px}.pg::-webkit-scrollbar{display:none}
+.pc{flex:0 0 150px;scroll-snap-align:start;position:relative;min-height:170px;border-radius:18px;padding:12px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:6px;border:1px solid #ffd23f55;background:linear-gradient(155deg,hsl(var(--h) 65% 30%),#0a1230 75%);box-shadow:inset 0 1px 0 #ffffff33,0 8px 18px #0008,0 0 16px hsl(var(--h) 80% 50%/.25);transition:.2s}.pc:active{transform:scale(.97)}
+.pc i{font-style:normal;font-size:56px;filter:drop-shadow(0 6px 0 #0006) drop-shadow(0 0 14px #ffd23f66)}.pc b{font-size:14px}
+.pc u{text-decoration:none;font-size:11px;font-weight:700;padding:5px 12px;border-radius:10px;background:linear-gradient(135deg,#ffe27a,#e49a00);color:#2a1c00}
+.hot{position:absolute;top:8px;left:8px;font-size:9px;font-weight:800;padding:2px 7px;border-radius:8px;background:#ff2a3d}
+.ar{display:none;gap:6px}.ar .ib{width:34px;height:34px;font-size:20px}
+@media(min-width:900px){.pc{flex-basis:calc((100% - 36px)/4)}.ar{display:flex}}
+</style><style>
+/* ===== Pro polish layer ===== */
+.fl0{font-size:18px;border-style:solid}.dm{font-style:normal;font-size:8px;font-weight:800;letter-spacing:.5px;padding:1px 5px;border-radius:6px;background:#ffd23f22;color:var(--gold);vertical-align:middle}
+.fl0{display:grid;place-items:center;width:36px;height:36px;flex:0 0 36px;border-radius:8px;border:1px dashed var(--m);color:var(--m);font-size:8px;font-weight:700}
+.fi{display:flex;align-items:center;gap:10px}.fi img.fl{height:36px;max-width:90px;object-fit:contain}
+#fsup{position:fixed;z-index:35;width:58px;height:58px;padding:0;border-radius:50%;border:3px solid #fff;background:radial-gradient(circle at 30% 25%,#4fc3ff,#1c8fd6 65%,#0f6fb0);box-shadow:0 6px 18px #0009,0 0 0 4px #ffffff22;display:flex;flex-direction:column;align-items:center;justify-content:center;touch-action:none;user-select:none;-webkit-user-select:none;cursor:grab;transition:left .22s ease,top .22s ease}
+#fsup i{font-style:normal;font-size:22px;line-height:1}
+#fsup span{font-size:7.5px;font-weight:800;letter-spacing:.3px;color:#fff;margin-top:1px}
+#fsup.drag{transition:none;transform:scale(1.08);cursor:grabbing}
+.ftr{margin-top:26px;padding-top:6px;border-top:1px solid var(--bd)}
+.fc{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;margin:16px 0}
+.fc h4{font-size:14px;margin-bottom:6px;color:var(--t)}
+.fc button{display:block;padding:6px 0;color:var(--m);font-size:13px;text-align:left}
+.fc button:hover{color:var(--gold)}
+.fs{border-top:1px solid var(--bd);padding:14px 0}
+.fs h4.gr{color:#1fbf8a;font-size:14px;margin-bottom:10px}
+.fr{display:flex;flex-wrap:wrap;gap:16px;align-items:center}
+.fi b{display:block;font-size:13px}.fi small{display:block;color:var(--m);font-size:11px}
+.a18{display:grid;place-items:center;width:40px;height:40px;border-radius:50%;border:2px solid var(--m);color:var(--m);font-weight:800;font-size:13px}
+.supbox{margin:-4px -2px 0}.sup{display:block;width:100%;height:calc(100vh - 150px);height:calc(100dvh - 150px);min-height:480px;border:0;border-radius:14px;background:#fff}
+.gs{position:static}
+.ct{display:flex;gap:8px;overflow-x:auto;padding:4px 2px 10px;scrollbar-width:none}
+.ct button{flex:0 0 auto;min-width:78px;padding:6px 8px 8px;border-radius:8px;background:var(--gl);border:1px solid var(--bd);color:var(--m);font-weight:700;font-size:12px;display:flex;flex-direction:column;align-items:center;gap:4px}
+.ct button i{font-style:normal;font-size:26px;line-height:1.1;filter:drop-shadow(0 3px 4px #000a)}
+.ct button.on{background:#14855c;border-color:#14855c;color:#fff}
+.sb{display:flex;gap:10px;overflow-x:auto;padding:2px 0 10px;scrollbar-width:none}
+.pt{flex:0 0 auto;min-width:132px;height:56px;padding:0 14px;border-radius:8px;background:var(--gl);border:1px solid var(--bd);display:flex;align-items:center;gap:12px;color:var(--m);font-weight:700}
+.pt em{font-style:normal;width:32px;height:32px;border-radius:50%;display:grid;place-items:center;background:linear-gradient(135deg,var(--gold),#ff9d00);color:#1a1200;font-weight:900}
+.sh{font-size:17px;margin:14px 0 10px;padding-left:10px;border-left:3px solid #14855c}
+.logo .w,.logo .r{background:none!important;-webkit-background-clip:border-box!important;background-clip:border-box!important;color:#fff!important;-webkit-text-fill-color:#fff;text-shadow:none}
+html{scroll-behavior:smooth;-webkit-font-smoothing:antialiased}
+#hbal b,.tot{font-variant-numeric:tabular-nums}
+button:focus-visible,input:focus-visible{outline:2px solid var(--gold);outline-offset:2px;border-radius:10px}
+button:active:not(:disabled){transform:scale(.97);transition:transform .08s}
+.gm{position:relative;transition:transform .18s,box-shadow .18s}
+.gm:hover{transform:translateY(-3px);box-shadow:0 10px 26px #0008,0 0 0 1px #ffd23f55}
+.gs{position:sticky;top:calc(60px + env(safe-area-inset-top));z-index:5;margin:10px 0 12px;padding:8px 0;background:linear-gradient(var(--bg) 80%,transparent)}
+.gs input{width:100%;height:44px;border-radius:12px;border:1px solid var(--bd);background:var(--gl);color:var(--t);padding:0 14px;font:inherit}
+.chips{display:flex;gap:8px;margin-top:8px;overflow-x:auto}
+.chips button{flex:0 0 auto;padding:7px 14px;border-radius:20px;border:1px solid var(--bd);background:var(--gl);font-size:12px;font-weight:600}
+.chips button.on{background:linear-gradient(135deg,var(--gold),#ff9d00);color:#1a1200;border-color:transparent}
+.soon{position:absolute;top:8px;right:8px;font-size:10px;font-weight:700;padding:2px 8px;border-radius:10px;background:#ffffff1a;color:var(--m)}
+.soon.live{background:#00e67622;color:var(--g)}
+#net{position:fixed;left:0;right:0;top:0;z-index:99;text-align:center;font-size:12px;font-weight:700;padding:calc(6px + env(safe-area-inset-top)) 8px 6px;background:#ff3b5c;transform:translateY(-110%);transition:transform .25s}
+#net.o{transform:none}
+.rg{margin:22px 0 6px;text-align:center;font-size:11px;color:var(--m)}
+@media(prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important;scroll-behavior:auto!important}}
+.bs{flex:0 0 86%;scroll-snap-align:start;position:relative;overflow:hidden;min-height:128px;border-radius:18px;padding:16px;display:flex;align-items:center;gap:14px;text-align:left;border:1px solid #ffd23f66;background:linear-gradient(120deg,hsl(var(--h) 62% 20%),hsl(var(--h2) 60% 34%));box-shadow:inset 0 1px 0 #ffffff33,0 8px 18px #0008;color:#fff;transition:.2s}.bs:active{transform:scale(.98)}
+.bs .ba{font-size:64px;flex:none;order:2;margin-left:auto;filter:drop-shadow(0 6px 0 #0006) drop-shadow(0 0 16px #ffd23f88)}
+.bs>div{flex:1;min-width:0;order:1}.bs b{display:block;font-size:clamp(16px,4.6vw,20px);line-height:1.2;text-shadow:0 2px 8px #0008}.bs small{display:block;color:#e6e6ff;font-size:12px;margin:4px 0 10px}
+.bs u{display:inline-block;text-decoration:none;font-size:12px;font-weight:700;padding:6px 14px;border-radius:10px;background:linear-gradient(135deg,#ffe27a,#e49a00);color:#2a1c00;box-shadow:0 3px 0 #0005}
+@media(min-width:900px){.bs{flex-basis:calc((100% - 12px)/2)}}
+.hg{padding:0}.hg .sh{margin-top:6px}.hg .sb:last-child{padding-bottom:0}
+.pv em{width:auto;min-width:46px;padding:0 8px;border-radius:8px;font-size:11px;letter-spacing:.4px}
+.pt{cursor:pointer}.pt b{color:var(--t)}
+@media(min-width:900px){.hc{display:grid;grid-template-columns:repeat(8,1fr);overflow:visible}.hc button{min-width:0}}
+.sv{width:1em;height:1em;vertical-align:-.14em;display:inline-block;flex:none}aside button .sv{width:20px;height:20px}.hdk.lc .sv{width:18px;height:18px}
+
+/* ===== Premium refinement: calm background, flat seamless sections ===== */
+html{scroll-behavior:smooth}
+body{background:radial-gradient(1100px 520px at 50% -180px,rgba(255,210,63,.10),transparent 70%),radial-gradient(900px 520px at 100% 100%,rgba(47,140,255,.09),transparent 70%),radial-gradient(700px 420px at 0 70%,rgba(120,60,200,.06),transparent 70%),linear-gradient(180deg,#07102a 0%,#050B1A 45%,#040814 100%);background-attachment:fixed}
+header{background:rgba(5,11,26,.72);backdrop-filter:blur(18px);-webkit-backdrop-filter:blur(18px);border-bottom:1px solid rgba(255,255,255,.06)}
+nav{background:rgba(6,12,28,.82);backdrop-filter:blur(18px);-webkit-backdrop-filter:blur(18px);border-top:1px solid rgba(255,255,255,.07)}
+aside{background:linear-gradient(180deg,#09142e,#050B1A);border-right:1px solid rgba(255,255,255,.06)}
+.card,.gm,.q,.dbn,.nb{background:linear-gradient(180deg,rgba(255,255,255,.05),rgba(255,255,255,.018));border:1px solid rgba(255,255,255,.07);box-shadow:none;border-radius:16px}
+.wallet{border-color:rgba(255,210,63,.26);background:linear-gradient(160deg,rgba(255,210,63,.07),rgba(255,255,255,.02))}
+.q:active,.gm:active{border-color:rgba(255,210,63,.45)}
+.btn{border-top:0;box-shadow:0 8px 18px -8px rgba(0,0,0,.7)}
+.btn.bg{box-shadow:0 8px 20px -8px rgba(0,230,118,.55)}.btn.bb{box-shadow:0 8px 20px -8px rgba(47,140,255,.55)}.btn.bgold{box-shadow:0 8px 20px -8px rgba(255,210,63,.5)}
+.btn:active{transform:scale(.98);box-shadow:none}
+.sl,.pc,.bs{border:1px solid rgba(255,255,255,.08);box-shadow:0 14px 28px -16px rgba(0,0,0,.85)}
+.pc i,.bs .ba,.q span{filter:drop-shadow(0 4px 8px rgba(0,0,0,.45))}
+.pt,.ct button,.chip{box-shadow:none;border-color:rgba(255,255,255,.08)}
+.chip.s{box-shadow:0 0 0 1px rgba(255,210,63,.35)}
+main .card,main .pg,main .car,main .nb,main .hg,main .grid{margin-bottom:18px}
+.dots{margin:2px 0 14px}h2{margin:6px 0 12px;letter-spacing:.2px}
+.hm{gap:22px}.hm>.dk .card{margin-bottom:18px}
+.tx{border-bottom-color:rgba(255,255,255,.06)}
+#toast,#ins{box-shadow:0 14px 34px -12px rgba(0,0,0,.8);border-color:rgba(255,210,63,.4)}
+
+/* ===== Live Chat widget ===== */
+.lcd{position:fixed;right:16px;bottom:16px;width:min(380px,calc(100vw - 24px));height:min(560px,calc(100dvh - 32px));z-index:70;display:flex;flex-direction:column;border-radius:20px;overflow:hidden;background:linear-gradient(180deg,rgba(10,22,52,.97),rgba(5,11,26,.97));border:1px solid rgba(255,210,63,.35);box-shadow:0 24px 60px -12px rgba(0,0,0,.85);backdrop-filter:blur(18px);opacity:0;pointer-events:none;transform:translateY(24px) scale(.96);transform-origin:bottom right;transition:opacity .28s,transform .28s cubic-bezier(.2,.8,.2,1)}
+.lcd.o{opacity:1;pointer-events:auto;transform:none}
+.lch{display:flex;align-items:center;justify-content:space-between;gap:10px;padding:14px;background:linear-gradient(135deg,rgba(255,210,63,.16),rgba(255,255,255,.02));border-bottom:1px solid rgba(255,255,255,.08)}
+.lcav{position:relative;overflow:hidden}.lcav img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;border-radius:50%}
+.lca{display:flex;align-items:center;gap:12px;min-width:0}.lcav{width:42px;height:42px;border-radius:50%;display:grid;place-items:center;background:linear-gradient(135deg,#ffe27a,#e49a00);color:#2a1c00;font-size:22px;flex:none;box-shadow:0 0 14px rgba(255,210,63,.45)}
+.lct{font-weight:800;font-size:15px}.lcs{font-size:11px;color:var(--m);display:flex;align-items:center;gap:6px}
+.lcx{width:36px;height:36px;border-radius:10px;background:var(--gl);border:1px solid var(--bd);display:grid;place-items:center;font-size:16px;flex:none}
+@keyframes lcdot{0%,80%,100%{opacity:.3;transform:none}40%{opacity:1;transform:translateY(-3px)}}
+.chat-open #fsup{display:none!important}
+#fsup::after{content:"";position:absolute;top:4px;right:4px;width:12px;height:12px;border-radius:50%;background:var(--g);border:2px solid #050B1A;animation:lcpulse 1.8s infinite}
+@keyframes lcpulse{0%{box-shadow:0 0 0 0 rgba(0,230,118,.6)}70%{box-shadow:0 0 0 10px rgba(0,230,118,0)}100%{box-shadow:0 0 0 0 rgba(0,230,118,0)}}
+/* ===== Layout fixes ===== */
+.tx>.tg{margin-left:auto}.screen>.btn{display:flex}
+/* Live Chat: guided support flow, seamless dark theme */
+.lcav{font-size:13px;font-weight:900;letter-spacing:.5px}
+.lch{border-bottom:0;padding-top:max(14px,env(safe-area-inset-top))}
+#chatArea{flex:1;min-height:0;overflow-x:hidden;overflow-y:auto;overscroll-behavior:contain;padding:0 14px 22px;scrollbar-width:thin}
+.lcd .hidden{display:none!important}
+.lcd .officer{display:flex;align-items:center;gap:11px;margin:0 -14px;padding:12px 16px;background:rgba(255,255,255,.045)}
+.avatar-wrap{position:relative;width:49px;height:49px;flex:none}.lcd .avatar{display:block;width:49px;height:49px;border-radius:50%;object-fit:cover;border:2px solid rgba(255,210,63,.55)}
+.online-dot{position:absolute;right:0;bottom:0;width:13px;height:13px;background:var(--g);border:2px solid #07102a;border-radius:50%}
+.officer-info{flex:1;min-width:0}.officer-info h2{margin:0 0 3px;font-size:14px}.verified{color:#4aa8ff}.officer-info p{margin:0;font-size:11px;color:var(--g)}
+.officer-label{font-size:10px;color:var(--m);text-align:right;line-height:1.6}.officer-label strong{display:block;font-size:11px;color:var(--t)}
+.lcd .notice{margin:0 -14px;padding:9px 16px;font-size:12px;line-height:1.6;color:#f5d98a;background:rgba(255,210,63,.08)}
+.date-divider{text-align:center;margin:14px 0 8px;font-size:10px;letter-spacing:1px;color:var(--m)}
+#messages{display:flex;flex-direction:column;gap:8px}
+.message{display:flex;gap:8px;align-items:flex-end}.message.user{justify-content:flex-end}
+.message-avatar{width:28px;height:28px;border-radius:50%;object-fit:cover;flex:none}
+.bubble{max-width:82%;padding:9px 12px;border-radius:14px 14px 14px 4px;font-size:13.5px;line-height:1.5;background:rgba(255,255,255,.08);overflow-wrap:anywhere;animation:in .25s ease}
+.message.user .bubble{background:linear-gradient(135deg,#ffe27a,#e49a00);color:#2a1c00;font-weight:600;border-radius:14px 14px 4px 14px}
+.time{display:block;margin-top:3px;font-size:9.5px;opacity:.6;text-align:right}
+.typing-dots{display:inline-flex;gap:4px;padding:4px 2px}.typing-dots i{width:6px;height:6px;border-radius:50%;background:var(--m);animation:lcdot 1s infinite}.typing-dots i:nth-child(2){animation-delay:.15s}.typing-dots i:nth-child(3){animation-delay:.3s}
+.lcd .panel{margin:12px 0 0;padding:14px;border-radius:16px;background:rgba(255,255,255,.045)}
+.lcd .panel h3{margin:0 0 6px;font-size:15px}.description{margin:0 0 12px;font-size:12.5px;line-height:1.6;color:var(--m)}
+.lcd .label{display:block;font-size:12px;color:var(--m);margin:8px 0 6px}
+.lcd .field{width:100%;min-height:46px;border-radius:12px;border:1px solid var(--bd);background:#0a1530;color:var(--t);padding:10px 12px;font-size:16px;outline:0}textarea.field{min-height:90px;resize:vertical}.lcd .field:focus{border-color:var(--gold)}
+.lcd .error{display:none;margin:6px 0 0;font-size:12px;color:#ff6b84}
+.lcd .btn{margin-top:12px}.btn-primary{background:linear-gradient(135deg,#ffe27a,#e49a00);color:#2a1c00}.btn-outline{background:transparent;border:1px solid rgba(255,210,63,.5);color:var(--gold);box-shadow:none}.btn-row{display:grid;gap:2px}
+.answer-card{padding:12px;border-radius:12px;background:rgba(0,230,118,.08);border-left:3px solid var(--g);font-size:13px;line-height:1.6;margin-bottom:12px}.question-card strong{display:block;margin-bottom:8px;font-size:13px}
+.contact-list{display:grid;gap:10px}.contact-option{display:flex;align-items:center;justify-content:space-between;gap:10px;padding:12px;border-radius:14px;background:rgba(255,255,255,.06);color:var(--t);text-decoration:none;font-weight:700}.contact-option small{display:block;font-weight:400;color:var(--m);font-size:11px;margin-top:2px}.arrow{font-size:22px;color:var(--gold)}.contact-notice{font-size:11.5px;color:var(--m);line-height:1.6}
+@media(max-width:600px){.lcd{inset:0;width:100%;height:100dvh;border-radius:0;border:0;transform:translateY(100%)}.lcd.o{transform:none}}
+/* ===== Tight seamless spacing: no boxed wrapper, no big gaps ===== */
+main .card,main .pg,main .car,main .nb,main .hg,main .grid{margin-bottom:12px}
+h2{margin:2px 0 10px}
+.dots{margin:-26px 0 12px;position:relative;z-index:2;height:14px;align-items:center}
+.pg{padding-bottom:2px;margin-bottom:12px}
+.hg>*{margin-top:0;margin-bottom:10px}.hg>*:last-child{margin-bottom:0}.hg .sh{margin:8px 0 8px}
+.hm{gap:16px}.hm>.dk .card{margin-bottom:12px}
+@media(min-width:900px){.hm>.dk{position:sticky;top:84px;align-self:start;max-height:calc(100vh - 100px);overflow-y:auto;scrollbar-width:none}.hm>.dk::-webkit-scrollbar{display:none}}
+/* ===== Single support entry: themed floating icon; no menu button on mobile ===== */
+#fsup{background:linear-gradient(135deg,#ffe27a,#f5b82e 55%,#e49a00)!important;color:#2a1c00!important;border:2px solid rgba(255,255,255,.35)!important;box-shadow:0 10px 24px -6px rgba(255,210,63,.55),0 0 0 4px rgba(5,11,26,.7)!important}
+#fsup i,#fsup span,#fsup svg{color:#2a1c00!important}
+@media(max-width:899px){.hb{display:none}header{padding-left:12px}}
+/* ===== Right column offer banners (PC) ===== */
+.sbs{display:grid;gap:12px}.sbs .bs{flex:none;width:100%;min-height:124px}
+@media(min-width:900px){.hm>.dk{position:static;max-height:none;overflow:visible}}
+
+/* ===== v13 update: hidden scrollbars, mobile header, full footer ===== */
+html,body,aside,main,#m{scrollbar-width:none;-ms-overflow-style:none}
+html::-webkit-scrollbar,body::-webkit-scrollbar,aside::-webkit-scrollbar,main::-webkit-scrollbar,#m::-webkit-scrollbar{display:none;width:0;height:0}
+@media(max-width:899px){
+header .av{display:none!important}
+header{border-bottom:1px solid rgba(255,210,63,.28);box-shadow:none}
+.hbal{background:none!important;border:0!important;box-shadow:none!important;padding:0 4px!important;min-height:36px}
+.hbal .em{display:none!important}
+.hbal b{font-size:15px!important;letter-spacing:.2px}
+}
+@media(min-width:900px){header .av{display:grid!important}}
+.fc{display:grid;grid-template-columns:repeat(4,1fr);gap:18px 24px;margin:16px 0}
+@media(max-width:899px){.fc{grid-template-columns:repeat(2,1fr)}}
+.fs .fr{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:12px}
+.fs .fr .fi{padding:10px 12px;border:1px solid var(--bd);border-radius:12px;background:#ffffff06}
+.fs .fr .a18,.fs .fr small[style]{align-self:center}
+
+/* ===== v14: crisp logo + tagline matched to logo width ===== */
+.logo{filter:none!important;text-shadow:none!important;-webkit-font-smoothing:antialiased;text-rendering:geometricPrecision;display:inline-block;text-align:left;letter-spacing:.5px}
+.logo.lg2{display:block;text-align:center}
+.logo .lm{display:inline-block;white-space:nowrap;text-shadow:none;-webkit-text-stroke:0}
+.logo .w,.logo .r{color:#fff!important;-webkit-text-fill-color:#fff!important}
+.logo .lm{background:none;color:#ffd23f;-webkit-text-fill-color:#ffd23f}
+.logo .lm .w,.logo .lm .r{-webkit-text-fill-color:#fff}
+.logo small{display:block;white-space:nowrap;font-size:8px;font-weight:700;color:#ffd23f;-webkit-text-fill-color:#ffd23f;letter-spacing:0;margin-top:3px;overflow:visible}
+.logo.lg2 small{margin-left:auto;margin-right:auto}
+
+/* ===== MOSTWIN "O" white wheel (Crazy Time style): only the main logo spins, all other MOSTWIN88 text is static ===== */
+.lo{display:inline-block;position:relative;width:.76em;height:.76em;margin:0 .035em;vertical-align:baseline;overflow:visible;filter:drop-shadow(0 0 2px #ffffff55)}
+.lo svg{position:absolute;left:0;top:0;width:100%;height:100%;display:block;overflow:visible;transform:scale(1.12);transform-origin:50% 50%}
+.lo-r{transform-box:view-box;transform-origin:50px 50px}
+#lgh .lo-r,#sd .logo .lo-r{animation:loSpin 6s cubic-bezier(.2,.7,.2,1) infinite}
+@keyframes loSpin{
+  0%,25%{transform:rotate(0deg)}
+  70%,100%{transform:rotate(1440deg)}}
+@media (prefers-reduced-motion:reduce){.lo-r{animation:none!important}}
+.mw{display:inline-block;white-space:nowrap;font-weight:900;font-style:normal;letter-spacing:.3px;background:none;text-shadow:none}
+.mw .m1,.mw .m3{color:#fff;-webkit-text-fill-color:#fff}
+.mw .m2{color:#ffd23f;-webkit-text-fill-color:#ffd23f}
+
+/* ===== PV: প্রোভাইডার ও গেম (prefix pv-) ===== */
+.pv-sports,.pv-tabs{display:flex;gap:8px;overflow-x:auto;scrollbar-width:none;padding:2px 0 4px}
+.pv-sports::-webkit-scrollbar,.pv-tabs::-webkit-scrollbar{display:none}
+.pv-sp{flex:1 0 76px;padding:10px 4px 8px;border-radius:16px;border:1px solid rgba(255,210,63,.4);background:var(--gl);text-align:center;cursor:pointer;color:var(--t);font:inherit}
+.pv-sp:active{transform:scale(.96)}
+.pv-sp b{display:block;font-size:26px;line-height:1.1;font-weight:400}
+.pv-sp span{display:block;font-size:11px;margin-top:4px}
+.pv-tabs{padding:10px 0 4px}
+.pv-tab{flex:none;padding:8px 15px;border-radius:20px;border:1px solid var(--bd);background:var(--gl);color:var(--m);font:inherit;font-size:13px;cursor:pointer}
+.pv-tab.on{background:linear-gradient(135deg,var(--gold),#ff9d00);color:#1a1300;border-color:transparent;font-weight:700}
+.pv-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;margin-top:12px}
+.pv-grid.pv-games{grid-template-columns:repeat(3,1fr);gap:10px}
+.pv-grid.pv-sportlist{grid-template-columns:1fr;gap:10px}
+@media(min-width:640px){.pv-grid{grid-template-columns:repeat(auto-fill,minmax(120px,1fr));gap:10px}.pv-grid.pv-games{grid-template-columns:repeat(auto-fill,minmax(130px,1fr))}.pv-grid.pv-sportlist{grid-template-columns:repeat(auto-fill,minmax(300px,1fr))}.pv-sp{padding:14px 6px 12px}.pv-sp b{font-size:32px}.pv-sp span{font-size:12px}}
+@media(min-width:900px){.pv-ban{height:280px}.pv-cap{font-size:24px}}
+.pv-spr{grid-column:1/-1;display:flex;gap:8px;min-width:0;overflow-x:auto;scrollbar-width:none}
+.pv-spr::-webkit-scrollbar{display:none}
+.pv-spr .pv-tab{flex:none}
+.pv-mc{background:var(--gl);border:1px solid var(--bd);border-radius:16px;padding:12px}
+.pv-mh{display:flex;justify-content:space-between;font-size:12px;color:var(--m)}
+.pv-mh em{font-style:normal}
+.pv-mh .pv-lv{color:#ff3b52;font-weight:700}
+.pv-mt{display:flex;align-items:center;justify-content:space-between;gap:8px;margin:10px 0;font-size:14px}
+.pv-mt b{flex:1;font-weight:600}
+.pv-mt b:last-child{text-align:right}
+.pv-mt i{color:var(--gold);font-style:normal;font-size:11px}
+.pv-ms{font-size:12px;color:var(--gold);margin-bottom:8px;text-align:center}
+.pv-od{display:flex;gap:8px}
+.pv-odd{flex:1;padding:8px 4px;border-radius:10px;border:1px solid var(--bd);background:rgba(255,255,255,.04);color:var(--gold);font:inherit;font-weight:700;cursor:pointer}
+.pv-odd small{display:block;font-size:10px;color:var(--m);font-weight:400}
+.screen>.pv-grid,.screen>.pv-sports,.screen>.pv-tabs,.screen>.pv-head{max-width:none!important;margin-left:0!important;margin-right:0!important}
+.nbt .mw,.nbt .mw span{display:inline-block;padding:0!important;animation:none!important;color:inherit}
+.nbt .mw .m1,.nbt .mw .m3{color:#fff}.nbt .mw .m2{color:#ffd23f}
+.pv-card{position:relative;background:var(--gl);border:1px solid var(--bd);border-radius:18px;padding:0 0 10px;overflow:hidden;text-align:center;cursor:pointer;transition:.15s;color:var(--t)}
+.pv-card:active{transform:scale(.97)}
+.pv-lg{width:100%;aspect-ratio:1/1;overflow:hidden;margin:0 0 6px;display:grid;place-items:center;font-size:30px;font-weight:800;color:#fff}
+.pv-lg img{width:100%;height:100%;object-fit:cover;display:block}
+.pv-lg.pv-mini{width:42px;height:42px;border-radius:12px;margin:0;font-size:18px;flex:none;aspect-ratio:auto}
+.pv-nm{font-size:11px;font-weight:600;padding:0 4px;line-height:1.25}
+.pv-ct{font-size:9px;color:var(--m);margin-top:2px;padding:0 4px}
+.pv-badge{position:absolute;top:4px;right:4px;z-index:1;background:#ff3b52;color:#fff;font-size:8px;padding:1px 5px;border-radius:8px}
+.pv-off{opacity:.45;cursor:not-allowed}
+.pv-more{grid-column:1/-1;width:100%;margin-top:12px;padding:12px;border-radius:14px;border:0;font:inherit;font-weight:700;font-size:14px;cursor:pointer;color:#1a1300;background:linear-gradient(135deg,#fff2b3,var(--gold) 55%,#e0a800)}
+.pv-gc{background:var(--gl);border:1px solid var(--bd);border-radius:14px;overflow:hidden;cursor:pointer;position:relative;color:var(--t)}
+.pv-th{aspect-ratio:1/1;display:grid;place-items:center;font-size:30px;font-weight:800;color:rgba(255,255,255,.92)}
+.pv-gn{padding:7px 6px 9px;font-size:12px;text-align:center;line-height:1.25}
+.pv-sk{height:130px;border-radius:18px;background:linear-gradient(90deg,var(--gl) 25%,rgba(255,255,255,.12) 50%,var(--gl) 75%);background-size:200% 100%;animation:pvsh 1.2s infinite}
+@keyframes pvsh{to{background-position:-200% 0}}
+.pv-empty{text-align:center;color:var(--m);padding:60px 10px;grid-column:1/-1}
+.pv-head{display:flex;align-items:center;gap:10px;margin-bottom:6px}
+.pv-head h2{margin:0;font-size:18px;line-height:1.2}
+.pv-head small{display:block;color:var(--m);font-size:12px}
+.pv-back{width:38px;height:38px;border-radius:12px;border:1px solid var(--bd);background:var(--gl);color:var(--gold);font-size:20px;cursor:pointer;flex:none}
+.pv-ban{grid-column:1/-1;position:relative;height:170px;border-radius:18px;overflow:hidden;border:1px solid rgba(255,210,63,.45);box-shadow:0 8px 24px rgba(0,0,0,.4)}
+.pv-sl{position:absolute;inset:0;opacity:0;transition:opacity .8s}
+.pv-sl.on{opacity:1}
+.pv-cap{position:absolute;left:0;right:0;bottom:0;padding:26px 14px 12px;font-size:18px;font-weight:700;color:#fff;background:linear-gradient(transparent,rgba(0,0,0,.75));text-shadow:0 2px 6px rgba(0,0,0,.6)}
+.pv-dots{position:absolute;right:12px;bottom:14px;display:flex;gap:6px}
+.pv-dots i{width:7px;height:7px;border-radius:50%;background:rgba(255,255,255,.4);cursor:pointer;transition:.3s}
+.pv-dots i.on{width:20px;border-radius:4px;background:var(--gold)}
+.pv-home{margin:2px 0 18px}
+
+/* ===== Game Lobby (photo-style tabs) + admin photo support ===== */
+.pv-lobby{font-size:22px;font-weight:800;margin:6px 2px 10px;display:block;color:#fff;letter-spacing:.2px}
+.pv-tabs{gap:10px;padding:4px 4px 10px;margin-top:0}
+.pv-tabs .pv-tab{flex:1 0 auto;justify-content:center;height:46px;padding:0 16px;border-radius:999px;border:1px solid #1f2c4a;background:#0e1830;color:#c9d3ea;font-size:16px;font-weight:500;display:inline-flex;align-items:center;white-space:nowrap;transition:.2s}
+.pv-tabs .pv-tab:active{transform:scale(.96)}
+.pv-tabs .pv-tab.on{background:#F7C04A;color:#10131c;font-weight:800;border-color:#F7C04A;box-shadow:0 0 0 2px #070d1c,0 0 0 3px #fff}
+.pc i.pci{width:100%;height:96px;border-radius:12px;background-size:cover;background-position:center;filter:none;font-size:0}
+.pv-ban .pv-sl.pv-noc .pv-cap{display:none}
+/* ===== Login / Sign Up ===== */
+.ah{display:none;gap:8px;align-items:center}
+body.guest .ah{display:flex}
+body.guest .hr .hbal,body.guest .hr .ib,body.guest header .av{display:none!important}
+.ah button{height:38px;padding:0 16px;border-radius:12px;font-weight:700;font-size:13px;white-space:nowrap}
+.ahl{border:1px solid #ffd23f88;color:var(--gold);background:#ffd23f12}
+.ahs{background:linear-gradient(135deg,#ffe27a,var(--gold) 50%,#e49a00);color:#2a1c00;box-shadow:0 0 14px #ffd23f55}
+@media(max-width:380px){.ah{gap:6px}.ah button{padding:0 11px;font-size:12px}}
+#authM{position:fixed;inset:0;z-index:60;display:none;align-items:center;justify-content:center;padding:14px;background:rgba(3,7,18,.78);backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px)}
+#authM.o{display:flex;animation:amf .2s ease}
+@keyframes amf{from{opacity:0}to{opacity:1}}
+.am-p{position:relative;width:100%;max-width:420px;max-height:calc(100vh - 28px);max-height:calc(100dvh - 28px);overflow-y:auto;scrollbar-width:none;border-radius:22px;padding:22px 20px 18px;background:linear-gradient(160deg,#10224f,#08122b 55%,#14122e);border:1px solid #ffd23f66;box-shadow:0 0 40px #ffd23f22,0 24px 60px #000a;animation:amu .28s ease}
+.am-p::-webkit-scrollbar{display:none}
+@keyframes amu{from{transform:translateY(16px) scale(.98);opacity:0}to{transform:none;opacity:1}}
+.am-x{position:absolute;top:12px;right:12px;width:34px;height:34px;border-radius:10px;background:var(--gl);border:1px solid var(--bd);color:var(--t);font-size:15px}
+.am-lg{text-align:center;font-size:24px;font-weight:900;letter-spacing:.5px;color:#fff}
+.am-sub{text-align:center;color:var(--m);font-size:13px;margin:4px 0 14px}
+.am-tabs{position:relative;display:grid;grid-template-columns:1fr 1fr;background:#ffffff0f;border:1px solid var(--bd);border-radius:14px;padding:4px;margin-bottom:6px}
+.am-tabs i{position:absolute;top:4px;bottom:4px;left:4px;width:calc(50% - 4px);border-radius:10px;background:linear-gradient(135deg,#ffe27a,var(--gold) 50%,#e49a00);transition:transform .25s}
+.am-tabs.s i{transform:translateX(100%)}
+.am-tabs button{position:relative;z-index:1;min-height:40px;font-weight:700;color:var(--m);transition:.2s}
+.am-tabs button.on{color:#2a1c00}
+.af{margin-top:4px}
+.af input.bad{border-color:#ff6b84;box-shadow:0 0 0 3px #ff3b5c22}
+.ae{display:block;color:#ff6b84;font-size:12px;margin-top:4px}
+.ae.big{text-align:center;margin:10px 0 0;font-size:13px}
+.pw{position:relative}.pw input{padding-right:68px}
+.pws{position:absolute;right:6px;top:6px;height:36px;padding:0 12px;border-radius:9px;font-size:12px;font-weight:700;color:var(--gold)}
+.sm-bar{display:flex;gap:5px;margin-top:8px}.sm-bar i{flex:1;height:5px;border-radius:3px;background:#ffffff1f;transition:.25s}
+.sm-t{font-size:11px;color:var(--m);margin-top:4px}
+.ck{display:flex!important;align-items:flex-start;gap:9px;font-size:12px;color:var(--t);margin:12px 0 0;cursor:pointer;line-height:1.4}
+.ck input{width:18px;min-height:18px;height:18px;flex:none;margin-top:1px;accent-color:#FFD23F;padding:0}
+.ar2{display:flex;justify-content:space-between;align-items:center;gap:8px}
+.al,.am-alt a{color:var(--gold);font-weight:700;cursor:pointer;font-size:12px}
+.am-alt{text-align:center;color:var(--m);font-size:13px;margin-top:14px}.am-alt a{font-size:13px}
+#amGo{margin-top:14px}#amGo[disabled]{opacity:.6}
+.am-note{text-align:center;color:var(--m);font-size:11px;margin-top:12px}
+.rfok{color:var(--g);font-size:12px;margin-top:4px}
+.sdg{padding:10px 4px 14px}.sdg>div:first-child{font-weight:700;margin-bottom:8px}
+aside .sdg .two{display:grid;grid-template-columns:1fr 1fr;gap:8px}aside .sdg button{justify-content:center;text-align:center;min-height:42px;padding:0 8px;width:100%;min-width:0}
+body.am-lock{overflow:hidden}
+/* ===== Desktop top bar: greeting + search + promo ===== */
+.hl{display:none}
+@media(min-width:900px){
+.hl{display:flex;align-items:center;gap:16px;flex:1;min-width:0;margin-right:16px}
+.hg{display:flex;flex-direction:column;line-height:1.2;flex:none}
+.hg small{font-size:12px;color:var(--m)}
+.hg b{font-size:18px;font-weight:800;max-width:190px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;background:linear-gradient(180deg,#fff2b3,var(--gold) 60%,#e49a00);-webkit-background-clip:text;background-clip:text;color:transparent}
+.hs{position:relative;flex:1;max-width:420px}
+.hs svg{position:absolute;left:14px;top:50%;transform:translateY(-50%);width:18px;height:18px;opacity:.75;pointer-events:none}
+.hs input{min-height:42px;padding:0 14px 0 42px;border-radius:14px;background:#ffffff0d;font-size:14px}
+.hsr{display:none;position:absolute;top:calc(100% + 8px);left:0;right:0;background:#0a1530;border:1px solid #ffd23f55;border-radius:14px;box-shadow:0 18px 40px #000b;overflow:hidden;z-index:40}
+.hsr.o{display:block}
+.hsr button{display:flex;justify-content:space-between;align-items:center;width:100%;padding:10px 14px;text-align:left;gap:10px;font-size:14px}
+.hsr button:hover,.hsr button.f{background:#ffd23f1c}
+.hsr small{color:var(--m);font-size:11px;white-space:nowrap}
+.hsr .hh{padding:8px 14px 2px;font-size:10px;letter-spacing:.8px;color:var(--gold);text-transform:uppercase}
+.hp{flex:none;display:inline-flex;align-items:center;gap:8px;padding:0 16px;height:40px;border-radius:999px;border:1px solid #ffd23f66;background:linear-gradient(135deg,#ffd23f26,#ffffff08);color:var(--gold);font-weight:700;font-size:13px;white-space:nowrap;animation:hpg 2.6s ease-in-out infinite}
+@keyframes hpg{50%{box-shadow:0 0 16px #ffd23f55}}
+.sdg{display:none}
+}
+@media(min-width:900px) and (max-width:1200px){.hp{display:none}}
+
+.gbtn{width:100%;min-height:46px;border-radius:14px;background:#fff;color:#1f1f1f;border:1px solid #dadce0;font-weight:700;display:flex;align-items:center;justify-content:center;gap:10px;margin-top:6px;transition:.15s}
+.gbtn:active{transform:scale(.98)}
+.or{display:flex;align-items:center;gap:10px;color:var(--m);font-size:12px;margin:14px 0 2px}
+.or:before,.or:after{content:"";flex:1;height:1px;background:var(--bd)}
+</style>
+</head><body>
+<svg width="0" height="0" style="position:absolute" aria-hidden="true"><defs><symbol id="i-chip" viewBox="0 0 32 32"><circle cx="16" cy="16" r="14" fill="#e0243f"/><circle cx="16" cy="16" r="14" fill="none" stroke="#fff" stroke-width="3" stroke-dasharray="5 4.4"/><circle cx="16" cy="16" r="8" fill="#ff5a73" stroke="#fff" stroke-width="1.5"/><circle cx="16" cy="16" r="3.5" fill="#FFD23F"/></symbol><symbol id="i-dice" viewBox="0 0 32 32"><rect x="3" y="3" width="26" height="26" rx="6" fill="#fff"/><g fill="#e0243f"><circle cx="10" cy="10" r="2.6"/><circle cx="22" cy="10" r="2.6"/><circle cx="16" cy="16" r="2.6"/><circle cx="10" cy="22" r="2.6"/><circle cx="22" cy="22" r="2.6"/></g></symbol><symbol id="i-roulette" viewBox="0 0 32 32"><circle cx="16" cy="16" r="14" fill="#8a5a2b"/><circle cx="16" cy="16" r="11" fill="#111"/><circle cx="16" cy="16" r="7.5" fill="none" stroke="#e0243f" stroke-width="7" stroke-dasharray="3.9 3.9"/><circle cx="16" cy="16" r="3" fill="#FFD23F"/><circle cx="25" cy="8" r="1.8" fill="#fff"/></symbol><symbol id="i-wheel" viewBox="0 0 32 32"><circle cx="16" cy="17" r="13" fill="#2F8CFF"/><g fill="none" stroke-width="9"><circle cx="16" cy="17" r="8.5" stroke="#e0243f" stroke-dasharray="6.7 20"/><circle cx="16" cy="17" r="8.5" stroke="#FFD23F" stroke-dasharray="6.7 20" stroke-dashoffset="-6.7"/><circle cx="16" cy="17" r="8.5" stroke="#00E676" stroke-dasharray="6.7 20" stroke-dashoffset="-13.4"/></g><circle cx="16" cy="17" r="3.3" fill="#fff"/><path d="M16 1l3.2 5h-6.4z" fill="#FFD23F"/></symbol><symbol id="i-cards" viewBox="0 0 32 32"><g transform="rotate(-12 11 18)"><rect x="3" y="6" width="16" height="22" rx="3" fill="#fff"/><text x="11" y="21" font-size="13" text-anchor="middle" fill="#e0243f">♥</text></g><g transform="rotate(10 21 16)"><rect x="13" y="4" width="16" height="22" rx="3" fill="#fff" stroke="#bbb"/><text x="21" y="19" font-size="13" text-anchor="middle" fill="#14182a">♠</text></g></symbol><symbol id="i-spade" viewBox="0 0 32 32"><circle cx="16" cy="16" r="14" fill="#14182a" stroke="#FFD23F" stroke-width="1.5"/><text x="16" y="22.5" font-size="18" text-anchor="middle" fill="#fff">♠</text></symbol><symbol id="i-slot" viewBox="0 0 32 32"><rect x="3" y="4" width="26" height="24" rx="4" fill="#c21b3a"/><rect x="6" y="9" width="20" height="11" rx="2" fill="#fff"/><text x="16" y="18.2" font-size="8.5" font-weight="900" text-anchor="middle" fill="#e0243f">777</text><rect x="9" y="23" width="14" height="3" rx="1.5" fill="#FFD23F"/></symbol><symbol id="i-seven" viewBox="0 0 32 32"><rect x="3" y="3" width="26" height="26" rx="6" fill="#2F8CFF"/><text x="16" y="24" font-size="22" font-weight="900" text-anchor="middle" fill="#fff">7</text></symbol><symbol id="i-cherry" viewBox="0 0 32 32"><path d="M16 4c4 0 7 3 8 8M16 4c-3 4-6 10-7 16" stroke="#2ea44f" stroke-width="2" fill="none"/><circle cx="9" cy="23" r="5.5" fill="#e0243f"/><circle cx="23" cy="20" r="5.5" fill="#e0243f"/></symbol><symbol id="i-diamond" viewBox="0 0 32 32"><path d="M8 6h16l5 7-13 15L3 13z" fill="#29c5ff"/><path d="M3 13h26M12 6l-3 7 7 15 7-15-3-7" fill="none" stroke="#fff" stroke-width="1.3"/></symbol><symbol id="i-plane" viewBox="0 0 32 32"><path d="M29 4 3 14l8 3 3 9 4-6 6 5z" fill="#e0243f"/><path d="M11 17 29 4 16 21z" fill="#ffb3c0"/></symbol><symbol id="i-rocket" viewBox="0 0 32 32"><path d="M16 2c5 4 7 10 6 17H10c-1-7 1-13 6-17z" fill="#fff"/><circle cx="16" cy="12" r="3" fill="#2F8CFF"/><path d="M10 19l-5 6 6-1zm12 0l5 6-6-1z" fill="#e0243f"/><path d="M13 21h6l-3 8z" fill="#FFD23F"/></symbol><symbol id="i-bomb" viewBox="0 0 32 32"><circle cx="14" cy="19" r="10" fill="#222"/><path d="M20 10l4-5" stroke="#aaa" stroke-width="2"/><path d="M24 2v5M21.500 4.500h5" stroke="#FFD23F" stroke-width="2"/><circle cx="10" cy="15" r="2.500" fill="#fff6"/></symbol><symbol id="i-plinko" viewBox="0 0 32 32"><path d="M16 3 3 27h26z" fill="#6a3de8"/><g fill="#fff"><circle cx="16" cy="14" r="1.8"/><circle cx="12" cy="20" r="1.8"/><circle cx="20" cy="20" r="1.8"/><circle cx="8" cy="25" r="1.8"/><circle cx="16" cy="25" r="1.8"/><circle cx="24" cy="25" r="1.8"/></g><circle cx="16" cy="7" r="2.600" fill="#FFD23F"/></symbol><symbol id="i-hilo" viewBox="0 0 32 32"><rect x="2" y="3" width="28" height="26" rx="6" fill="#14855c"/><path d="M10 6l6 9H4z" fill="#00E676"/><path d="M22 26l-6-9h12z" fill="#ff3b5c"/></symbol><symbol id="i-pick" viewBox="0 0 32 32"><path d="M5 10c6-6 16-6 22 0l-3 2c-5-4-11-4-16 0z" fill="#cfd3dc"/><rect x="14.500" y="10" width="3" height="19" rx="1.500" fill="#a8702f"/></symbol><symbol id="i-dragon" viewBox="0 0 32 32"><rect x="2" y="2" width="28" height="28" rx="7" fill="#c21b3a"/><text x="16" y="23" font-size="19" font-weight="900" text-anchor="middle" fill="#FFD23F">龍</text></symbol><symbol id="i-tile" viewBox="0 0 32 32"><rect x="5" y="2" width="22" height="28" rx="4" fill="#f4efe0"/><text x="16" y="22" font-size="17" font-weight="900" text-anchor="middle" fill="#e0243f">中</text></symbol><symbol id="i-ball" viewBox="0 0 32 32"><circle cx="16" cy="16" r="14" fill="#6a3de8"/><circle cx="16" cy="16" r="8" fill="#fff"/><text x="16" y="20.500" font-size="11" font-weight="900" text-anchor="middle" fill="#6a3de8">12</text></symbol><symbol id="i-cricket" viewBox="0 0 32 32"><rect x="13" y="2" width="6" height="19" rx="2" fill="#d9a35a" transform="rotate(30 16 12)"/><rect x="19" y="18" width="3" height="10" rx="1.500" fill="#8a5a2b" transform="rotate(30 20 23)"/><circle cx="9" cy="24" r="4.500" fill="#e0243f"/></symbol><symbol id="i-fish" viewBox="0 0 32 32"><path d="M3 16c5-8 14-8 19 0-5 8-14 8-19 0z" fill="#29c5ff"/><path d="M22 16l7-6v12z" fill="#FFD23F"/><circle cx="10" cy="14" r="1.600" fill="#fff"/></symbol><symbol id="i-joystick" viewBox="0 0 32 32"><circle cx="16" cy="9" r="5" fill="#e0243f"/><rect x="14.500" y="12" width="3" height="9" fill="#ccc"/><rect x="4" y="20" width="24" height="9" rx="4" fill="#555"/><circle cx="10" cy="24.500" r="2" fill="#00E676"/></symbol><symbol id="i-ticket" viewBox="0 0 32 32"><path d="M3 9h26v5a2.500 2.500 0 0 0 0 5v5H3v-5a2.500 2.500 0 0 0 0-5z" fill="#FFD23F"/><path d="M11 10v14" stroke="#14182a" stroke-dasharray="2 2"/></symbol><symbol id="i-gift" viewBox="0 0 32 32"><rect x="4" y="12" width="24" height="16" rx="2" fill="#e0243f"/><rect x="2" y="8" width="28" height="6" rx="2" fill="#ff5a73"/><rect x="14" y="8" width="4" height="20" fill="#FFD23F"/><path d="M16 8c-6-6-10 0-5 0zM16 8c6-6 10 0 5 0z" fill="#FFD23F"/></symbol><symbol id="i-trophy" viewBox="0 0 32 32"><path d="M9 4h14v8a7 7 0 0 1-14 0z" fill="#FFD23F"/><path d="M9 7H4c0 5 2 7 5 7M23 7h5c0 5-2 7-5 7" fill="none" stroke="#FFD23F" stroke-width="2"/><rect x="14" y="19" width="4" height="5" fill="#e49a00"/><rect x="9" y="24" width="14" height="4" rx="1.500" fill="#FFD23F"/></symbol><symbol id="i-wallet" viewBox="0 0 32 32"><rect x="3" y="8" width="26" height="19" rx="4" fill="#e0243f"/><path d="M5 8l17-4 2 4z" fill="#ff5a73"/><rect x="20" y="14" width="9" height="7" rx="3" fill="#FFD23F"/><circle cx="24" cy="17.500" r="1.400" fill="#14182a"/></symbol><symbol id="i-money" viewBox="0 0 32 32"><path d="M11 4h10l-3 5h-4z" fill="#a8702f"/><path d="M13 9C4 14 3 28 16 28s12-14 3-19z" fill="#2ea44f"/><text x="16" y="23" font-size="13" font-weight="900" text-anchor="middle" fill="#fff">$</text></symbol><symbol id="i-people" viewBox="0 0 32 32"><circle cx="11" cy="10" r="5" fill="#FFD23F"/><circle cx="22" cy="10" r="5" fill="#29c5ff"/><path d="M2 28c0-7 4-10 9-10s9 3 9 10zM13 28c0-7 4-10 9-10s8 3 8 10z" fill="#fff" opacity=".92"/></symbol><symbol id="i-mega" viewBox="0 0 32 32"><path d="M4 12h6l12-7v22l-12-7H4z" fill="#FFD23F"/><path d="M25 10c3 3 3 9 0 12" stroke="#fff" stroke-width="2" fill="none"/></symbol><symbol id="i-headset" viewBox="0 0 32 32"><g fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M5 18v-3a11 11 0 0 1 22 0v3"/><rect x="3.500" y="17" width="5" height="9" rx="2.500"/><rect x="23.500" y="17" width="5" height="9" rx="2.500"/></g></symbol><symbol id="i-home" viewBox="0 0 32 32"><g fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M4 15 16 4l12 11M7 13v15h18V13M13 28v-8h6v8"/></g></symbol><symbol id="i-pad" viewBox="0 0 32 32"><g fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="9" width="28" height="15" rx="7"/><path d="M9 13v7M5.500 16.500h7"/><circle cx="21" cy="15" r="1.200"/><circle cx="24.500" cy="18.500" r="1.200"/></g></symbol><symbol id="i-menu" viewBox="0 0 32 32"><g fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M5 9h22M5 16h22M5 23h22"/></g></symbol><symbol id="i-chart" viewBox="0 0 32 32"><g fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M6 27V15M14 27V6M22 27V12M3 29h26"/></g></symbol><symbol id="i-user" viewBox="0 0 32 32"><g fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><circle cx="16" cy="11" r="6"/><path d="M4 28c1-7 6-10 12-10s11 3 12 10"/></g></symbol><symbol id="i-plus" viewBox="0 0 32 32"><g fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M16 5v22M5 16h22"/></g></symbol><symbol id="i-minus" viewBox="0 0 32 32"><g fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M5 16h22"/></g></symbol><symbol id="i-receipt" viewBox="0 0 32 32"><g fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M7 3h18v26l-3-2-3 2-3-2-3 2-3-2-3 2zM11 10h10M11 16h10"/></g></symbol><symbol id="i-target" viewBox="0 0 32 32"><g fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><circle cx="16" cy="16" r="12"/><circle cx="16" cy="16" r="6"/><circle cx="16" cy="16" r="1.500"/></g></symbol><symbol id="i-bell" viewBox="0 0 32 32"><g fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M6 24h20l-3-4V13a7 7 0 0 0-14 0v7zM13 27h6"/></g></symbol><symbol id="i-lock" viewBox="0 0 32 32"><g fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><rect x="6" y="14" width="20" height="14" rx="3"/><path d="M10 14V9a6 6 0 0 1 12 0v5"/></g></symbol><symbol id="i-shield" viewBox="0 0 32 32"><g fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M16 3 5 7v8c0 7 5 11 11 14 6-3 11-7 11-14V7z"/></g></symbol><symbol id="i-logout" viewBox="0 0 32 32"><g fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M13 4H5v24h8M20 10l6 6-6 6M26 16H11"/></g></symbol><symbol id="i-star" viewBox="0 0 32 32"><path d="M16 3l4 9 9.500 1-7 6.500 2 9.500-8.500-5-8.500 5 2-9.500-7-6.500 9.500-1z" fill="#FFD23F"/></symbol><symbol id="i-check" viewBox="0 0 32 32"><circle cx="16" cy="16" r="13" fill="#00c26e"/><path d="M9 16.500l5 5 9-10" fill="none" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></symbol><symbol id="i-medb" viewBox="0 0 32 32"><path d="M10 2l5 10M22 2l-5 10" stroke="#e0243f" stroke-width="3.5"/><circle cx="16" cy="20" r="9" fill="#cd7f32" stroke="#fff6" stroke-width="1.5"/><circle cx="16" cy="20" r="5" fill="none" stroke="#fff8" stroke-width="1.5"/></symbol><symbol id="i-meds" viewBox="0 0 32 32"><path d="M10 2l5 10M22 2l-5 10" stroke="#e0243f" stroke-width="3.5"/><circle cx="16" cy="20" r="9" fill="#c0c7d0" stroke="#fff6" stroke-width="1.5"/><circle cx="16" cy="20" r="5" fill="none" stroke="#fff8" stroke-width="1.5"/></symbol><symbol id="i-medg" viewBox="0 0 32 32"><path d="M10 2l5 10M22 2l-5 10" stroke="#e0243f" stroke-width="3.5"/><circle cx="16" cy="20" r="9" fill="#FFD23F" stroke="#fff6" stroke-width="1.5"/><circle cx="16" cy="20" r="5" fill="none" stroke="#fff8" stroke-width="1.5"/></symbol><symbol id="i-phone" viewBox="0 0 32 32"><g fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="3" width="14" height="26" rx="3"/><path d="M14 25h4"/></g></symbol><symbol id="i-mail" viewBox="0 0 32 32"><g fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="7" width="26" height="18" rx="3"/><path d="M4 9l12 9 12-9"/></g></symbol><symbol id="i-cal" viewBox="0 0 32 32"><g fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="6" width="24" height="22" rx="3"/><path d="M4 13h24M10 3v6M22 3v6"/></g></symbol><symbol id="i-globe" viewBox="0 0 32 32"><g fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><circle cx="16" cy="16" r="12"/><path d="M4 16h24M16 4c-6 7-6 17 0 24M16 4c6 7 6 17 0 24"/></g></symbol><symbol id="i-down" viewBox="0 0 32 32"><g fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M16 5v20M8 17l8 8 8-8"/></g></symbol><symbol id="i-up" viewBox="0 0 32 32"><g fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M16 27V7M8 15l8-8 8 8"/></g></symbol><symbol id="i-x" viewBox="0 0 32 32"><g fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M8 8l16 16M24 8L8 24"/></g></symbol><symbol id="i-send" viewBox="0 0 32 32"><g fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M28 4 4 14l9 4 4 9zM13 18 28 4"/></g></symbol></defs></svg>
+<div id="app">
+<header><button class="ib hb" onclick="drawer(1)" aria-label="Menu">☰</button><div class="logo" id="lgh"></div>
+<div class="hr"><button class="hbal" id="hbal" onclick="go('wallet')" aria-label="Wallet"></button><button class="ib" onclick="go('notif')" aria-label="Notifications">🔔<i class="bdg" id="nb">3</i></button><button class="av" onclick="go('profile')" aria-label="Profile">🦁</button></div></header>
+<main id="m"></main>
+<nav id="nav"></nav>
+</div>
+<div class="ov" id="ov" onclick="drawer(0)"></div><aside id="sd"></aside><div id="toast"></div><div id="ins"><div><b>Install MOSTWIN88</b><span class="sub" style="display:block">Add the app to your home screen. Faster, full screen.</span></div><button id="ib" class="btn bgold sm"></button><button class="ib" onclick="hideIns(1)" aria-label="Close">✕</button></div>
+<div class="lcd" id="lcd" role="dialog" aria-label="Live Chat Support" aria-hidden="true"><div class="lch"><div class="lca"><span class="lcav">MW</span><div><div class="lct">MOSTWIN88</div><div class="lcs"><i class="dot"></i><span>Customer Support Center</span></div></div></div><button class="lcx" onclick="closeChat()" aria-label="Close Chat"><svg class="sv"><use href="#i-x"/></svg></button></div><div id="chatArea" aria-live="polite"><section class="officer" aria-label="Support Officer">
+  <div class="avatar-wrap">
+    <img class="avatar" id="officerAvatar"
+      src="https://i.postimg.cc/wMzTy1DT/portrait-of-a-woman-working-in-customer-service-at-a-call-center-white-backgroud-generative-ai-free.jpg"
+      alt="Customer Service Representative" width="49" height="49" decoding="async">
+    <span class="online-dot" aria-hidden="true"></span>
+  </div>
+  <div class="officer-info">
+    <h2>CS Officer <span class="verified">✓</span></h2>
+    <p>● Online Support</p>
+  </div>
+  <div class="officer-label">
+    <strong>Support Desk</strong>
+    আমরা পাশে আছি
+  </div>
+</section>
+
+<div class="notice">
+  🔒 আপনার সমস্যার সমাধানে সঠিক তথ্য দিন।
+  আপনার পাসওয়ার্ড, PIN বা OTP কাউকে দেবেন না।
+</div>
+
+<div class="date-divider"><span>MOSTWIN88 • SUPPORT</span></div>
+<div id="messages"></div>
+
+<section class="panel" id="namePanel">
+  <h3>❤️ স্বাগতম MOSTWIN88-তে!</h3>
+  <p class="description">
+    আমাদের সঙ্গে যুক্ত হওয়ার জন্য আপনাকে আন্তরিক ধন্যবাদ।
+    আপনার যেকোনো সমস্যা বা প্রয়োজনে আমরা সহায়তা করার চেষ্টা করব।
+    <br><br>সাপোর্ট শুরু করতে প্রথমে আপনার নামটি লিখুন।
+  </p>
+  <form id="nameForm">
+    <label class="label" for="userName">আপনার নাম</label>
+    <input class="field" id="userName" name="name" maxlength="60"
+      autocomplete="name" placeholder="আপনার সম্পূর্ণ নাম লিখুন" required>
+    <p class="error" id="nameError" role="alert"></p>
+    <button class="btn btn-primary" type="submit">শুরু করুন →</button>
+  </form>
+</section>
+
+<section class="panel hidden" id="phonePanel">
+  <h3>📱 আপনার ফোন নম্বর দিন</h3>
+  <p class="description">ধন্যবাদ! এখন আপনার যোগাযোগের ফোন নম্বরটি লিখুন।</p>
+  <form id="phoneForm">
+    <label class="label" for="userPhone">ফোন নম্বর</label>
+    <input class="field" id="userPhone" name="phone" type="tel"
+      maxlength="20" autocomplete="tel" inputmode="tel"
+      placeholder="আপনার ফোন নম্বর লিখুন" required>
+    <p class="error" id="phoneError" role="alert"></p>
+    <button class="btn btn-primary" type="submit">পরবর্তী ধাপ →</button>
+  </form>
+</section>
+
+<section class="panel hidden" id="issuePanel">
+  <h3>📋 আপনার সমস্যাটি নির্বাচন করুন</h3>
+  <p class="description">Dropdown থেকে সমস্যার ধরন বেছে নিন। আপনার নির্বাচনের ভিত্তিতে সম্ভাব্য সমাধান দেখানো হবে।</p>
+  <form id="issueForm">
+    <label class="label" for="issueSelect">সমস্যার ক্যাটাগরি</label>
+    <select class="field" id="issueSelect" name="issue" required>
+      <option value="">-- একটি সমস্যা নির্বাচন করুন --</option>
+      <option value="deposit">Deposit / টাকা জমা</option>
+      <option value="withdraw">Withdraw / টাকা উত্তোলন</option>
+      <option value="wallet">Wallet Balance</option>
+      <option value="payment">Payment Pending</option>
+                        <option value="bonus">Bonus / বোনাস</option>
+      <option value="game">Game সমস্যা</option>
+      <option value="login">Login / Signup</option>
+      <option value="account">Account Problem</option>
+      <option value="other">অন্যান্য সমস্যা</option>
+    </select>
+    <p class="error" id="issueError" role="alert"></p>
+    <button class="btn btn-primary" type="submit">সমস্যা দেখুন →</button>
+  </form>
+</section>
+
+<section class="panel hidden" id="answerPanel">
+  <h3 id="answerTitle">আপনার সমস্যার সমাধান</h3>
+  <p class="description" id="answerIntro"></p>
+  <div class="answer-card" id="answerText"></div>
+  <div class="question-card">
+    <strong id="followupTitle">আপনার সমস্যাটি সম্পর্কে একটি প্রশ্ন</strong>
+    <label class="hidden" for="followupSelect">আপনার উত্তর</label>
+    <select class="field" id="followupSelect" required>
+      <option value="">-- উত্তর নির্বাচন করুন --</option>
+    </select>
+  </div>
+  <div id="extraQuestionBox" class="hidden">
+    <label class="label" for="extraDetails">সমস্যার অতিরিক্ত বিবরণ</label>
+    <textarea class="field" id="extraDetails" maxlength="1000"
+      placeholder="সমস্যাটি বিস্তারিত লিখুন (পাসওয়ার্ড/PIN/OTP নয়)"></textarea>
+  </div>
+  <p class="error" id="answerError" role="alert"></p>
+  <button class="btn btn-primary" id="continueBtn" type="button">উত্তর জমা দিন →</button>
+</section>
+
+<section class="panel hidden" id="resolutionPanel">
+  <h3>সমস্যার সমাধান হয়েছে কি?</h3>
+  <p class="description">উপরের নির্দেশনা অনুসরণ করার পর আপনার সমস্যার অবস্থা নির্বাচন করুন।</p>
+  <div class="btn-row">
+    <button class="btn btn-primary" id="resolvedAgainBtn" type="button">হ্যাঁ, সমাধান হয়েছে</button>
+    <button class="btn btn-outline" id="notResolvedAgainBtn" type="button">না, হয়নি</button>
+  </div>
+</section>
+
+<section class="panel hidden" id="contactPanel">
+  <h3>🎧 Live Chat Support</h3>
+  <p class="description">
+    স্বয়ংক্রিয় নির্দেশনায় আপনার সমস্যার সমাধান না হলে
+    নিচের Live Chat বাটন থেকে সরাসরি যোগাযোগ করুন।
+  </p>
+
+  <div class="contact-list">
+    <a class="contact-option whatsapp"
+       id="whatsappLink"
+       href="#"
+       target="_blank"
+       rel="noopener noreferrer"
+       referrerpolicy="no-referrer">
+      <span>
+        🟢 Live Chat on WhatsApp
+        <small>Message our support team on WhatsApp</small>
+      </span>
+      <span class="arrow" aria-hidden="true">›</span>
+    </a>
+
+    <a class="contact-option telegram"
+       id="telegramLink"
+       href="#"
+       target="_blank"
+       rel="noopener noreferrer"
+       referrerpolicy="no-referrer">
+      <span>
+        🔵 Live Chat on Telegram
+        <small>MOSTWIN88 Help Bot-এ সরাসরি যোগাযোগ করুন</small>
+      </span>
+      <span class="arrow" aria-hidden="true">›</span>
+    </a>
+  </div>
+
+  <p class="contact-notice" style="margin-top:12px">
+    🔒 আপনার পাসওয়ার্ড, PIN বা OTP কখনো শেয়ার করবেন না।
+    যোগাযোগের সময় সমস্যার বিবরণ দিন।
+  </p>
+</section>
+
+<section class="panel hidden" id="successPanel">
+  <h3>✅ ধন্যবাদ!</h3>
+  <p class="description">
+    MOSTWIN88 Support ব্যবহার করার জন্য ধন্যবাদ।
+    আপনার সমস্যা সমাধান হয়েছে জেনে আমরা আনন্দিত।
+  </p>
+  <button class="btn btn-primary" id="restartBtn" type="button">
+    নতুন সাপোর্ট চ্যাট শুরু করুন
+  </button>
+</section>
+
+</div></div>
+<div id="net" role="status">You are offline — some features may not work</div>
+<script>
+const $=s=>document.querySelector(s),f=n=>'৳'+n.toLocaleString('en-US',{minimumFractionDigits:0,maximumFractionDigits:2});
+const S={dep:20000,bon:5500,name:'Md Mijanur Rahman',id:'MW88001',code:'MIJANUR88',lvl:'Gold',xp:7500,next:10000,mob:'01712345517',email:'mijanur@example.com',lang:'English',photo:'',country:'Bangladesh',mv:1,ev:0};
+const CRN='<svg class="cr" viewBox="0 0 24 24"><path d="M3 18 1.5 7l5 4L12 3.5 17.5 11l5-4L21 18z"/><rect x="3" y="19.5" width="18" height="2.2" rx="1"/></svg>';
+const EM={'⭐':'star','🥉':'medb','🥈':'meds','🥇':'medg','💠':'diamond','📱':'phone','✉':'mail','📅':'cal','🌐':'globe','✅':'check','✔':'check','⬇':'down','⬆':'up',"\ud83e\ude99": "chip", "\ud83c\udfb2": "dice", "\ud83c\udfb3": "dice", "\ud83c\udfb1": "roulette", "\ud83c\udfa1": "wheel", "\ud83c\udccf": "cards", "\ud83c\udfb4": "cards", "\u2660": "spade", "\ud83c\udfb0": "slot", "7\u20e3": "seven", "\ud83c\udf52": "cherry", "\ud83d\udc8e": "diamond", "\u2708": "plane", "\ud83d\ude80": "rocket", "\ud83d\udca3": "bomb", "\ud83d\udd2e": "plinko", "\ud83d\udd3c": "hilo", "\u26cf": "pick", "\ud83d\udc09": "dragon", "\ud83c\udc04": "tile", "\ud83d\udd22": "ball", "\ud83c\udfcf": "cricket", "\ud83d\udc1f": "fish", "\ud83d\udd79": "joystick", "\ud83c\udf9f": "ticket", "\ud83c\udf81": "gift", "\ud83c\udfc6": "trophy", "\ud83d\udc5b": "wallet", "\ud83d\udcb0": "money", "\ud83d\udcb8": "money", "\ud83d\udcb5": "money", "\ud83e\udd1d": "people", "\ud83d\udce2": "mega", "\ud83c\udfa7": "headset", "\ud83c\udfe0": "home", "\ud83c\udfae": "pad", "\u2630": "menu", "\ud83d\udcca": "chart", "\ud83d\udc64": "user", "\u2795": "plus", "\u2796": "minus", "\ud83e\uddfe": "receipt", "\ud83c\udfaf": "target", "\ud83d\udd14": "bell", "\ud83d\udd12": "lock", "\ud83d\udee1": "shield", "\ud83d\udeaa": "logout"};
+const ER=new RegExp('👑|'+Object.keys(EM).join('|'),'g');
+const cr=h=>h.replace(/\uFE0F/g,'').replace(ER,m=>m=='👑'?CRN:'<svg class="sv"><use href="#i-'+EM[m]+'"/></svg>');
+const LOGO='<span class="lm"><span class="w">M</span><span class="lo"><svg viewBox="0 0 100 100" aria-hidden="true"><g class="lo-r"><circle cx="50" cy="50" r="43" fill="none" stroke="rgba(255,255,255,.4)" stroke-width="14"/><circle cx="50" cy="50" r="43" fill="none" stroke="#fff" stroke-width="14" stroke-dasharray="7.4 3.86"/></g><circle cx="50" cy="50" r="18" fill="#ffd23f"/><circle cx="50" cy="50" r="18" fill="none" stroke="#fff2b3" stroke-width="3"/></svg></span><span class="w">ST</span>WIN<span class="r">88</span></span><small>PLAY BIG, WIN BIGGER</small>';
+const REF='<div class="card" style="text-align:center;margin-top:14px;border-color:#ffd23f88"><div style="font-size:34px">🏆</div><b style="color:var(--gold)">REFER A FRIEND<br>GET 20% BONUS</b><br><br><button class="btn bgold sm" onclick="go(\'ref\')">Invite Now →</button></div>';
+const CFG={sideBanners:[{"a": "🎰", "t": "Lucky Spin", "d": "Spin daily and win a free bonus", "b": "Spin Now", "go": "games", "h": 300, "h2": 335}, {"a": "🏆", "t": "Weekend Tournament", "d": "Win a share of the ৳50,000 prize pool", "b": "Join Now", "go": "games", "h": 38, "h2": 18}, {"a": "🎁", "t": "Free Bet Friday", "d": "Get a free bet every Friday", "b": "Claim Now", "go": "promo", "h": 160, "h2": 195}],chat:{whatsapp:"https://example.com/whatsapp",telegram:"https://example.com/telegram",officers:["https://i.postimg.cc/wMzTy1DT/portrait-of-a-woman-working-in-customer-service-at-a-call-center-white-backgroud-generative-ai-free.jpg","https://i.postimg.cc/qRPfpDfq/Screenshot-2026-10-26-011822-cropped.jpg"]},banners:[{"a": "💰", "t": "100% Deposit Bonus", "d": "Double your deposit, up to ৳5,000", "b": "Deposit Now", "go": "dep", "h": 265, "h2": 305}, {"a": "💸", "t": "10% Weekly Cashback", "d": "Get back part of every loss each Monday", "b": "Learn More", "go": "bonus", "h": 150, "h2": 190}, {"a": "🤝", "t": "Refer a Friend, Earn 20%", "d": "Invite friends and earn on their first deposit", "b": "Invite Now", "go": "ref", "h": 15, "h2": 40}, {"a": "🏆", "t": "VIP Rewards Club", "d": "Level up for higher cashback and gifts", "b": "Upgrade", "go": "vip", "h": 40, "h2": 28}, {"a": "🎁", "t": "Daily Bonus up to ৳5,000", "d": "Log in every day and claim your reward", "b": "Claim Now", "go": "promo", "h": 330, "h2": 355}, {"a": "🚀", "t": "Rocket Crash Tournament", "d": "Win a share of the weekly prize pool", "b": "Play Now", "go": "games", "h": 205, "h2": 235}],games:[['✈️','Aviator'],['🎡','Crazy Time'],['🎱','Roulette'],['🎲','Ludo'],['🪙','Carrom King'],['🃏','Blackjack'],['♠️','Baccarat'],['🐉','Dragon Tiger'],['🎴','Teen Patti'],['🀄','Andar Bahar'],['💣','Mines'],['🔮','Plinko'],['🔼','Hi-Lo'],['🎰','Super Slots'],['🍒','Fruit Party'],['7️⃣','Lucky 777'],['⛏️','Gold Rush'],['🚀','Rocket Crash'],['🎳','Sic Bo'],['🔢','Keno']].map((x,k)=>({i:x[0],n:x[1],u:'https://example.com/play/'+x[1].toLowerCase().replace(/\W+/g,'-'),pop:k<8?1:0})),notice:'Welcome to MOSTWIN88! Claim your Daily Bonus every day. Deposits are approved fast via bKash, Nagad and Rocket. Play responsibly.',slides:[{t:'Welcome to <em>MOSTWIN88</em>',d:'Enjoy your gaming journey with Mostwin88!',a:'🎰',c:'s1',go:'games'},{t:'100% <em>Welcome</em> Bonus',d:'Double your first deposit up to ৳5,000.',a:'💎',c:'s2',go:'promo'},{t:'Weekly <em>10% Cashback</em>',d:'Every loss comes back to you on Mondays.',a:'🎲',c:'s3',go:'games'}]};
+const imgUrl=u=>String(u).replace(/['"()\s<>\\]/g,c=>'%'+c.charCodeAt(0).toString(16).toUpperCase());
+const gl=()=>CFG.games.map(g=>[g.i,g.n,g.u||'',g.pop,g.img||'']);let pgp=0;
+const DL='https://example.com/';function lk(n){window.open(DL+'provider/'+n.toLowerCase().replace(/\W+/g,'-'),'_blank','noopener')}
+function play(n){const g=CFG.games.find(x=>x.n==n);if(g&&g.u)window.open(g.u,'_blank','noopener');else toast(n+' launching (demo)')}
+function pgs(d,a){const e=$('#pg');if(!e||(a&&pgp))return;const w=e.firstElementChild.offsetWidth+12,end=e.scrollLeft+e.clientWidth>=e.scrollWidth-4;e.scrollTo({left:d>0&&end?0:d<0&&e.scrollLeft<=4?e.scrollWidth:e.scrollLeft+d*w,behavior:'smooth'})}
+let bnp=0;
+function bns(d,a){const e=$('#bn');if(!e||(a&&bnp))return;const w=e.firstElementChild.offsetWidth+12,end=e.scrollLeft+e.clientWidth>=e.scrollWidth-4;e.scrollTo({left:d>0&&end?0:d<0&&e.scrollLeft<=4?e.scrollWidth:e.scrollLeft+d*w,behavior:'smooth'})}
+const sl=x=>x.img?`<div class="sl" style="background:#0b1d52 url('${x.img}') center/cover;cursor:pointer" onclick="go('${x.go||'promo'}')"></div>`:`<div class="sl ${x.c||'s1'}"><h3>${x.t.replace('{name}',S.name)}</h3><p>${x.d||''}</p><button class="btn bgold sm" onclick="go('${x.go||'games'}')">Play Now →</button><div class="art">${x.a||'🎰'}</div></div>`;
+const T=[['TXN88120945','08 Nov 2026, 10:42','Deposit',5000,'Success'],['TXN88120811','07 Nov 2026, 21:15','Withdraw',-2000,'Pending'],['TXN88120622','07 Nov 2026, 14:03','Bonus',250,'Success'],['TXN88120377','06 Nov 2026, 19:48','Deposit',1500,'Failed'],['TXN88120110','05 Nov 2026, 09:27','Withdraw',-3500,'Success'],['TXN88119854','04 Nov 2026, 18:36','Cashback',420,'Success']];
+const P=[['🎁','Daily Bonus','Log in daily and collect ৳50',50],['🏆','Welcome Bonus','100% on your first deposit, up to ৳5,000',0],['💸','Cashback Offer','10% weekly cashback on net losses',420],['⭐','Special Promotion','Weekend reload: 25% extra on deposits',0]].map(p=>({i:p[0],t:p[1],d:p[2],v:p[3],c:0}));
+const NAV=[['🏠','Home','home'],['🎮','Games','games'],['👑','VIP','vip'],['🎁','Promo','promo'],['☰','More','more']];
+const MENU=[['📊','Dashboard','home'],['👤','My Profile','profile'],['👛','My Wallet','wallet'],['➕','Deposit','dep'],['➖','Withdraw','wd'],['🧾','Transaction History','tx'],['🎯','Bet History','bets'],['🎁','Bonus History','bonus'],['👑','VIP Level','vip'],['🤝','Referral','ref'],['🔔','Notifications','notif'],['🔒','Security Settings','sec'],['🛡️','Responsible Gaming','resp'],['🚪','Logout','out']];
+const tot=()=>S.dep+S.bon;
+let cur='home',timer,pay='bKash',wm='bKash',pe=0;
+function toast(t){const e=$('#toast');e.textContent=t;e.classList.add('o');clearTimeout(toast.t);toast.t=setTimeout(()=>e.classList.remove('o'),2200)}
+function drawer(o){$('#sd').classList.toggle('o',!!o);$('#ov').classList.toggle('o',!!o)}
+function go(s){if(s=='more'){drawer(1);return}if(s=='support'){drawer(0);openChat();return}if(s=='out'){drawer(0);toast('Logged out (demo)');return}drawer(0);if(s!='profile'){pe=0;vk=''}cur=s;clearInterval(timer);tms.forEach(t=>{clearTimeout(t);clearInterval(t)});tms=[];$('#m').innerHTML=cr('<div class="screen">'+(V[s]||V.home)()+'</div>');scrollTo(0,0);if(s=='home')carousel();nav();updBal()}
+function updBal(){$('#hbal').innerHTML='<span class="em">👛</span><span><b>'+f(tot())+'</b></span>';updAv()}
+function nav(){$('#nav').innerHTML=NAV.map(n=>`<button class="${n[2]==cur?'on2':''}" onclick="go('${n[2]}')"><span>${n[0]}</span>${n[1]}</button>`).join('');$('#sd').innerHTML=`<div class="logo lg2">${LOGO}</div>`+MENU.map(n=>`<button class="${n[2]==cur?'cur':''}" onclick="go('${n[2]}')"><span>${n[0]}</span>${n[1]}</button>`).join('')+REF;$('#nav').innerHTML=cr($('#nav').innerHTML);$('#sd').innerHTML=cr($('#sd').innerHTML)}
+const bk=(t)=>`<div class="back"><button onclick="go('home')" aria-label="Back">‹</button>${t}</div>`;
+const txr=t=>`<div class="tx"><div class="ic">${{Deposit:'⬇️',Withdraw:'⬆️',Bonus:'🎁',Cashback:'💸'}[t[2]]}</div><div><b>${t[2]}</b><small>${t[0]} · ${t[1]}</small></div><div class="am"><div class="${t[3]>0?'pos':'neg'}">${t[3]>0?'+':'−'}${f(Math.abs(t[3]))}</div><span class="pill ${t[4]}">${t[4]}</span></div></div>`;
+const wal=()=>`<div class="card wallet"><div class="sub">Total Balance</div><div class="tot">${f(tot())}</div><div class="mini"><div><span class="sub">Deposit Balance</span><b>${f(S.dep)}</b></div><div><span class="sub">Bonus Balance</span><b style="color:var(--gold)">${f(S.bon)}</b></div></div><div class="two"><button class="btn bg" onclick="go('dep')">⬇ Deposit</button><button class="btn bb" onclick="go('wd')">⬆ Withdraw</button></div></div>`;
+const promo=(p,i)=>`<div class="card pr"><div class="ic">${p.i}</div><div><b>${p.t}</b><span class="sub">${p.d}</span></div><button class="btn bgold sm" ${p.c?'disabled style="opacity:.5"':''} onclick="claim(${i})">${p.c?'Claimed':'Claim Now'}</button></div>`;
+const V={
+home:()=>`<div class="hm"><div class="mn"><div class="car" id="car">${CFG.slides.map(sl).join('')}</div><div class="dots" id="dots">${CFG.slides.map((_,i)=>`<i class="${i?'':'a'}"></i>`).join('')}</div><div class="nb"><span>📢</span><div class="nbt"><span style="animation-duration:${Math.max(14,CFG.notice.length*.26)}s">${CFG.notice}</span></div></div>
+
+<h2>Popular Games <span class="ar"><button class="ib" onclick="pgs(-1)" aria-label="Previous">‹</button><button class="ib" onclick="pgs(1)" aria-label="Next">›</button></span></h2><div class="pg" id="pg" onmouseenter="pgp=1" onmouseleave="pgp=0" ontouchstart="pgp=1" ontouchend="pgp=0">${gl().filter(g=>g[3]).map((g,k)=>`<button class="pc" style="--h:${k*47+200}" onclick="play('${g[1]}')"><span class="hot">HOT</span>${g[4]?`<i class="pci" style="background-image:url('${imgUrl(g[4])}')"></i>`:`<i>${g[0]}</i>`}<b>${g[1]}</b><u>Play Now</u></button>`).join('')}</div>
+<h2 class="pv-lobby" style="margin-bottom:6px">Game Lobby</h2>${window.homeGames?homeGames():''}
+
+<h2>Special Offers <span class="ar"><button class="ib" onclick="bns(-1)" aria-label="Previous">‹</button><button class="ib" onclick="bns(1)" aria-label="Next">›</button></span></h2><div class="pg bn" id="bn" onmouseenter="bnp=1" onmouseleave="bnp=0" ontouchstart="bnp=1" ontouchend="bnp=0">${CFG.banners.map(b=>b.img?`<button class="bs" style="background:#0b1d52 url('${b.img}') center/cover" onclick="go('${b.go||'promo'}')" aria-label="Offer"></button>`:`<button class="bs" style="--h:${b.h||265};--h2:${b.h2||300}" onclick="go('${b.go||'promo'}')"><span class="ba">${b.a||'🎁'}</span><div><b>${b.t}</b><small>${b.d||''}</small><u>${b.b||'Learn More'} →</u></div></button>`).join('')}</div></div>
+<div class="dk"><div class="card" style="text-align:center;border-color:#ffd23f99;box-shadow:0 0 22px #ffd23f33"><div style="font-size:46px">👑</div><h2 style="justify-content:center;font-size:22px;color:var(--gold)">VIP CLUB</h2><div class="sub">Your VIP Level: <b style="color:var(--gold)">${S.lvl}</b></div><div class="bar"><i style="width:75%"></i></div>✔ Higher Rewards<br>✔ Exclusive Bonuses<br>✔ Priority Support<br><br><button class="btn bgold sm" onclick="go('vip')">Upgrade Now →</button></div><div class="card"><h2>📊 Betting Summary</h2>${[['Total Bets',62340],['Total Wins',78250],['Total Loss',62340]].map(x=>`<div class="tx"><div style="flex:1">${x[0]}</div><b>${f(x[1])}</b></div>`).join('')}<br><button class="btn out sm" style="width:100%" onclick="go('bets')">View Details</button></div><div class="sbs">${CFG.sideBanners.map(b=>b.img?`<button class="bs" style="background:#0b1d52 url('${b.img}') center/cover" onclick="go('${b.go||'promo'}')" aria-label="Offer"></button>`:`<button class="bs" style="--h:${b.h||265};--h2:${b.h2||300}" onclick="go('${b.go||'promo'}')"><span class="ba">${b.a||'🎁'}</span><div><b>${b.t}</b><small>${b.d||''}</small><u>${b.b||'Learn More'} →</u></div></button>`).join('')}</div></div></div>`,
+profile:()=>bk('My Profile')+(pe?`<div class="card" style="text-align:center"><div class="av" style="width:64px;height:64px;font-size:32px;margin:auto">${avh()}</div><label class="btn out sm" style="margin-top:10px;width:auto;cursor:pointer">Change Photo<input type="file" accept="image/*" hidden onchange="photo(this)"></label></div><div class="card"><label>Full name</label><input id="pn" value="${S.name}"><label>Country (selected at signup)</label><input value="${S.country}" disabled style="opacity:.6"><label>Mobile</label><input id="pm2" type="tel" inputmode="numeric" value="${S.mob}"><label>Email</label><input id="pe2" type="email" value="${S.email}"><div class="sub" style="margin-top:6px">Changing your mobile or email will require verification again.</div><label>Language</label><div class="chips" id="pl">${['English','বাংলা'].map(l=>`<button class="chip ${l==S.lang?'s':''}" onclick="pick(this)">${l}</button>`).join('')}</div><br><div class="two"><button class="btn out sm" style="width:100%" onclick="pe=0;go('profile')">Cancel</button><button class="btn bg sm" style="width:100%" onclick="saveP()">Save Changes</button></div></div>`:`<div class="card" style="text-align:center"><div class="av" style="width:64px;height:64px;font-size:32px;margin:auto">${avh()}</div><h2 style="justify-content:center;margin-top:10px">${S.name}</h2><div class="sub">Member ID: ${S.id}</div><div style="margin:8px"><span class="on"><i class="dot"></i> Online</span> &nbsp;<span class="pill vip">👑 VIP ${S.lvl}</span></div></div><div class="card">${prow()}</div>${vk?vcard():''}<div class="two"><button class="btn bb sm" style="width:100%" onclick="pe=1;go('profile')">Edit Profile</button><button class="btn bgold sm" style="width:100%" onclick="go('vip')">VIP Level</button></div>`),
+wallet:()=>bk('My Wallet')+wal()+`<div class="card"><h2>Recent Activity <a onclick="go('tx')">View All</a></h2>${T.slice(0,3).map(txr).join('')}</div>`,
+dep:()=>bk('Deposit')+`<div class="card"><label>Payment method</label><div class="chips" id="pm">${Object.keys(M).map(m=>`<button class="chip ${m==pay?'s':''}" onclick="selPay('${m}')">${m}</button>`).join('')}</div><div id="pi">${pinfo(pay)}</div></div><div class="card"><label>Amount (min ৳500 · max ৳50,000)</label><input id="a" type="number" inputmode="decimal" placeholder="Enter amount"><div class="chips" style="margin:10px 0">${[500,1000,2000,5000,10000].map(v=>`<button class="chip" onclick="$('#a').value=${v}">৳${v}</button>`).join('')}</div><label id="sl">Your ${pay} number</label><input id="sn" type="tel" inputmode="numeric" placeholder="01XXXXXXXXX"><label>Transaction ID (TrxID)</label><input id="tid" placeholder="e.g. 9H7K2L5M1P" autocapitalize="characters"><label>Bonus</label><div class="chips" id="bo"><button class="chip s" data-v="1" onclick="pick(this)">Welcome Bonus 100%</button><button class="chip" data-v="0" onclick="pick(this)">No Bonus</button></div><br><button class="btn bg" onclick="dep()">Submit Deposit</button><p class="sub" style="margin-top:10px">Your balance updates after the payment is verified.</p></div>`,
+wd:()=>bk('Withdraw')+`<div class="card"><div class="row sp"><div><div class="sub">Withdrawable balance</div><div class="tot" style="font-size:24px">${f(S.dep)}</div></div><div style="text-align:right"><div class="sub">Bonus (locked)</div><b>${f(S.bon)}</b></div></div></div><div class="card"><label>Withdraw method</label><div class="chips" id="wm">${['bKash','Nagad','Rocket','Upay','Bank'].map(m=>`<button class="chip ${m==wm?'s':''}" onclick="selWm('${m}')">${m}</button>`).join('')}</div><div id="wf">${wfields(wm)}</div><label>Amount (min ৳500 · max ৳25,000)</label><div class="row"><input id="a" type="number" inputmode="decimal" placeholder="Enter amount"><button class="btn out sm" onclick="$('#a').value=Math.min(S.dep,25000)">Max</button></div><label>Withdrawal PIN</label><input id="pin" type="password" inputmode="numeric" maxlength="6" placeholder="4-6 digit PIN"><br><br><button class="btn bb" onclick="wd()">Request Withdrawal</button></div><div class="card"><h2>Withdrawal Rules</h2><ul class="rules"><li>The account must be in your own name.</li><li>Requests are processed within 24 hours.</li><li>Bonus balance cannot be withdrawn until turnover is complete.</li><li>Check the account number: wrong details cannot be refunded.</li></ul></div>`,
+tx:()=>bk('Transaction History')+`<div class="card">${T.map(txr).join('')}</div>`,
+bonus:()=>bk('Bonus & Rewards')+`<div class="card wallet"><div class="sub">Bonus Balance</div><div class="tot">${f(S.bon)}</div></div>`+P.map(promo).join('')+`<div class="card"><h2>Bonus History</h2>${T.filter(t=>t[2]=='Bonus'||t[2]=='Cashback').map(txr).join('')}</div>`,
+promo:()=>`<h2 style="font-size:20px">Promotions</h2>`+P.map(promo).join(''),
+vip:()=>`<div class="card wallet" style="text-align:center"><div style="font-size:54px">👑</div><h2 style="justify-content:center">VIP ${S.lvl}</h2><div class="bar"><i style="width:${S.xp/S.next*100}%"></i></div><div class="sub">${S.xp.toLocaleString()} / ${S.next.toLocaleString()} points to Platinum</div></div><div class="card"><h2>VIP Levels</h2>${[['🥉','Bronze','0 pts · 2% cashback'],['🥈','Silver','2,000 pts · 5% cashback'],['🥇','Gold','5,000 pts · 10% cashback'],['💠','Platinum','10,000 pts · 15% cashback'],['💎','Diamond','25,000 pts · personal manager']].map(l=>`<div class="tx"><div class="ic">${l[0]}</div><div><b>${l[1]}</b><small>${l[2]}</small></div>${l[1]==S.lvl?'<span class="pill vip">Current</span>':''}</div>`).join('')}</div>`,
+ref:()=>bk('Referral Program')+`<div class="card wallet" style="text-align:center"><div class="sub">Your referral code</div><div class="tot">${S.code}</div><br><div class="two"><button class="btn bgold sm" style="width:100%" onclick="navigator.clipboard&&navigator.clipboard.writeText('${S.code}');toast('Code copied')">Copy</button><button class="btn bg sm" style="width:100%" onclick="toast('Share sheet (demo)')">Share</button></div></div><div class="grid" style="grid-template-columns:repeat(3,1fr)">${[['12','Friends'],['৳2,400','Earned'],['3','Pending']].map(s=>`<div class="q" style="min-height:0;padding:12px 6px"><b style="display:block;font-size:17px;color:var(--gold);margin-bottom:2px">${s[0]}</b>${s[1]}</div>`).join('')}</div><p class="sub" style="margin-top:12px">Earn ৳200 when a friend joins and makes a first deposit.</p>`,
+games:()=>`<h2 style="font-size:20px">Casino Games</h2><div class="grid" style="grid-template-columns:repeat(2,1fr)">${gl().map(g=>`<div class="gm"><span>${g[0]}</span><b>${g[1]}</b><button class="btn bgold sm" onclick="play('${g[1]}')">Play Now</button></div>`).join('')}</div>`,
+bets:()=>bk('Bet History')+`<div class="card">${[['Aviator','Won',840],['Crazy Time','Lost',-500],['Roulette','Won',1200],['Ludo','Lost',-300],['Carrom King','Won',450]].map((b,i)=>`<div class="tx"><div class="ic">🎯</div><div><b>${b[0]}</b><small>BET${88300+i} · ${8-i} Nov 2026</small></div><div class="am ${b[2]>0?'pos':'neg'}">${b[2]>0?'+':'−'}${f(Math.abs(b[2]))}<small>${b[1]}</small></div></div>`).join('')}</div>`,
+notif:()=>{$('#nb').style.display='none';return bk('Notifications')+`<div class="card">${[['🎁','Your daily bonus is ready to claim.','2 min ago'],['✅','Deposit of ৳5,000 was successful.','1 hr ago'],['👑','You are 2,600 points from Platinum.','Yesterday']].map(n=>`<div class="tx"><div class="ic">${n[0]}</div><div><b style="white-space:normal">${n[1]}</b><small>${n[2]}</small></div></div>`).join('')}</div>`},
+sec:()=>bk('Security Settings')+tg([['Two-factor authentication',1],['Login alerts',1],['Biometric unlock',0]])+`<button class="btn bb" onclick="toast('Password change (demo)')">Change Password</button>`,
+resp:()=>bk('Responsible Gaming')+tg([['Daily deposit limit ৳10,000',1],['Session time reminder',1],['Self-exclusion',0]])+`<p class="sub">Play for fun and within your means.</p>`
+};
+const avh=()=>S.photo?'<img src="'+S.photo+'" alt="">':'🦁';
+function updAv(){$('header .av').innerHTML=avh()}
+function photo(i){const fl=i.files[0];if(!fl)return;const rd=new FileReader();rd.onload=()=>{const im=new Image();im.onload=()=>{const c=document.createElement('canvas');c.width=c.height=128;const m=Math.min(im.width,im.height);c.getContext('2d').drawImage(im,(im.width-m)/2,(im.height-m)/2,m,m,0,0,128,128);S.photo=c.toDataURL('image/jpeg',.8);updAv();document.querySelector('.screen .av').innerHTML=avh()};im.src=rd.result};rd.readAsDataURL(fl)}
+function saveP(){const n=$('#pn').value.trim(),m=$('#pm2').value.trim(),e=$('#pe2').value.trim();if(n.length<2)return toast('Enter your full name');if(!/^01\d{9}$/.test(m))return toast('Enter a valid 11-digit mobile number');if(!/^\S+@\S+\.\S+$/.test(e))return toast('Enter a valid email address');if(m!=S.mob)S.mv=0;if(e!=S.email)S.ev=0;S.name=n;S.mob=m;S.email=e;S.lang=$('#pl .s').textContent;pe=0;toast('Profile updated');go('profile')}
+let vk='',vc0='';
+const COUNTRIES=[['Bangladesh','+880'],['India','+91'],['Pakistan','+92'],['Nepal','+977'],['Sri Lanka','+94'],['Saudi Arabia','+966'],['United Arab Emirates','+971'],['Qatar','+974'],['Kuwait','+965'],['Oman','+968'],['Malaysia','+60'],['Singapore','+65'],['United Kingdom','+44'],['United States','+1'],['Canada','+1'],['Australia','+61']];
+function prow(){const cn=COUNTRIES.find(c=>c[0]==S.country)||COUNTRIES[0];
+const rw=(ic,l,v)=>`<div class="tx"><div class="ic">${ic}</div><div><small>${l}</small><b>${v}</b></div></div>`;
+const vr=(k,ic,l,v,ok)=>`<div class="tx"><div class="ic">${ic}</div><div><small>${l}</small><b style="word-break:break-all">${v}</b></div><div style="text-align:right"><span class="pill ${ok?'Success':'Pending'}">${ok?'Verified':'Unverified'}</span>${ok?'':`<br><button class="btn bgold sm" style="margin-top:6px;min-height:30px" onclick="vOpen('${k}')">Verify</button>`}</div></div>`;
+return rw('🌐','Country',cn[0]+' ('+cn[1]+')')+vr('mob','📱','Mobile',S.mob,S.mv)+vr('mail','✉','Email',S.email,S.ev)+rw('📅','Member since','12 Jan 2026')+rw('🌐','Language',S.lang)}
+const vcard=()=>`<div class="card"><h2>Verify ${vk=='mob'?'Mobile Number':'Email'}</h2><div class="sub">Enter the 6-digit code sent to ${vk=='mob'?S.mob:S.email}</div><input id="vc" inputmode="numeric" maxlength="6" placeholder="6-digit code" style="margin:10px 0"><div class="two"><button class="btn out sm" style="width:100%" onclick="vSend()">Resend Code</button><button class="btn bg sm" style="width:100%" onclick="vOk()">Confirm</button></div></div>`;
+function vSend(){vc0=String(100000+Math.floor(Math.random()*900000));toast('Demo code: '+vc0)}
+function vOpen(k){vk=k;vSend();go('profile')}
+function vOk(){const v=$('#vc').value.trim();if(v!=vc0)return toast('Wrong code, try again');if(vk=='mob')S.mv=1;else S.ev=1;vk='';toast('Verified successfully');go('profile')}
+function openChat(){const d=$('#lcd');d.classList.add('o');d.setAttribute('aria-hidden','false');document.body.classList.add('chat-open')}
+function closeChat(){const d=$('#lcd');d.classList.remove('o');d.setAttribute('aria-hidden','true');document.body.classList.remove('chat-open')}
+addEventListener('keydown',e=>{if(e.key=='Escape')closeChat()});
+function tg(a){return'<div class="card">'+a.map(x=>`<div class="tx"><div><b>${x[0]}</b></div><button class="tg ${x[1]?'on3':''}" onclick="this.classList.toggle('on3')" aria-label="${x[0]}"></button></div>`).join('')+'</div>'}
+let tms=[];
+function carousel(){const c=$('#car'),d=[...$('#dots').children];let i=0;const up=()=>{i=Math.round(c.scrollLeft/c.clientWidth);d.forEach((e,k)=>e.className=k==i?'a':'')};c.onscroll=up;timer=setInterval(()=>{i=(i+1)%d.length;c.scrollTo({left:i*c.clientWidth,behavior:'smooth'})},5000);tms=[setTimeout(()=>{tms.push(setInterval(()=>pgs(-1,1),3200))},1200),setTimeout(()=>{tms.push(setInterval(()=>bns(1,1),6500))},2400)]}
+function id(){return'TXN'+Math.floor(88130000+Math.random()*9999)}
+function now(){return new Date().toLocaleString('en-GB',{day:'2-digit',month:'short',year:'numeric',hour:'2-digit',minute:'2-digit'}).replace(',',',')}
+const M={bKash:['017XX-XXXXXX','Send Money'],Nagad:['018XX-XXXXXX','Send Money'],Rocket:['019XX-XXXXXXX','Send Money'],Upay:['016XX-XXXXXX','Send Money'],Bank:['ABC Bank · A/C 0000 0000 0000','Bank Transfer'],USDT:['TRC20: TXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX','Transfer']};
+const mob=m=>!['Bank','USDT'].includes(m);
+function pinfo(m){const n=M[m][0];return `<div class="pinfo"><div class="row sp"><div style="min-width:0"><div class="sub">${m} ${mob(m)?'Agent Number':'Details'}</div><b style="word-break:break-all">${n}</b></div><button class="btn bgold sm" onclick="navigator.clipboard&&navigator.clipboard.writeText('${n}');toast('Copied')">Copy</button></div><ol><li>Open your ${mob(m)?m+' app':'payment app'} and choose ${M[m][1]}.</li><li>Send the amount to the details above.</li><li>Copy the Transaction ID (TrxID).</li><li>Enter the details below and submit.</li></ol></div>`}
+function selPay(m){pay=m;document.querySelectorAll('#pm .chip').forEach(c=>c.classList.toggle('s',c.textContent==m));$('#pi').innerHTML=pinfo(m);$('#sl').textContent=mob(m)?'Your '+m+' number':'Sender account or wallet'}
+function selWm(m){wm=m;document.querySelectorAll('#wm .chip').forEach(c=>c.classList.toggle('s',c.textContent==m));$('#wf').innerHTML=wfields(m)}
+function pick(e){[...e.parentNode.children].forEach(c=>c.classList.remove('s'));e.classList.add('s')}
+function wfields(m){return m=='Bank'?'<label>Bank name</label><input id="wb" placeholder="e.g. ABC Bank"><label>Account holder name</label><input id="wh"><label>Account number</label><input id="wn" inputmode="numeric">':`<label>${m} account number</label><input id="wn" type="tel" inputmode="numeric" placeholder="01XXXXXXXXX">`}
+function dep(){const v=parseFloat($('#a').value),sn=$('#sn').value.trim(),tid=$('#tid').value.trim();
+if(!v||v<500)return toast('Minimum deposit is ৳500');if(v>50000)return toast('Maximum deposit is ৳50,000');
+if(mob(pay)?!/^01\d{9}$/.test(sn):sn.length<4)return toast('Enter a valid sender '+(mob(pay)?pay+' number':'account'));
+if(tid.length<6)return toast('Enter a valid Transaction ID');
+const bn=$('#bo .s').dataset.v=='1';T.unshift([id(),now(),'Deposit',v,'Pending']);toast('Deposit request sent'+(bn?' with Welcome Bonus':'')+'. Waiting for approval.');go('tx')}
+function wd(){const v=parseFloat($('#a').value),n=$('#wn').value.trim(),pin=$('#pin').value;
+if(!v||v<500)return toast('Minimum withdrawal is ৳500');if(v>25000)return toast('Maximum per request is ৳25,000');if(v>S.dep)return toast('Amount exceeds your withdrawable balance');
+if(wm=='Bank'&&(!$('#wb').value.trim()||!$('#wh').value.trim()))return toast('Enter bank name and account holder');
+if(wm=='Bank'?n.length<6:!/^01\d{9}$/.test(n))return toast('Enter a valid account number');
+if(!/^\d{4,6}$/.test(pin))return toast('Enter your 4-6 digit withdrawal PIN');
+S.dep-=v;T.unshift([id(),now(),'Withdraw',-v,'Pending']);toast('Withdrawal request sent. Processing takes up to 24 hours.');go('tx')}
+function claim(i){const p=P[i];if(p.c)return;p.c=1;S.bon+=p.v;if(p.v)T.unshift([id(),now(),'Bonus',p.v,'Success']);toast(p.t+' claimed'+(p.v?' · +'+f(p.v):''));go(cur)}
+$('#lgh').innerHTML=cr(LOGO);
+let dp;const st=()=>{try{return localStorage.getItem('insX')}catch(e){return 0}};
+const stand=matchMedia('(display-mode: standalone)').matches||navigator.standalone;
+function showIns(ios){if(stand||st())return;$('#ib').textContent=ios?'How?':'Install';$('#ins').classList.add('o');setTimeout(()=>hideIns(),12000)}
+function hideIns(x){$('#ins').classList.remove('o');if(x)try{localStorage.setItem('insX',1)}catch(e){}}
+addEventListener('beforeinstallprompt',e=>{e.preventDefault();dp=e;setTimeout(()=>showIns(0),1500)});
+addEventListener('appinstalled',()=>hideIns(1));
+if(/iphone|ipad|ipod/i.test(navigator.userAgent))setTimeout(()=>showIns(1),2500);
+$('#ib').onclick=async()=>{if(dp){dp.prompt();await dp.userChoice;dp=0;hideIns(1)}else{toast('Tap Share, then Add to Home Screen');hideIns()}};
+if('serviceWorker' in navigator)addEventListener('load',()=>navigator.serviceWorker.register('sw.js').catch(()=>{}));
+{const IA=Element.prototype.insertAdjacentHTML;Element.prototype.insertAdjacentHTML=function(p,h){return IA.call(this,p,cr(h))};const D=Object.getOwnPropertyDescriptor(Element.prototype,'innerHTML');Object.defineProperty(Element.prototype,'innerHTML',{get:D.get,set(v){D.set.call(this,typeof v=='string'?cr(v):v)}});document.querySelectorAll('header,#ins,#net,#lcd').forEach(e=>{e.innerHTML=e.innerHTML})}
+(function(){
+function OI(){return CFG.chat.officers&&CFG.chat.officers.length?CFG.chat.officers:OFFICER_IMAGES}
+
+
+
+/* WhatsApp এবং Telegram যোগাযোগের সেটিংস */
+const SUPPORT_CONFIG={get whatsappUrl(){return CFG.chat.whatsapp},get telegramUrl(){return CFG.chat.telegram}};
+
+/* Customer Service Officer-এর প্রতিনিধিত্বকারী ছবিগুলোর তালিকা (Rotation-এর জন্য) */
+const OFFICER_IMAGES = [
+  "https://i.postimg.cc/wMzTy1DT/portrait-of-a-woman-working-in-customer-service-at-a-call-center-white-backgroud-generative-ai-free.jpg",
+  "https://i.postimg.cc/qRPfpDfq/Screenshot-2026-10-26-011822-cropped.jpg"
+  /* দ্বিতীয় পেজ (https://postimg.cc/30dHh5V9) থেকে যাচাইকৃত ডিরেক্ট ইমেজ URL পাওয়া গেলে এখানে যুক্ত করা যাবে */
+];
+
+const $ = id => document.getElementById(id);
+
+/* নতুন চ্যাট সেশনে অফিসারের ছবি পরিবর্তন (রোটেশন) করার ফাংশন */
+function getNextOfficerImage() {
+  let index = 0;
+  try {
+    const saved = localStorage.getItem("mw_officer_image_idx");
+    if (saved !== null) {
+      const parsed = parseInt(saved, 10);
+      if (!isNaN(parsed) && parsed >= 0) {
+        index = (parsed + 1) % OI().length;
+      }
+    }
+    localStorage.setItem("mw_officer_image_idx", index.toString());
+  } catch (e) {
+    index = (window._npOfficerFallbackIndex || 0) % OI().length;
+    window._npOfficerFallbackIndex = index + 1;
+  }
+  return OI()[index] || OI()[0];
+}
+
+const state = {
+  name: "",
+  phone: "",
+  issue: "",
+  history: [],
+  busy: false,
+  runId: 0,
+  officerImage: getNextOfficerImage()
+};
+
+const panelIds = [
+  "namePanel", "phonePanel", "issuePanel",
+  "answerPanel", "resolutionPanel",
+  "contactPanel", "successPanel"
+];
+
+const SUPPORT_KB = {
+  deposit: {
+    title:"Deposit / টাকা জমা",
+    answer:"আপনি টাকা জমা দিয়েছেন কিন্তু ব্যালেন্স না এলে প্রথমে পেমেন্ট অ্যাপ থেকে Transaction Status পরীক্ষা করুন। পেমেন্ট Successful হলে কিছুক্ষণ অপেক্ষা করে Wallet রিফ্রেশ করুন। টাকা কেটে গেলে Transaction ID সংরক্ষণ করুন। একই পেমেন্ট আবার করবেন না।",
+    question:"আপনার Deposit-এর বর্তমান অবস্থা কী?",
+    options:[
+      ["success","পেমেন্ট সফল, ব্যালেন্স আসেনি"],
+      ["pending","পেমেন্ট Pending"],
+      ["failed","পেমেন্ট Failed"],
+      ["other","অন্য সমস্যা"]
+    ],
+    replies:{
+      success:"Transaction ID ও জমার পরিমাণ প্রস্তুত রাখুন। ব্যালেন্স আপডেট না হলে লেনদেনের রেকর্ড যাচাই করা প্রয়োজন।",
+      pending:"পেমেন্ট অ্যাপে Pending থাকলে স্ট্যাটাস নিশ্চিত করুন। সফল না হওয়া পর্যন্ত পুনরায় পেমেন্ট করবেন না।",
+      failed:"পেমেন্ট Failed হলে টাকা কাটা হয়েছে কি না পরীক্ষা করুন। টাকা কাটা গেলে Transaction ID-সহ পেমেন্ট সার্ভিসে অভিযোগ জানান।",
+      other:"আপনার পেমেন্টের বিবরণ লিখুন। প্রয়োজনে লেনদেনের তথ্য যাচাই করতে হবে।"
+    }
+  },
+  withdraw: {
+    title:"Withdraw / টাকা উত্তোলন",
+    answer:"Withdraw-এর অবস্থা জানতে Withdraw History পরীক্ষা করুন। Pending থাকলে যাচাই শেষ হওয়া পর্যন্ত অপেক্ষা করুন। Rejected হলে প্রদর্শিত কারণ দেখুন। আপনার PIN বা OTP কাউকে দেবেন না।",
+    question:"আপনার Withdraw-এর অবস্থা কী?",
+    options:[
+      ["pending","Pending"],
+      ["approved","Approved, কিন্তু টাকা পাইনি"],
+      ["rejected","Rejected"],
+      ["other","অন্য সমস্যা"]
+    ],
+    replies:{
+      pending:"Withdraw Request ID ও অনুরোধের সময় নোট করুন। প্রকৃত অবস্থা অ্যাডমিন প্যানেল থেকে যাচাই করতে হবে।",
+      approved:"পেমেন্ট মাধ্যমের Transaction Status পরীক্ষা করুন। টাকা না এলে Withdraw Request ID দিয়ে জানান।",
+      rejected:"Rejected-এর কারণ ও Wallet Balance পরীক্ষা করুন। কারণ পরিষ্কার না হলে অনুরোধের ID দিয়ে অ্যাডমিনের সাহায্য নিন।",
+      other:"সমস্যার বিবরণ লিখুন। লেনদেনের তথ্য যাচাই করা প্রয়োজন হতে পারে।"
+    }
+  },
+  wallet: {
+    title:"Wallet Balance",
+    answer:"Wallet Balance ভুল দেখালে পেজ রিফ্রেশ করে আবার লগইন করুন এবং Transaction History পরীক্ষা করুন। Deposit, Withdraw, Bet ও Bonus-এর হিসাব মিলিয়ে দেখুন।",
+    question:"Wallet-এ কী সমস্যা হচ্ছে?",
+    options:[
+      ["low","ব্যালেন্স কম দেখাচ্ছে"],
+      ["missing","টাকা হারিয়ে গেছে বলে মনে হচ্ছে"],
+      ["update","ব্যালেন্স আপডেট হচ্ছে না"],
+      ["other","অন্য সমস্যা"]
+    ],
+    replies:{
+      low:"সাম্প্রতিক লেনদেন এবং Bet History পরীক্ষা করুন। ভুল থাকলে লেনদেনের তারিখ ও পরিমাণ জানান।",
+      missing:"Transaction History-তে সংশ্লিষ্ট লেনদেন খুঁজুন। প্রকৃত ব্যালেন্স নিশ্চিত করতে সার্ভারের রেকর্ড পরীক্ষা করতে হবে।",
+      update:"ইন্টারনেট সংযোগ পরীক্ষা করে পেজ রিফ্রেশ করুন। সমস্যা থাকলে Wallet Record যাচাইয়ের অনুরোধ করুন।",
+      other:"Wallet সমস্যার বিবরণ লিখুন।"
+    }
+  },
+  payment: {
+    title:"Payment Pending",
+    answer:"পেমেন্ট Pending থাকলে প্রথমে সংশ্লিষ্ট পেমেন্ট অ্যাপে লেনদেনের অবস্থা দেখুন। পেমেন্ট সফল হয়েছে কি না নিশ্চিত না হয়ে একই পেমেন্ট বারবার করবেন না।",
+    question:"পেমেন্টের অবস্থা কী দেখাচ্ছে?",
+    options:[
+      ["pending","Pending দেখাচ্ছে"],
+      ["success","Successful দেখাচ্ছে"],
+      ["unknown","অবস্থা বুঝতে পারছি না"]
+    ],
+    replies:{
+      pending:"পেমেন্ট সার্ভিসের আপডেটের জন্য অপেক্ষা করুন। টাকা কেটে গেলে Transaction ID সংরক্ষণ করুন।",
+      success:"Transaction ID ও পেমেন্টের পরিমাণ দিয়ে Wallet Record যাচাই করতে হবে।",
+      unknown:"পেমেন্ট অ্যাপের Transaction Details খুলে Status পরীক্ষা করুন।"
+    }
+  },
+  login: {
+    title:"Login / Signup",
+    answer:"Login বা Signup সমস্যা হলে ইন্টারনেট সংযোগ, ফোন নম্বর এবং প্রয়োজনীয় তথ্য পরীক্ষা করুন। Forgot Password সুবিধা থাকলে ব্যবহার করুন। কখনো OTP, PIN বা পাসওয়ার্ড চ্যাটে দেবেন না।",
+    question:"কোন সমস্যাটি হচ্ছে?",
+    options:[
+      ["login","Login হচ্ছে না"],
+      ["signup","Signup হচ্ছে না"],
+      ["forgot","পাসওয়ার্ড ভুলে গেছি"],
+      ["verify","Verification সমস্যা"],
+      ["other","অন্য সমস্যা"]
+    ],
+    replies:{
+      login:"Error Message পরীক্ষা করুন এবং সঠিক লগইন তথ্য ব্যবহার করুন। প্রয়োজন হলে অ্যাকাউন্ট পুনরুদ্ধারের ব্যবস্থা ব্যবহার করুন।",
+      signup:"ফোন নম্বর, প্রয়োজনীয় তথ্য ও ইন্টারনেট সংযোগ পরীক্ষা করুন। একই অ্যাকাউন্ট আগে তৈরি করা হয়েছে কি না দেখুন।",
+      forgot:"অ্যাপে উপলভ্য Forgot Password প্রক্রিয়া অনুসরণ করুন। OTP বা Reset Link অন্য কারও সঙ্গে শেয়ার করবেন না।",
+      verify:"ফোন নম্বর ও Verification প্রক্রিয়া পরীক্ষা করুন। OTP দেবেন না; সমস্যা থাকলে Error Message লিখুন।",
+      other:"Login বা Signup-এর সময় যে Error Message দেখাচ্ছে সেটি লিখুন।"
+    }
+  },
+  account: {
+    title:"Account Problem",
+    answer:"অ্যাকাউন্টের সমস্যা হলে প্রোফাইলের তথ্য, লগইন অবস্থা এবং অ্যাপে দেখানো Notice পরীক্ষা করুন। গোপন তথ্য শেয়ার করবেন না।",
+    question:"অ্যাকাউন্টে কী সমস্যা হচ্ছে?",
+    options:[
+      ["profile","Profile সমস্যা"],
+      ["locked","অ্যাকাউন্টে প্রবেশ করতে পারছি না"],
+      ["change","তথ্য পরিবর্তন করতে চাই"],
+      ["other","অন্যান্য"]
+    ],
+    replies:{
+      profile:"প্রোফাইলের তথ্য পরীক্ষা করুন এবং কোন তথ্য ভুল তা জানান।",
+      locked:"অ্যাপে দেখানো Error বা Notice পড়ুন। অ্যাডমিনের যাচাই প্রয়োজন হতে পারে।",
+      change:"কোন তথ্য পরিবর্তন করতে চান তা লিখুন। সংবেদনশীল তথ্য এখানে দেবেন না।",
+      other:"অ্যাকাউন্টের সমস্যাটি সংক্ষেপে লিখুন।"
+    }
+  },
+  bonus: {
+    title:"Bonus / বোনাস",
+    answer:"বোনাস না পেলে Promo পেজে অফারের শর্ত, মেয়াদ এবং টার্নওভার পরীক্ষা করুন। Daily Bonus প্রতিদিন একবার Claim করা যায়। টার্নওভার সম্পূর্ণ হওয়ার পর বোনাস Withdraw করা যায়।",
+    question:"বোনাসে কী সমস্যা হচ্ছে?",
+    options:[["notreceived","বোনাস পাইনি"],["claim","Claim করতে পারছি না"],["turnover","টার্নওভার সম্পর্কে জানতে চাই"],["other","অন্য সমস্যা"]],
+    replies:{notreceived:"কোন বোনাস, কবে Claim বা Deposit করেছেন এবং Transaction ID জানান। যাচাই করা প্রয়োজন।",claim:"অফারের শর্ত ও মেয়াদ পরীক্ষা করুন। যে Error Message দেখাচ্ছে তা নোট করুন।",turnover:"Promo পেজে প্রতিটি অফারের টার্নওভার শর্ত দেখা যায়। শর্ত পূরণ হলে বোনাস Withdraw-যোগ্য হবে।",other:"বোনাসের নাম ও সমস্যার বিবরণ লিখুন।"}
+  },
+  game: {
+    title:"Game সমস্যা",
+    answer:"গেম না খুললে বা মাঝপথে থেমে গেলে ইন্টারনেট সংযোগ পরীক্ষা করুন এবং পেজ রিফ্রেশ করুন। চলমান রাউন্ডের ফলাফল নিশ্চিত না হয়ে আবার বেট করবেন না।",
+    question:"গেমে কী সমস্যা হচ্ছে?",
+    options:[["open","গেম খুলছে না"],["stuck","গেম মাঝপথে আটকে গেছে"],["bet","বেটের হিসাব ভুল মনে হচ্ছে"],["other","অন্য সমস্যা"]],
+    replies:{open:"ইন্টারনেট সংযোগ পরীক্ষা করে পেজ রিফ্রেশ করুন। গেমের নাম ও Error Message জানান।",stuck:"গেমের নাম, রাউন্ডের সময় এবং বেটের পরিমাণ নোট করুন। Bet History যাচাই করতে হবে।",bet:"Bet History পরীক্ষা করুন। ভুল থাকলে গেমের নাম, সময় ও বেটের পরিমাণ জানান।",other:"গেমের নাম-সহ সমস্যার বিবরণ লিখুন।"}
+  },
+  other: {
+    title:"অন্যান্য সমস্যা",
+    answer:"আপনার সমস্যার সঠিক ধরন জানতে আরও কিছু তথ্য প্রয়োজন। সমস্যাটি পরিষ্কারভাবে বর্ণনা করুন, তবে পাসওয়ার্ড, PIN বা OTP দেবেন না।",
+    question:"কোন ধরনের সাহায্য প্রয়োজন?",
+    options:[
+      ["app","অ্যাপ কাজ করছে না"],
+      ["technical","Technical সমস্যা"],
+      ["information","তথ্য জানতে চাই"],
+      ["other","অন্য সমস্যা"]
+    ],
+    replies:{
+      app:"ইন্টারনেট সংযোগ পরীক্ষা করুন, তারপর পেজ রিফ্রেশ করুন।",
+      technical:"কোন পেজে এবং কীভাবে সমস্যা হচ্ছে তা বর্ণনা করুন।",
+      information:"আপনার প্রশ্নটি বিস্তারিত লিখুন।",
+      other:"আপনার সমস্যাটি লিখুন, যাতে উপযুক্ত সহায়তা দেওয়া যায়।"
+    }
+  }
+};
+
+function hideAllPanels(){
+  panelIds.forEach(id=>$(id).classList.add("hidden"));
+}
+
+function scrollChatToBottom(smooth=true){
+  const chat=$("chatArea");
+  requestAnimationFrame(()=>{
+    chat.scrollTo({
+      top:chat.scrollHeight,
+      behavior:smooth?"smooth":"auto"
+    });
+  });
+}
+
+function showPanel(id){
+  $(id).classList.remove("hidden");
+  scrollChatToBottom();
+}
+
+function showError(id,message){
+  const element=$(id);
+  element.textContent=message;
+  element.style.display="block";
+}
+
+function clearError(id){
+  const element=$(id);
+  element.textContent="";
+  element.style.display="none";
+}
+
+function timeText(){
+  try{
+    return new Date().toLocaleTimeString("bn-BD",{
+      hour:"2-digit",minute:"2-digit"
+    });
+  }catch(error){
+    return new Date().toLocaleTimeString();
+  }
+}
+
+function recordMessage(sender,text){
+  state.history.push({sender,text,time:new Date().toISOString()});
+}
+
+function useImageFallback(img){
+  const fallback=document.createElement("span");
+  fallback.className=img.className;
+  fallback.setAttribute("role","img");
+  fallback.setAttribute("aria-label","CS Officer");
+  fallback.textContent="CS";
+  fallback.style.display="grid";
+  fallback.style.placeItems="center";
+  fallback.style.background="#fff0f6";
+  fallback.style.color="#c2185b";
+  fallback.style.fontSize="11px";
+  fallback.style.fontWeight="800";
+  fallback.style.borderRadius="50%";
+  fallback.style.flexShrink="0";
+  fallback.style.border="1px solid #f1c5d6";
+  img.replaceWith(fallback);
+}
+
+function createAvatar(){
+  const avatar=document.createElement("img");
+  avatar.src=state.officerImage;
+  avatar.alt="CS Officer";
+  avatar.className="message-avatar";
+  avatar.width=28;
+  avatar.height=28;
+  avatar.loading="lazy";
+  avatar.decoding="async";
+  avatar.addEventListener("error",function(){
+    useImageFallback(this);
+  },{once:true});
+  return avatar;
+}
+
+function appendBubble(row,text,sender){
+  const bubble=document.createElement("div");
+  bubble.className="bubble";
+
+  const content=document.createElement("div");
+  content.textContent=text;
+  bubble.appendChild(content);
+
+  const time=document.createElement("span");
+  time.className="time";
+  time.textContent=timeText();
+  bubble.appendChild(time);
+
+  row.appendChild(bubble);
+  $("messages").appendChild(row);
+  recordMessage(sender,text);
+  scrollChatToBottom();
+  return row;
+}
+
+function addMessage(text,sender="bot"){
+  const row=document.createElement("div");
+  row.className="message "+(sender==="user"?"user":"bot");
+  if(sender!=="user")row.appendChild(createAvatar());
+  return appendBubble(row,text,sender);
+}
+
+function wait(ms){
+  return new Promise(resolve=>window.setTimeout(resolve,ms));
+}
+
+async function officerReply(text,runId=state.runId){
+  if(runId!==state.runId)return;
+
+  const row=document.createElement("div");
+  row.className="message bot";
+  row.appendChild(createAvatar());
+
+  const bubble=document.createElement("div");
+  bubble.className="bubble typing-bubble";
+  bubble.setAttribute("role","status");
+  bubble.setAttribute("aria-label","CS Officer উত্তর লিখছেন");
+
+  const dots=document.createElement("span");
+  dots.className="typing-dots";
+  dots.setAttribute("aria-hidden","true");
+
+  for(let i=0;i<3;i++)dots.appendChild(document.createElement("i"));
+
+  bubble.appendChild(dots);
+  row.appendChild(bubble);
+  $("messages").appendChild(row);
+  scrollChatToBottom();
+
+  const delay=Math.max(650,Math.min(1600,500+text.length*8));
+  await wait(delay);
+
+  if(runId!==state.runId){
+    row.remove();
+    return;
+  }
+
+  const content=document.createElement("div");
+  content.textContent=text;
+
+  const time=document.createElement("span");
+  time.className="time";
+  time.textContent=timeText();
+
+  bubble.classList.remove("typing-bubble");
+  bubble.removeAttribute("aria-label");
+  bubble.replaceChildren(content,time);
+
+  recordMessage("bot",text);
+  scrollChatToBottom();
+}
+
+async function runStep(callback){
+  if(state.busy)return;
+  state.busy=true;
+  const runId=state.runId;
+
+  const buttons=document.querySelectorAll(
+    "#nameForm button,#phoneForm button,#issueForm button,"+
+    "#continueBtn,#resolvedAgainBtn,#notResolvedAgainBtn"
+  );
+  buttons.forEach(button=>button.disabled=true);
+
+  try{
+    await callback(runId);
+  }catch(error){
+    console.error("Support flow error:",error);
+    addMessage("দুঃখিত, এই ধাপে একটি সমস্যা হয়েছে। আবার চেষ্টা করুন।");
+  }finally{
+    if(runId===state.runId){
+      state.busy=false;
+      buttons.forEach(button=>button.disabled=false);
+    }
+  }
+}
+
+/* নাম জমা ও সেশন নিশ্চিতকরণ */
+$("nameForm").addEventListener("submit",event=>{
+  event.preventDefault();
+  if(state.busy)return;
+  clearError("nameError");
+
+  const name=$("userName").value.trim();
+  if(name.length<2){
+    showError("nameError","আপনার সঠিক নাম লিখুন।");
+    $("userName").focus();
+    return;
+  }
+
+  runStep(async runId=>{
+    state.name=name;
+    addMessage("আমার নাম "+name,"user");
+    $("namePanel").classList.add("hidden");
+
+    await officerReply(
+      "ধন্যবাদ, "+name+
+      "! MOSTWIN88 Support-এ আপনাকে স্বাগতম। এখন আপনার যোগাযোগের ফোন নম্বরটি লিখুন।",
+      runId
+    );
+
+    if(runId===state.runId)showPanel("phonePanel");
+  });
+});
+
+/* ফোন নম্বর জমা */
+$("phoneForm").addEventListener("submit",event=>{
+  event.preventDefault();
+  if(state.busy)return;
+  clearError("phoneError");
+
+  const phone=$("userPhone").value.trim();
+  const digits=phone.replace(/\D/g,"");
+
+  if(digits.length<7||digits.length>15){
+    showError("phoneError","সঠিক ফোন নম্বর লিখুন।");
+    $("userPhone").focus();
+    return;
+  }
+
+  runStep(async runId=>{
+    state.phone=phone;
+    addMessage("আমার ফোন নম্বর: "+phone,"user");
+    $("phonePanel").classList.add("hidden");
+
+    await officerReply(
+      "ধন্যবাদ! এখন নিচের তালিকা থেকে আপনার সমস্যার ধরন নির্বাচন করুন। আমরা সেই অনুযায়ী সম্ভাব্য সমাধান দেখাব।",
+      runId
+    );
+
+    if(runId!==state.runId)return;
+    $("issueSelect").value="";
+    showPanel("issuePanel");
+  });
+});
+
+/* সমস্যার ক্যাটাগরি */
+$("issueForm").addEventListener("submit",event=>{
+  event.preventDefault();
+  if(state.busy)return;
+  clearError("issueError");
+
+  const key=$("issueSelect").value;
+  if(!key||!SUPPORT_KB[key]){
+    showError("issueError","Dropdown থেকে একটি সমস্যা নির্বাচন করুন।");
+    $("issueSelect").focus();
+    return;
+  }
+
+  runStep(async runId=>{
+    state.issue=key;
+    const kb=SUPPORT_KB[key];
+    const selectedText=$("issueSelect").selectedOptions[0].textContent;
+
+    addMessage("আমার সমস্যা: "+selectedText,"user");
+    $("issuePanel").classList.add("hidden");
+
+    await officerReply(
+      "ঠিক আছে। আপনার নির্বাচিত সমস্যাটি বুঝেছি। প্রথমে নিচের সম্ভাব্য সমাধানটি দেখুন, তারপর একটি প্রশ্নের উত্তর দিন।",
+      runId
+    );
+
+    if(runId!==state.runId)return;
+
+    $("answerTitle").textContent=kb.title;
+    $("answerIntro").textContent="আপনার নির্বাচিত সমস্যার জন্য প্রাথমিক নির্দেশনা:";
+    $("answerText").textContent=kb.answer;
+    $("followupTitle").textContent=kb.question;
+
+    const select=$("followupSelect");
+    select.replaceChildren();
+
+    const first=document.createElement("option");
+    first.value="";
+    first.textContent="-- উত্তর নির্বাচন করুন --";
+    select.appendChild(first);
+
+    kb.options.forEach(([value,label])=>{
+      const option=document.createElement("option");
+      option.value=value;
+      option.textContent=label;
+      select.appendChild(option);
+    });
+
+    $("extraDetails").value="";
+    $("extraQuestionBox").classList.add("hidden");
+    select.value="";
+    clearError("answerError");
+    showPanel("answerPanel");
+  });
+});
+
+/* অতিরিক্ত বিবরণ */
+$("followupSelect").addEventListener("change",function(){
+  const needsDetails=this.value==="other"||this.value==="more";
+  $("extraQuestionBox").classList.toggle("hidden",!needsDetails);
+  if(needsDetails)scrollChatToBottom();
+});
+
+/* উত্তর জমা */
+$("continueBtn").addEventListener("click",()=>{
+  if(state.busy)return;
+  clearError("answerError");
+
+  const kb=SUPPORT_KB[state.issue];
+  const selected=$("followupSelect").value;
+
+  if(!kb||!selected){
+    showError("answerError","দয়া করে একটি উত্তর নির্বাচন করুন।");
+    $("followupSelect").focus();
+    return;
+  }
+
+  const option=kb.options.find(item=>item[0]===selected);
+  const extra=$("extraDetails").value.trim();
+  const needsDetails=selected==="other"||selected==="more";
+
+  if(needsDetails&&!extra){
+    showError("answerError","দয়া করে সমস্যার অতিরিক্ত বিবরণ লিখুন।");
+    $("extraDetails").focus();
+    return;
+  }
+
+  runStep(async runId=>{
+    addMessage("আমার উত্তর: "+(option?option[1]:selected),"user");
+    if(extra)addMessage("অতিরিক্ত বিবরণ: "+extra,"user");
+
+    $("answerPanel").classList.add("hidden");
+
+    const reply=kb.replies[selected]||
+      "আপনার সমস্যার আরও তথ্য প্রয়োজন। বিস্তারিত লিখে সাপোর্টের সাহায্য নিন।";
+
+    await officerReply(reply,runId);
+    if(runId===state.runId)showPanel("resolutionPanel");
+  });
+});
+
+/* সমস্যার সমাধান হয়েছে */
+$("resolvedAgainBtn").addEventListener("click",()=>{
+  if(state.busy)return;
+
+  runStep(async runId=>{
+    addMessage("হ্যাঁ, আমার সমস্যার সমাধান হয়েছে।","user");
+    $("resolutionPanel").classList.add("hidden");
+
+    await officerReply(
+      "চমৎকার! আপনার সমস্যার সমাধান হয়েছে জেনে ভালো লাগল। MOSTWIN88 Support ব্যবহার করার জন্য ধন্যবাদ।",
+      runId
+    );
+
+    if(runId===state.runId)showPanel("successPanel");
+  });
+});
+
+/* সমস্যার সমাধান না হলে Live Chat */
+$("notResolvedAgainBtn").addEventListener("click",()=>{
+  if(state.busy)return;
+
+  runStep(async runId=>{
+    addMessage("না, আমার সমস্যার সমাধান হয়নি।","user");
+    $("resolutionPanel").classList.add("hidden");
+
+    await officerReply(
+      "দুঃখিত, সমস্যাটি এখনো সমাধান হয়নি। নিচের Live Chat বাটন থেকে WhatsApp অথবা Telegram-এ সরাসরি যোগাযোগ করুন।",
+      runId
+    );
+
+    if(runId!==state.runId)return;
+
+    $("whatsappLink").href=SUPPORT_CONFIG.whatsappUrl;
+    $("telegramLink").href=SUPPORT_CONFIG.telegramUrl;
+    showPanel("contactPanel");
+  });
+});
+
+/* নতুন চ্যাট শুরু ও নতুন ছবি রোটেশন */
+$("restartBtn").addEventListener("click",()=>{
+  if(state.busy)return;
+
+  state.runId++;
+  state.busy=false;
+  state.name="";
+  state.phone="";
+  state.issue="";
+  state.history=[];
+
+  // পরবর্তী নতুন Chat session-এ নতুন অফিসারের ছবি সক্রিয়
+  state.officerImage = getNextOfficerImage();
+  const topAvatar = $("officerAvatar");
+  if(topAvatar) {
+    topAvatar.src = state.officerImage;
+  }
+
+  $("messages").replaceChildren();
+  $("nameForm").reset();
+  $("phoneForm").reset();
+  $("issueForm").reset();
+  $("answerText").textContent="";
+  $("answerIntro").textContent="";
+  $("extraDetails").value="";
+  $("followupSelect").replaceChildren();
+
+  ["nameError","phoneError","issueError","answerError"].forEach(clearError);
+
+  hideAllPanels();
+  showPanel("namePanel");
+  $("chatArea").scrollTo({top:0,behavior:"auto"});
+});
+
+/* প্রথমবার লোডে অফিসার ছবি সেট করা */
+const topAvatarEl = $("officerAvatar");
+if(topAvatarEl) {
+  topAvatarEl.src = state.officerImage;
+  topAvatarEl.addEventListener("error",function(){
+    useImageFallback(this);
+  },{once:true});
+}
+
+/* প্রথমবার স্ক্রল একদম উপরে থাকবে */
+$("chatArea").scrollTop=0;
+
+})();
+go('home');
+fetch('config.json',{cache:'no-store'}).then(x=>x.ok?x.json():null).then(j=>{if(j){Object.assign(CFG,j);if(cur=='home')go('home')}}).catch(()=>{});
+
+/* ===== Pro layer: game search/filter, availability, back-button routing, polish ===== */
+(()=>{
+const CATS=[['sports','🏏','Sports'],['casino','♠️','Casino'],['slots','7️⃣','Slots'],['table','🎲','Table'],['crash','🚀','Crash'],['fishing','🐟','Fishing'],['arcade','🕹️','Arcade'],['lottery','🎟️','Lottery']];
+const SUB={sports:['I-Sports','SBO Sports','Pinnacle']},PROV=['Spribe','FC','JDB','Sexy','PP'];
+const MAP={'Aviator':'crash','Rocket Crash':'crash','Hi-Lo':'crash','Crazy Time':'casino','Roulette':'casino','Blackjack':'casino','Baccarat':'casino','Dragon Tiger':'casino','Sic Bo':'casino','Teen Patti':'table,casino','Andar Bahar':'table,casino','Ludo':'table','Carrom King':'table','Mines':'arcade','Plinko':'arcade','Super Slots':'slots','Fruit Party':'slots','Lucky 777':'slots,lottery','Gold Rush':'slots','Keno':'lottery,arcade'};
+CFG.footer=CFG.footer||{
+sponsors:[['Demo Sponsor 1','Title Sponsor'],['Demo Sponsor 2','Principle Sponsor'],['Demo Sponsor 3','Back of Jersey Sponsor']].map(x=>({n:x[0],r:x[1],y:'2025',demo:1,ic:'🏏'})),
+ambassadors:[1,2,3].map(k=>({n:'Demo Ambassador '+k,y:'2025',demo:1,ic:'⭐'})),
+partners:[{n:'Demo Partner',demo:1,ic:'🤝'}],
+licenses:[{n:'Demo License',d:'License details here',demo:1,ic:'🛡️'}]};
+let gC='casino',gQ='';
+const inCat=g=>String(g.c||MAP[g.n]||'').split(',').includes(gC);
+const tile=n=>`<button class="pt" onclick="lk('${n}')"><em>${n[0]}</em><b>${n}</b></button>`;
+const cards=()=>{const q=gQ.trim().toLowerCase();const L=CFG.games.filter(g=>(q?g.n.toLowerCase().includes(q):inCat(g)));
+return L.length?L.map(g=>`<div class="gm"><span class="soon${g.u?' live':''}">${g.u?'LIVE':'SOON'}</span><span>${g.i}</span><b>${g.n}</b><button class="btn bgold sm" onclick="play('${g.n}')">${g.u?'Play Now':'Coming Soon'}</button></div>`).join(''):'<div class="card" style="grid-column:1/-1;text-align:center;color:var(--m)">Games coming soon</div>'};
+V.games=()=>`<div class="gs"><input id="gq" type="search" placeholder="Search games…" aria-label="Search games" value="${gQ}" oninput="gSet()"></div><div class="ct">${CATS.map(c=>`<button class="${gC==c[0]?'on':''}" onclick="gSet('${c[0]}')"><i>${c[1]}</i>${c[2]}</button>`).join('')}</div>${SUB[gC]?`<div class="sb">${SUB[gC].map(tile).join('')}</div>`:''}<h3 class="sh">Providers</h3><div class="sb">${PROV.map(tile).join('')}</div><h3 class="sh">Exclusive Games</h3><div class="grid" id="gg" style="grid-template-columns:repeat(2,1fr)">${cards()}</div>`;
+window.gSet=c=>{if(c){gC=c;gQ='';$('#m').innerHTML=cr('<div class="screen">'+V.games()+'</div>');foot()}else{gQ=$('#gq').value;const g=$('#gg');if(g)g.innerHTML=cards()}};
+const PL={Spribe:'SPRIBE',FC:'FC',JDB:'JDB',Sexy:'Sexy',PP:'PLAY'};
+window.hcat=c=>{gSet(c);go('games')};
+window.homeGames=()=>`<div class="hg"><div class="ct hc">${CATS.map(c=>`<button onclick="hcat('${c[0]}')"><i>${c[1]}</i>${c[2]}</button>`).join('')}</div><div class="sb">${SUB.sports.map(tile).join('')}</div><h3 class="sh">Providers</h3><div class="sb">${PROV.map(n=>`<button class="pt pv" onclick="lk('${n}')"><em>${PL[n]}</em><b>${n}</b></button>`).join('')}</div></div>`;
+window.play=n=>{const g=CFG.games.find(x=>x.n==n);if(g&&g.u)window.open(g.u,'_blank','noopener');else toast(n+' is coming soon')};
+const _go=go;let pop=0;
+const e2=x=>String(x==null?'':x).replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+const lg=x=>x&&x.l?`<img class="fl" src="${e2(x.l)}" alt="" loading="lazy">`:(x&&x.demo?`<span class="fl0">${x.ic||'LOGO'}</span>`:'');
+const FL=(t,L)=>`<div><h4>${t}</h4>${L.map(i=>`<button onclick="${i[1]}">${i[0]}</button>`).join('')}</div>`;
+const FS=(t,L,fn)=>L&&L.length?`<div class="fs"><h4 class="gr">${t}</h4><div class="fr">${L.map(fn).join('')}</div></div>`:'';
+window.fCat=c=>{st.sport=null;gC=c;gQ='';go('games')};
+window.fApp=()=>{try{if(typeof dp!=='undefined'&&dp){dp.prompt();return}}catch(e){}toast('Browser menu → Add to Home Screen')};
+const ftr=()=>{const F=CFG.footer||{};return `<footer class="ftr"><div class="fc">${FL('Gaming',CATS.map(c=>[c[2],`fCat('${c[0]}')`]))}${FL('Features',[['Promotions',"go('promo')"],['VIP Club',"go('vip')"],['Referral',"go('ref')"],['APP Download','fApp()']])}${FL('Account',[['My Profile',"go('profile')"],['My Wallet',"go('wallet')"],['Deposit',"go('dep')"],['Withdraw',"go('wd')"],['Security',"go('sec')"]])}${FL('Support',[['Transaction History',"go('tx')"],['Bet History',"go('bets')"],['Bonus History',"go('bonus')"],['Notifications',"go('notif')"],['Responsible Gaming',"go('resp')"]])}</div>`
++FS('Sponsorships',F.sponsors,x=>`<div class="fi">${lg(x)}<div><b>${e2(x.n)}${x.demo?' <em class="dm">DEMO</em>':''}</b><small>${e2(x.r)}</small><small>${e2(x.y)}</small></div></div>`)
++FS('Brand Ambassadors',F.ambassadors,x=>`<div class="fi">${lg(x)}<div><b>${e2(x.n)}${x.demo?' <em class="dm">DEMO</em>':''}</b><small>${e2(x.y)}</small></div></div>`)
++FS('Official Brand Partner',F.partners,x=>`<div class="fi">${lg(x)}<div><b>${e2(x.n||x)}${x.demo?' <em class="dm">DEMO</em>':''}</b></div></div>`)
++FS('Gaming License',F.licenses,x=>`<div class="fi">${lg(x)}<div><b>${e2(x.n||x)}${x.demo?' <em class="dm">DEMO</em>':''}</b><small>${e2(x.d)}</small></div></div>`)
++`<div class="fs"><h4 class="gr">Responsible Gaming</h4><div class="fr"><span class="a18">✋</span><span class="a18">18+</span><small style="max-width:420px">Gambling can be addictive. Play responsibly, set limits, and never bet more than you can afford to lose.</small></div></div><div class="rg">© MOSTWIN88. All rights reserved. 2026</div></footer>`};
+const foot=()=>{const q=$('#fsup');if(q)q.style.display=cur=='support'?'none':'';const m=$('#m');if(!m||m.querySelector('.ftr,.rg'))return;m.insertAdjacentHTML('beforeend',cur=='support'?'':ftr())};
+window.go=function(s){_go(s);if(s!='more'&&s!='out'&&!pop&&location.hash.slice(1)!=s){try{history.pushState({s},'','#'+s)}catch(e){}}foot()};
+addEventListener('popstate',e=>{const s=(e.state&&e.state.s)||location.hash.slice(1)||'home';pop=1;try{_go(V[s]?s:'home');foot()}finally{pop=0}});
+const h0=location.hash.slice(1);if(h0&&h0!='home'&&V[h0])_go(h0);try{history.replaceState({s:cur},'','#'+cur)}catch(e){}foot();
+let pv=null;const _u=updBal;
+window.updBal=function(){_u();const b=$('#hbal b'),t=tot();if(b&&pv!==null&&pv!==t&&!matchMedia('(prefers-reduced-motion: reduce)').matches){const a=pv,t0=performance.now();(function st(n){const k=Math.min(1,(n-t0)/600);b.textContent=f(a+(t-a)*(1-Math.pow(1-k,3)));if(k<1)requestAnimationFrame(st)})(t0)}pv=t};
+const net=$('#net'),nu=()=>net.classList.toggle('o',!navigator.onLine);addEventListener('online',()=>{nu();toast('Back online')});addEventListener('offline',nu);nu();
+addEventListener('keydown',e=>{if(e.key=='Escape')drawer(0)});
+let tx=0;const sd=$('#sd');sd.addEventListener('touchstart',e=>{tx=e.touches[0].clientX},{passive:true});sd.addEventListener('touchend',e=>{if(e.changedTouches[0].clientX-tx<-60)drawer(0)},{passive:true});
+
+/* ===== Floating, draggable support button ===== */
+const fb=document.createElement('button');fb.id='fsup';fb.type='button';fb.setAttribute('aria-label','Customer Support');fb.innerHTML='<i>🎧</i><span>SUPPORT</span>';document.body.appendChild(fb);
+const FS_=58,FW=()=>innerWidth,FH=()=>innerHeight;let fp=null;try{fp=JSON.parse(localStorage.getItem('mw_sup_pos'))}catch(e){}
+const fPlace=(x,y)=>{x=Math.max(6,Math.min(FW()-FS_-6,x));y=Math.max(70,Math.min(FH()-FS_-90,y));fb.style.left=x+'px';fb.style.top=y+'px';return [x,y]};
+const fInit=()=>fPlace(...(fp&&isFinite(fp.fx)?[fp.fx*FW(),fp.fy*FH()]:[FW()-FS_-12,FH()-FS_-170]));
+fInit();fb.style.display=cur=='support'?'none':'';
+let fd=null;
+fb.addEventListener('pointerdown',e=>{fd={sx:e.clientX,sy:e.clientY,ox:fb.offsetLeft,oy:fb.offsetTop,m:0};try{fb.setPointerCapture(e.pointerId)}catch(x){}fb.classList.add('drag')});
+fb.addEventListener('pointermove',e=>{if(!fd)return;const dx=e.clientX-fd.sx,dy=e.clientY-fd.sy;if(Math.abs(dx)+Math.abs(dy)>6)fd.m=1;if(fd.m)fPlace(fd.ox+dx,fd.oy+dy)});
+const fEnd=()=>{if(!fd)return;const m=fd.m;fd=null;fb.classList.remove('drag');if(m){const [,y]=fPlace(fb.offsetLeft+FS_/2<FW()/2?8:FW()-FS_-8,fb.offsetTop);fp={fx:fb.offsetLeft/FW(),fy:y/FH()};try{localStorage.setItem('mw_sup_pos',JSON.stringify(fp))}catch(e){}}else openChat()};
+fb.addEventListener('pointerup',fEnd);fb.addEventListener('pointercancel',()=>{fd=null;fb.classList.remove('drag')});
+fb.addEventListener('click',e=>{if(e.detail===0)openChat()});
+addEventListener('resize',fInit);
+})();
+go(cur);
+
+(function(){function fit(){document.querySelectorAll('.logo').forEach(function(l){var m=l.querySelector('.lm'),t=l.querySelector('small');if(!m||!t)return;var b=parseFloat(getComputedStyle(m).fontSize)*.035,W=m.getBoundingClientRect().width-2*b;if(W<=0)return;if(!l.classList.contains('lg2'))t.style.marginLeft=b+'px';t.style.letterSpacing='0px';t.style.width='auto';t.style.display='inline-block';t.style.marginRight='0';var w0=t.getBoundingClientRect().width,n=t.textContent.length,ls=(W-w0)/(n-1);t.style.letterSpacing=ls+'px';t.style.marginRight=(-ls)+'px';t.style.display='block';t.style.width=W+'px';if(l.classList.contains('lg2')){t.style.position='relative';t.style.left='0px';var d=m.getBoundingClientRect().left+b-t.getBoundingClientRect().left;t.style.left=d+'px'}})}
+var q;function sched(){clearTimeout(q);q=setTimeout(fit,30)}
+addEventListener('load',sched);addEventListener('resize',sched);if(document.fonts&&document.fonts.ready)document.fonts.ready.then(sched);
+new MutationObserver(sched).observe(document.body,{childList:true,subtree:true});sched()})();
+</script>
+
+<script>
+/* ===== PV: প্রোভাইডার তালিকা + প্রোভাইডারের গেম পেজ ===== */
+(()=>{
+const FIREBASE_CONFIG={databaseURL:""}; /* যেমন: https://YOUR-APP-default-rtdb.firebaseio.com — ফাঁকা থাকলে ডেমো ডেটা */
+const BANNER_MS=10000;
+const LOGOS={evolution:"",pragmatic_live:"",ezugi:"",playtech_live:"",ag:"",sa:"",ae:"",wm:"",pragmatic:"",pg:"",netent:"",playngo:"",hacksaw:"",nolimit:"",relax:"",redtiger:"",jili:"",spade:"",cq9:"",habanero:"",jdb:"",spribe:"",smartsoft:"",bgaming:"",turbo:"",betradar:"",betconstruct:"",kambi:"",digitain:"",altenar:"",betgames:"",goldenrace:"",kiron:"",leap:"","1x2":"",sr_fantasy:"",roanuz:""};
+const CATS=["All","Slots","Live Casino","Sports","Table Games","Fishing","Crash & Arcade"];
+const CAT_LABEL={All:"All Games"};
+const SPORTS=[["🏏","ক্রিকেট"],["⚽","ফুটবল"],["🎾","টেনিস"],["🏀","বাস্কেটবল"],["🤼","কাবাডি"],["🎮","ই-স্পোর্টস"]];
+const P=(id,name,category,order,x)=>Object.assign({id,name,category,order,active:true,maintenance:false},x||{});
+const slug=t=>t.toLowerCase().replace(/[^a-z0-9]+/g,"_").replace(/^_|_$/g,"");
+/* প্রোভাইডার তালিকা – নাম বদলাতে/যোগ করতে শুধু এখানে এডিট করুন (অ্যাডমিন Firebase থেকেও দিতে পারবে) */
+const PROV={
+"Live Casino":["Evolution","Pragmatic Play Live","Ezugi","Playtech Live","SA Gaming","Sexy Gaming","Vivo Gaming","WM Casino","Asia Gaming","Dream Gaming","AllBet Gaming","OnAir Entertainment","TVBET","Lucky Streak","BetGames"],
+"Slots":["JILI","PG Soft","Pragmatic Play","Microgaming","NetEnt","Playtech","Habanero","CQ9 Gaming","JDB Gaming","KA Gaming","Joker Gaming","Spadegaming","Fa Chai Gaming","Red Tiger","Nolimit City","Play'n GO","Hacksaw Gaming","Relax Gaming","Push Gaming","Yggdrasil","Blueprint Gaming","Playson","Betsoft","Evoplay","Big Time Gaming","Quickspin","Wazdan","ELK Studios","IGT","Light & Wonder"],
+"Fishing":["JILI","JDB","Fa Chai","KA Gaming","CQ9","Spadegaming","Joker Gaming","Playtech","Dragoon Soft","BT Gaming"],
+"Crash & Arcade":["Spribe","SmartSoft Gaming","Galaxsys","Evoplay","BGaming","Onlyplay","3 Oaks Gaming","JILI","Turbo Games","InOut Games"],
+"Table Games":["Evolution","Pragmatic Play","Playtech","Ezugi","JILI","SA Gaming","Asia Gaming","Vivo Gaming","BetGames","EvenBet Gaming"],
+"Sports":["Betradar","BetConstruct","Kambi","Digitain","Altenar","Golden Race","Kiron","Leap Gaming","1X2 Network","Sportradar Fantasy","Roanuz Fantasy"]};
+let _n=0;
+const DEMO=CATS.slice(1).flatMap(c=>(PROV[c]||[]).map(nm=>P(slug(nm)+"_"+slug(c),nm,c,++_n)));
+const GB={evolution_live_casino:["Crazy Time","Lightning Roulette","Monopoly Live","Dream Catcher","Mega Ball","Lightning Baccarat","Football Studio","Cash or Crash","Speed Baccarat"],
+pragmatic_play_live_live_casino:["Sweet Bonanza CandyLand","Mega Wheel","Speed Roulette","VIP Blackjack","Boom City","Fortune Roulette"],
+spribe_crash_arcade:["Aviator","Mines","Plinko","Dice","Goal","Hi-Lo","Keno","Mini Roulette"],
+pragmatic_play_slots:["Gates of Olympus","Sweet Bonanza","Sugar Rush","Big Bass Bonanza","The Dog House","Starlight Princess","Wild West Gold"],
+pg_soft_slots:["Fortune Tiger","Mahjong Ways","Lucky Neko","Fortune Ox","Wild Bandito","Treasures of Aztec"],
+jili_slots:["Super Ace","Fortune Gems","Boxing King","Crazy777","Golden Empire","Money Coming"],
+smartsoft_gaming_crash_arcade:["JetX","Cricket X","Balloon","Jet X3","Crystal","Rocketon"]};
+const FB={"Live Casino":["Baccarat","Roulette","Blackjack","Dragon Tiger","Teen Patti","Andar Bahar"],Slots:["Lucky Fruits","Golden Book","Wild Heist","Mega Fortune","Dragon Gold","Treasure Hunt","Star Burst"],"Crash & Arcade":["Rocket","Aviator X","Cash Rush","Space Ride","Turbo Jet","Lucky Plane"],Fishing:["Fishing God","Ocean King","Dragon Fortune","Happy Fishing","Boom Legend","Fish Prawn Crab"],"Table Games":["Baccarat","Blackjack","Roulette","Texas Hold'em","Dragon Tiger","Teen Patti"],Sports:["ক্রিকেট","ফুটবল","টেনিস","বাস্কেটবল","কাবাডি","ই-স্পোর্টস"]};
+const st={cat:"All",showAll:false,providers:[],ready:false,live:false,scroll:0,cur:null,sport:null,keep:false,games:[],ref:null};
+function cols(id){const el=q$("#"+id);if(el){const n=getComputedStyle(el).gridTemplateColumns.split(" ").filter(x=>x&&x!="none").length;if(n>0)return n}const w=innerWidth;return w<640?4:Math.max(4,Math.floor((w-(w>=900?300:30))/128))}
+let db=null,bt=null;
+const E=x=>String(x==null?"":x).replace(/[&<>"]/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));
+const SD={
+ "ক্রিকেট":{icon:"🏏",m:[
+  ["BPL","ঢাকা ক্যাপিটালস","চট্টগ্রাম কিংস","live","১২৪/৩ (১৫.২ ওভার)",["1.85","1.95"]],
+  ["T20 বিশ্বকাপ","পাকিস্তান","অস্ট্রেলিয়া","live","১০২/২ (১২ ওভার)",["2.10","1.70"]],
+  ["IPL","মুম্বাই ইনডিয়ান্স","চেন্নাই সুপার কিংস","up","আজ ৭:০০ PM",["1.90","1.90"]],
+  ["এশিয়া কাপ","বাংলাদেশ","ভারত","up","আগামীকাল ৩:৩০ PM",["3.20","1.35"]],
+  ["টেস্ট","ইংল্যান্ড","দক্ষিণ আফ্রিকা","up","শুক্রবার ২:০০ PM",["1.75","2.15"]]
+ ]},
+ "ফুটবল":{icon:"⚽",m:[
+  ["ইপিএল","ম্যান সিটি","লিভারপুল","live","১-১ (৬৭')",["2.40","3.30","2.90"]],
+  ["সিরি এ","জুভেন্টাস","এসি মিলান","live","০-০ (৩৮')",["2.20","3.10","3.40"]],
+  ["লা লিগা","রিয়াল মাদ্রিদ","বার্সেলোনা","up","আজ ১০:০০ PM",["2.50","3.40","2.60"]],
+  ["চ্যাম্পিয়ন্স লিগ","বায়ার্ন","পিএসজি","up","আগামীকাল ৮:০০ PM",["2.30","3.50","2.80"]],
+  ["বুন্দেসলিগা","ডর্টমুন্ড","লেভারকুসেন","up","শনিবার ৪:৩০ PM",["2.05","3.60","3.30"]]
+ ]}
+};
+// ফুটবলের সব সিরিজ/লিগ
+SD["ফুটবল"].lg=["ইপিএল","লা লিগা","সিরি এ","বুন্দেসলিগা","লিগ ১","চ্যাম্পিয়ন্স লিগ","ইউরোপা লিগ","এফএ কাপ","কারাবাও কাপ","বিশ্বকাপ বাছাই","সৌদি প্রো লিগ","এমএলএস","এএফসি চ্যাম্পিয়ন্স লিগ","বাংলাদেশ প্রিমিয়ার লিগ"];
+SD["ফুটবল"].m.push(
+ ["লিগ ১","পিএসজি","মার্সেই","up","আজ ১১:০০ PM",["1.55","4.20","5.50"]],
+ ["ইউরোপা লিগ","রোমা","আয়াক্স","live","১-০ (২২')",["2.30","3.20","3.00"]],
+ ["এফএ কাপ","চেলসি","আর্সেনাল","up","শনিবার ৯:০০ PM",["3.10","3.40","2.25"]],
+ ["কারাবাও কাপ","টটেনহ্যাম","নিউক্যাসল","up","বুধবার ১:৩০ AM",["2.40","3.30","2.85"]],
+ ["বিশ্বকাপ বাছাই","আর্জেন্টিনা","ব্রাজিল","up","আগামীকাল ৫:৩০ AM",["2.50","3.10","2.90"]],
+ ["সৌদি প্রো লিগ","আল হিলাল","আল নাসর","live","২-১ (৭৪')",["1.60","4.00","5.20"]],
+ ["এমএলএস","ইন্টার মিয়ামি","এলএ গ্যালাক্সি","up","রবিবার ৫:০০ AM",["1.70","4.10","4.50"]],
+ ["এএফসি চ্যাম্পিয়ন্স লিগ","আল আইন","আল আহলি","up","মঙ্গলবার ৯:০০ PM",["2.60","3.20","2.70"]],
+ ["বাংলাদেশ প্রিমিয়ার লিগ","আবাহনী","মোহামেডান","up","শুক্রবার ৪:০০ PM",["2.15","3.00","3.30"]]
+);
+// টেনিস, বাস্কেটবল, কাবাডি, ই-স্পোর্টস (ডেমো)
+SD["টেনিস"]={icon:"🎾",lg:["গ্র্যান্ড স্ল্যাম","এটিপি ফাইনালস","এটিপি মাস্টার্স ১০০০","ডব্লিউটিএ","ডেভিস কাপ"],m:[
+ ["গ্র্যান্ড স্ল্যাম","আলকারাজ","সিনার","live","৬-৪, ৩-২ (২য় সেট)",["1.80","2.00"]],
+ ["গ্র্যান্ড স্ল্যাম","জোকোভিচ","মেদভেদেভ","up","আজ ৩:০০ PM",["1.65","2.25"]],
+ ["এটিপি ফাইনালস","জ্ভেরেভ","রুড","up","আগামীকাল ২:০০ PM",["1.45","2.70"]],
+ ["এটিপি মাস্টার্স ১০০০","ফ্রিটজ","দে মিনাউর","live","২-১ (৩য় সেট, ৩-২)",["1.95","1.85"]],
+ ["ডব্লিউটিএ","সোয়াতেক","সাবালেঙ্কা","live","৩-২ (১ম সেট)",["2.05","1.75"]],
+ ["ডব্লিউটিএ","গফ","রাইবাকিনা","up","শুক্রবার ১০:০০ PM",["1.70","2.15"]],
+ ["ডেভিস কাপ","ইতালি","স্পেন","up","শনিবার ৪:০০ PM",["1.60","2.30"]]
+]};
+SD["বাস্কেটবল"]={icon:"🏀",lg:["এনবিএ","ইউরোলিগ","ডব্লিউএনবিএ","এফআইবিএ বিশ্বকাপ","এনসিএএ"],m:[
+ ["এনবিএ","লেকার্স","ওয়ারিয়র্স","live","৮৮-৮৫ (৩য় কোয়ার্টার)",["1.90","1.90"]],
+ ["এনবিএ","সেল্টিকস","হিট","up","আজ ১০:৩০ PM",["1.55","2.40"]],
+ ["এনবিএ","বাক্স","নিক্স","up","আগামীকাল ২:০০ AM",["1.75","2.10"]],
+ ["ইউরোলিগ","রিয়াল মাদ্রিদ","ফেনারবাচ","live","৭২-৭০ (২য় কোয়ার্টার)",["1.60","2.30"]],
+ ["ডব্লিউএনবিএ","লাস ভেগাস এসেস","নিউ ইয়র্ক লিবার্টি","up","শনিবার ১:০০ AM",["1.85","1.95"]],
+ ["এফআইবিএ বিশ্বকাপ","যুক্তরাষ্ট্র","স্পেন","up","রবিবার ১০:০০ PM",["1.35","3.10"]],
+ ["এনসিএএ","ডিউক","কেন্টাকি","up","বৃহস্পতিবার ৪:০০ AM",["1.80","2.00"]]
+]};
+SD["কাবাডি"]={icon:"🤼",lg:["প্রো কাবাডি লিগ","এশিয়ান গেমস","বাংলাদেশ কাবাডি লিগ","কাবাডি বিশ্বকাপ"],m:[
+ ["প্রো কাবাডি লিগ","পাটনা পাইরেটস","বেঙ্গল ওয়ারিয়র্স","live","৩২-২৯ (দ্বিতীয়ার্ধ)",["1.70","2.10"]],
+ ["প্রো কাবাডি লিগ","তেলুগু টাইটান্স","ইউ মুম্বা","live","২০-২২ (প্রথমার্ধ)",["2.20","1.65"]],
+ ["প্রো কাবাডি লিগ","জয়পুর পিংক প্যান্থার্স","দাবং দিল্লি","up","আজ ৮:৩০ PM",["1.90","1.90"]],
+ ["এশিয়ান গেমস","ভারত","ইরান","up","আগামীকাল ১০:০০ AM",["1.50","2.50"]],
+ ["বাংলাদেশ কাবাডি লিগ","ঢাকা স্টার্স","রংপুর রাইডার্স","up","শুক্রবার ৪:০০ PM",["1.80","2.00"]],
+ ["কাবাডি বিশ্বকাপ","বাংলাদেশ","পাকিস্তান","up","শনিবার ১০:০০ AM",["1.95","1.85"]]
+]};
+SD["ই-স্পোর্টস"]={icon:"🎮",lg:["সিএস ২","ডোটা ২","লীগ অফ লেজেন্ডস","ভ্যালোরেন্ট","ফ্রি ফায়ার","পাবজি মোবাইল"],m:[
+ ["সিএস ২","Natus Vincere","FaZe Clan","live","১০-৮ (ম্যাপ ১)",["1.75","2.05"]],
+ ["সিএস ২","G2 Esports","Vitality","up","আজ ৮:০০ PM",["2.20","1.65"]],
+ ["ডোটা ২","Team Spirit","Team Liquid","up","আগামীকাল ৪:০০ PM",["1.85","1.95"]],
+ ["লীগ অফ লেজেন্ডস","T1","Gen.G","live","১-১ (ম্যাচ ২)",["1.70","2.10"]],
+ ["ভ্যালোরেন্ট","Fnatic","Sentinels","up","শুক্রবার ৭:০০ PM",["2.00","1.80"]],
+ ["ফ্রি ফায়ার","বাংলাদেশ টাইগার্স","ভারত ওয়ারিয়র্স","up","শনিবার ৮:০০ PM",["1.90","1.90"]],
+ ["পাবজি মোবাইল","ঢাকা স্কোয়াড","করাচি কিংস","live","২৪-২০ (রাউন্ড ৩)",["1.65","2.20"]]
+]};
+let spF="all",spL="all";
+function sportHtml(k){
+  const d=SD[k];if(!d)return '<div class="pv-empty">শিগগিরই চালু হবে</div>';
+  const f=[["all","সব"],["live","লাইভ"],["up","আসন্ন"]];
+  const items=d.m.filter(x=>spF=="all"||x[3]==spF).filter(x=>spL=="all"||x[0]==spL);
+  const lgs=d.lg?[["all","সব লিগ"],...d.lg.map(l=>[l,l])]:null;
+  return `<div class="pv-spr">${f.map(([v,t])=>`<button class="pv-tab ${v==spF?"on":""}" onclick="pvSpF('${v}')">${t}</button>`).join("")}</div>`
+   +(lgs?`<div class="pv-spr">${lgs.map(([v,t],i)=>`<button class="pv-tab ${v==spL?"on":""}" onclick="pvSpL(${i})">${E(t)}</button>`).join("")}</div>`:"")
+   +(items.length?items.map(([lg,a,b,s,info,od])=>{const lb=od.length==3?["১","X","২"]:["১","২"],lv=s=="live";
+     return `<div class="pv-mc"><div class="pv-mh"><span>${E(lg)}</span>${lv?'<em class="pv-lv">● লাইভ</em>':`<em>${E(info)}</em>`}</div><div class="pv-mt"><b>${E(a)}</b><i>vs</i><b>${E(b)}</b></div>${lv?`<div class="pv-ms">${E(info)}</div>`:""}<div class="pv-od">${od.map((o,i)=>`<button class="pv-odd" onclick="pvOdd()"><small>${lb[i]}</small>${o}</button>`).join("")}</div></div>`}).join(""):'<div class="pv-empty">কোনো ম্যাচ নেই</div>');
+}
+function drawSport(){const e=q$("#pvSport");if(e)e.innerHTML=sportHtml(st.sport)}
+const hue=x=>{let h=0;for(const c of x)h=(h*31+c.charCodeAt(0))%360;return h};
+const grad=x=>`linear-gradient(135deg,hsl(${hue(x)},70%,52%),hsl(${(hue(x)+50)%360},70%,38%))`;
+const q$=x=>document.querySelector(x);
+function logo(p){const pl=(typeof CFG!="undefined"&&CFG.providerLogos)||{},u=p.logo||LOGOS[p.id]||pl[p.id]||pl[p.name],c=E(p.name[0]);return u?`<img src="${E(u)}" alt="${E(p.name)}" loading="lazy" onerror="this.replaceWith(document.createTextNode('${c}'))">`:c}
+function demoGames(p){return (GB[p.id]||FB[p.category]||FB.Slots).map((n,i)=>({id:p.id+"_"+i,name:n,order:i,active:true,maintenance:false}))}
+const list=()=>st.providers.filter(p=>p.active!==false).sort((a,b)=>(a.order||0)-(b.order||0));
+const sk=n=>Array(n).fill('<div class="pv-sk"></div>').join("");
+const card=p=>`<div class="pv-card ${p.maintenance?"pv-off":""}" data-id="${E(p.id)}" onclick="pvOpen(this.dataset.id)">${p.maintenance?'<span class="pv-badge">Maintenance</span>':""}<div class="pv-lg" style="background:${grad(p.name)}">${logo(p)}</div><div class="pv-nm">${E(p.name)}</div><div class="pv-ct">${E(p.category)}</div></div>`;
+const sportsRow=()=>`<div class="pv-sports">${SPORTS.map(s=>`<button class="pv-sp" onclick="pvSport('${s[1]}')"><b>${s[0]}</b><span>${s[1]}</span></button>`).join("")}<button class="pv-sp" onclick="pvMoreSport()"><b>➕</b><span>আরও</span></button></div>`;
+function stopBan(){clearInterval(bt);bt=null}
+/* স্ক্রিন ১ */
+function listHtml(){
+  if(!st.ready)return sk(8);
+  const all=list().filter(p=>st.cat=="All"||p.category==st.cat);
+  if(!all.length)return '<div class="pv-empty">কোনো প্রোভাইডার পাওয়া যায়নি</div>';
+  const n0=cols("pvList")*2,shown=st.showAll?all:all.slice(0,n0);
+  return shown.map(card).join("")+(all.length>n0?`<button class="pv-more" onclick="pvMore()">${st.showAll?"কম দেখুন ▲":"আরও দেখুন ("+(all.length-n0)+" টি) ▼"}</button>`:"");
+}
+const TABS=["All","Slots","Live Casino","Sports","Table Games","Fishing","Crash & Arcade"];
+const tabs=()=>TABS.map(c=>`<button class="pv-tab ${c==st.cat?"on":""}" onclick="pvTab('${E(c)}')">${E(CAT_LABEL[c]||c)}</button>`).join("");
+const spWrap=()=>"";
+function drawList(){const l=q$("#pvList");if(l){l.className="pv-grid";l.innerHTML=listHtml()}const t=q$("#pvTabs");if(t)t.innerHTML=tabs();const sw=q$("#pvSpW");if(sw)sw.innerHTML=spWrap();const h=q$("#pvHome");if(h)h.innerHTML=homeCards()}
+/* স্ক্রিন ২ */
+function gamesHtml(p,games){
+  const items=games.filter(g=>g.active!==false).sort((a,b)=>(a.order||0)-(b.order||0));
+  if(!items.length)return '<div class="pv-empty">কোনো গেম পাওয়া যায়নি</div>';
+  return items.map(g=>`<div class="pv-gc ${g.maintenance?"pv-off":""}" data-n="${E(g.name)}" onclick="pvGame(this,${g.maintenance?1:0})">${g.maintenance?'<span class="pv-badge">Maintenance</span>':""}<div class="pv-th" style="background:${g.thumbnail?`url('${E(g.thumbnail)}') center/cover,`:""}${grad(g.name)}">${g.thumbnail?"":E(g.name[0])}</div><div class="pv-gn">${E(g.name)}</div></div>`).join("");
+}
+function banner(games,p){
+  stopBan();
+  /* অ্যাডমিন ছবি: providers/<id>/banners (Firebase) অথবা config.json এর providerBanners — না থাকলে গেমের ছবি */
+  let it=[];
+  if(p){const pb=(typeof CFG!="undefined"&&CFG.providerBanners)||{},b=p.banners||p.banner||pb[p.id]||pb[p.name];
+    if(b)it=(Array.isArray(b)?b:typeof b=="object"?Object.values(b):[b]).filter(Boolean).map(u=>({n:p.name,u,nc:1}))}
+  if(!it.length)it=games.filter(g=>g.active!==false&&!g.maintenance).sort((a,b)=>(a.order||0)-(b.order||0)).slice(0,5).map(g=>({n:g.name,u:g.banner||g.thumbnail}));
+  if(!it.length)return "";
+  setTimeout(()=>{
+    const el=q$("#pvBan");if(!el)return;
+    const sl=[...el.querySelectorAll(".pv-sl")],dt=[...el.querySelectorAll(".pv-dots i")];let ix=0;
+    const go=n=>{ix=n;sl.forEach((s,i)=>s.classList.toggle("on",i==n));dt.forEach((d,i)=>d.classList.toggle("on",i==n))};
+    const start=()=>{clearInterval(bt);if(sl.length>1)bt=setInterval(()=>{if(!q$("#pvBan")){stopBan();return}go((ix+1)%sl.length)},BANNER_MS)};
+    el.onclick=e=>{const d=e.target.closest(".pv-dots i");if(d){go(+d.dataset.i);start()}};
+    start();
+  },0);
+  return `<div class="pv-ban" id="pvBan">${it.map((g,i)=>{const u=g.u;return `<div class="pv-sl ${i?"":"on"} ${g.nc?"pv-noc":""}" style="background:${u?`url('${imgUrl(u)}') center/cover,`:""}${grad(g.n)}"><div class="pv-cap">${E(g.n)}</div></div>`}).join("")}${it.length>1?`<div class="pv-dots">${it.map((_,i)=>`<i data-i="${i}" class="${i?"":"on"}"></i>`).join("")}</div>`:""}</div>`;
+}
+function drawGames(p){const g=q$("#pvGames");if(!g||!st.cur||st.cur!=p.id)return;g.innerHTML=banner(st.games,p)+gamesHtml(p,st.games)}
+function loadGames(p){
+  if(st.ref){st.ref.off();st.ref=null}
+  if(st.live){st.ref=db.ref("games/"+p.id);st.ref.on("value",s=>{const v=s.val()||{};st.games=Object.entries(v).map(([id,g])=>Object.assign({id},g));drawGames(p)})}
+  else setTimeout(()=>{st.games=demoGames(p);drawGames(p)},350);
+}
+function mount(){
+  stopBan();if(st.ref){st.ref.off();st.ref=null}
+  if(st.sport){spF="all";spL="all";window.scrollTo(0,0);drawSport();return}
+  if(st.cur){const p=st.providers.find(x=>x.id==st.cur);if(p){window.scrollTo(0,0);loadGames(p);return}st.cur=null}
+  drawList();setTimeout(()=>window.scrollTo(0,st.scroll||0),0);
+}
+V.games=()=>{
+  if(!st.ex){const h=history.state||{};st.cur=h.pv||null;st.sport=h.sp||null} /* ব্যাক/ফরওয়ার্ড বাটনে history.state থেকে */
+  setTimeout(mount,0);
+  if(st.sport){const d=SD[st.sport];return `<div class="pv-head"><button class="pv-back" onclick="pvBack()" aria-label="ফিরে যান">←</button><div class="pv-lg pv-mini" style="background:linear-gradient(135deg,#fff2b3,var(--gold) 55%,#e0a800)">${d?d.icon:"🏆"}</div><div><h2>${E(st.sport)}</h2><small>ডেমো ম্যাচ</small></div></div><div class="pv-grid pv-sportlist" id="pvSport"></div>`}
+  if(st.cur){const p=st.providers.find(x=>x.id==st.cur);if(p)return `<div class="pv-head"><button class="pv-back" onclick="pvBack()" aria-label="ফিরে যান">←</button><div class="pv-lg pv-mini" style="background:${grad(p.name)}">${logo(p)}</div><div><h2>${E(p.name)}</h2><small>${E(p.category)}</small></div></div><div class="pv-grid pv-games" id="pvGames">${sk(6)}</div>`;st.cur=null}
+  return `<h2 class="pv-lobby">Game Lobby</h2><div class="pv-tabs" id="pvTabs">${tabs()}</div><div id="pvSpW">${spWrap()}</div><div class="pv-grid" id="pvList">${listHtml()}</div>`;
+};
+const homeCards=()=>st.ready?list().slice(0,cols("pvHome")*2).map(card).join("")||'<div class="pv-empty">কোনো প্রোভাইডার পাওয়া যায়নি</div>':sk(8);
+window.homeGames=()=>`<div class="pv-home"><div class="pv-tabs" id="pvTabs">${tabs()}</div><div id="pvSpW">${spWrap()}</div><div class="pv-grid" id="pvList">${listHtml()}</div></div>`;
+window.pvOpen=id=>{const p=st.providers.find(x=>x.id==id);if(!p)return;if(p.maintenance)return toast(p.name+" এখন মেইনটেন্যান্সে আছে");st.scroll=window.scrollY;st.cur=id;st.sport=null;st.keep=true;go("games");try{history.pushState({s:"games",pv:id},"","#/p/"+encodeURIComponent(id))}catch(e){}};
+window.pvBack=()=>{const h=history.state||{};if(h.pv||h.sp)history.back();else{st.cur=null;st.sport=null;go("games")}};
+window.pvFind=v=>list().filter(p=>p.name.toLowerCase().includes(v)||String(p.category).toLowerCase().includes(v));
+window.pvTab=c=>{st.cat=c;st.showAll=false;drawList()};
+window.pvMore=()=>{st.showAll=!st.showAll;drawList()};
+window.pvSport=n=>{if(!SD[n])return toast(n+" – শিগগিরই চালু হবে");st.scroll=window.scrollY;st.sport=n;st.cur=null;st.keep=true;go("games");try{history.pushState({s:"games",sp:n},"","#/s/"+encodeURIComponent(n))}catch(e){}};
+window.pvMoreSport=()=>{st.cat="Sports";st.showAll=false;go("games")};
+window.pvSpF=v=>{spF=v;drawSport()};
+window.pvSpL=i=>{spL=i==0?"all":SD[st.sport].lg[i-1];drawSport()};
+window.pvOdd=()=>toast("ডেমো – বেটিং শিগগিরই চালু হবে");
+window.pvGame=(el,off)=>off?toast("এই গেম এখন মেইনটেন্যান্সে আছে"):toast(el.dataset.n+" – শিগগিরই চালু হবে");
+window.fCat=c=>{st.cat={sports:"Sports",casino:"Live Casino",slots:"Slots",crash:"Crash & Arcade",arcade:"Crash & Arcade",table:"Table Games",fishing:"Fishing"}[c]||"All";st.showAll=false;st.cur=null;go("games")};
+/* রাউটিং: সাধারণ go() হলে প্রোভাইডার পেজ বন্ধ; ব্যাক বাটনে আগের অবস্থা */
+const _g=window.go;
+window.go=function(s){if(!st.keep){st.cur=null;st.sport=null}st.keep=false;if(s!="games")stopBan();st.ex=true;try{return _g.apply(this,arguments)}finally{st.ex=false}};
+/* ডেটা */
+function ready(){st.ready=true;drawList();if(st.cur){const p=st.providers.find(x=>x.id==st.cur);if(p)drawGames(p)}}
+function demo(){st.live=false;setTimeout(()=>{st.providers=DEMO;ready()},400)}
+function init(){
+  if(!FIREBASE_CONFIG.databaseURL)return demo();
+  const ld=u=>new Promise((r,j)=>{const x=document.createElement("script");x.src=u;x.onload=r;x.onerror=j;document.head.appendChild(x)});
+  ld("https://cdn.jsdelivr.net/npm/firebase@9.23.0/firebase-app-compat.js").then(()=>ld("https://cdn.jsdelivr.net/npm/firebase@9.23.0/firebase-database-compat.js")).then(()=>{
+    firebase.initializeApp(FIREBASE_CONFIG);db=firebase.database();st.live=true;
+    db.ref("config").on("value",s=>{const v=s.val();if(!v)return;try{["slides","banners","sideBanners","games"].forEach(k=>{if(v[k]!=null)CFG[k]=Array.isArray(v[k])?v[k]:Object.values(v[k])});["providerBanners","providerLogos"].forEach(k=>{if(v[k]!=null)CFG[k]=v[k]});if(typeof cur!="undefined"&&cur=="home")go("home")}catch(e){}});
+    db.ref("providers").on("value",s=>{const v=s.val()||{};st.providers=Object.entries(v).map(([id,p])=>Object.assign({id},p));ready()},()=>demo());
+  }).catch(demo);
+}
+let rz;addEventListener("resize",()=>{clearTimeout(rz);rz=setTimeout(()=>{if(q$("#pvList")||q$("#pvHome"))drawList()},150)});
+init();
+{const o=q$("#m .hg");if(o)o.outerHTML=window.homeGames()} /* প্রথম লোডে হোম আগেই আঁকা হয়ে গেলে নতুন অংশ বসাও */
+})();
+</script>
+<script>
+/* Replace every visible "MOSTWIN88" text with the styled logo wordmark (static O; only the main logo spins) */
+(function(){
+  var SVG='<svg viewBox="0 0 100 100" aria-hidden="true"><g class="lo-r"><circle cx="50" cy="50" r="43" fill="none" stroke="rgba(255,255,255,.4)" stroke-width="14"/><circle cx="50" cy="50" r="43" fill="none" stroke="#fff" stroke-width="14" stroke-dasharray="7.4 3.86"/></g><circle cx="50" cy="50" r="18" fill="#ffd23f"/><circle cx="50" cy="50" r="18" fill="none" stroke="#fff2b3" stroke-width="3"/></svg>';
+  var MARK='<span class="mw" aria-label="MOSTWIN88"><span class="m1">M</span><span class="lo">'+SVG+'</span><span class="m1">ST</span><span class="m2">WIN</span><span class="m3">88</span></span>';
+  var RE=/mostwin88/i, SKIP={SCRIPT:1,STYLE:1,TEXTAREA:1,INPUT:1,OPTION:1,TITLE:1,NOSCRIPT:1,SVG:1};
+  function ok(n){var p=n.parentNode;while(p&&p.nodeType===1){if(SKIP[p.nodeName.toUpperCase()]||(p.classList&&(p.classList.contains('mw')||p.classList.contains('lm'))))return false;p=p.parentNode}return !!p||true}
+  function fix(root){
+    if(!root)return;
+    if(root.nodeType===3){one(root);return}
+    if(root.nodeType!==1||SKIP[root.nodeName.toUpperCase()])return;
+    var w=document.createTreeWalker(root,NodeFilter.SHOW_TEXT,null),list=[],n;
+    while(n=w.nextNode())if(RE.test(n.nodeValue))list.push(n);
+    list.forEach(one)
+  }
+  function one(t){
+    if(!t.parentNode||!RE.test(t.nodeValue)||!ok(t))return;
+    var parts=t.nodeValue.split(/mostwin88/i),f=document.createDocumentFragment();
+    parts.forEach(function(x,i){
+      if(x)f.appendChild(document.createTextNode(x));
+      if(i<parts.length-1){var d=document.createElement('span');d.innerHTML=MARK;f.appendChild(d.firstChild)}
+    });
+    t.parentNode.replaceChild(f,t)
+  }
+  var q=[],sched=false;
+  function flush(){sched=false;var l=q;q=[];l.forEach(fix)}
+  function push(n){q.push(n);if(!sched){sched=true;(window.requestAnimationFrame||setTimeout)(flush)}}
+  fix(document.body);
+  new MutationObserver(function(ms){ms.forEach(function(m){
+    if(m.type==='characterData')push(m.target);
+    else m.addedNodes.forEach(push)
+  })}).observe(document.body,{childList:true,characterData:true,subtree:true});
+})();
+</script>
+<script>
+/* ===== AUTH: Login / Sign Up =====
+   ডেমো: অ্যাকাউন্ট শুধু এই ব্রাউজারে (localStorage) থাকে।
+   আসল ব্যাকএন্ড (Firebase Auth / API) বসাতে শুধু authLogin() ও authSignup() বদলান। */
+(()=>{
+const LS=(k,v)=>{try{if(v===undefined)return localStorage.getItem(k);v===null?localStorage.removeItem(k):localStorage.setItem(k,v)}catch(e){return null}};
+const SS=(k,v)=>{try{if(v===undefined)return sessionStorage.getItem(k);v===null?sessionStorage.removeItem(k):sessionStorage.setItem(k,v)}catch(e){return null}};
+const users=()=>{try{return JSON.parse(LS('mw_users')||'{}')}catch(e){return {}}};
+const saveUsers=u=>LS('mw_users',JSON.stringify(u));
+const q=(s,r)=>(r||document).querySelector(s);
+let user=null,mode='login',pend=null,busy=false,fails=0,lockUntil=0;
+const PROT={wallet:1,dep:1,wd:1,tx:1,bets:1,bonus:1,profile:1,ref:1,notif:1,sec:1};
+const normMob=v=>String(v||'').replace(/[\s\-()]/g,'').replace(/^\+?88(?=01)/,'');
+const isMob=v=>/^01[3-9]\d{8}$/.test(v);
+const isMail=v=>/^\S+@\S+\.\S+$/.test(v);
+const clean=v=>String(v||'').replace(/[<>"'&`]/g,'').replace(/\s+/g,' ').trim();
+async function hash(pw,salt){const s=salt+'|'+pw;if(window.crypto&&crypto.subtle){const b=await crypto.subtle.digest('SHA-256',new TextEncoder().encode(s));return Array.from(new Uint8Array(b),x=>x.toString(16).padStart(2,'0')).join('')}let h=5381;for(const c of s)h=((h<<5)+h+c.charCodeAt(0))>>>0;return 'x'+h}
+const rnd=()=>Math.random().toString(36).slice(2)+Date.now().toString(36);
+/* ---- Google login (Firebase Auth) ----
+   সেটআপ: Firebase Console → Authentication → Sign-in method → Google চালু করুন;
+   Settings → Authorized domains-এ আপনার সাইটের ডোমেইন যোগ করুন; তারপর নিচে কী গুলো বসান। */
+const MW_FIREBASE={apiKey:"",authDomain:"",projectId:"",appId:""};
+const GSVG='<svg width="20" height="20" viewBox="0 0 48 48" aria-hidden="true"><path fill="#EA4335" d="M24 9.5c3.54 0 6.71 1.22 9.21 3.6l6.85-6.85C35.9 2.38 30.47 0 24 0 14.62 0 6.51 5.38 2.56 13.22l7.98 6.19C12.43 13.72 17.74 9.5 24 9.5z"/><path fill="#4285F4" d="M46.98 24.55c0-1.57-.15-3.09-.38-4.55H24v9.02h12.94c-.58 2.96-2.26 5.48-4.78 7.18l7.73 6c4.51-4.18 7.09-10.36 7.09-17.65z"/><path fill="#FBBC05" d="M10.53 28.59c-.48-1.45-.76-2.99-.76-4.59s.27-3.14.76-4.59l-7.98-6.19C.92 16.46 0 20.12 0 24c0 3.88.92 7.54 2.56 10.78l7.97-6.19z"/><path fill="#34A853" d="M24 48c6.48 0 11.93-2.13 15.89-5.81l-7.73-6c-2.15 1.45-4.92 2.3-8.16 2.3-6.26 0-11.57-4.22-13.47-9.91l-7.98 6.19C6.51 42.62 14.62 48 24 48z"/></svg>';
+let fbAuth=null;
+const ldJs=u=>new Promise((r,j)=>{const x=document.createElement('script');x.src=u;x.onload=r;x.onerror=j;document.head.appendChild(x)});
+async function gAuth(){
+  if(fbAuth)return fbAuth;
+  if(!window.firebase||!firebase.auth){await ldJs('https://cdn.jsdelivr.net/npm/firebase@9.23.0/firebase-app-compat.js');await ldJs('https://cdn.jsdelivr.net/npm/firebase@9.23.0/firebase-auth-compat.js')}
+  const app=firebase.apps.find(a=>a.name=='mwauth')||firebase.initializeApp(MW_FIREBASE,'mwauth');
+  return fbAuth=app.auth();
+}
+async function google(){
+  if(busy)return;const E=q('#amErr');E.textContent='';
+  if(mode=='signup'&&!q('#as_tc').checked){E.textContent='Please confirm you are 18+ and accept the Terms.';return}
+  if(!MW_FIREBASE.apiKey){E.textContent="Google login isn't set up yet. Add your Firebase keys to MW_FIREBASE in the code.";return}
+  if(!/^https?:$/.test(location.protocol)){E.textContent='Google login works only on your hosted site (https), not from a local file.';return}
+  setBusy(true);
+  try{
+    const a=await gAuth(),g=(await a.signInWithPopup(new firebase.auth.GoogleAuthProvider())).user;
+    const u=users(),email=(g.email||'').toLowerCase(),key='g:'+g.uid;
+    let rec=u[key]||Object.values(u).find(x=>email&&x.email&&x.email.toLowerCase()==email);
+    if(!rec){
+      if(mode!='signup'){await a.signOut();setBusy(false);E.textContent='No account found for this Google email. Please Sign Up first.';return}
+      const nm=clean(g.displayName)||email.split('@')[0]||'Player';
+      rec={key,name:nm,mob:'',email:g.email||'',id:'MW'+Math.floor(10000+Math.random()*89999),code:(nm.replace(/[^A-Za-z]/g,'').toUpperCase().slice(0,6)||'MW')+Math.floor(10+Math.random()*89),ref:LS('mw_ref')||'',google:1,created:Date.now(),profile:{dep:0,bon:0,lvl:'Bronze',xp:0,next:10000,photo:g.photoURL||''}};
+      u[key]=rec;saveUsers(u);
+    }
+    setBusy(false);done(rec,true,'Welcome, '+rec.name.split(' ')[0]+'!');
+  }catch(e){
+    setBusy(false);const c=(e&&e.code)||'';
+    E.textContent=(c=='auth/popup-closed-by-user'||c=='auth/cancelled-popup-request')?'':c=='auth/unauthorized-domain'?'This domain is not authorised in Firebase (Authentication → Settings → Authorized domains).':c=='auth/popup-blocked'?'Popup was blocked. Allow popups and try again.':'Google sign-in failed. Please try again.';
+  }
+}
+const gb=()=>'<button type="button" class="gbtn" data-g="1">'+GSVG+'<span>Continue with Google</span></button><div class="or">or use mobile / email</div>';
+
+/* ---- backend (এখানে বদলান) ---- */
+async function authLogin(idv,pw){
+  const u=users(),isE=idv.includes('@'),key=isE?idv.toLowerCase():normMob(idv);
+  const rec=isE?Object.values(u).find(x=>x.email&&x.email.toLowerCase()==key):u[key];
+  if(!rec||!rec.hash||await hash(pw,rec.salt)!==rec.hash)return {err:'Incorrect mobile/email or password'};
+  return {user:rec};
+}
+async function authSignup(d){
+  const u=users(),errs={};
+  if(u[d.mob])errs.as_mob='This mobile is already registered. Please login.';
+  if(d.email&&Object.values(u).some(x=>x.email&&x.email.toLowerCase()==d.email.toLowerCase()))errs.as_mail='This email is already registered.';
+  if(Object.keys(errs).length)return {errs};
+  const salt=rnd(),letters=d.name.replace(/[^A-Za-z]/g,'').toUpperCase().slice(0,6)||'MW';
+  const rec={name:d.name,mob:d.mob,email:d.email,salt,hash:await hash(d.pw,salt),id:'MW'+Math.floor(10000+Math.random()*89999),code:letters+Math.floor(10+Math.random()*89),ref:d.ref,created:Date.now(),profile:{dep:0,bon:0,lvl:'Bronze',xp:0,next:10000}};
+  u[d.mob]=rec;saveUsers(u);return {user:rec};
+}
+
+/* ---- session / state ---- */
+function guestState(){Object.assign(S,{name:'Guest',id:'',code:'',lvl:'Bronze',xp:0,next:10000,dep:0,bon:0,mob:'',email:'',photo:''})}
+function applyUser(rec,remember){
+  user=rec.key||rec.mob;
+  Object.assign(S,{name:rec.name,mob:rec.mob||'',email:rec.email||'',id:rec.id,code:rec.code,photo:'',lang:'English'},rec.profile||{});
+  T.splice(0,T.length,...(rec.tx||[]));P.forEach((p,i)=>p.c=(rec.pc||[])[i]||0);
+  LS('mw_session',null);SS('mw_session',null);(remember?LS:SS)('mw_session',user);
+}
+function persist(){
+  if(!user)return;const u=users();let r=u[user];if(!r)return;
+  r.name=S.name;r.email=S.email;r.profile={dep:S.dep,bon:S.bon,lvl:S.lvl,xp:S.xp,next:S.next,lang:S.lang,photo:S.photo};
+  r.tx=T.slice(0,50);r.pc=P.map(p=>p.c?1:0);
+  if(S.mob&&String(user).startsWith('g:'))r.mob=S.mob;
+  if(S.mob&&S.mob!=user&&!String(user).startsWith('g:')){delete u[user];r.mob=S.mob;u[S.mob]=r;const ls=LS('mw_session')?LS:SS;ls('mw_session',S.mob);user=S.mob}
+  saveUsers(u);
+}
+function ui(){document.body.classList.toggle('guest',!user);if(typeof updBal=='function')updBal();hdr()}
+function logout(){persist();user=null;if(fbAuth)fbAuth.signOut().catch(()=>{});LS('mw_session',null);SS('mw_session',null);guestState();ui();go('home');toast('Logged out')}
+
+/* ---- modal ---- */
+function build(){
+  if(q('#authM'))return;
+  const d=document.createElement('div');d.id='authM';
+  d.innerHTML='<div class="am-p" role="dialog" aria-modal="true" aria-label="Login or Sign Up"><button class="am-x" type="button" aria-label="Close" data-x="1">✕</button><div class="am-lg">MOSTWIN88</div><div class="am-sub" id="amS"></div><div class="am-tabs"><i></i><button type="button" data-m="login">Login</button><button type="button" data-m="signup">Sign Up</button></div><form id="amF" novalidate></form></div>';
+  document.body.appendChild(d);
+  d.addEventListener('mousedown',e=>{if(e.target===d)close()});
+  d.addEventListener('click',e=>{
+    const t=e.target.closest('[data-m],[data-t],[data-a],[data-x],[data-g]');if(!t)return;
+    if(t.dataset.g)return google();
+    if(t.dataset.x)return close();
+    if(t.dataset.m){mode=t.dataset.m;render();return}
+    if(t.dataset.a=='forgot'){mode='forgot';render();return}
+    if(t.dataset.t){const i=q('#'+t.dataset.t),h=i.type=='password';i.type=h?'text':'password';t.textContent=h?'Hide':'Show'}
+  });
+  const F=q('#amF');
+  F.addEventListener('submit',e=>{e.preventDefault();submit()});
+  F.addEventListener('input',e=>{
+    const i=e.target;i.classList.remove('bad');const s=q('[data-e="'+i.id+'"]');if(s)s.textContent='';q('#amErr')&&(q('#amErr').textContent='');
+    if(i.id=='as_mob')i.value=i.value.replace(/\D/g,'').slice(0,11);
+    if(i.id=='as_pw')meter(i.value);
+    if(i.id=='as_pw2'||i.id=='as_pw'){const a=q('#as_pw').value,b=q('#as_pw2').value,s2=q('[data-e="as_pw2"]');if(b&&a!==b)s2.textContent='Passwords do not match';else if(s2)s2.textContent=''}
+  });
+  addEventListener('keydown',e=>{if(e.key=='Escape'&&q('#authM.o'))close()});
+}
+function meter(v){
+  let n=0;if(v.length>=8)n++;if(/[a-z]/.test(v)&&/[A-Z]/.test(v))n++;if(/\d/.test(v))n++;if(/[^A-Za-z0-9]/.test(v)&&v.length>=8)n++;
+  const c=['#ff6b84','#ff9d00','#ffd23f','#00E676'],L=['Too weak','Weak','Fair','Strong'];
+  const b=document.querySelectorAll('#smB i');b.forEach((x,i)=>x.style.background=v&&i<n?c[Math.max(0,n-1)]:'');
+  const t=q('#smT');if(t)t.textContent=v?L[Math.max(0,n-1)]+(n<3?' — use 8+ characters with letters and numbers':''):'8+ characters with letters and numbers';
+}
+function render(){
+  const F=q('#amF');
+  q('.am-tabs').style.display=mode=='forgot'?'none':'';
+  q('.am-tabs').classList.toggle('s',mode=='signup');
+  document.querySelectorAll('.am-tabs button').forEach(b=>b.classList.toggle('on',b.dataset.m==mode));
+  q('#amS').textContent=mode=='forgot'?'Reset your password':pend?'Please login to continue':mode=='signup'?'Create your account in under a minute':'Welcome back! Login to play and manage your wallet.';
+  const fld=(id,lab,at,ph,ex)=>'<div class="af"><label for="'+id+'">'+lab+'</label><input id="'+id+'" '+at+' placeholder="'+ph+'"><small class="ae" data-e="'+id+'"></small>'+(ex||'')+'</div>';
+  const pwf=(id,lab,ac,ph,ex)=>'<div class="af"><label for="'+id+'">'+lab+'</label><div class="pw"><input id="'+id+'" type="password" autocomplete="'+ac+'" placeholder="'+ph+'"><button type="button" class="pws" data-t="'+id+'">Show</button></div><small class="ae" data-e="'+id+'"></small>'+(ex||'')+'</div>';
+  if(mode=='login')F.innerHTML=gb()+fld('al_id','Mobile or Email','name="username" autocomplete="username" autocapitalize="none" spellcheck="false"','01XXXXXXXXX or email')+pwf('al_pw','Password','current-password','Your password')+'<div class="ar2"><label class="ck"><input type="checkbox" id="al_rm" checked> Remember me</label><a class="al" data-a="forgot" style="margin-top:12px">Forgot password?</a></div><div class="ae big" id="amErr"></div><button class="btn bgold" id="amGo" type="submit">Login</button><div class="am-alt">New here? <a data-m="signup">Create an account</a></div>';
+  else if(mode=='signup'){
+    const rf=LS('mw_ref')||'';
+    F.innerHTML=gb()+fld('as_name','Full name','autocomplete="name" maxlength="40"','Your full name')+fld('as_mob','Mobile number','type="tel" inputmode="numeric" autocomplete="tel" maxlength="11"','01XXXXXXXXX')+fld('as_mail','Email <span style="opacity:.6">(optional)</span>','type="email" autocomplete="email" autocapitalize="none"','you@example.com')+pwf('as_pw','Password','new-password','Create a password','<div class="sm-bar" id="smB"><i></i><i></i><i></i><i></i></div><div class="sm-t" id="smT">8+ characters with letters and numbers</div>')+pwf('as_pw2','Confirm password','new-password','Re-enter password')+fld('as_ref','Referral code <span style="opacity:.6">(optional)</span>','autocomplete="off" maxlength="20" autocapitalize="characters"','Referral code',rf?'<div class="rfok">✓ Referral code applied</div>':'')+'<label class="ck"><input type="checkbox" id="as_tc"> <span>I am 18 or older and I accept the Terms &amp; Conditions.</span></label><div class="ae big" id="amErr"></div><button class="btn bgold" id="amGo" type="submit">Create Account</button><div class="am-alt">Already have an account? <a data-m="login">Login</a></div>';
+    q('#as_ref').value=rf;
+  } else F.innerHTML=fld('af_id','Mobile or Email','autocapitalize="none" spellcheck="false"','01XXXXXXXXX or email')+'<div class="ae big" id="amErr"></div><button class="btn bgold" id="amGo" type="submit">Send reset instructions</button><div class="am-alt"><a data-m="login">Back to Login</a></div>';
+  F.insertAdjacentHTML('beforeend','<div class="am-note">Demo mode: accounts are saved only in this browser.</div>');
+}
+function setErr(id,m){const i=q('#'+id),s=q('[data-e="'+id+'"]');if(i)i.classList.add('bad');if(s)s.textContent=m}
+function setBusy(b){busy=b;const g=q('#amGo');if(!g)return;g.disabled=b;g.textContent=b?'Please wait…':mode=='login'?'Login':mode=='signup'?'Create Account':'Send reset instructions'}
+function openAuth(m,p){build();mode=m||'login';pend=p||null;render();q('#authM').classList.add('o');document.body.classList.add('am-lock');setTimeout(()=>{const i=q('#amF input');if(i)i.focus()},60)}
+function close(){const m=q('#authM');if(m)m.classList.remove('o');document.body.classList.remove('am-lock');pend=null}
+function done(rec,remember,msg){
+  const target=pend;applyUser(rec,remember);close();ui();toast(msg);
+  go(target||(typeof cur!='undefined'?cur:'home'));
+}
+async function submit(){
+  if(busy)return;
+  document.querySelectorAll('#amF .bad').forEach(i=>i.classList.remove('bad'));document.querySelectorAll('#amF .ae').forEach(s=>s.textContent='');
+  if(mode=='forgot'){
+    const v=q('#af_id').value.trim();if(!v)return setErr('af_id','Enter your mobile number or email');
+    mode='login';render();toast('Reset instructions sent (demo – connect SMS/email service)');return;
+  }
+  if(mode=='login'){
+    const id=q('#al_id').value.trim(),pw=q('#al_pw').value;let ok=true;
+    if(!id){setErr('al_id','Enter your mobile number or email');ok=false}
+    if(!pw){setErr('al_pw','Enter your password');ok=false}
+    if(!ok)return;
+    const w=Math.ceil((lockUntil-Date.now())/1000);if(w>0){q('#amErr').textContent='Too many attempts. Try again in '+w+'s.';return}
+    setBusy(true);const r=await authLogin(id,pw);setBusy(false);
+    if(r.err){fails++;if(fails>=5){lockUntil=Date.now()+30000;fails=0;q('#amErr').textContent='Too many failed attempts. Please wait 30 seconds.'}else q('#amErr').textContent=r.err;return}
+    fails=0;done(r.user,q('#al_rm').checked,'Welcome back, '+r.user.name.split(' ')[0]+'!');return;
+  }
+  const name=clean(q('#as_name').value),mob=normMob(q('#as_mob').value),email=q('#as_mail').value.trim(),pw=q('#as_pw').value,pw2=q('#as_pw2').value,ref=clean(q('#as_ref').value).toUpperCase().replace(/[^A-Z0-9]/g,'').slice(0,20);
+  const E=[];
+  if(name.length<2)E.push(['as_name','Enter your full name']);
+  if(!isMob(mob))E.push(['as_mob','Enter a valid 11-digit mobile number (01XXXXXXXXX)']);
+  if(email&&!isMail(email))E.push(['as_mail','Enter a valid email address']);
+  if(pw.length<8||!/[A-Za-z]/.test(pw)||!/\d/.test(pw))E.push(['as_pw','Use 8+ characters with letters and numbers']);
+  else if(pw!==pw2)E.push(['as_pw2','Passwords do not match']);
+  E.forEach(x=>setErr(x[0],x[1]));
+  if(E.length){q('#'+E[0][0]).focus();return}
+  if(!q('#as_tc').checked){q('#amErr').textContent='Please confirm you are 18+ and accept the Terms.';return}
+  setBusy(true);const r=await authSignup({name,mob,email,pw,ref});setBusy(false);
+  if(r.errs){Object.keys(r.errs).forEach(k=>setErr(k,r.errs[k]));return}
+  done(r.user,true,'Account created! Welcome, '+name.split(' ')[0]+'.');
+}
+window.openAuth=openAuth;window.logoutUser=logout;
+
+/* ---- wiring ---- */
+const _go=window.go;
+window.go=function(s){
+  if(s=='out'){drawer(0);if(user)logout();else openAuth('login');return}
+  if(PROT[s]&&!user){drawer(0);openAuth('login',s);toast('Please login first');return}
+  persist();const r=_go.apply(this,arguments);hdr();return r;
+};
+const _nav=window.nav;
+window.nav=function(){
+  _nav.apply(this,arguments);
+  if(!user){const sd=q('#sd');if(!sd)return;
+    sd.querySelectorAll('button').forEach(b=>{if((b.getAttribute('onclick')||'').includes("'out'"))b.remove()});
+    const lg=sd.firstElementChild;if(lg)lg.insertAdjacentHTML('afterend','<div class="sdg"><div>Welcome, Guest</div><div class="two"><button class="btn out sm" onclick="drawer(0);openAuth(\'login\')">Login</button><button class="btn bgold sm" onclick="drawer(0);openAuth(\'signup\')">Sign Up</button></div></div>');
+  }
+};
+const _play=window.play;
+window.play=function(n){if(!user){openAuth('login');toast('Login to play');return}return _play.apply(this,arguments)};
+const hr=q('header .hr');
+if(hr)hr.insertAdjacentHTML('afterbegin','<div class="ah"><button type="button" class="ahl" onclick="openAuth(\'login\')">Login</button><button type="button" class="ahs" onclick="openAuth(\'signup\')">Sign Up</button></div>');
+/* ---- desktop top bar ---- */
+const esc=t=>String(t).replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+function hdr(){
+  const g=q('#hgS'),t=q('#hgT'),p=q('#hpr');if(!g)return;
+  if(user){const h=new Date().getHours();g.textContent=h<12?'Good morning':h<17?'Good afternoon':'Good evening';t.textContent=S.name;p.innerHTML='👑 VIP '+esc(S.lvl);p.onclick=()=>go('vip')}
+  else{g.textContent='Welcome to the lobby';t.textContent='Guest';p.innerHTML='🎁 Sign up &amp; get 100% Welcome Bonus';p.onclick=()=>openAuth('signup')}
+}
+const hh=document.querySelector('header');
+if(hh)hh.insertAdjacentHTML('afterbegin','<div class="hl"><div class="hg"><small id="hgS"></small><b id="hgT"></b></div><div class="hs"><svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" aria-hidden="true"><circle cx="11" cy="11" r="7"/><path d="M20 20l-3.5-3.5"/></svg><input id="hsq" type="search" placeholder="Search providers &amp; games…" autocomplete="off" aria-label="Search"><div class="hsr" id="hsr"></div></div><button type="button" class="hp" id="hpr"></button></div>');
+{
+  const hq=q('#hsq'),hs=q('#hsr');let hf=-1;
+  const items=()=>[...hs.querySelectorAll('button')];
+  const hide=()=>{hs.classList.remove('o');hf=-1};
+  const pick=b=>{if(!b)return;hq.value='';hide();hq.blur();if(b.dataset.p)window.pvOpen&&pvOpen(b.dataset.p);else if(b.dataset.n)play(b.dataset.n)};
+  const res=()=>{
+    const v=hq.value.trim().toLowerCase();hf=-1;if(!v)return hide();
+    const pv=(window.pvFind?pvFind(v):[]).slice(0,6),gm=((typeof CFG!='undefined'&&CFG.games)||[]).filter(x=>x.n.toLowerCase().includes(v)).slice(0,4);
+    let h='';
+    if(pv.length)h+='<div class="hh">Providers</div>'+pv.map(x=>'<button type="button" data-p="'+esc(x.id)+'"><span>'+esc(x.name)+'</span><small>'+esc(x.category)+'</small></button>').join('');
+    if(gm.length)h+='<div class="hh">Games</div>'+gm.map(x=>'<button type="button" data-n="'+esc(x.n)+'"><span>'+esc(x.n)+'</span><small>Play</small></button>').join('');
+    hs.innerHTML=h||'<div class="hh" style="padding:12px 14px;text-transform:none;letter-spacing:0;color:var(--m);font-size:13px">No results found</div>';
+    hs.classList.add('o');
+  };
+  hq.addEventListener('input',res);hq.addEventListener('focus',res);
+  hq.addEventListener('keydown',e=>{
+    const b=items();
+    if(e.key=='ArrowDown'||e.key=='ArrowUp'){e.preventDefault();if(!b.length)return;hf=(hf+(e.key=='ArrowDown'?1:-1)+b.length)%b.length;b.forEach((x,i)=>x.classList.toggle('f',i==hf))}
+    else if(e.key=='Enter'){e.preventDefault();pick(b[hf>=0?hf:0])}
+    else if(e.key=='Escape'){hide();hq.blur()}
+  });
+  hs.addEventListener('mousedown',e=>{const b=e.target.closest('button');if(b){e.preventDefault();pick(b)}});
+  document.addEventListener('mousedown',e=>{if(!e.target.closest('.hs'))hide()});
+}
+guestState();
+{const sid=LS('mw_session')||SS('mw_session'),rec=sid&&users()[sid];if(rec)applyUser(rec,!!LS('mw_session'))}
+ui();
+addEventListener('pagehide',persist);addEventListener('visibilitychange',()=>{if(document.hidden)persist()});setInterval(persist,5000);
+go(typeof cur!='undefined'?cur:'home');
+/* ?ref=CODE লিংকে এলে রেজিস্ট্রেশন খুলে দাও */
+try{const rf=new URLSearchParams(location.search).get('ref');if(rf){LS('mw_ref',clean(rf).toUpperCase().replace(/[^A-Z0-9]/g,'').slice(0,20));if(!user)setTimeout(()=>openAuth('signup'),700)}}catch(e){}
+})();
+</script>
+</body></html>
