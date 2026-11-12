@@ -1,0 +1,1231 @@
+<!DOCTYPE html>
+<html lang="bn"><head><meta charset="UTF-8">
+<meta name="viewport" content="width=980, viewport-fit=cover">
+<title>NEXQIRO - Master Administrator</title>
+<script>
+/* অ্যাডমিন প্যানেলের মতোই: ফোনেও ডেস্কটপের মতো সাইডবারসহ লেআউট দেখাবে। */
+(function(){var de=document.documentElement;function apply(){try{var vm=document.querySelector('meta[name="viewport"]');if(vm&&vm.getAttribute('content').indexOf('width=980')===-1){vm.setAttribute('content','width=980, viewport-fit=cover');}}catch(e){}}
+apply();window.addEventListener('load',function(){setTimeout(apply,150)});window.addEventListener('pageshow',apply);})();
+</script>
+<link rel="manifest" href="master-manifest.json">
+<meta name="theme-color" content="#0A0A0A">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-title" content="NEXQIRO">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<link rel="apple-touch-icon" href="master-icon-192.png">
+<link rel="icon" type="image/png" href="master-logo.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Hind+Siliguri:wght@400;500;600;700&family=Rajdhani:wght@500;600;700&display=swap" rel="stylesheet">
+<script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-auth-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-database-compat.js"></script>
+<script src="./firebase-config.js"></script>
+<style>
+    /* ========================================================
+       MostWinn88 Luxury Dark & Gold Design System  (Admin theme)
+       ======================================================== */
+    :root {
+      --bg-base:#0A0A0A; --bg-surface:#151310; --bg-card:#151310; --bg-card-hover:#1D1A14; --bg-inner:#1D1A14;
+      --border-color:#B97800; --border-subtle:#2E281C;
+      --primary:#F59E0B; --primary-hover:#FFAF1A; --primary-glow:rgba(245,158,11,.35);
+      --accent:#F87171; --accent-hover:#EF4444; --accent-glow:rgba(248,113,113,.35);
+      --success:#4ADE80; --warning:#F59E0B; --info:#38BDF8;
+      --text-main:#F5EFE0; --text-muted:#A89F8A; --text-dim:#736B5E;
+      --sidebar-width:260px; --header-height:64px;
+      --font-display:'Rajdhani',sans-serif;
+      --font-body:'Hind Siliguri','Inter',-apple-system,sans-serif;
+      --radius-sm:8px; --radius-md:12px; --radius-lg:14px; --radius-xl:18px;
+      --shadow-card:0 4px 18px rgba(0,0,0,.5); --shadow-glow:0 0 20px rgba(245,158,11,.22);
+      --c-base:#0A0A0A; --c-deep:#12100E; --c-surface:#151310; --c-inner:#1D1A14; --c-line:#2E281C; --c-gold-line:#B97800;
+      --c-text:#F5EFE0; --c-muted:#A89F8A; --c-dim:#736B5E; --c-on-primary:#0A0A0A;
+    }
+    [data-theme="light"] {
+      --bg-base:#F4F1EA; --bg-surface:#FFFFFF; --bg-card:#FFFFFF; --bg-card-hover:#FAF6EC; --bg-inner:#F6F2E8;
+      --border-color:#D97706; --border-subtle:#E6DECB;
+      --primary:#D97706; --primary-hover:#B45309; --primary-glow:rgba(217,119,6,.25);
+      --accent:#DC2626; --accent-hover:#B91C1C; --accent-glow:rgba(220,38,38,.25);
+      --success:#15803D; --warning:#B45309; --info:#0369A1;
+      --text-main:#1C1917; --text-muted:#57534E; --text-dim:#78716C;
+      --shadow-card:0 2px 10px rgba(60,40,10,.10); --shadow-glow:0 0 14px rgba(217,119,6,.15);
+      --c-base:#F4F1EA; --c-deep:#EFEBE0; --c-surface:#FFFFFF; --c-inner:#F6F2E8; --c-line:#E6DECB; --c-gold-line:#D97706;
+      --c-text:#1C1917; --c-muted:#57534E; --c-dim:#78716C; --c-on-primary:#1C1917;
+      color-scheme:light;
+    }
+    /* master panel er purono variable naam -> admin theme er sathe link (dark/light dutotei kaj korbe) */
+    body {
+      --bg:var(--bg-base); --card:var(--bg-card); --in:var(--bg-inner); --bd:var(--border-subtle);
+      --gold:var(--primary); --bg2:var(--border-color); --tx:var(--text-main); --mu:var(--text-muted);
+      --ok:var(--success); --er:var(--accent); --on:var(--c-on-primary);
+    }
+
+    * { box-sizing:border-box; margin:0; padding:0; -webkit-tap-highlight-color:transparent; }
+    body {
+      background-color:var(--bg-base); color:var(--text-main); font-family:var(--font-body); font-size:14px;
+      min-height:100vh; display:flex; flex-direction:column; overflow-x:hidden; line-height:1.5;
+    }
+    h1,h2,h3,h4,.font-heading,.stat-value,.badge { font-family:var(--font-display); text-transform:uppercase; letter-spacing:.5px; }
+    #app { display:none; min-height:100vh; width:100%; }
+
+    ::-webkit-scrollbar { width:6px; height:6px; }
+    ::-webkit-scrollbar-track { background:var(--c-base); }
+    ::-webkit-scrollbar-thumb { background:var(--c-line); border-radius:4px; }
+    ::-webkit-scrollbar-thumb:hover { background:var(--c-gold-line); }
+
+    /* ---------- Sidebar ---------- */
+    .sidebar { width:var(--sidebar-width); background:var(--bg-surface); border-right:1px solid var(--border-subtle);
+      display:flex; flex-direction:column; position:fixed; top:0; bottom:0; left:0; z-index:100; transition:transform .3s ease; }
+    .brand-header { padding:18px 16px; display:flex; align-items:center; gap:12px; border-bottom:1px solid var(--border-subtle); background:var(--c-surface); }
+    .brand-logo { width:42px; height:42px; border-radius:var(--radius-md); background:#F59E0B; display:flex; align-items:center; justify-content:center;
+      box-shadow:0 0 16px var(--primary-glow); flex-shrink:0; overflow:hidden; }
+    .brand-logo svg { width:24px; height:24px; fill:var(--c-on-primary); }
+    .brand-title { font-size:1.15rem; font-weight:700; color:var(--c-text); line-height:1.2; font-family:var(--font-display); letter-spacing:.5px; }
+    .brand-sub { font-size:.72rem; color:var(--primary); font-weight:600; letter-spacing:1px; }
+    .nav-list { list-style:none; padding:16px 10px; display:flex; flex-direction:column; gap:5px; flex:1; overflow-y:auto; }
+    .nav-item button { width:100%; background:transparent; border:1px solid transparent; border-radius:var(--radius-md); padding:11px 14px;
+      color:var(--text-muted); font-family:var(--font-body); font-size:.92rem; font-weight:500; display:flex; align-items:center; gap:12px;
+      cursor:pointer; transition:all .2s ease; text-align:left; }
+    .nav-item button svg { width:20px; height:20px; flex-shrink:0; fill:currentColor; }
+    .nav-item button:hover { background:var(--bg-card-hover); color:var(--text-main); border-color:var(--border-subtle); }
+    .nav-item button.on { background:var(--c-inner); border:1px solid var(--border-color); color:var(--primary); font-weight:600; box-shadow:inset 3px 0 0 var(--primary); }
+    .nav-badge { margin-left:auto; background:var(--border-color); color:var(--c-on-primary); font-size:.72rem; padding:2px 8px; border-radius:999px; font-family:var(--font-display); font-weight:700; }
+    .sidebar-footer { padding:14px 16px; border-top:1px solid var(--border-subtle); background:#100E0C; display:flex; flex-direction:column; gap:10px; }
+    [data-theme="light"] .sidebar-footer { background:var(--c-deep); }
+    .admin-pill { display:flex; align-items:center; gap:10px; }
+    .admin-avatar { width:36px; height:36px; border-radius:10px; background:var(--primary); color:var(--c-on-primary); display:flex; align-items:center; justify-content:center; font-weight:700; font-size:.9rem; font-family:var(--font-display); flex-shrink:0; }
+    .admin-details { flex:1; overflow:hidden; }
+    .admin-name { font-size:.82rem; font-weight:600; color:var(--text-main); white-space:nowrap; overflow:hidden; text-overflow:ellipsis; }
+    .admin-role { font-size:.68rem; color:var(--primary); font-weight:700; letter-spacing:.8px; }
+
+    /* ---------- Main + Topbar ---------- */
+    .main-wrapper { flex:1; margin-left:var(--sidebar-width); display:flex; flex-direction:column; min-width:0; min-height:100vh; background:var(--bg-base); }
+    .topbar { height:var(--header-height); background:var(--c-surface); border-bottom:1px solid var(--border-subtle); position:sticky; top:0; z-index:90;
+      display:flex; align-items:center; justify-content:space-between; padding:0 20px; gap:10px; backdrop-filter:blur(10px); }
+    .topbar-left { display:flex; align-items:center; gap:10px; min-width:0; }
+    .topbar-actions { display:flex; align-items:center; gap:10px; margin-left:auto; }
+    .mobile-menu-btn { display:none; width:40px; height:40px; border-radius:12px; background:var(--c-surface); border:1px solid var(--c-line); color:var(--c-text); cursor:pointer; place-items:center; padding:0; transition:all .2s; }
+    .mobile-menu-btn svg { width:20px; height:20px; fill:currentColor; }
+    .mobile-menu-btn:hover { border-color:var(--border-color); color:var(--primary); background:var(--c-surface); }
+    .btn-icon { background:var(--c-surface); border:1px solid var(--c-line); color:var(--text-muted); width:38px; height:38px; padding:0; border-radius:12px;
+      display:flex; align-items:center; justify-content:center; cursor:pointer; transition:all .2s; }
+    .btn-icon:hover { color:var(--primary); border-color:var(--border-color); background:var(--c-inner); }
+    .btn-icon svg { width:18px; height:18px; fill:currentColor; }
+    .theme-toggle-btn svg { width:20px; height:20px; fill:currentColor; }
+    .theme-toggle-btn { flex-shrink:0; }
+    .bal { border:1px solid var(--c-gold-line); background:var(--c-inner); color:#F59E0B; border-radius:999px; padding:4px 14px; font:700 15px var(--font-display); letter-spacing:.4px; white-space:nowrap; }
+    .content-area { padding:20px; flex:1; max-width:1400px; width:100%; margin:0 auto; }
+
+    /* ---------- Stats ---------- */
+    .stats-grid { display:grid; grid-template-columns:repeat(auto-fit,minmax(210px,1fr)); gap:14px; margin-bottom:22px; }
+    .stat-card { background:var(--bg-card); border:1px solid var(--border-subtle); border-radius:var(--radius-lg); padding:16px 18px; display:flex; align-items:center; gap:14px; transition:all .2s; }
+    .stat-card:hover { border-color:var(--border-color); }
+    .stat-icon { width:44px; height:44px; border-radius:12px; display:flex; align-items:center; justify-content:center; flex-shrink:0; }
+    .stat-icon svg { width:22px; height:22px; fill:currentColor; }
+    .stat-gold { background:rgba(245,158,11,.12); border:1px solid rgba(245,158,11,.4); color:var(--primary); }
+    .stat-red { background:rgba(248,113,113,.12); border:1px solid rgba(248,113,113,.4); color:var(--accent); }
+    .stat-green { background:rgba(74,222,128,.12); border:1px solid rgba(74,222,128,.4); color:var(--success); }
+    .stat-blue { background:rgba(56,189,248,.12); border:1px solid rgba(56,189,248,.4); color:var(--info); }
+    .stat-info { flex:1; overflow:hidden; }
+    .stat-title { font-size:.78rem; color:var(--text-muted); margin-bottom:2px; font-weight:500; }
+    .stat-value { font-size:1.6rem; font-weight:700; color:var(--c-text); line-height:1.1; font-family:var(--font-display); }
+
+    /* ---------- Cards / content (master er dynamic content ei class gulo e render hoy) ---------- */
+    .cd { background:var(--c-surface); border:1px solid var(--c-line); border-radius:var(--radius-lg); padding:14px; box-shadow:var(--shadow-card); }
+    .cd b { display:block; font:700 22px var(--font-display); color:var(--gold); }
+    .cd span { color:var(--mu); font-size:12px; }
+
+    /* ---------- Buttons ---------- */
+    button,input,textarea,select { font-family:var(--font-body); font-size:14px; }
+    button { border:1px solid var(--border-color); background:var(--c-inner); color:var(--primary); border-radius:var(--radius-md); padding:7px 14px; cursor:pointer; font-weight:600; transition:all .2s; }
+    button:hover { background:var(--border-color); color:var(--c-on-primary); }
+    button.on, button.p { background:#F59E0B; color:var(--c-on-primary); border-color:transparent; font-weight:700; }
+    button.on:hover, button.p:hover { background:#FFAF1A; color:var(--c-on-primary); }
+    button.d { background:#F87171; color:var(--c-on-primary); border-color:transparent; font-weight:700; }
+    button.d:hover { background:#EF4444; color:#fff; }
+    button:disabled { opacity:.4; cursor:not-allowed; }
+    .nav-item button.on { background:var(--c-inner); border:1px solid var(--border-color); color:var(--primary); font-weight:600; }
+    .nav-item button:hover { background:var(--bg-card-hover); color:var(--text-main); border-color:var(--border-subtle); }
+    .nav-item button.on:hover { border-color:var(--border-color); color:var(--primary); }
+
+    /* ---------- Forms ---------- */
+    input, textarea, select { background:var(--c-inner); border:1px solid var(--border-subtle); border-radius:var(--radius-md); color:var(--text-main); outline:none; transition:border .2s; }
+    input { height:44px; padding:0 14px; width:100%; }
+    textarea { width:100%; padding:10px 14px; font-size:13px; }
+    select { height:44px; padding:0 14px; cursor:pointer; }
+    input:focus, textarea:focus, select:focus { border-color:var(--border-color); box-shadow:0 0 0 2px rgba(245,158,11,.15); }
+    input[type=checkbox], input[type=radio] { width:auto; height:auto; }
+    #tn { height:38px; max-width:220px; border-color:var(--border-color); color:var(--primary); font-weight:600; padding:0 10px; }
+    select option { background:var(--c-surface); color:var(--text-main); }
+    .row { display:flex; gap:8px; flex-wrap:wrap; margin-bottom:12px; }
+    .row input { flex:1; min-width:140px; }
+
+    /* ---------- Tables ---------- */
+    .sc { overflow-x:auto; border-radius:var(--radius-md); }
+    table { width:100%; border-collapse:collapse; min-width:640px; text-align:left; font-size:.88rem; }
+    th { background:var(--c-inner); color:var(--text-muted); font-family:var(--font-display); font-weight:600; font-size:.78rem; padding:12px 16px; border-bottom:1px solid var(--border-subtle); white-space:nowrap; letter-spacing:.5px; text-align:left; }
+    td { padding:12px 16px; border-bottom:1px solid var(--border-subtle); color:var(--text-main); vertical-align:middle; text-align:left; }
+    tr:last-child td { border-bottom:none; }
+    tr:hover td { background:var(--c-inner); }
+    table td .pl, table th .pl { white-space:nowrap; }
+
+    /* ---------- Badges / pills ---------- */
+    .pl { display:inline-block; padding:2px 10px; border-radius:999px; font-size:11px; font-weight:600; border:1px solid #1f5b35; color:var(--ok); background:rgba(74,222,128,.1); }
+    .pl.b { border-color:#6b2a2a; color:var(--er); background:rgba(248,113,113,.1); }
+    .pl.y { border-color:var(--bg2); color:var(--gold); background:var(--in); }
+
+    /* ---------- Toggle switch ---------- */
+    .sw { width:50px; height:26px; padding:0; border-radius:99px; position:relative; background:rgba(248,113,113,.15); border-color:rgba(248,113,113,.5); vertical-align:middle; }
+    .sw::after { content:''; position:absolute; top:2px; left:2px; width:20px; height:20px; border-radius:50%; background:var(--er); transition:.2s; }
+    .sw:hover { background:rgba(248,113,113,.15); }
+    .sw.ok { background:rgba(74,222,128,.15); border-color:rgba(74,222,128,.5); }
+    .sw.ok:hover { background:rgba(74,222,128,.15); }
+    .sw.ok::after { left:26px; background:var(--ok); }
+
+    /* ---------- Login ---------- */
+    #login { position:fixed; inset:0; background:var(--c-base); z-index:1500; display:flex; align-items:center; justify-content:center; padding:20px; }
+    .login-box { width:100%; max-width:420px; background:var(--c-surface); border:1px solid var(--border-subtle); border-radius:var(--radius-xl); padding:32px 28px; box-shadow:0 20px 50px rgba(0,0,0,.85), var(--shadow-glow); text-align:center; }
+    .login-logo { width:60px; height:60px; margin:0 auto 16px; border-radius:var(--radius-lg); background:#F59E0B; display:flex; align-items:center; justify-content:center; box-shadow:0 0 20px var(--primary-glow); }
+    .login-logo svg { width:32px; height:32px; fill:var(--c-on-primary); }
+    .login-title { font-size:1.5rem; color:var(--c-text); margin-bottom:4px; font-family:var(--font-display); letter-spacing:.5px; }
+    .login-sub { color:var(--text-muted); font-size:.82rem; margin-bottom:24px; }
+    .login-form { display:flex; flex-direction:column; gap:12px; }
+    .login-form button { min-height:44px; }
+
+    /* ---------- Toast ---------- */
+    #toast { position:fixed; bottom:24px; right:24px; left:auto; transform:none; background:var(--c-surface); border:1px solid var(--border-subtle); border-left:4px solid var(--primary);
+      box-shadow:0 10px 30px rgba(0,0,0,.7); border-radius:var(--radius-md); padding:12px 18px; color:var(--c-text); font-size:.88rem; display:none; z-index:2000; max-width:380px; }
+
+    /* ---------- Responsive (admin er moto) ---------- */
+    @media (max-width:900px) {
+      .sidebar { transform:translateX(-100%); }
+      .sidebar.open { transform:translateX(0); }
+      .main-wrapper { margin-left:0; }
+      .mobile-menu-btn { display:grid; }
+      .content-area { padding:14px; }
+      .stats-grid { grid-template-columns:1fr 1fr; }
+      .topbar { padding:0 12px; }
+    }
+    @media (max-width:500px) { .stats-grid { grid-template-columns:1fr; } }
+
+    /* ---------- Light theme extras ---------- */
+    body[data-theme="light"] .sidebar { box-shadow:2px 0 12px rgba(60,40,10,.08); }
+    body[data-theme="light"] .topbar { backdrop-filter:none; }
+    body[data-theme="light"] .bal, body[data-theme="light"] .gold { color:#B45309; }
+    body[data-theme="light"] ::-webkit-scrollbar-thumb { background:#D8CCAE; }
+    body[data-theme="light"] #toast { box-shadow:0 6px 20px rgba(60,40,10,.18); }
+
+    /* ---------- Classic flat look (admin er moto: no shadow / glow / gradient) ---------- */
+    *, *::before, *::after { box-shadow:none !important; text-shadow:none !important; }
+    :is(button,.btn-icon,.stat-card,.cd,.nav-item):hover { transform:none !important; }
+    [style*="gradient"]:not(.toast) { background-image:none !important; background-color:var(--bg-card) !important; }
+    .stat-card, .cd { border-radius:10px; }
+    .nav-item button.on { box-shadow:inset 3px 0 0 var(--primary) !important; }
+    .login-box { box-shadow:0 20px 50px rgba(0,0,0,.85) !important; }
+
+/* ===== Support Center theme: অ্যাডমিন চ্যাট ===== */
+.npm{display:grid;grid-template-columns:320px minmax(0,1fr);height:calc(100vh - 230px);height:calc(100dvh - 230px);min-height:480px;border-radius:16px;overflow:hidden;background:#fff;color:#202436;border:1px solid #e8eaf1;font-family:"Noto Sans Bengali","Hind Siliguri","Segoe UI",Arial,sans-serif}
+.npm,.npm *{box-sizing:border-box;min-width:0}
+.npm-list{display:flex;flex-direction:column;border-right:1px solid #e8eaf1;background:#fff;min-height:0}
+.npm-head{flex:0 0 auto;display:flex;align-items:center;gap:12px;padding:12px 16px;min-height:78px;color:#fff;background:linear-gradient(135deg,#f06292,#c2185b)}
+.npm-logo{width:44px;height:44px;flex:0 0 44px;display:grid;place-items:center;border-radius:13px;background:rgba(255,255,255,.17);border:1px solid rgba(255,255,255,.4);font-size:13px;font-weight:900;color:#fff}
+.npm-hi{flex:1}
+.npm-hi b{display:block;margin:0 0 5px;font-size:15px;line-height:1.5;font-weight:850;color:#fff}
+.npm-hi small{display:block;font-size:11px;line-height:1.5;opacity:.92;color:#fff}
+.npm-rows{flex:1 1 0;min-height:0;overflow-y:auto}
+.npm button{font:inherit;cursor:pointer}
+.npm-row{display:flex;align-items:center;gap:11px;width:100%;padding:12px 14px;border:0;border-bottom:1px solid #f0f1f6;background:#fff;color:#202436;text-align:left}
+.npm-row:hover{background:#fff7fa}
+.npm-row.sel{background:#fff0f6}
+.npm-av{width:44px;height:44px;flex:0 0 44px;display:grid;place-items:center;border-radius:50%;border:2px solid #f3b4cc;background:#fff0f6;color:#c2185b;font-size:17px;font-weight:800}
+.npm-av.sm{width:28px;height:28px;flex:0 0 28px;border-width:1px;font-size:12px}
+.npm-ri{flex:1}
+.npm-ri b{display:block;font-size:13px;color:#202436;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.npm-ri small{display:block;margin-top:3px;font-size:11px;color:#7b8194;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.npm-rm{flex:0 0 auto;display:flex;flex-direction:column;align-items:flex-end;gap:6px;font-size:10px;color:#7b8194}
+.npm-unread{display:block;width:10px;height:10px;border-radius:50%;background:#e91e63}
+.npm-empty{padding:24px;text-align:center;color:#7b8194;font-size:12px}
+.npm-conv{display:flex;flex-direction:column;min-height:0;background:#fff}
+.npm-back{flex:0 0 auto;display:none;width:36px;height:36px;place-items:center;padding:0;border:1px solid rgba(255,255,255,.5);border-radius:50%;background:rgba(255,255,255,.15);color:#fff;font-size:18px;line-height:1}
+.npm-officer{flex:0 0 auto;display:flex;align-items:center;gap:11px;padding:12px 16px;border-bottom:1px solid #e8eaf1;background:#fff}
+.npm-officer .npm-av{position:relative}
+.npm-oi{flex:1}
+.npm-oi b{display:block;margin:0 0 4px;font-size:13px;color:#202436;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.npm-oi small{display:block;font-size:11px;color:#18a968;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.npm-body{flex:1 1 0;min-height:0;overflow-x:hidden;overflow-y:auto;overscroll-behavior-y:contain;padding:0 12px 14px;background:radial-gradient(circle at 5% 5%,#fceaf1,transparent 32%),#fafbfe}
+.npm-div{text-align:center;margin:16px 0 18px}
+.npm-div span{display:inline-block;max-width:100%;padding:5px 12px;font-size:10px;color:#7b8194;border:1px solid #e8eaf1;background:#fff;border-radius:20px}
+.npm-m{display:flex;gap:8px;align-items:flex-end;margin-bottom:12px}
+.npm-m.me{justify-content:flex-end}
+.npm-b{max-width:86%;padding:10px 12px;border-radius:15px 15px 15px 4px;background:#fff;color:#202436;border:1px solid #e8eaf1;font-size:13px;line-height:1.75;overflow-wrap:anywhere;white-space:pre-wrap}
+.npm-m.me .npm-b{color:#fff;background:#e91e63;border-color:#e91e63;border-radius:15px 15px 4px 15px}
+.npm-t{display:block;text-align:right;font-size:9px;opacity:.62;margin-top:4px}
+.npm-bar{flex:0 0 auto;display:flex;align-items:flex-end;gap:9px;margin:0;padding:9px 12px;background:#fff;border-top:1px solid #e8eaf1}
+.npm-bar textarea{flex:1;display:block;width:auto;min-height:44px;max-height:120px;padding:11px 12px;margin:0;border:1px solid #dfe2eb;border-radius:22px;background:#fff;color:#202436;outline:none;resize:none;font:inherit;font-size:16px;line-height:1.4;box-shadow:none}
+.npm-bar textarea:focus{border-color:#e91e63;box-shadow:0 0 0 3px rgba(233,30,99,.08)}
+.npm-bar button{flex:0 0 44px;width:44px;height:44px;display:grid;place-items:center;padding:0;border:0;border-radius:50%;background:#e91e63;color:#fff;font-size:18px;line-height:1}
+.npm-bar button:active{background:#c2185b}
+.npm-ph{flex:1;display:flex;flex-direction:column;min-height:0}
+.npm-phb{flex:1;display:grid;place-items:center;background:radial-gradient(circle at 5% 5%,#fceaf1,transparent 32%),#fafbfe;color:#7b8194;font-size:12px;padding:20px;text-align:center}
+@media(max-width:760px){
+ .npm{grid-template-columns:minmax(0,1fr);height:calc(100dvh - 250px)}
+ .npm.has-sel .npm-list{display:none}
+ .npm:not(.has-sel) .npm-conv{display:none}
+ .npm-back{display:grid}
+}
+</style><style>
+/* ---------- Notification (bell / sound / drawer) ---------- */
+.notif-btn{position:relative}
+.notif-badge{position:absolute;top:-5px;right:-5px;background:var(--accent);color:#fff;font-size:.68rem;font-weight:800;border-radius:10px;padding:1px 6px;display:none;line-height:1.3}
+#btn-sound{display:inline-flex;align-items:center;gap:6px;white-space:nowrap;background:var(--c-inner);border:1px solid var(--border-subtle);color:var(--text-main)}
+#btn-sound:hover{border-color:var(--border-color);color:var(--primary);background:var(--c-inner)}
+#btn-sound.off{border-color:var(--border-color);color:var(--primary)}
+#notif-drawer{position:fixed;top:calc(var(--header-height) + 8px);right:16px;width:360px;max-width:calc(100vw - 24px);max-height:70vh;display:none;flex-direction:column;background:var(--c-surface);border:1px solid var(--border-color);border-radius:var(--radius-lg);z-index:1000;overflow:hidden}
+#notif-drawer.open{display:flex}
+.nd-head{display:flex;align-items:center;justify-content:space-between;gap:8px;padding:12px 14px;border-bottom:1px solid var(--border-subtle);background:var(--c-inner)}
+.nd-title{font:700 1rem var(--font-display);color:var(--c-text)}
+.nd-list{overflow-y:auto;flex:1}
+.nd-item{display:flex;gap:10px;align-items:flex-start;padding:12px 14px;border-bottom:1px solid var(--border-subtle);cursor:pointer}
+.nd-item:hover{background:var(--c-inner)}
+.nd-dot{width:8px;height:8px;border-radius:50%;background:var(--primary);margin-top:7px;flex-shrink:0}
+.nd-dot.rd{background:transparent;border:1px solid var(--border-subtle)}
+.nd-main{flex:1;min-width:0}
+.nd-main b{display:block;font-size:.9rem;color:var(--text-main);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.nd-main span{font-size:.78rem;color:var(--text-muted)}
+.nd-amt{font:700 1rem var(--font-display);color:var(--primary);white-space:nowrap}
+.nd-empty{padding:26px 14px;text-align:center;color:var(--text-muted);font-size:.85rem}
+.nd-foot{padding:10px 14px;border-top:1px solid var(--border-subtle);display:flex;flex-direction:column;gap:6px;background:var(--c-inner)}
+.nd-foot small{color:var(--text-muted);font-size:.74rem}
+@media (max-width:900px){.topbar-actions{gap:6px}}
+</style>
+<style>
+/* logo = NEXQIRO emblem (image) */
+.brand-logo{background:transparent !important;width:54px;height:54px;border-radius:0;overflow:visible}
+.brand-logo img{width:54px;height:54px;display:block;object-fit:contain}
+.login-logo{background:transparent !important;width:96px;height:96px;margin:0 auto 14px;border-radius:0}
+.login-logo img{width:96px;height:96px;display:block;object-fit:contain}
+</style>
+</head>
+<body data-theme="dark">
+<script>try{var __t=localStorage.getItem("np_admin_theme");if(__t==="light"||__t==="dark")document.body.setAttribute("data-theme",__t);}catch(e){}</script>
+
+<div id="login"><div class="login-box">
+  <div class="login-logo"><img src="master-logo.png" alt="NEXQIRO" width="96" height="96" decoding="async"></div>
+  <h2 class="login-title" id="lt">NEXQIRO</h2>
+  <p class="login-sub">মাস্টার কন্ট্রোল প্যানেল</p>
+  <div class="login-form">
+    <input id="em" type="email" placeholder="Master ইমেইল"><input id="pw" type="password" placeholder="পাসওয়ার্ড">
+    <button class="p" onclick="login()">লগইন</button><button id="lback" style="display:none" onclick="switchTenant('main')">← মূল প্রজেক্টে ফিরুন</button>
+  </div>
+</div></div>
+
+<div id="app">
+  <aside class="sidebar" id="sidebar">
+    <div class="brand-header">
+      <div class="brand-logo"><img src="master-logo.png" alt="NEXQIRO" width="54" height="54" decoding="async"></div>
+      <div><div class="brand-title">NEXQIRO</div><div class="brand-sub">MASTER ADMINISTRATOR</div></div>
+    </div>
+    <ul class="nav-list">
+        <li class="nav-item"><button id="t-admins" onclick="tab('admins')"><svg viewBox="0 0 24 24"><path d="M16 11c1.66 0 2.99-1.34 2.99-3S17.66 5 16 5c-1.66 0-3 1.34-3 3s1.34 3 3 3zm-8 0c1.66 0 2.99-1.34 2.99-3S9.66 5 8 5C6.34 5 5 6.34 5 8s1.34 3 3 3zm0 2c-2.33 0-7 1.17-7 3.5V19h14v-2.5c0-2.33-4.67-3.5-7-3.5zm8 0c-.29 0-.62.02-.97.05 1.16.84 1.97 1.97 1.97 3.45V19h6v-2.5c0-2.33-4.67-3.5-7-3.5z"/></svg><span class="nav-label">User Admins</span></button></li>
+        <li class="nav-item"><button id="t-reqs" onclick="tab('reqs')"><svg viewBox="0 0 24 24"><path d="M21 18v1c0 1.1-.9 2-2 2H5c-1.11 0-2-.9-2-2V5c0-1.1.89-2 2-2h14c1.1 0 2 .9 2 2v1h-9c-1.11 0-2 .9-2 2v8c0 1.1.89 2 2 2h9zm-9-2h10V8H12v8zm4-2.5c-.83 0-1.5-.67-1.5-1.5s.67-1.5 1.5-1.5 1.5.67 1.5 1.5-.67 1.5-1.5 1.5z"/></svg><span class="nav-label">ব্যালেন্স রিকোয়েস্ট</span><span class="nav-badge" id="nav-pending">0</span></button></li>
+        <li class="nav-item"><button id="t-led" onclick="tab('led')"><svg viewBox="0 0 24 24"><path d="M14 2H6c-1.1 0-1.99.9-1.99 2L4 20c0 1.1.89 2 1.99 2H18c1.1 0 2-.9 2-2V8l-6-6zm2 16H8v-2h8v2zm0-4H8v-2h8v2zm-3-5V3.5L18.5 9H13z"/></svg><span class="nav-label">লেজার</span></button></li>
+        <li class="nav-item"><button id="t-games" onclick="tab('games')"><svg viewBox="0 0 24 24"><path d="M3 13h8V3H3v10zm0 8h8v-6H3v6zm10 0h8V11h-8v10zm0-18v6h8V3h-8z"/></svg><span class="nav-label">গেম ম্যানেজমেন্ট</span></button></li>
+        <li class="nav-item"><button id="t-players" onclick="tab('players')"><svg viewBox="0 0 24 24"><path d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z"/></svg><span class="nav-label">প্লেয়ার</span></button></li>
+        <li class="nav-item"><button id="t-act" onclick="tab('act')"><svg viewBox="0 0 24 24"><path d="M19 3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zM9 17H7v-7h2v7zm4 0h-2V7h2v10zm4 0h-2v-4h2v4z"/></svg><span class="nav-label">গেম অ্যাক্টিভিটি</span></button></li>
+        <li class="nav-item"><button id="t-feat" onclick="tab('feat')"><svg viewBox="0 0 24 24"><path d="M19.14 12.94c.04-.3.06-.61.06-.94 0-.32-.02-.64-.07-.94l2.03-1.58c.18-.14.23-.41.12-.61l-1.92-3.32c-.12-.22-.37-.29-.59-.22l-2.39.96c-.5-.38-1.03-.7-1.62-.94l-.36-2.54c-.04-.24-.24-.41-.48-.41h-3.84c-.24 0-.43.17-.47.41l-.36 2.54c-.59.24-1.13.57-1.62.94l-2.39-.96c-.22-.08-.47 0-.59.22L2.74 8.87c-.12.21-.08.47.12.61l2.03 1.58c-.05.3-.09.63-.09.94s.02.64.07.94l-2.03 1.58c-.18.14-.23.41-.12.61l1.92 3.32c.12.22.37.29.59.22l2.39-.96c.5.38 1.03.7 1.62.94l.36 2.54c.05.24.24.41.48.41h3.84c.24 0 .44-.17.47-.41l.36-2.54c.59-.24 1.13-.56 1.62-.94l2.39.96c.22.08.47 0 .59-.22l1.92-3.32c.12-.22.07-.47-.12-.61l-2.01-1.58zM12 15.6c-1.98 0-3.6-1.62-3.6-3.6s1.62-3.6 3.6-3.6 3.6 1.62 3.6 3.6-1.62 3.6-3.6 3.6z"/></svg><span class="nav-label">ফিচার কন্ট্রোল</span></button></li>
+        <li class="nav-item"><button id="t-chat" onclick="tab('chat')"><svg viewBox="0 0 24 24"><path d="M20 2H4c-1.1 0-2 .9-2 2v18l4-4h14c1.1 0 2-.9 2-2V4c0-1.1-.9-2-2-2zm0 14H6l-2 2V4h16v12z"/></svg><span class="nav-label">অ্যাডমিন চ্যাট</span><span class="nav-badge" id="nav-chat-unread" style="display:none;background:var(--red,#ef4444);color:#fff">0</span></button></li>
+        <li class="nav-item"><button id="t-promo" onclick="tab('promo')"><svg viewBox="0 0 24 24"><path d="M20 6h-2.18c.11-.31.18-.65.18-1 0-1.66-1.34-3-3-3-1.05 0-1.96.54-2.5 1.35l-.5.67-.5-.68C10.96 2.54 10.05 2 9 2 7.34 2 6 3.34 6 5c0 .35.07.69.18 1H4c-1.11 0-1.99.89-1.99 2L2 19c0 1.11.89 2 2 2h16c1.11 0 2-.89 2-2V8c0-1.11-.89-2-2-2zm-5-2c.55 0 1 .45 1 1s-.45 1-1 1-1-.45-1-1 .45-1 1-1zM9 4c.55 0 1 .45 1 1s-.45 1-1 1-1-.45-1-1 .45-1 1-1z"/></svg><span class="nav-label">ডিপোজিট প্রোমো</span></button></li>
+        <li class="nav-item"><button id="t-tenants" onclick="tab('tenants')"><svg viewBox="0 0 24 24"><path d="M12 2L1 7l11 5 9-4.09V17h2V7L12 2zm0 13.09L4.27 11.5 2 12.53l10 4.55 10-4.55-2.27-1.03L12 15.09zm0 4.54l-7.73-3.51L2 17.16l10 4.55 10-4.55-2.27-1.04L12 19.63z"/></svg><span class="nav-label">প্রজেক্টসমূহ</span></button></li>
+        <li class="nav-item"><button id="t-guide" onclick="tab('guide')"><svg viewBox="0 0 24 24"><path d="M21 5c-1.11-.35-2.33-.5-3.5-.5-1.95 0-4.05.4-5.5 1.5-1.45-1.1-3.55-1.5-5.5-1.5S2.45 4.9 1 6v14.65c0 .25.25.5.5.5.1 0 .15-.05.25-.05C3.1 20.45 5.05 20 6.5 20c1.95 0 4.05.4 5.5 1.5 1.35-.85 3.8-1.5 5.5-1.5 1.65 0 3.35.3 4.75 1.05.1.05.15.05.25.05.25 0 .5-.25.5-.5V6c-.6-.45-1.25-.75-2-1zm0 13.5c-1.1-.35-2.3-.5-3.5-.5-1.7 0-4.15.65-5.5 1.5V8c1.35-.85 3.8-1.5 5.5-1.5 1.2 0 2.4.15 3.5.5v11.5z"/></svg><span class="nav-label">গাইড</span></button></li>
+    </ul>
+    <div class="sidebar-footer">
+      <div class="admin-pill">
+        <div class="admin-avatar" id="sidebar-avatar">M</div>
+        <div class="admin-details"><div class="admin-name" id="sidebar-email"></div><div class="admin-role">MASTER ADMIN</div></div>
+        <button class="btn-icon theme-toggle-btn" onclick="cycleTheme()" title="ডার্ক / লাইট থিম" style="width:32px;height:32px;"><svg viewBox="0 0 24 24"><path d="M12 3c-4.97 0-9 4.03-9 9s4.03 9 9 9 9-4.03 9-9c0-.46-.04-.92-.1-1.36-.98 1.37-2.58 2.26-4.4 2.26-2.98 0-5.4-2.42-5.4-5.4 0-1.81.89-3.42 2.26-4.4-.44-.06-.9-.1-1.36-.1z"/></svg></button>
+        <button class="btn-icon" onclick="auth.signOut()" title="লগআউট" style="width:32px;height:32px;"><svg viewBox="0 0 24 24"><path d="M10.09 15.59L11.5 17l5-5-5-5-1.41 1.41L12.67 11H3v2h9.67l-2.58 2.59zM19 3H5c-1.11 0-2 .9-2 2v4h2V5h14v14H5v-4H3v4c0 1.1.89 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2z"/></svg></button>
+      </div>
+    </div>
+  </aside>
+
+  <div class="main-wrapper">
+    <header class="topbar">
+      <div class="topbar-left">
+        <button class="mobile-menu-btn" onclick="toggleSidebar()" title="মেনু"><svg viewBox="0 0 24 24"><path d="M3 18h18v-2H3v2zm0-5h18v-2H3v2zm0-7v2h18V6H3z"/></svg></button>
+        <select id="tn" onchange="switchTenant(this.value)" title="প্রজেক্ট বদলান"></select>
+      </div>
+      <div class="topbar-actions">
+        <button class="btn-icon notif-btn" onclick="toggleNotifDrawer()" id="btn-notif-bell" title="ব্যালেন্স রিকোয়েস্ট নোটিফিকেশন"><svg viewBox="0 0 24 24"><path d="M12 22c1.1 0 2-.9 2-2h-4c0 1.1.9 2 2 2zm6-6v-5c0-3.07-1.63-5.64-4.5-6.32V4c0-.83-.67-1.5-1.5-1.5s-1.5.67-1.5 1.5v.68C7.64 5.36 6 7.92 6 11v5l-2 2v1h16v-1l-2-2z"/></svg><span class="notif-badge" id="notif-badge">0</span></button>
+        <button id="btn-sound" onclick="toggleMasterSound()" title="নতুন রিকোয়েস্টে সাউন্ড অন/অফ"><span id="snd-ic">🔊</span><span id="snd-lb">সাউন্ড অন</span></button>
+        <div class="bal" id="mb">৳ 0</div>
+        <button onclick="setMaster()">ব্যালেন্স সেট</button>
+      </div>
+    </header>
+    <main class="content-area">
+      <div class="stats-grid">
+        <div class="stat-card"><div class="stat-icon stat-gold"><svg viewBox="0 0 24 24"><path d="M21 18v1c0 1.1-.9 2-2 2H5c-1.11 0-2-.9-2-2V5c0-1.1.89-2 2-2h14c1.1 0 2 .9 2 2v1h-9c-1.11 0-2 .9-2 2v8c0 1.1.89 2 2 2h9zm-9-2h10V8H12v8zm4-2.5c-.83 0-1.5-.67-1.5-1.5s.67-1.5 1.5-1.5 1.5.67 1.5 1.5-.67 1.5-1.5 1.5z"/></svg></div><div class="stat-info"><div class="stat-title">Master ব্যালেন্স</div><div class="stat-value" id="s1">0</div></div></div>
+        <div class="stat-card"><div class="stat-icon stat-green"><svg viewBox="0 0 24 24"><path d="M19 3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zM9 17H7v-7h2v7zm4 0h-2V7h2v10zm4 0h-2v-4h2v4z"/></svg></div><div class="stat-info"><div class="stat-title">অ্যাডমিনদের মোট ব্যালেন্স</div><div class="stat-value" id="s2">0</div></div></div>
+        <div class="stat-card"><div class="stat-icon stat-blue"><svg viewBox="0 0 24 24"><path d="M16 11c1.66 0 2.99-1.34 2.99-3S17.66 5 16 5c-1.66 0-3 1.34-3 3s1.34 3 3 3zm-8 0c1.66 0 2.99-1.34 2.99-3S9.66 5 8 5C6.34 5 5 6.34 5 8s1.34 3 3 3zm0 2c-2.33 0-7 1.17-7 3.5V19h14v-2.5c0-2.33-4.67-3.5-7-3.5zm8 0c-.29 0-.62.02-.97.05 1.16.84 1.97 1.97 1.97 3.45V19h6v-2.5c0-2.33-4.67-3.5-7-3.5z"/></svg></div><div class="stat-info"><div class="stat-title">অ্যাডমিন সংখ্যা</div><div class="stat-value" id="s3">0</div></div></div>
+        <div class="stat-card"><div class="stat-icon stat-red"><svg viewBox="0 0 24 24"><path d="M18 16v-5c0-3.07-1.63-5.64-4.5-6.32V4c0-.83-.67-1.5-1.5-1.5s-1.5.67-1.5 1.5v.68C7.64 5.36 6 7.92 6 11v5l-2 2v1h16v-1l-2-2zm-6 6c1.1 0 2-.9 2-2h-4c0 1.1.9 2 2 2z"/></svg></div><div class="stat-info"><div class="stat-title">পেন্ডিং রিকোয়েস্ট</div><div class="stat-value" id="s4">0</div></div></div>
+      </div>
+      <div id="v"></div>
+    </main>
+  </div>
+</div>
+<div id="toast"></div>
+<div id="notif-drawer">
+  <div class="nd-head"><span class="nd-title">🔔 নতুন রিকোয়েস্ট</span><button onclick="markAllNotifRead()" style="padding:4px 10px;font-size:12px">সব পড়া হয়েছে</button></div>
+  <div class="nd-list" id="nd-list"></div>
+  <div class="nd-foot"><button id="btn-enable-notif" class="p" onclick="enableNotifications()">🔔 ফোন/ব্রাউজার নোটিফিকেশন চালু করুন</button><small id="nd-note"></small></div>
+</div>
+<script>
+const MAINCFG=window.NP_FIREBASE_CONFIG||{apiKey:"AIzaSyBFaoU_cDws6YVAXFMWBnogGAQHhjfC23Q",authDomain:"np-trunament-bd.firebaseapp.com",databaseURL:"https://np-trunament-bd-default-rtdb.firebaseio.com",projectId:"np-trunament-bd",storageBucket:"np-trunament-bd.firebasestorage.app",messagingSenderId:"324972484501",appId:"1:324972484501:web:38598aa922e983990b889c"},MAINAPP=firebase.initializeApp(MAINCFG),TS=firebase.database.ServerValue.TIMESTAMP;
+let auth=MAINAPP.auth(),db=MAINAPP.database(),TID='main',TCFG=MAINCFG,TNAME='মূল প্রজেক্ট',LST=[],AUTHUNSUB=null;try{auth.setPersistence(firebase.auth.Auth.Persistence.LOCAL).catch(()=>{})}catch(e){}
+const $=i=>document.getElementById(i),fmt=n=>'৳ '+Math.round(n||0).toLocaleString('en-US'),esc=s=>String(s??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+let ALK={},ADL=false,ALD=false,ADM={},REQ={},LED={},GAMES={},USERS={},ACT={},MB=0,cur='admins',started=false,Q='',FEAT={},SEL='',GV='',UAON=true,BON={};
+const FL=[["tournaments", "পেজ", "টুর্নামেন্টসমূহ (পেজ)"], ["users", "পেজ", "প্লেয়ার / ইউজার (পেজ)"], ["wallet", "পেজ", "ওয়ালেট ও রিকোয়েস্ট (পেজ)"], ["promotions", "পেজ", "ডিপোজিট প্রোমোশন (পেজ)"], ["finance", "পেজ", "আর্থিক রিপোর্ট / Finance (পেজ)"], ["notices", "পেজ", "নোটিশ ও ঘোষণা (পেজ)"], ["notifications", "পেজ", "ইউজার নোটিফিকেশন (পেজ)"], ["settings", "পেজ", "অ্যাপ সেটিংস (পেজ)"], ["audit", "পেজ", "রিপোর্ট ও অডিট লগ (পেজ)"], ["t_create", "টুর্নামেন্ট", "টুর্নামেন্ট তৈরি ও এডিট"], ["t_room", "টুর্নামেন্ট", "রুম আইডি/পাসওয়ার্ড দেওয়া ও পাবলিশ"], ["t_results", "টুর্নামেন্ট", "রেজাল্ট ও প্রাইজ বিতরণ"], ["t_delete", "টুর্নামেন্ট", "টুর্নামেন্ট ডিলিট"], ["u_ban", "প্লেয়ার", "প্লেয়ার ব্যান / সক্রিয় করা"], ["u_track", "প্লেয়ার", "প্লেয়ার ট্র্যাকিং (IP, ডিভাইস, অডিট)"], ["u_report", "প্লেয়ার", "প্লেয়ার আর্থিক রিপোর্ট ও CSV"], ["u_adjust", "প্লেয়ার", "প্লেয়ার ব্যালেন্স সমন্বয় (Adjust Balance)"], ["u_bonus", "প্লেয়ার", "প্লেয়ার বোনাস ও টার্নওভার সমন্বয়"], ["dep", "ওয়ালেট", "ডিপোজিট অনুমোদন / বাতিল"], ["wd", "ওয়ালেট", "উইথড্র সম্পন্ন / বাতিল"], ["bal_req", "ওয়ালেট", "Master-এর কাছে ব্যালেন্স রিকোয়েস্ট"], ["dep_bonus", "ওয়ালেট", "ডিপোজিটে বোনাস ও টার্নওভার সেট করা"], ["notice_pub", "নোটিশ", "নোটিশ পাবলিশ ও ডিলিট"], ["notif_send", "নোটিফিকেশন", "নোটিফিকেশন পাঠানো ও ডিলিট"], ["set_pay", "সেটিংস", "পেমেন্ট ও সোশ্যাল লিংক সেটিংস"], ["banners", "সেটিংস", "ব্যানার যোগ ও ডিলিট"]];
+function toast(m){const t=$('toast');t.textContent=m;t.style.display='block';clearTimeout(t._t);t._t=setTimeout(()=>t.style.display='none',3500)}
+async function login(){try{await auth.signInWithEmailAndPassword($('em').value.trim(),$('pw').value)}catch(e){toast('লগইন ব্যর্থ: '+e.message)}}
+const on=(r,cb)=>{r.on('value',cb);LST.push(r)};
+
+let SEL_CHAT_ADMIN = '';
+let CHAT_METAS = {};
+let ACTIVE_CHAT_MSGS = [];
+let ACTIVE_CHAT_UNSUB = null;
+let GLOBAL_CHAT_LISTENERS = {};
+
+function selectChatAdmin(uid) {
+  SEL_CHAT_ADMIN = uid;
+  attachActiveAdminChat(uid);
+  draw();
+  setTimeout(() => {
+    const b = $('master-chat-body');
+    if (b) b.scrollTop = b.scrollHeight;
+    const inp = $('master-chat-reply-input');
+    if (inp) inp.focus();
+  }, 100);
+}
+
+function openChatWithAdmin(uid) {
+  SEL_CHAT_ADMIN = uid;
+  cur = 'chat';
+  attachActiveAdminChat(uid);
+  draw();
+}
+
+function attachActiveAdminChat(uid) {
+  if (ACTIVE_CHAT_UNSUB) {
+    try { ACTIVE_CHAT_UNSUB.off(); } catch (e) {}
+    ACTIVE_CHAT_UNSUB = null;
+  }
+  if (!uid) return;
+  // Mark read for master
+  db.ref('master_admin_chats/' + uid + '/meta/unreadForMaster').set(false).catch(() => {});
+  
+  ACTIVE_CHAT_UNSUB = db.ref('master_admin_chats/' + uid + '/messages').limitToLast(120);
+  ACTIVE_CHAT_UNSUB.on('value', snap => {
+    const val = snap.val() || {};
+    ACTIVE_CHAT_MSGS = Object.entries(val).map(([id, d]) => ({ id, ...d })).sort((a,b) => (a.timestamp||0) - (b.timestamp||0));
+    if (cur === 'chat' && SEL_CHAT_ADMIN === uid) {
+      draw();
+      setTimeout(() => {
+        const b = $('master-chat-body');
+        if (b) b.scrollTop = b.scrollHeight;
+      }, 50);
+    }
+  });
+}
+
+async function sendMasterChatReply(e) {
+  if (e) e.preventDefault();
+  const inp = $('master-chat-reply-input');
+  if (!inp) return;
+  const text = inp.value.trim();
+  if (!text || !SEL_CHAT_ADMIN) return;
+
+  const uid = SEL_CHAT_ADMIN;
+  try {
+    await db.ref('master_admin_chats/' + uid + '/messages').push({
+      sender: 'MASTER',
+      senderName: 'Master Administrator',
+      senderEmail: (auth.currentUser && auth.currentUser.email) || 'Master',
+      text: text,
+      timestamp: TS,
+      read: false
+    });
+    await db.ref('master_admin_chats/' + uid + '/meta').update({
+      lastMessage: text,
+      lastTimestamp: TS,
+      lastSender: 'MASTER',
+      unreadForMaster: false,
+      unreadForAdmin: true
+    });
+    inp.value = '';
+    inp.focus();
+  } catch (err) {
+    toast('মেসেজ পাঠানো ব্যর্থ: ' + err.message);
+  }
+}
+
+function initMasterChatGlobalListener() {
+  db.ref('master_admin_chats').on('value', snap => {
+    const val = snap.val() || {};
+    let totalUnread = 0;
+    CHAT_METAS = {};
+    Object.entries(val).forEach(([uid, data]) => {
+      const meta = data.meta || {};
+      CHAT_METAS[uid] = meta;
+      if (meta.unreadForMaster === true) totalUnread++;
+    });
+    const unreadEl = $('nav-chat-unread');
+    if (unreadEl) {
+      unreadEl.textContent = totalUnread > 9 ? '9+' : totalUnread;
+      unreadEl.style.display = totalUnread > 0 ? 'inline-block' : 'none';
+    }
+    if (cur === 'chat') draw();
+  });
+}
+
+
+/* রেফারেল লিংক চালু/বন্ধ: adminLinks/<uid> = true শুধু সক্রিয় অ্যাডমিনের জন্য (ইউজার প্যানেল এটা দেখে যাচাই করে) */
+function syncLinks(){if(!ADL||!ALD)return;try{
+ Object.keys(ADM).forEach(u=>{const want=ADM[u].active!==false;if(ALK[u]!==want)db.ref('adminLinks/'+u).set(want).catch(()=>{})});
+ Object.keys(ALK).forEach(u=>{if(!ADM[u])db.ref('adminLinks/'+u).remove().catch(()=>{})})}catch(e){}}
+/* কোনো প্লেয়ারকে একজন অ্যাডমিনের অধীনে বসানো/বদলানো (পেন্ডিং ডিপোজিট/উইথড্রও নতুন অ্যাডমিনের কাছে যাবে) */
+function pickAdmin(msg){const L=Object.entries(ADM);if(!L.length){toast('কোনো অ্যাডমিন নেই');return null}
+ const p=prompt(msg+'\n\n'+L.map(([k,x],i)=>(i+1)+'. '+(x.name||x.email)+(x.active===false?' (বন্ধ)':'')).join('\n'),'');
+ if(p===null)return null;const n=parseInt(p);if(!(n>=1&&n<=L.length)){toast('সঠিক নম্বর লিখুন');return null}return L[n-1][0]}
+async function moveUserPending(uid,adm){
+ for(const node of ['depositRequests','withdrawalRequests']){
+  try{const sn=await db.ref(node).orderByChild('uid').equalTo(uid).once('value');const v=sn.val()||{};
+   for(const k of Object.keys(v)){if((v[k].status||'')==='Pending')await db.ref(node+'/'+k+'/adminUid').set(adm)}}catch(e){}}}
+async function assignAdmin(uid){const u=USERS[uid]||{};
+ const adm=pickAdmin((u.name||u.username||uid)+' কে কোন অ্যাডমিনের অধীনে দেবেন? নম্বর লিখুন:'+(u.adminUid&&ADM[u.adminUid]?'\n(বর্তমান: '+(ADM[u.adminUid].name||ADM[u.adminUid].email)+')':''));
+ if(!adm)return;if(!confirm('"'+(u.name||u.username||uid)+'" এখন থেকে "'+(ADM[adm].name||ADM[adm].email)+'" অ্যাডমিনের ইউজার হবে। নিশ্চিত?'))return;
+ try{await db.ref('users/'+uid+'/adminUid').set(adm);await moveUserPending(uid,adm);
+  try{await db.ref('adminAuditLogs').push({admin:auth.currentUser.email,action:'USER_ASSIGN_ADMIN',target:uid,details:'Admin='+adm,timestamp:Date.now()})}catch(_l){}
+  toast('অ্যাডমিন সেট হয়েছে ✅')}catch(e){toast('ব্যর্থ: '+e.message)}}
+async function assignAllOrphans(){const O=Object.keys(USERS).filter(k=>!ADM[k]&&!(USERS[k].adminUid&&ADM[USERS[k].adminUid]));
+ if(!O.length){toast('অ্যাডমিনহীন কোনো ইউজার নেই');return}
+ const adm=pickAdmin('অ্যাডমিনহীন '+O.length+' জন ইউজারকে কোন অ্যাডমিনের অধীনে দেবেন? নম্বর লিখুন:');if(!adm)return;
+ if(!confirm(O.length+' জন ইউজার "'+(ADM[adm].name||ADM[adm].email)+'" অ্যাডমিনকে দেওয়া হবে। নিশ্চিত?'))return;
+ try{for(const k of O){await db.ref('users/'+k+'/adminUid').set(adm);await moveUserPending(k,adm)}toast(O.length+' জন ইউজার অ্যাডমিনের অধীনে গেছে ✅')}catch(e){toast('ব্যর্থ: '+e.message)}}
+
+function attachAll(){
+ initMasterChatGlobalListener();
+ on(db.ref('master/balance'),s=>{if(s.val()===null)db.ref('master/balance').set(0);MB=+s.val()||0;draw()});
+ on(db.ref('admins'),s=>{ADM=s.val()||{};ADL=true;syncLinks();draw()});
+ on(db.ref('adminLinks'),s=>{ALK=s.val()||{};ALD=true;syncLinks()});
+ on(db.ref('balanceRequests').limitToLast(100),s=>{REQ=s.val()||{};draw()});
+ on(db.ref('adminFeatures'),s=>{FEAT=s.val()||{};draw()});
+on(db.ref('adminSettings/depositBonus'),s=>{BON=s.val()||{};draw()});
+ on(db.ref('adminSettings/userAdminOn'),s=>{UAON=s.val()!==false;draw()});
+ on(db.ref('games'),s=>{GAMES=s.val()||{};draw()});
+ on(db.ref('users'),s=>{USERS=s.val()||{};draw()});
+ on(db.ref('balanceLedger').limitToLast(100),s=>{LED=s.val()||{};draw()})}
+function detachAll(){LST.forEach(r=>{try{r.off()}catch(e){}});LST=[];started=false;ALK={};ADL=false;ALD=false;ADM={};REQ={};LED={};GAMES={};USERS={};ACT={};MB=0;FEAT={};SEL='';UAON=true;BON={};AQ='';AFULL={}}
+function bindAuth(){if(AUTHUNSUB)AUTHUNSUB();const my=TID;
+ AUTHUNSUB=auth.onAuthStateChanged(async u=>{if(my!==TID)return;
+  if(!u){$('lt').textContent=TID==='main'?'NEXQIRO':'লগইন: '+TNAME;$('lback').style.display=TID==='main'?'none':'block';$('login').style.display='flex';$('app').style.display='none';return}
+  const m=await db.ref('master/balance').once('value').catch(()=>null);if(my!==TID)return;
+  if(!m){await auth.signOut();toast('এই অ্যাকাউন্টের Master অ্যাক্সেস নেই ('+TNAME+'): ওই প্রজেক্টে রুলস পাবলিশ ও Master ইউজার আছে কিনা দেখুন');return}
+  $('login').style.display='none';$('app').style.display='block';
+  if(started)return;started=true;attachAll();draw()})}
+// ===== একাধিক Firebase প্রজেক্ট (টেন্যান্ট) =====
+function getTenants(){try{return JSON.parse(localStorage.getItem('np_tenants')||'[]')}catch(e){return[]}}
+function parseCfg(t){const g=k=>{const m=String(t).match(new RegExp('["\']?'+k+'["\']?\\s*:\\s*["\']([^"\']+)["\']'));return m?m[1].trim():''};
+ const c={apiKey:g('apiKey'),authDomain:g('authDomain'),databaseURL:g('databaseURL'),projectId:g('projectId'),storageBucket:g('storageBucket'),messagingSenderId:g('messagingSenderId'),appId:g('appId')};
+ if(!c.authDomain&&c.projectId)c.authDomain=c.projectId+'.firebaseapp.com';
+ if(!c.databaseURL&&c.projectId)c.databaseURL='https://'+c.projectId+'-default-rtdb.firebaseio.com';
+ Object.keys(c).forEach(k=>{if(!c[k])delete c[k]});return c}
+function drawTn(){const sel=$('tn');if(!sel)return;const L=[['main','মূল প্রজেক্ট'],...getTenants().map(t=>[t.id,t.name])];
+ sel.innerHTML=L.map(([id,n])=>`<option value="${esc(id)}"${id===TID?' selected':''}>${esc(n)}</option>`).join('')}
+function switchTenant(id){if(id===TID){drawTn();return}
+ const t=id==='main'?{id:'main',name:'মূল প্রজেক্ট',config:MAINCFG}:getTenants().find(x=>x.id===id);
+ if(!t){toast('প্রজেক্ট পাওয়া যায়নি');drawTn();return}
+ detachAll();TID=t.id;TNAME=t.name;TCFG=t.config;
+ let app;try{if(t.id==='main')app=MAINAPP;else{const nm='t_'+t.id;app=firebase.apps.find(a=>a.name===nm)||firebase.initializeApp(t.config,nm)}}
+ catch(e){toast('প্রজেক্টে সংযোগ ব্যর্থ: '+e.message);TID='main';TNAME='মূল প্রজেক্ট';TCFG=MAINCFG;app=MAINAPP}
+ auth=app.auth();db=app.database();cur='admins';drawTn();bindAuth()}
+function addTenant(){const name=$('tnm').value.trim(),c=parseCfg($('tcf').value);
+ if(!name){toast('প্রজেক্টের নাম দিন');return}
+ if(!c.apiKey||!c.projectId){toast('কনফিগে অন্তত apiKey ও projectId থাকতে হবে');return}
+ const id=c.projectId.toLowerCase().replace(/[^a-z0-9]/g,'');const L=getTenants();
+ if(!id||id==='main'||c.projectId===MAINCFG.projectId||L.some(x=>x.id===id)){toast('এই প্রজেক্ট আগে থেকেই যোগ করা আছে');return}
+ L.push({id,name,config:c});try{localStorage.setItem('np_tenants',JSON.stringify(L))}catch(e){toast('সেভ করা যায়নি');return}
+ $('tnm').value='';$('tcf').value='';toast('প্রজেক্ট যোগ হয়েছে ✅ এবার "খুলুন" চাপুন');drawTn();draw()}
+function delTenant(id){if(!confirm('এই প্রজেক্ট তালিকা থেকে সরাবেন? (Firebase-এর কোনো ডেটা মুছবে না)'))return;
+ localStorage.setItem('np_tenants',JSON.stringify(getTenants().filter(x=>x.id!==id)));if(TID===id)switchTenant('main');drawTn();draw()}
+bindAuth();
+function tab(t){cur=t;if(t==='act')loadAct();draw()}
+async function loadAct(){try{const s=await db.ref('game_sessions').limitToLast(200).once('value');ACT=s.val()||{}}catch(e){toast('অ্যাক্টিভিটি লোড ব্যর্থ: '+e.message)}draw()}
+let AQ='',AFULL={},AT=null;
+function actKey(s){const x=USERS[s.uid]||{};return [s.userName,s.uid,x.name,x.username,x.email,x.phone].map(v=>String(v||'').toLowerCase()).join(' ')}
+function actFocus(){const p=$('aq');if(p){p.focus();p.setSelectionRange(AQ.length,AQ.length)}}
+function actSearch(v){AQ=v;draw();actFocus();clearTimeout(AT);AT=setTimeout(actFetch,400)}
+async function actFetch(){const q=AQ.trim().toLowerCase();if(!q)return;
+ const ids=Object.keys(USERS).filter(u=>{const x=USERS[u]||{};return [u,x.name,x.username,x.email,x.phone].some(f=>String(f||'').toLowerCase().includes(q))}).slice(0,5).filter(u=>!AFULL[u]);
+ if(!ids.length)return;
+ try{await Promise.all(ids.map(async u=>{const r=await db.ref('game_sessions').orderByChild('uid').equalTo(u).limitToLast(500).once('value');AFULL[u]=r.val()||{}}))}catch(e){toast('ইউজারের হিস্ট্রি লোড ব্যর্থ: '+e.message);return}
+ if(cur==='act'&&AQ.trim().toLowerCase()===q){const had=document.activeElement&&document.activeElement.id==='aq';draw();if(had)actFocus()}}
+function actView(){
+ const q=AQ.trim().toLowerCase();
+ const src=Object.assign({},ACT);
+ if(q)Object.values(AFULL).forEach(o=>Object.assign(src,o));
+ let L=Object.entries(src).map(([k,x])=>Object.assign({_k:k},x));
+ if(q)L=L.filter(x=>actKey(x).includes(q));
+ L.sort((a,b)=>(+b.startTime||0)-(+a.startTime||0));
+ const net=x=>typeof x.netWinLoss==='number'?x.netWinLoss:(+x.exitBalance||0)-(+x.entryBalance||0);
+ let top=`<div class="row"><input id="aq" placeholder="ইউজারের নাম/ইউজারনেম/ইমেইল/ফোন/UID লিখে খুঁজুন" value="${esc(AQ)}" oninput="actSearch(this.value)"></div>`;
+ if(q){
+  const uids=[...new Set(L.map(x=>x.uid).filter(Boolean))];
+  let tn=0,w=0,l=0,by={};
+  L.forEach(x=>{const n=net(x);tn+=n;if(n>0)w++;else if(n<0)l++;const g=x.gameName||'-';by[g]=by[g]||{c:0,n:0};by[g].c++;by[g].n+=n});
+  const col=v=>v>=0?'var(--ok)':'var(--er)';
+  let who='<div class="cd"><span>ফলাফল</span><b style="font-size:16px">'+(uids.length?uids.length+' জন ইউজার মিলেছে':'কিছু পাওয়া যায়নি')+'</b></div>',bal='';
+  if(uids.length===1){const u=USERS[uids[0]]||{};
+   who=`<div class="cd"><span>ইউজার</span><b style="font-size:18px">${esc(u.name||(L[0]||{}).userName||'-')}</b><small>${esc(u.email||'-')}<br>${esc(u.phone||'-')} · @${esc(u.username||'-')}<br>UID: ${esc(uids[0])}</small></div>`;
+   bal=`<div class="cd"><span>বর্তমান ব্যালেন্স</span><b>${fmt(u.balance)}</b><small>${esc(u.status||'')}</small></div>`}
+  top+=`<div class="g">${who}${bal}<div class="cd"><span>মোট সেশন</span><b>${L.length}</b></div><div class="cd"><span>মোট নেট (জয়/হার)</span><b style="color:${col(tn)}">${fmt(tn)}</b></div><div class="cd"><span>জয় / হার</span><b>${w} / ${l}</b></div></div>`;
+  const gk=Object.keys(by);
+  if(gk.length)top+=`<div class="sc" style="margin-bottom:10px"><table><tr><th>গেম</th><th>সেশন</th><th>নেট</th></tr>`+gk.map(g=>`<tr><td>${esc(g)}</td><td>${by[g].c}</td><td style="color:${col(by[g].n)}">${fmt(by[g].n)}</td></tr>`).join('')+`</table></div>`;
+ }else top+=`<div class="cd" style="margin-bottom:10px"><span>এখন সর্বশেষ ২০০টি সেশন দেখানো হচ্ছে। কোনো ইউজারের নাম লিখলে তার সব হিস্ট্রি ও হিসাব এখানে আসবে।</span></div>`;
+ const rows=L.map(x=>{const n=net(x);return`<tr><td>${esc(x.userName||(USERS[x.uid]||{}).name||x.uid)}</td><td>${esc(x.gameName||'-')}</td><td>${x.startTime?new Date(x.startTime).toLocaleString('bn-BD'):''}</td><td>${fmt(x.entryBalance)}</td><td>${fmt(x.exitBalance)}</td><td style="color:${n>=0?'var(--ok)':'var(--er)'}">${fmt(n)}</td><td><small>${esc(x.ip||'-')}<br>${esc(x.device||'')}</small></td><td>${esc(x.status||'')}</td></tr>`}).join('');
+ return top+`<div class="sc"><table><tr><th>প্লেয়ার</th><th>গেম</th><th>শুরু</th><th>এন্ট্রি</th><th>এক্সিট</th><th>নেট</th><th>IP/ডিভাইস</th><th>স্ট্যাটাস</th></tr>`+(rows||`<tr><td colspan="8" style="text-align:center;color:var(--mu)">কোনো রেকর্ড পাওয়া যায়নি</td></tr>`)+`</table></div>`}
+async function saveGame(id){const g=id?GAMES[id]:{};
+ const name=id?prompt('গেমের নাম:',g.name||''):$('gn').value.trim(),cat=id?prompt('ক্যাটাগরি (Popular Games / Crash Games):',g.category||'Popular Games'):$('gc').value,
+ img=id?prompt('ছবির লিংক:',g.image||''):$('gi').value.trim(),url=id?prompt('গেমের লিংক:',g.url||''):$('gu').value.trim();
+ if(!name||!img||!url){toast('সব তথ্য দিন');return}
+ const k=id||db.ref('games').push().key,st=g.status||'Active';
+ const d={id:k,name,category:cat,image:img,imageUrl:img,url,gameUrl:url,status:st,active:st==='Active',isActive:st==='Active',updatedAt:TS};if(!id){d.createdAt=TS;d.integrated=!!$('gint').checked;const hu=$('gh').value.trim();if(hu)d.healthUrl=hu}
+ try{await db.ref('games/'+k).update(d);toast('গেম সংরক্ষিত ✅');if(!id)['gn','gi','gu','gh'].forEach(i=>$(i).value='')}catch(e){toast('ব্যর্থ: '+e.message)}}
+async function fSet(k,v){try{await db.ref('adminFeatures/'+k).set(v)}catch(e){toast('ব্যর্থ: '+e.message)}}
+async function fAll(v){const o={};FL.forEach(([k])=>o[k]=v);try{await db.ref('adminFeatures').set(o);toast(v?'সব ফিচার চালু ✅':'সব ফিচার বন্ধ ⛔')}catch(e){toast('ব্যর্থ: '+e.message)}}
+async function gInteg(id){const g=GAMES[id]||{};const n=g.integrated===true?false:true;try{await db.ref('games/'+id).update({integrated:n,updatedAt:TS});toast(n?'নিজস্ব গেম: টোকেন + প্রস্তুত সংকেত চালু ✅':'বাইরের গেম: টোকেন পাঠানো হবে না')}catch(e){toast('ব্যর্থ: '+e.message)}}
+async function gHealth(id){const g=GAMES[id]||{};const v=prompt('গেম সার্ভারের /health লিংক (খালি = বন্ধ):',g.healthUrl||'');if(v===null)return;try{await db.ref('games/'+id).update({healthUrl:v.trim()||null,updatedAt:TS});toast('সংরক্ষিত ✅')}catch(e){toast('ব্যর্থ: '+e.message)}}
+async function gToggle(id){const n=(GAMES[id].status||'Active')==='Active'?'Inactive':'Active';await db.ref('games/'+id).update({status:n,active:n==='Active',isActive:n==='Active',updatedAt:TS})}
+async function gDel(id){if(confirm('"'+(GAMES[id].name||id)+'" মুছে ফেলবেন? ইউজার প্যানেল থেকেও মুছে যাবে।'))await db.ref('games/'+id).remove()}
+async function uAdjust(uid){const u=USERS[uid]||{},a=parseFloat(prompt(`${u.name||uid} (ব্যালেন্স ৳${u.balance||0})\nযোগ করতে +50, কাটতে -50 লিখুন:`,'50'));if(!a)return;const why=prompt('কারণ:','ম্যানুয়াল সমন্বয়');if(!why)return;
+ // টাকা কাটলে সেই টাকা ইউজারের অ্যাডমিনের অ্যাকাউন্টে ফেরত যাবে
+ let adm=null;
+ if(a<0){
+  adm=u.adminUid&&ADM[u.adminUid]?u.adminUid:null;
+  if(!adm){const L=Object.entries(ADM);
+   if(L.length){const pick=prompt(`এই প্লেয়ারের অ্যাডমিন রেকর্ড করা নেই।\nকাটা ৳${-a} কোন অ্যাডমিনের অ্যাকাউন্টে ফেরত যাবে? নম্বর লিখুন\n(খালি রাখলে কোনো অ্যাডমিনকে ফেরত যাবে না, বাতিল চাপলে পুরো কাজ বন্ধ):\n\n`+L.map(([k,x],i)=>`${i+1}. ${x.name||x.email}`).join('\n'),'');
+    if(pick===null)return;const n=parseInt(pick);if(n>=1&&n<=L.length)adm=L[n-1][0]}}
+  if(adm&&!confirm(`৳${-a} প্লেয়ারের ব্যালেন্স থেকে কেটে "${ADM[adm].name||ADM[adm].email}" অ্যাডমিনের অ্যাকাউন্টে ফেরত যাবে। নিশ্চিত?`))return}
+ let before=0;const ok=await tx(`users/${uid}/balance`,b=>{if(b===null)return 0;before=b;return b+a>=0?b+a:undefined});if(!ok){toast('ব্যালেন্স আপডেট হয়নি (ঋণাত্মক হয়ে যাবে)');return}
+ if(adm){try{if(!await tx(`admins/${adm}/balance`,inc(-a)))throw 0}catch(e){await tx(`users/${uid}/balance`,inc(-a));toast('অ্যাডমিনকে ফেরত দেওয়া যায়নি, তাই কাটা বাতিল করা হয়েছে');return}
+  try{await db.ref(`users/${uid}/adminUid`).set(adm)}catch(e){}
+  try{await log({type:'USER_DEDUCT_RETURN',uid:adm,email:ADM[adm].email||'',amount:-a,note:`${u.name||uid}: ${why}`})}catch(e){}}
+ const k=db.ref('transactions').push().key;await db.ref('transactions/'+k).set({trxId:k,uid,type:a>0?'ADMIN_CREDIT':'ADMIN_DEBIT',amount:Math.abs(a),beforeBal:before,afterBal:before+a,date:new Date().toLocaleString('bn-BD'),timestamp:TS,note:'Master Adjustment: '+why+(adm?` (অ্যাডমিনকে ফেরত: ${ADM[adm].name||ADM[adm].email})`:'')});
+ await db.ref('adminAuditLogs').push({admin:auth.currentUser.email,action:'BALANCE_ADJUST',target:uid,details:`Amount: ${a}, Reason: ${why}${adm?', Returned to admin: '+adm:''}`,timestamp:Date.now()});toast(adm?`সমন্বয় সম্পন্ন ✅ ৳${-a} অ্যাডমিনকে ফেরত গেছে`:'সমন্বয় সম্পন্ন ✅')}
+const RULES_TXT="{\n  \"rules\": {\n    \"ludoRooms\": {\n      \".read\": false,\n      \".write\": false\n    },\n    \"game_rounds\": {\n      \".read\": true,\n      \".write\": \"auth != null || (auth.token.email == 'mijanbabu2015@gmail.com')\"\n    },\n    \"admins\": {\n      \".read\": \"(auth != null && (auth.token.email == 'mijanbabu2015@gmail.com'))\",\n      \"$adminUid\": {\n        \".read\": \"auth != null && (auth.uid == $adminUid || (auth != null && (auth.token.email == 'mijanbabu2015@gmail.com')))\",\n        \".write\": \"(auth != null && (auth.token.email == 'mijanbabu2015@gmail.com'))\",\n        \"balance\": {\n          \".write\": \"auth != null && ((auth.token.email == 'mijanbabu2015@gmail.com') || (auth.uid == $adminUid && root.child('adminSettings').child('userAdminOn').val() != false && data.exists() && newData.isNumber() && newData.val() >= 0 && newData.val() <= data.val()))\",\n          \".validate\": \"newData.isNumber() && newData.val() >= 0\"\n        },\n        \"emailVerified\": {\n          \".write\": \"auth != null && ((auth.uid == $adminUid && (auth.token.email_verified == true || root.child('admins').child($adminUid).child('active').val() != false)) || (auth.token.email == 'mijanbabu2015@gmail.com'))\"\n        },\n        \"bonusPercent\": {\n          \".read\": true,\n          \".write\": \"auth != null && (auth.uid == $adminUid || auth.token.email == 'mijanbabu2015@gmail.com')\",\n          \".validate\": \"newData.isNumber() && newData.val() >= 0\"\n        },\n        \"turnoverPercent\": {\n          \".read\": true,\n          \".write\": \"auth != null && (auth.uid == $adminUid || auth.token.email == 'mijanbabu2015@gmail.com')\",\n          \".validate\": \"newData.isNumber() && newData.val() >= 0\"\n        },\n        \"bonusEnabled\": {\n          \".read\": true,\n          \".write\": \"auth != null && (auth.uid == $adminUid || auth.token.email == 'mijanbabu2015@gmail.com')\"\n        },\n        \"depositBonusTiers\": {\n          \".read\": true,\n          \".write\": \"auth != null && (auth.uid == $adminUid || auth.token.email == 'mijanbabu2015@gmail.com')\"\n        }\n      }\n    },\n    \"adminSettings\": {\n      \".read\": \"auth != null\",\n      \".write\": \"auth != null && (auth.token.email == 'mijanbabu2015@gmail.com')\"\n    },\n    \"adminFeatures\": {\n      \".read\": \"auth != null\",\n      \".write\": \"auth != null && (auth.token.email == 'mijanbabu2015@gmail.com')\"\n    },\n    \"adminFcmTokens\": {\n      \".read\": false,\n      \"$uid\": {\n        \".write\": \"auth != null && auth.uid == $uid && root.child('admins').child(auth.uid).exists()\"\n      }\n    },\n    \"master_wallet\": {\n      \".read\": \"auth != null && (auth.token.email == 'mijanbabu2015@gmail.com')\",\n      \".write\": \"auth != null && (auth.token.email == 'mijanbabu2015@gmail.com')\",\n      \".validate\": \"newData.hasChildren(['balance']) && newData.child('balance').isNumber() && newData.child('balance').val() >= 0\"\n    },\n    \"master_wallet_ledger\": {\n      \".read\": \"auth != null && (auth.token.email == 'mijanbabu2015@gmail.com')\",\n      \".write\": \"auth != null && (auth.token.email == 'mijanbabu2015@gmail.com')\"\n    },\n    \"admin_wallets\": {\n      \".read\": \"auth != null && (auth.token.email == 'mijanbabu2015@gmail.com')\",\n      \"$adminUid\": {\n        \".read\": \"auth != null && (auth.uid == $adminUid || auth.token.email == 'mijanbabu2015@gmail.com')\",\n        \".write\": \"auth != null && (auth.token.email == 'mijanbabu2015@gmail.com')\",\n        \".validate\": \"newData.child('balance').isNumber() && newData.child('balance').val() >= 0\"\n      }\n    },\n    \"admin_fund_requests\": {\n      \".read\": \"auth != null && (auth.token.email == 'mijanbabu2015@gmail.com')\",\n      \".indexOn\": [\n        \"adminUid\",\n        \"status\"\n      ],\n      \"$reqId\": {\n        \".read\": \"auth != null && (data.child('adminUid').val() == auth.uid || auth.token.email == 'mijanbabu2015@gmail.com')\",\n        \".write\": \"auth != null && ((!data.exists() && newData.child('status').val() == 'Pending' && newData.child('adminUid').val() == auth.uid && root.child('adminSettings').child('userAdminOn').val() != false && newData.child('amount').isNumber() && newData.child('amount').val() >= 100) || auth.token.email == 'mijanbabu2015@gmail.com')\",\n        \".validate\": \"newData.hasChildren(['adminUid', 'amount', 'status']) && newData.child('amount').isNumber() && newData.child('amount').val() > 0\"\n      }\n    },\n    \"admin_wallet_ledger\": {\n      \".read\": \"auth != null && (auth.token.email == 'mijanbabu2015@gmail.com' || (query.orderByChild == 'adminUid' && query.equalTo == auth.uid))\",\n      \".indexOn\": [\n        \"adminUid\"\n      ],\n      \"$trxId\": {\n        \".read\": \"auth != null && (data.child('adminUid').val() == auth.uid || auth.token.email == 'mijanbabu2015@gmail.com')\",\n        \".write\": \"auth != null && (auth.token.email == 'mijanbabu2015@gmail.com')\"\n      }\n    },\n    \"games\": {\n      \".read\": true,\n      \".write\": \"auth != null && (auth.token.email == 'mijanbabu2015@gmail.com')\"\n    },\n    \"tournaments\": {\n      \".read\": true,\n      \"$tournamentId\": {\n        \".write\": \"auth != null && ((root.child('admins').child(auth.uid).exists() && root.child('admins').child(auth.uid).child('active').val() != false && root.child('adminSettings').child('userAdminOn').val() != false) || auth.token.email == 'mijanbabu2015@gmail.com')\",\n        \"participants\": {\n          \"$uid\": {\n            \".read\": \"auth != null\",\n            \".write\": \"auth != null && (auth.uid == $uid || (root.child('admins').child(auth.uid).exists() && root.child('admins').child(auth.uid).child('active').val() != false && root.child('adminSettings').child('userAdminOn').val() != false) || auth.token.email == 'mijanbabu2015@gmail.com')\"\n          }\n        },\n        \"joinedCount\": {\n          \".write\": \"auth != null && (auth.uid != null || (root.child('admins').child(auth.uid).exists() && root.child('admins').child(auth.uid).child('active').val() != false && root.child('adminSettings').child('userAdminOn').val() != false) || auth.token.email == 'mijanbabu2015@gmail.com')\",\n          \".validate\": \"newData.isNumber() && newData.val() >= 0\"\n        }\n      }\n    },\n    \"depositRequests\": {\n      \".read\": \"auth != null && ((query.orderByChild == 'uid' && query.equalTo == auth.uid) || (root.child('admins').child(auth.uid).exists() && root.child('admins').child(auth.uid).child('active').val() != false && root.child('adminSettings').child('userAdminOn').val() != false) || auth.token.email == 'mijanbabu2015@gmail.com')\",\n      \"$reqId\": {\n        \".read\": \"auth != null && (data.child('uid').val() == auth.uid || (root.child('admins').child(auth.uid).exists() && root.child('admins').child(auth.uid).child('active').val() != false && root.child('adminSettings').child('userAdminOn').val() != false) || auth.token.email == 'mijanbabu2015@gmail.com')\",\n        \".write\": \"auth != null && ((!data.exists() && newData.child('uid').val() == auth.uid && newData.child('status').val() == 'Pending' && root.child('users').child(auth.uid).child('adminUid').exists() && newData.child('adminUid').val() == root.child('users').child(auth.uid).child('adminUid').val()) || (root.child('admins').child(auth.uid).exists() && root.child('admins').child(auth.uid).child('active').val() != false && root.child('adminSettings').child('userAdminOn').val() != false) || auth.token.email == 'mijanbabu2015@gmail.com')\",\n        \".validate\": \"newData.hasChildren(['uid', 'status']) && newData.child('uid').isString()\"\n      },\n      \".indexOn\": [\n        \"uid\"\n      ]\n    },\n    \"withdrawalRequests\": {\n      \".read\": \"auth != null && ((query.orderByChild == 'uid' && query.equalTo == auth.uid) || (root.child('admins').child(auth.uid).exists() && root.child('admins').child(auth.uid).child('active').val() != false && root.child('adminSettings').child('userAdminOn').val() != false) || auth.token.email == 'mijanbabu2015@gmail.com')\",\n      \"$reqId\": {\n        \".read\": \"auth != null && (data.child('uid').val() == auth.uid || (root.child('admins').child(auth.uid).exists() && root.child('admins').child(auth.uid).child('active').val() != false && root.child('adminSettings').child('userAdminOn').val() != false) || auth.token.email == 'mijanbabu2015@gmail.com')\",\n        \".write\": \"auth != null && ((!data.exists() && newData.child('uid').val() == auth.uid && newData.child('status').val() == 'Pending' && root.child('users').child(auth.uid).child('adminUid').exists() && newData.child('adminUid').val() == root.child('users').child(auth.uid).child('adminUid').val() && (!root.child('users').child(auth.uid).child('turnoverRequired').exists() || root.child('users').child(auth.uid).child('turnoverRequired').val() <= (root.child('users').child(auth.uid).child('turnoverDone').exists() ? root.child('users').child(auth.uid).child('turnoverDone').val() : (root.child('users').child(auth.uid).child('turnoverCompleted').exists() ? root.child('users').child(auth.uid).child('turnoverCompleted').val() : 0)))) || (root.child('admins').child(auth.uid).exists() && root.child('admins').child(auth.uid).child('active').val() != false && root.child('adminSettings').child('userAdminOn').val() != false) || auth.token.email == 'mijanbabu2015@gmail.com')\",\n        \".validate\": \"newData.hasChildren(['uid', 'status']) && newData.child('uid').isString()\"\n      },\n      \".indexOn\": [\n        \"uid\"\n      ]\n    },\n    \"users\": {\n      \".read\": \"auth != null && ((root.child('admins').child(auth.uid).exists() && root.child('admins').child(auth.uid).child('active').val() != false && root.child('adminSettings').child('userAdminOn').val() != false) || auth.token.email == 'mijanbabu2015@gmail.com')\",\n      \"$uid\": {\n        \".read\": \"auth != null && (auth.uid == $uid || (root.child('admins').child(auth.uid).exists() && root.child('admins').child(auth.uid).child('active').val() != false && root.child('adminSettings').child('userAdminOn').val() != false) || auth.token.email == 'mijanbabu2015@gmail.com')\",\n        \".write\": \"auth != null && ((root.child('admins').child(auth.uid).exists() && root.child('admins').child(auth.uid).child('active').val() != false && root.child('adminSettings').child('userAdminOn').val() != false) || auth.token.email == 'mijanbabu2015@gmail.com' || (auth.uid == $uid && !data.exists() && newData.child('balance').val() == 0 && root.child('adminLinks').child(newData.child('adminUid').val()).val() == true))\",\n        \"balance\": {\n          \".write\": \"auth != null && ((root.child('admins').child(auth.uid).exists() && root.child('admins').child(auth.uid).child('active').val() != false && root.child('adminSettings').child('userAdminOn').val() != false) || auth.token.email == 'mijanbabu2015@gmail.com' || (auth.uid == $uid && data.exists() && newData.isNumber() && newData.val() <= data.val()))\",\n          \".validate\": \"newData.isNumber() && newData.val() >= 0\"\n        },\n        \"name\": {\n          \".write\": \"auth != null && (auth.uid == $uid || (root.child('admins').child(auth.uid).exists() && root.child('admins').child(auth.uid).child('active').val() != false && root.child('adminSettings').child('userAdminOn').val() != false) || auth.token.email == 'mijanbabu2015@gmail.com')\"\n        },\n        \"username\": {\n          \".write\": \"auth != null && (auth.uid == $uid || (root.child('admins').child(auth.uid).exists() && root.child('admins').child(auth.uid).child('active').val() != false && root.child('adminSettings').child('userAdminOn').val() != false) || auth.token.email == 'mijanbabu2015@gmail.com')\"\n        },\n        \"email\": {\n          \".write\": \"auth != null && (auth.uid == $uid || (root.child('admins').child(auth.uid).exists() && root.child('admins').child(auth.uid).child('active').val() != false && root.child('adminSettings').child('userAdminOn').val() != false) || auth.token.email == 'mijanbabu2015@gmail.com')\"\n        },\n        \"phone\": {\n          \".write\": \"auth != null && (auth.uid == $uid || (root.child('admins').child(auth.uid).exists() && root.child('admins').child(auth.uid).child('active').val() != false && root.child('adminSettings').child('userAdminOn').val() != false) || auth.token.email == 'mijanbabu2015@gmail.com')\"\n        },\n        \"photoURL\": {\n          \".write\": \"auth != null && (auth.uid == $uid || (root.child('admins').child(auth.uid).exists() && root.child('admins').child(auth.uid).child('active').val() != false && root.child('adminSettings').child('userAdminOn').val() != false) || auth.token.email == 'mijanbabu2015@gmail.com')\"\n        },\n        \"lastSeen\": {\n          \".write\": \"auth != null && (auth.uid == $uid || (root.child('admins').child(auth.uid).exists() && root.child('admins').child(auth.uid).child('active').val() != false && root.child('adminSettings').child('userAdminOn').val() != false) || auth.token.email == 'mijanbabu2015@gmail.com')\"\n        },\n        \"ffIgn\": {\n          \".write\": \"auth != null && (auth.uid == $uid || (root.child('admins').child(auth.uid).exists() && root.child('admins').child(auth.uid).child('active').val() != false && root.child('adminSettings').child('userAdminOn').val() != false) || auth.token.email == 'mijanbabu2015@gmail.com')\"\n        },\n        \"ffUid\": {\n          \".write\": \"auth != null && (auth.uid == $uid || (root.child('admins').child(auth.uid).exists() && root.child('admins').child(auth.uid).child('active').val() != false && root.child('adminSettings').child('userAdminOn').val() != false) || auth.token.email == 'mijanbabu2015@gmail.com')\"\n        },\n        \"dpUrl\": {\n          \".write\": \"auth != null && (auth.uid == $uid || (root.child('admins').child(auth.uid).exists() && root.child('admins').child(auth.uid).child('active').val() != false && root.child('adminSettings').child('userAdminOn').val() != false) || auth.token.email == 'mijanbabu2015@gmail.com')\"\n        },\n        \"dpWidth\": {\n          \".write\": \"auth != null && (auth.uid == $uid || (root.child('admins').child(auth.uid).exists() && root.child('admins').child(auth.uid).child('active').val() != false && root.child('adminSettings').child('userAdminOn').val() != false) || auth.token.email == 'mijanbabu2015@gmail.com')\"\n        },\n        \"status\": {\n          \".write\": \"auth != null && ((root.child('admins').child(auth.uid).exists() && root.child('admins').child(auth.uid).child('active').val() != false && root.child('adminSettings').child('userAdminOn').val() != false) || auth.token.email == 'mijanbabu2015@gmail.com')\"\n        },\n        \"joinedMatches\": {\n          \".write\": \"auth != null && (auth.uid == $uid || (root.child('admins').child(auth.uid).exists() && root.child('admins').child(auth.uid).child('active').val() != false && root.child('adminSettings').child('userAdminOn').val() != false) || auth.token.email == 'mijanbabu2015@gmail.com')\"\n        },\n        \"createdAt\": {\n          \".write\": \"auth != null && (auth.uid == $uid || (root.child('admins').child(auth.uid).exists() && root.child('admins').child(auth.uid).child('active').val() != false && root.child('adminSettings').child('userAdminOn').val() != false) || auth.token.email == 'mijanbabu2015@gmail.com')\"\n        },\n        \"turnoverRequired\": {\n          \".write\": \"auth != null && ((root.child('admins').child(auth.uid).exists() && root.child('admins').child(auth.uid).child('active').val() != false && root.child('adminSettings').child('userAdminOn').val() != false) || auth.token.email == 'mijanbabu2015@gmail.com')\",\n          \".validate\": \"newData.isNumber() && newData.val() >= 0\"\n        },\n        \"turnoverDone\": {\n          \".write\": \"auth != null && (auth.uid == $uid || (root.child('admins').child(auth.uid).exists() && root.child('admins').child(auth.uid).child('active').val() != false && root.child('adminSettings').child('userAdminOn').val() != false) || auth.token.email == 'mijanbabu2015@gmail.com')\",\n          \".validate\": \"newData.isNumber() && newData.val() >= 0 && (auth.uid != $uid || newData.val() >= (data.exists() ? data.val() : 0))\"\n        },\n        \"turnoverCompleted\": {\n          \".write\": \"auth != null && (auth.uid == $uid || (root.child('admins').child(auth.uid).exists() && root.child('admins').child(auth.uid).child('active').val() != false && root.child('adminSettings').child('userAdminOn').val() != false) || auth.token.email == 'mijanbabu2015@gmail.com')\",\n          \".validate\": \"newData.isNumber() && newData.val() >= 0 && (auth.uid != $uid || newData.val() >= (data.exists() ? data.val() : 0))\"\n        }\n      }\n    },\n    \"transactions\": {\n      \".read\": \"auth != null && ((query.orderByChild == 'uid' && query.equalTo == auth.uid) || (root.child('admins').child(auth.uid).exists() && root.child('admins').child(auth.uid).child('active').val() != false && root.child('adminSettings').child('userAdminOn').val() != false) || auth.token.email == 'mijanbabu2015@gmail.com')\",\n      \".indexOn\": [\n        \"uid\"\n      ],\n      \"$trxId\": {\n        \".read\": \"auth != null && (data.child('uid').val() == auth.uid || (root.child('admins').child(auth.uid).exists() && root.child('admins').child(auth.uid).child('active').val() != false && root.child('adminSettings').child('userAdminOn').val() != false) || auth.token.email == 'mijanbabu2015@gmail.com')\",\n        \".write\": \"auth != null && (newData.child('uid').val() == auth.uid || (root.child('admins').child(auth.uid).exists() && root.child('admins').child(auth.uid).child('active').val() != false && root.child('adminSettings').child('userAdminOn').val() != false) || auth.token.email == 'mijanbabu2015@gmail.com')\"\n      }\n    },\n    \"settings\": {\n      \".read\": true,\n      \".write\": \"auth != null && ((root.child('admins').child(auth.uid).exists() && root.child('admins').child(auth.uid).child('active').val() != false && root.child('adminSettings').child('userAdminOn').val() != false) || auth.token.email == 'mijanbabu2015@gmail.com')\"\n    },\n    \"notices\": {\n      \".read\": true,\n      \".write\": \"auth != null && ((root.child('admins').child(auth.uid).exists() && root.child('admins').child(auth.uid).child('active').val() != false && root.child('adminSettings').child('userAdminOn').val() != false) || auth.token.email == 'mijanbabu2015@gmail.com')\"\n    },\n    \"banners\": {\n      \".read\": true,\n      \".write\": \"auth != null && ((root.child('admins').child(auth.uid).exists() && root.child('admins').child(auth.uid).child('active').val() != false && root.child('adminSettings').child('userAdminOn').val() != false) || auth.token.email == 'mijanbabu2015@gmail.com')\"\n    },\n    \"adminAuditLogs\": {\n      \".read\": \"auth != null && ((root.child('admins').child(auth.uid).exists() && root.child('admins').child(auth.uid).child('active').val() != false && root.child('adminSettings').child('userAdminOn').val() != false) || auth.token.email == 'mijanbabu2015@gmail.com')\",\n      \".write\": \"auth != null && ((root.child('admins').child(auth.uid).exists() && root.child('admins').child(auth.uid).child('active').val() != false && root.child('adminSettings').child('userAdminOn').val() != false) || auth.token.email == 'mijanbabu2015@gmail.com')\"\n    },\n    \"usernames\": {\n      \".read\": true,\n      \".write\": \"auth != null\"\n    },\n    \"notifications\": {\n      \".read\": \"auth != null\",\n      \".write\": \"auth != null && ((root.child('admins').child(auth.uid).exists() && root.child('admins').child(auth.uid).child('active').val() != false && root.child('adminSettings').child('userAdminOn').val() != false) || auth.token.email == 'mijanbabu2015@gmail.com')\"\n    },\n    \"userNotificationReads\": {\n      \"$uid\": {\n        \".read\": \"auth != null && auth.uid == $uid\",\n        \".write\": \"auth != null && auth.uid == $uid\"\n      }\n    },\n    \"game_state\": {\n      \"global\": {\n        \".read\": true,\n        \".write\": \"auth != null && (auth.token.email == 'mijanbabu2015@gmail.com')\"\n      }\n    },\n    \"rounds\": {\n      \"$roundId\": {\n        \".read\": true,\n        \".write\": \"auth != null && (auth.token.email == 'mijanbabu2015@gmail.com')\"\n      }\n    },\n    \"game_transactions\": {\n      \".read\": \"auth != null && ((root.child('admins').child(auth.uid).exists() && root.child('admins').child(auth.uid).child('active').val() != false && root.child('adminSettings').child('userAdminOn').val() != false) || auth.token.email == 'mijanbabu2015@gmail.com')\",\n      \"$txKey\": {\n        \".read\": \"auth != null && (data.child('uid').val() == auth.uid || (root.child('admins').child(auth.uid).exists() && root.child('admins').child(auth.uid).child('active').val() != false && root.child('adminSettings').child('userAdminOn').val() != false) || auth.token.email == 'mijanbabu2015@gmail.com')\",\n        \".write\": \"auth != null && ((root.child('admins').child(auth.uid).exists() && root.child('admins').child(auth.uid).child('active').val() != false && root.child('adminSettings').child('userAdminOn').val() != false) || auth.token.email == 'mijanbabu2015@gmail.com')\"\n      }\n    },\n    \"supportChats\": {\n      \".read\": \"auth != null && ((root.child('admins').child(auth.uid).exists() && root.child('admins').child(auth.uid).child('active').val() != false && root.child('adminSettings').child('userAdminOn').val() != false) || auth.token.email == 'mijanbabu2015@gmail.com')\",\n      \"$chatId\": {\n        \".read\": \"auth != null && (data.child('userId').val() == auth.uid || (root.child('admins').child(auth.uid).exists() && root.child('admins').child(auth.uid).child('active').val() != false && root.child('adminSettings').child('userAdminOn').val() != false) || auth.token.email == 'mijanbabu2015@gmail.com')\",\n        \".write\": \"auth != null && (data.child('userId').val() == auth.uid || newData.child('userId').val() == auth.uid || (root.child('admins').child(auth.uid).exists() && root.child('admins').child(auth.uid).child('active').val() != false && root.child('adminSettings').child('userAdminOn').val() != false) || auth.token.email == 'mijanbabu2015@gmail.com')\"\n      }\n    },\n    \"supportMessages\": {\n      \"$chatId\": {\n        \".read\": \"auth != null && (root.child('supportChats').child($chatId).child('userId').val() == auth.uid || (root.child('admins').child(auth.uid).exists() && root.child('admins').child(auth.uid).child('active').val() != false && root.child('adminSettings').child('userAdminOn').val() != false) || auth.token.email == 'mijanbabu2015@gmail.com')\",\n        \".write\": \"auth != null && (root.child('supportChats').child($chatId).child('userId').val() == auth.uid || (root.child('admins').child(auth.uid).exists() && root.child('admins').child(auth.uid).child('active').val() != false && root.child('adminSettings').child('userAdminOn').val() != false) || auth.token.email == 'mijanbabu2015@gmail.com')\"\n      }\n    },\n    \"crazytime_rounds\": {\n      \"$roundId\": {\n        \".read\": true,\n        \".write\": false\n      }\n    },\n    \"crazytime_failed\": {\n      \".read\": \"auth != null && ((root.child('admins').child(auth.uid).exists() && root.child('admins').child(auth.uid).child('active').val() != false && root.child('adminSettings').child('userAdminOn').val() != false) || auth.token.email == 'mijanbabu2015@gmail.com')\",\n      \".write\": false\n    },\n    \"crazytime_config\": {\n      \".read\": \"auth != null && ((root.child('admins').child(auth.uid).exists() && root.child('admins').child(auth.uid).child('active').val() != false && root.child('adminSettings').child('userAdminOn').val() != false) || auth.token.email == 'mijanbabu2015@gmail.com')\",\n      \"policy\": {\n        \".write\": \"auth != null && ((root.child('admins').child(auth.uid).exists() && root.child('admins').child(auth.uid).child('active').val() != false && root.child('adminSettings').child('userAdminOn').val() != false) || auth.token.email == 'mijanbabu2015@gmail.com')\",\n        \".validate\": \"newData.val() == 'A' || newData.val() == 'B'\"\n      }\n    },\n    \"crazytime_live\": {\n      \".read\": \"auth != null && ((root.child('admins').child(auth.uid).exists() && root.child('admins').child(auth.uid).child('active').val() != false && root.child('adminSettings').child('userAdminOn').val() != false) || auth.token.email == 'mijanbabu2015@gmail.com')\",\n      \".write\": false\n    },\n    \"crazytime_round_stats\": {\n      \".read\": \"auth != null && ((root.child('admins').child(auth.uid).exists() && root.child('admins').child(auth.uid).child('active').val() != false && root.child('adminSettings').child('userAdminOn').val() != false) || auth.token.email == 'mijanbabu2015@gmail.com')\",\n      \".write\": false\n    },\n    \"crazytime_active\": {\n      \".read\": false,\n      \".write\": false\n    },\n    \"crazytime_user_bets\": {\n      \"$uid\": {\n        \".read\": \"auth != null && auth.uid == $uid\",\n        \".write\": false\n      }\n    },\n    \"matches\": {\n      \".read\": \"auth != null && ((root.child('admins').child(auth.uid).exists() && root.child('admins').child(auth.uid).child('active').val() != false && root.child('adminSettings').child('userAdminOn').val() != false) || auth.token.email == 'mijanbabu2015@gmail.com')\",\n      \".write\": false,\n      \".indexOn\": [\n        \"status\"\n      ]\n    },\n    \"house_reserve\": {\n      \".read\": \"auth != null && ((root.child('admins').child(auth.uid).exists() && root.child('admins').child(auth.uid).child('active').val() != false && root.child('adminSettings').child('userAdminOn').val() != false) || auth.token.email == 'mijanbabu2015@gmail.com')\",\n      \".write\": \"auth != null && (auth.token.email == 'mijanbabu2015@gmail.com')\"\n    },\n    \"cm_queue\": {\n      \".read\": false,\n      \".write\": false\n    },\n    \"ads\": {\n      \".read\": true,\n      \".write\": \"auth != null && ((root.child('admins').child(auth.uid).exists() && root.child('admins').child(auth.uid).child('active').val() != false && root.child('adminSettings').child('userAdminOn').val() != false) || auth.token.email == 'mijanbabu2015@gmail.com')\"\n    },\n    \"htmlAds\": {\n      \".read\": true,\n      \".write\": \"auth != null && ((root.child('admins').child(auth.uid).exists() && root.child('admins').child(auth.uid).child('active').val() != false && root.child('adminSettings').child('userAdminOn').val() != false) || auth.token.email == 'mijanbabu2015@gmail.com')\"\n    },\n    \"adSettings\": {\n      \".read\": true,\n      \".write\": \"auth != null && ((root.child('admins').child(auth.uid).exists() && root.child('admins').child(auth.uid).child('active').val() != false && root.child('adminSettings').child('userAdminOn').val() != false) || auth.token.email == 'mijanbabu2015@gmail.com')\"\n    },\n    \"super_admins\": {\n      \".read\": false,\n      \".write\": false\n    },\n    \"ludo_active\": {\n      \".read\": false,\n      \".write\": false\n    },\n    \"ludo_matches\": {\n      \".read\": \"auth != null && ((root.child('admins').child(auth.uid).exists() && root.child('admins').child(auth.uid).child('active').val() != false && root.child('adminSettings').child('userAdminOn').val() != false) || auth.token.email == 'mijanbabu2015@gmail.com')\",\n      \".write\": false\n    },\n    \"carrom\": {\n      \".read\": false,\n      \".write\": false\n    },\n    \"master\": {\n      \"balance\": {\n        \".read\": \"(auth != null && (auth.token.email == 'mijanbabu2015@gmail.com'))\",\n        \".write\": \"(auth != null && (auth.token.email == 'mijanbabu2015@gmail.com'))\",\n        \".validate\": \"newData.isNumber() && newData.val() >= 0\"\n      }\n    },\n    \"balanceRequests\": {\n      \".indexOn\": [\n        \"uid\",\n        \"status\"\n      ],\n      \".read\": \"auth != null && (query.orderByChild == 'uid' && query.equalTo == auth.uid || (auth != null && (auth.token.email == 'mijanbabu2015@gmail.com')))\",\n      \"$reqId\": {\n        \".read\": \"auth != null && (data.child('uid').val() == auth.uid || (auth != null && (auth.token.email == 'mijanbabu2015@gmail.com')))\",\n        \".write\": \"auth != null && ((auth != null && (auth.token.email == 'mijanbabu2015@gmail.com')) || (!data.exists() && (auth != null && (root.child('admins').child(auth.uid).exists() && root.child('admins').child(auth.uid).child('active').val() != false && root.child('adminSettings').child('userAdminOn').val() != false)) && (auth.token.email_verified == true || root.child('admins').child(auth.uid).child('emailVerified').val() == true || root.child('admins').child(auth.uid).child('verifiedByMaster').val() == true || root.child('admins').child(auth.uid).child('active').val() != false) && newData.child('uid').val() == auth.uid && newData.child('status').val() == 'pending' && newData.child('amount').isNumber() && newData.child('amount').val() > 0))\",\n        \".validate\": \"newData.hasChildren(['uid','amount','status']) && newData.child('amount').isNumber() && newData.child('amount').val() > 0\"\n      }\n    },\n    \"balanceLedger\": {\n      \".indexOn\": [\n        \"uid\"\n      ],\n      \".read\": \"(auth != null && (auth.token.email == 'mijanbabu2015@gmail.com'))\",\n      \".write\": \"(auth != null && (auth.token.email == 'mijanbabu2015@gmail.com'))\"\n    },\n    \"depositPromotions\": {\n      \".read\": \"auth != null\",\n      \"$promoId\": {\n        \".write\": \"auth != null && auth.token.email == 'mijanbabu2015@gmail.com'\",\n        \"name\": {\n          \".validate\": \"newData.isString() && newData.val().length > 0 && newData.val().length <= 80\"\n        },\n        \"minDeposit\": {\n          \".validate\": \"newData.isNumber() && newData.val() >= 0\"\n        },\n        \"maxDeposit\": {\n          \".validate\": \"newData.isNumber() && newData.val() >= 0\"\n        },\n        \"startAt\": {\n          \".validate\": \"newData.isNumber() && newData.val() >= 0\"\n        },\n        \"endAt\": {\n          \".validate\": \"newData.isNumber() && newData.val() >= 0\"\n        },\n        \"turnoverMultiplier\": {\n          \".validate\": \"newData.isNumber() && newData.val() >= 0\"\n        },\n        \"bonusType\": {\n          \".validate\": \"newData.val() == 'percent' || newData.val() == 'fixed'\"\n        },\n        \"bonusValue\": {\n          \".validate\": \"newData.isNumber() && newData.val() > 0\"\n        },\n        \"active\": {\n          \".validate\": \"newData.isBoolean()\"\n        },\n        \"adminCanToggle\": {\n          \".validate\": \"newData.isBoolean()\"\n        },\n        \"adminOff\": {\n          \"$adminUid\": {\n            \".write\": \"auth != null && auth.uid == $adminUid && (root.child('admins').child(auth.uid).exists() && root.child('admins').child(auth.uid).child('active').val() != false && root.child('adminSettings').child('userAdminOn').val() != false) && root.child('depositPromotions').child($promoId).child('adminCanToggle').val() == true\",\n            \".validate\": \"newData.isBoolean()\"\n          }\n        }\n      }\n    },\n    \"promoTurnover\": {\n      \".read\": \"auth != null && ((root.child('admins').child(auth.uid).exists() && root.child('admins').child(auth.uid).child('active').val() != false && root.child('adminSettings').child('userAdminOn').val() != false) || auth.token.email == 'mijanbabu2015@gmail.com')\",\n      \".write\": false,\n      \"$uid\": {\n        \".read\": \"auth != null && auth.uid == $uid\"\n      }\n    },\n    \"game_sessions\": {\n      \".read\": \"auth != null && ((root.child('admins').child(auth.uid).exists() && root.child('admins').child(auth.uid).child('active').val() != false && root.child('adminSettings').child('userAdminOn').val() != false) || auth.token.email == 'mijanbabu2015@gmail.com')\",\n      \".indexOn\": [\n        \"startTime\",\n        \"uid\"\n      ],\n      \"$sessionId\": {\n        \".read\": \"auth != null && (data.child('uid').val() == auth.uid || (root.child('admins').child(auth.uid).exists() && root.child('admins').child(auth.uid).child('active').val() != false && root.child('adminSettings').child('userAdminOn').val() != false) || auth.token.email == 'mijanbabu2015@gmail.com')\",\n        \".write\": \"auth != null && ((!data.exists() && newData.child('uid').val() == auth.uid) || (data.exists() && data.child('uid').val() == auth.uid && newData.child('uid').val() == auth.uid) || (root.child('admins').child(auth.uid).exists() && root.child('admins').child(auth.uid).child('active').val() != false && root.child('adminSettings').child('userAdminOn').val() != false) || auth.token.email == 'mijanbabu2015@gmail.com')\",\n        \"startServerAt\": {\n          \".validate\": \"newData.isNumber() && ((!data.exists() && newData.val() == now) || (data.exists() && newData.val() == data.val()))\"\n        }\n      }\n    },\n    \"adminLinks\": {\n      \".read\": true,\n      \"$adminUid\": {\n        \".write\": \"auth != null && (auth.token.email == 'mijanbabu2015@gmail.com' || (auth.uid == $adminUid && root.child('admins').child($adminUid).exists() && root.child('admins').child($adminUid).child('active').val() != false))\",\n        \".validate\": \"newData.isBoolean()\"\n      }\n    }\n  }\n}";
+function copyRules(){const done=()=>toast('রুলস কপি হয়েছে ✅ এবার Firebase → Realtime Database → Rules এ পেস্ট করে Publish চাপুন'),fb=()=>{const t=$('rulesTxt');if(t&&t.select){t.select();try{document.execCommand('copy');done()}catch(e){toast('কপি হয়নি, বক্সে চেপে সব সিলেক্ট করে কপি করুন')}}};
+ try{navigator.clipboard.writeText(RULES_TXT).then(done,fb)}catch(e){fb()}}
+function openAdmin(u){SEL=u;cur='admin';draw();window.scrollTo(0,0)}
+async function aSet(u,k,v){try{await db.ref(`admins/${u}/features/${k}`).set(v)}catch(e){toast('ব্যর্থ: '+e.message)}}
+async function aAll(u,v){const o={};FL.forEach(([k])=>o[k]=v);try{await db.ref(`admins/${u}/features`).set(o);toast(v?'এই অ্যাডমিনের সব ফিচার চালু ✅':'এই অ্যাডমিনের সব ফিচার বন্ধ ⛔')}catch(e){toast('ব্যর্থ: '+e.message)}}
+async function uStatus(uid){const n=(USERS[uid].status||'ACTIVE')==='ACTIVE'?'SUSPENDED':'ACTIVE';if(confirm('স্ট্যাটাস '+n+' করবেন?'))await db.ref(`users/${uid}/status`).set(n)}
+function parseTiers(txt){
+ if(!txt)return [];
+ const lines=txt.split('\n');
+ const out=[];
+ for(let l of lines){
+  const parts=l.split(',').map(s=>s.trim());
+  if(parts.length>=3){
+   const min=parseFloat(parts[0]),bp=parseFloat(parts[1]),to=parseFloat(parts[2]);
+   if(!isNaN(min)&&!isNaN(bp)&&!isNaN(to)&&min>0){
+    out.push({minDeposit:min,bonusPercent:bp,turnoverMultiplier:to});
+   }
+  }
+ }
+ out.sort((a,b)=>a.minDeposit-b.minDeposit);
+ return out;
+}
+function formatTiers(tiers){
+ if(!Array.isArray(tiers)||!tiers.length)return '300, 3, 1\n500, 10, 3';
+ return tiers.map(t=>`${t.minDeposit}, ${t.bonusPercent}, ${t.turnoverMultiplier}`).join('\n');
+}
+
+function bonusCard(){
+ const b=BON||{},on=b.enabled===true;
+ const tiersTxt=formatTiers(b.tiers||b.depositBonusTiers);
+ return `<div class="cd" style="margin-bottom:12px;background:var(--in);border:1px solid var(--bg2)">
+  <b style="font-size:16px;color:var(--gold)">🎁 ডিপোজিট প্রমোশন ও টার্নওভার প্যাকেজ (সবার জন্য গ্লোবাল)</b>
+  <span style="display:block;margin-top:4px">একাধিক ডিপোজিট প্রমোশন অপশন সেট করুন। মাস্টার এখানে সেট করলে সকল ইউজার অ্যাডমিনের জন্য সেভ হবে। তবে ইউজার অ্যাডমিন চাইলে তার নিজের মতো পরিবর্তন করতে পারবে।</span>
+  <div class="row" style="margin-top:10px">
+   <select id="bnOn" style="height:42px;background:var(--in);color:var(--tx);border:1px solid var(--bd);border-radius:10px;padding:0 10px">
+    <option value="1"${on?' selected':''}>ডিপোজিট বোনাস ও প্রমোশন: ON</option>
+    <option value="0"${on?'':' selected'}>ডিপোজিট বোনাস ও প্রমোশন: OFF</option>
+   </select>
+   <input id="bnMax" type="number" min="0" max="100" placeholder="সর্বোচ্চ সীমা বোনাস % (যেমন: 100)" value="${esc(b.maxPercent??'100')}">
+   <input id="bnMinT" type="number" min="0" max="1000" placeholder="ন্যূনতম টার্নওভার গুণক (যেমন: 1)" value="${esc(b.minTurnoverPercent??'1')}">
+  </div>
+  <div style="margin-top:8px">
+   <label style="font-size:12px;color:var(--mu);display:block;margin-bottom:4px">
+    <b>🎯 একাধিক ডিপোজিট প্রমোশন স্ল্যাব (মিনিমাম ডিপোজিট, বোনাস %, টার্নওভার গুণক):</b>
+    <br><small style="color:var(--mu)">প্রতি লাইনে: <i>টাকা, বোনাস%, টার্নওভার</i> (যেমন: 300 দিলে 3% ও 1x টার্নওভার, 500 দিলে 10% ও 3x টার্নওভার)</small>
+   </label>
+   <textarea id="bnTiers" rows="4" style="font-family:monospace;font-size:13px">${esc(tiersTxt)}</textarea>
+  </div>
+  <div style="margin-top:10px;display:flex;justify-content:flex-end">
+   <button class="p" onclick="saveBonus()" style="font-weight:700">💾 মাস্টার প্রমোশন সেভ করুন (সব অ্যাডমিনে প্রযোজ্য)</button>
+  </div>
+ </div>`;
+}
+
+function admBonRow(u){
+ const a=ADM[u]||{};
+ const tiersTxt=formatTiers(a.depositBonusTiers||a.tiers||BON.tiers||BON.depositBonusTiers);
+ return `<div class="cd" style="margin-bottom:12px;border:1px solid rgba(212,175,55,.2)">
+  <b style="font-size:16px;color:var(--gold)">🎯 এই অ্যাডমিনের বিশেষ ডিপোজিট প্রমোশন ও টার্নওভার</b>
+  <span style="display:block;margin-top:4px">এই ইউজার অ্যাডমিনের জন্য আলাদা প্রমোশন রেঞ্জ বা ডিফল্ট পারসেন্টেজ দিতে পারেন।</span>
+  <div class="row" style="margin-top:10px">
+   <input id="abp" type="number" min="0" placeholder="ডিফল্ট বোনাস %" value="${esc(a.bonusPercent??'')}">
+   <input id="atp" type="number" min="0" placeholder="ডিফল্ট টার্নওভার গুণক" value="${esc(a.turnoverPercent??'')}">
+  </div>
+  <div style="margin-top:8px">
+   <label style="font-size:12px;color:var(--mu);display:block;margin-bottom:4px">
+    <b>ডিপোজিট প্রমোশন টিয়ারসমূহ (টাকা, বোনাস %, টার্নওভার):</b>
+   </label>
+   <textarea id="abTiers" rows="3" style="font-family:monospace;font-size:13px">${esc(tiersTxt)}</textarea>
+  </div>
+  <div style="margin-top:10px;display:flex;justify-content:flex-end">
+   <button class="p" onclick="setAdminBon('${u}')">💾 এই অ্যাডমিনের জন্য সেভ করুন</button>
+  </div>
+ </div>`;
+}
+
+async function saveBonus(){
+ const on=$('bnOn').value==='1',mx=parseFloat($('bnMax').value)||100,mt=parseFloat($('bnMinT').value)||1;
+ const tiers=parseTiers($('bnTiers').value);
+ try{
+  await db.ref('adminSettings/depositBonus').set({
+   enabled:on,
+   maxPercent:mx,
+   minTurnoverPercent:mt,
+   tiers:tiers,
+   depositBonusTiers:tiers,
+   updatedAt:TS
+  });
+  const firstTier = tiers.length ? tiers[0] : { bonusPercent: 10, turnoverMultiplier: 1 };
+  await db.ref('settings').update({
+   depositBonusEnabled:on,
+   depositBonusPercent:firstTier.bonusPercent,
+   turnoverMultiplier:firstTier.turnoverMultiplier,
+   depositBonusTiers:tiers,
+   updatedAt:TS
+  });
+  try{await db.ref('adminAuditLogs').push({admin:auth.currentUser.email,action:'MASTER_TIER_PROMOTIONS_SET',target:TNAME,details:`on=${on}, tiers=${tiers.length}`,timestamp:Date.now()})}catch(e){}
+  toast('মাস্টার ডিপোজিট প্রমোশন ও টার্নওভার সেটিংস সফলভাবে সেভ হয়েছে ✅ (সকল ইউজার অ্যাডমিনে প্রয়োগ করা হয়েছে)');
+ }catch(e){toast('ব্যর্থ: '+e.message)}
+}
+
+async function setAdminBon(u){
+ const bp=parseFloat($('abp').value)||0,tp=parseFloat($('atp').value)||1;
+ const tiers=parseTiers($('abTiers').value);
+ try{
+  await db.ref('admins/'+u).update({
+   bonusPercent:bp,
+   turnoverPercent:tp,
+   depositBonusTiers:tiers,
+   updatedAt:TS
+  });
+  try{await db.ref('adminAuditLogs').push({admin:auth.currentUser.email,action:'ADMIN_TIER_PROMOTIONS_SET',target:u,details:`tiers=${tiers.length}, defaultBonus=${bp}%`,timestamp:Date.now()})}catch(e){}
+  toast('এই অ্যাডমিনের ডিপোজিট প্রমোশন সেটিংস সেভ হয়েছে ✅');
+ }catch(e){toast('ব্যর্থ: '+e.message)}
+}
+async function tx(p,f){return(await db.ref(p).transaction(f)).committed}
+const dec=a=>b=>b===null?0:(b>=a?b-a:undefined),inc=a=>b=>(b||0)+a;
+async function log(o){await db.ref('balanceLedger').push({...o,time:TS})}
+async function toAdmin(uid,amt,type,note,reqId){
+ if(!await tx('master/balance',dec(amt)))throw new Error('Master ব্যালেন্স যথেষ্ট নয়');
+ try{if(!await tx(`admins/${uid}/balance`,inc(amt)))throw 0}catch(e){await tx('master/balance',inc(amt));throw new Error('ট্রান্সফার ব্যর্থ, টাকা ফেরত দেওয়া হয়েছে')}
+ await log({type,uid,email:(ADM[uid]||{}).email||'',amount:amt,note:note||'',reqId:reqId||''})}
+async function fromAdmin(uid,amt,note){
+ if(!await tx(`admins/${uid}/balance`,dec(amt)))throw new Error('অ্যাডমিনের ব্যালেন্স যথেষ্ট নয়');
+ await tx('master/balance',inc(amt));await log({type:'MASTER_RECLAIM',uid,email:(ADM[uid]||{}).email||'',amount:amt,note:note||''})}
+async function setMaster(){const v=parseFloat(prompt('নতুন Master ব্যালেন্স (টাকা):',MB));if(isNaN(v)||v<0)return;const n=prompt('কারণ/নোট:','Master fund update')||'';
+ await db.ref('master/balance').set(v);await log({type:'MASTER_SET',amount:v,note:n});toast('Master ব্যালেন্স আপডেট হয়েছে')}
+async function send(uid){const a=Math.floor(parseFloat(prompt('কত টাকা পাঠাবেন?','1000')));if(!a||a<=0)return;
+ try{await toAdmin(uid,a,'MASTER_CREDIT','Direct send');toast('পাঠানো হয়েছে')}catch(e){toast(e.message)}}
+async function reclaim(uid){const a=Math.floor(parseFloat(prompt('কত টাকা ফেরত নেবেন?','1000')));if(!a||a<=0)return;
+ try{await fromAdmin(uid,a,'Reclaim');toast('ফেরত নেওয়া হয়েছে')}catch(e){toast(e.message)}}
+async function uaToggle(){const n=!UAON;
+ if(!confirm(n?'User Admin সাইড আবার চালু করবেন?':'User Admin সাইড বন্ধ করবেন?\nসব User Admin-এর অ্যাক্সেস বন্ধ হয়ে যাবে (প্লেয়ারদের কিছু হবে না)।'))return;
+ try{await db.ref('adminSettings/userAdminOn').set(n);
+  try{await db.ref('adminAuditLogs').push({admin:auth.currentUser.email,action:'USER_ADMIN_SIDE',target:TNAME,details:n?'ON':'OFF',timestamp:Date.now()})}catch(e){}
+  toast(n?'User Admin সাইড চালু ✅':'User Admin সাইড বন্ধ ⛔')}
+ catch(e){toast('ব্যর্থ: '+e.message+' (নতুন রুলস পাবলিশ করেছেন তো?)')}}
+async function delAdmin(uid){const a=ADM[uid];if(!a)return;const bal=+a.balance||0;
+ if(!confirm('"'+(a.name||a.email)+'" অ্যাডমিনকে মুছে ফেলবেন?\n'+(bal>0?'তার ব্যালেন্স '+fmt(bal)+' Master-এ ফেরত আসবে।\n':'')+'এই কাজ ফেরানো যাবে না।'))return;
+ if(!await reauth())return;
+ try{if(bal>0)await fromAdmin(uid,bal,'Admin deleted - balance reclaimed');
+  await db.ref('admins/'+uid).remove();
+  try{await db.ref('adminAuditLogs').push({admin:auth.currentUser.email,action:'ADMIN_DELETE',target:uid,details:(a.email||'')+(bal>0?', reclaimed: '+bal:''),timestamp:Date.now()})}catch(e){}
+  if(SEL===uid){SEL='';cur='admins'}
+  toast('অ্যাডমিন মুছে ফেলা হয়েছে ✅');draw()}
+ catch(e){toast('ব্যর্থ: '+e.message)}}
+async function clearAdminTx(){
+ const P=['balanceLedger','balanceRequests','admin_wallet_ledger','admin_fund_requests'];
+ let sn;try{sn=await Promise.all(P.map(x=>db.ref(x).once('value')))}catch(e){toast('ডেটা পড়া যায়নি: '+e.message);return}
+ const data={},ups={};let n=0,pend=0;
+ P.forEach((x,i)=>{const v=sn[i].val()||{};data[x]=v;Object.keys(v).forEach(k=>{ups[x+'/'+k]=null;n++;if(x==='balanceRequests'&&v[k]&&v[k].status==='pending')pend++})});
+ if(!n){toast('মোছার মতো কোনো লেনদেন নেই');return}
+ if(!confirm('User Admin-দের সব লেনদেনের ইতিহাস ('+n+' টি রেকর্ড: লেজার ও ব্যালেন্স রিকোয়েস্ট) মুছে যাবে।'+(pend?'\n⚠ এর মধ্যে '+pend+' টি রিকোয়েস্ট এখনো পেন্ডিং।':'')+'\nঅ্যাডমিনদের বর্তমান ব্যালেন্স ও প্লেয়ারদের লেনদেন বদলাবে না।\nএই কাজ ফেরানো যাবে না। এগোবেন?'))return;
+ if(!await reauth())return;
+ try{const a=document.createElement('a');a.href=URL.createObjectURL(new Blob([JSON.stringify(data,null,1)],{type:'application/json'}));a.download='admin-transactions-backup-'+Date.now()+'.json';document.body.appendChild(a);a.click();a.remove()}catch(e){if(!confirm('ব্যাকআপ ডাউনলোড হয়নি। ব্যাকআপ ছাড়াই মুছবেন?'))return}
+ try{const ks=Object.keys(ups);for(let i=0;i<ks.length;i+=400){const c={};ks.slice(i,i+400).forEach(k=>c[k]=null);await db.ref().update(c)}
+  try{await db.ref('adminAuditLogs').push({admin:auth.currentUser.email,action:'CLEAR_ADMIN_TRANSACTIONS',target:'all',details:n+' records deleted',timestamp:Date.now()})}catch(e){}
+  toast('সব লেনদেন মুছে ফেলা হয়েছে ✅ ('+n+' টি)')}
+ catch(e){toast('ব্যর্থ: '+e.message)}}
+async function toggle(uid){await db.ref(`admins/${uid}/active`).set(ADM[uid].active===false)}
+async function reauth(){const p=prompt('নিশ্চিত করতে আপনার Master পাসওয়ার্ড দিন:');if(!p)return false;
+ try{await auth.currentUser.reauthenticateWithCredential(firebase.auth.EmailAuthProvider.credential(auth.currentUser.email,p));return true}catch(e){toast('পাসওয়ার্ড ভুল');return false}}
+async function approve(id){const r=REQ[id],a=ADM[r.uid];
+ if(!a||a.active===false){toast('অ্যাডমিন সক্রিয় নয়');return}
+ if(!await reauth())return;
+ const c=await db.ref(`balanceRequests/${id}/status`).transaction(s=>s==='pending'?'processing':undefined);if(!c.committed)return;
+ try{await toAdmin(r.uid,r.amount,'REQUEST_APPROVED',r.note,id);await db.ref('balanceRequests/'+id).update({status:'approved',processedAt:TS});toast('অনুমোদিত ✅')}
+ catch(e){await db.ref(`balanceRequests/${id}/status`).set('pending');toast(e.message)}}
+async function reject(id){if(!confirm('বাতিল করবেন?'))return;await db.ref('balanceRequests/'+id).update({status:'rejected',processedAt:TS})}
+async function createAdmin(){
+ const n=$('an').value.trim(),e=$('ae').value.trim(),p=$('ap').value,r=($('ar')&&$('ar').value)||'USER_ADMIN';
+ if(!n||!e||p.length<6){toast('নাম, ইমেইল ও ৬+ অক্ষরের পাসওয়ার্ড দিন');return}
+ try{
+  const sec=firebase.apps.find(a=>a.name==='sec_'+TID)||firebase.initializeApp(TCFG,'sec_'+TID);
+  const cr=await sec.auth().createUserWithEmailAndPassword(e,p);
+  try{await cr.user.sendEmailVerification()}catch(_e){}
+  await db.ref('admins/'+cr.user.uid).set({
+   name:n,
+   email:e,
+   role:r,
+   active:true,
+   balance:0,
+   emailVerified:true,
+   verifiedByMaster:true,
+   createdAt:TS,
+   updatedAt:TS
+  });
+  const clean=n.toLowerCase().replace(/[^a-z0-9_]/g,'');
+  if(clean){
+   try{await db.ref('usernames/'+clean).set({uid:cr.user.uid,email:e,isAdmin:true,role:r,updatedAt:TS})}catch(_u){}
+  }
+  try{await db.ref('adminAuditLogs').push({admin:auth.currentUser.email,action:'ADMIN_CREATED',target:cr.user.uid,details:`Name=${n}, Email=${e}, Role=${r}`,timestamp:Date.now()})}catch(_l){}
+  await sec.auth().signOut();
+  toast('ইউজার অ্যাডমিন তৈরি ও পারমিশন দেওয়া হয়েছে ✅ ('+e+')');
+  $('an').value=$('ae').value=$('ap').value='';
+  draw();
+ }catch(x){toast('ব্যর্থ: '+x.message)}
+}
+
+async function grantAdminByUid(){
+ const u=($('auid')?$('auid').value.trim():''), n=($('aunm')?$('aunm').value.trim():''), r=($('aur')?$('aur').value:'USER_ADMIN');
+ if(!u){toast('প্লেয়ার বা ইউজারের UID দিন');return}
+ const userObj=USERS[u]||{};
+ const finalName=n||userObj.name||userObj.username||'User Admin';
+ const finalEmail=userObj.email||(userObj.username?userObj.username+'@npapp.local':u+'@admin.local');
+ try{
+  await db.ref('admins/'+u).update({
+   name:finalName,
+   email:finalEmail,
+   role:r,
+   active:true,
+   emailVerified:true,
+   verifiedByMaster:true,
+   updatedAt:TS
+  });
+  await db.ref('users/'+u+'/role').set(r).catch(()=>{});
+  try{await db.ref('adminAuditLogs').push({admin:auth.currentUser.email,action:'ADMIN_GRANTED_BY_UID',target:u,details:`Name=${finalName}, Role=${r}`,timestamp:Date.now()})}catch(_l){}
+  toast('UID: '+u+' কে সফলভাবে ইউজার অ্যাডমিন পারমিশন দেওয়া হয়েছে ✅');
+  if($('auid'))$('auid').value='';
+  if($('aunm'))$('aunm').value='';
+  draw();
+ }catch(e){toast('ব্যর্থ: '+e.message)}
+}
+
+async function makeAdminFromPlayer(uid){
+ const u=USERS[uid]||{};
+ const n=u.name||u.username||'User Admin';
+ if(!confirm('"'+n+'" (UID: '+uid+') কে কি User Admin বানাতে চান? সে তার একাউন্ট দিয়ে User Admin প্যানেলে ঢুকতে পারবে।'))return;
+ try{
+  await db.ref('admins/'+uid).set({
+   name:n,
+   email:u.email||(u.username?u.username+'@npapp.local':uid+'@admin.local'),
+   role:'USER_ADMIN',
+   active:true,
+   balance:0,
+   emailVerified:true,
+   verifiedByMaster:true,
+   createdAt:TS,
+   updatedAt:TS
+  });
+  await db.ref('users/'+uid+'/role').set('USER_ADMIN').catch(()=>{});
+  try{await db.ref('adminAuditLogs').push({admin:auth.currentUser.email,action:'PLAYER_PROMOTED_TO_ADMIN',target:uid,details:`Name=${n}`,timestamp:Date.now()})}catch(_l){}
+  toast(n+' এখন User Admin! সে এডমিন প্যানেলে লগইন করতে পারবে ✅');
+  draw();
+ }catch(e){toast('ব্যর্থ: '+e.message)}
+}
+
+function copyTxt(t){
+ if(navigator.clipboard&&navigator.clipboard.writeText){navigator.clipboard.writeText(t);toast('UID কপি হয়েছে: '+t)}
+ else{prompt('কপি করতে Ctrl+C চাপুন:',t)}
+}
+
+function draw(){if(!started)return;
+ const A=Object.entries(ADM),P=Object.entries(REQ).filter(([k,r])=>r.status==='pending');
+ $('mb').textContent=$('s1').textContent=fmt(MB);$('s2').textContent=fmt(A.reduce((s,[k,a])=>s+(+a.balance||0),0));$('s3').textContent=A.length;$('s4').textContent=P.length;
+ drawTn();['admins','reqs','led','games','players','act','feat','promo','chat','tenants','guide'].forEach(t=>$('t-'+t).className=(t===cur||(t==='admins'&&cur==='admin'))?'on':'');let h='';
+ if(cur==='admins'){
+  h=`<div class="cd" style="margin-bottom:12px;background:var(--in);border:1px solid var(--bg2)">
+   <b style="font-size:16px;color:var(--gold);display:flex;align-items:center;gap:6px">👑 ১) সরাসরি নতুন ইউজার অ্যাডমিন তৈরি করুন</b>
+   <span style="display:block;margin-top:4px">এখানে নাম, ইমেইল, রোল ও পাসওয়ার্ড দিয়ে সেভ করলেই Firebase Auth একাউন্ট খুলে সরাসরি অ্যাক্টিভ ইউজার অ্যাডমিন পারমিশন সেট হয়ে যাবে:</span>
+   <div class="row" style="margin-top:10px">
+    <input id="an" placeholder="অ্যাডমিন নাম (যেমন: Rahim Admin)">
+    <input id="ae" type="email" placeholder="ইমেইল (যেমন: rahim@admin.com)">
+    <select id="ar" style="height:42px;background:var(--in);color:var(--tx);border:1px solid var(--bd);border-radius:10px;padding:0 10px">
+     <option value="USER_ADMIN">User Admin (ইউজার অ্যাডমিন)</option>
+     <option value="SUB_ADMIN">Sub Admin (সাব অ্যাডমিন)</option>
+    </select>
+    <input id="ap" type="password" placeholder="পাসওয়ার্ড (৬+ অক্ষর)">
+    <button class="p" onclick="createAdmin()" style="font-weight:700">+ অ্যাডমিন সেভ ও অনুমতি দিন</button>
+   </div>
+  </div>
+
+  <div class="cd" style="margin-bottom:14px;background:var(--card);border:1px solid var(--bd)">
+   <b style="font-size:16px;color:var(--gold)">⚡ ২) বিদ্যমান ইউজার বা প্লেয়ারের UID দিয়ে অ্যাডমিন পারমিশন দিন</b>
+   <span style="display:block;margin-top:4px">যদি কোনো প্লেয়ারের একাউন্ট অলরেডি খোলা থাকে, তার UID নিচে পেস্ট করে পারমিশন দিন। সে ওই পাসওয়ার্ড দিয়েই User Admin প্যানেলে ঢুকতে পারবে:</span>
+   <div class="row" style="margin-top:10px">
+    <input id="auid" placeholder="প্লেয়ার / ইউজারের UID (যেমন: rX9sK...)" style="flex:1.5">
+    <input id="aunm" placeholder="অ্যাডমিন হিসেবে প্রদর্শিত নাম (ঐচ্ছিক)">
+    <select id="aur" style="height:42px;background:var(--in);color:var(--tx);border:1px solid var(--bd);border-radius:10px;padding:0 10px">
+     <option value="USER_ADMIN">User Admin</option>
+     <option value="SUB_ADMIN">Sub Admin</option>
+    </select>
+    <button class="p" onclick="grantAdminByUid()" style="background:var(--ok);border-color:transparent">✔ UID দিয়ে পারমিশন দিন</button>
+   </div>
+  </div>
+
+  <div class="sc"><table><tr><th>নাম / ইমেইল / UID</th><th>রোল</th><th>ব্যালেন্স</th><th>অবস্থা</th><th>অ্যাকশন</th></tr>`+
+  A.map(([u,a])=>`<tr>
+   <td>
+    <a href="#" style="color:var(--gold);font-weight:700;text-decoration:none" onclick="openAdmin('${u}');return false">${esc(a.name||a.email||'-')} ›</a>
+    <br><small style="color:var(--mu)">${esc(a.email||'')}</small>
+    <br><span style="font-family:monospace;font-size:11px;background:var(--in);padding:2px 6px;border-radius:4px;cursor:pointer" onclick="copyTxt('${u}')" title="কপি করতে ক্লিক করুন">UID: ${esc(u)} 📋</span>
+   </td>
+   <td><span class="pl" style="background:rgba(212,175,55,.15);color:var(--gold)">${esc(a.role||'USER_ADMIN')}</span></td>
+   <td><b>${fmt(a.balance)}</b></td>
+   <td><span class="pl ${a.active===false?'b':''}">${a.active===false?'বন্ধ':'সক্রিয়'}</span></td>
+   <td>
+    <button onclick="send('${u}')">পাঠান</button> 
+    <button onclick="reclaim('${u}')">ফেরত</button> 
+    <button class="d" onclick="toggle('${u}')">${a.active===false?'চালু':'বন্ধ'}</button> 
+    <button class="d" onclick="delAdmin('${u}')">মুছুন</button>
+   </td>
+  </tr>`).join('')+`</table></div>`}
+ if(cur==='reqs'){h=`<div class="sc"><table><tr><th>অ্যাডমিন</th><th>পরিমাণ</th><th>নোট</th><th>সময়</th><th>স্ট্যাটাস</th><th></th></tr>`+
+  Object.entries(REQ).reverse().map(([k,r])=>`<tr><td>${esc(r.email)}</td><td>${fmt(r.amount)}</td><td>${esc(r.note)}</td><td>${r.createdAt?new Date(r.createdAt).toLocaleString('bn-BD'):''}</td><td><span class="pl ${r.status==='rejected'?'b':r.status==='pending'?'y':''}">${esc(r.status)}</span></td><td>${r.status==='pending'?`<button class="p" onclick="approve('${k}')">অনুমোদন</button> <button class="d" onclick="reject('${k}')">বাতিল</button>`:''}</td></tr>`).join('')+`</table></div>`}
+ if(cur==='led'){h=`<div class="row"><button class="d" onclick="clearAdminTx()">🗑 সব লেনদেন মুছুন</button></div><div class="sc"><table><tr><th>সময়</th><th>ধরন</th><th>অ্যাডমিন</th><th>পরিমাণ</th><th>নোট</th></tr>`+
+  Object.values(LED).reverse().map(l=>`<tr><td>${l.time?new Date(l.time).toLocaleString('bn-BD'):''}</td><td>${esc(l.type)}</td><td>${esc(l.email)}</td><td>${fmt(l.amount)}</td><td>${esc(l.note)}</td></tr>`).join('')+`</table></div>`}
+ if(cur==='games'){h=`<div class="row"><input id="gn" placeholder="গেমের নাম"><input id="gc" list="gcl" value="Popular Games" placeholder="ক্যাটাগরি" style="height:42px"><datalist id="gcl">${[...new Set(["Popular Games","Crash Games",...Object.values(GAMES).map(x=>x.category).filter(Boolean)])].map(c=>`<option value="${esc(c)}">`).join('')}</datalist><input id="gi" placeholder="ছবির লিংক"><input id="gu" placeholder="গেমের লিংক"><input id="gh" placeholder="গেম সার্ভারের /health লিংক (ঐচ্ছিক, সার্ভার জাগাতে)"><label style="display:flex;align-items:center;gap:6px;font-size:.85rem"><input id="gint" type="checkbox" checked style="width:auto"> নিজস্ব গেম (টোকেন + প্রস্তুত সংকেত)</label><button class="p" onclick="saveGame()">+ নতুন গেম</button></div><div class="cd" style="margin-bottom:10px"><span>জনপ্রিয় গেমস ও ক্র্যাশ গেমস তালিকা (Firebase Node: games) — ${Object.keys(GAMES).length} টি</span></div><div class="sc"><table><tr><th>নাম / গেম ID</th><th>ক্যাটাগরি</th><th>ধরন</th><th>স্ট্যাটাস</th><th>অ্যাকশন</th></tr>`+
+  Object.entries(GAMES).map(([k,g])=>`<tr><td>${esc(g.name)}<br><small style="opacity:.6">ID: ${esc(k)}</small></td><td>${esc(g.category)}</td><td>${g.integrated===true?'নিজস্ব':(g.integrated===false?'বাইরের':'পুরোনো (অটো)')}${g.healthUrl?' 🩺':''}</td><td><span class="pl ${(g.status||'Active')==='Active'?'':'b'}">${esc(g.status||'Active')}</span></td><td><button onclick="saveGame('${k}')">এডিট</button> <button onclick="gToggle('${k}')">চালু/বন্ধ</button> <button onclick="gInteg('${k}')">🔌 ধরন</button> <button onclick="gHealth('${k}')">🩺</button> <button class="d" onclick="gDel('${k}')">মুছুন</button></td></tr>`).join('')+`</table></div>`}
+ if(cur==='players'){const q=Q.toLowerCase();const _orph=Object.keys(USERS).filter(k=>!ADM[k]&&!(USERS[k].adminUid&&ADM[USERS[k].adminUid])).length;h=(_orph?`<div class="cd" style="margin-bottom:10px;border:1px solid #ef4444"><b>⚠ ${_orph} জন ইউজারের কোনো অ্যাডমিন নেই</b><span>অ্যাডমিন না থাকলে সে ডিপোজিট/উইথড্র করতে পারবে না এবং কোনো অ্যাডমিন তাকে দেখবে না।</span><div class="row"><button class="p" onclick="assignAllOrphans()">সবাইকে একজন অ্যাডমিনের অধীনে দিন</button></div></div>`:'')+`<div class="row"><input id="pq" placeholder="নাম/ইমেইল/ফোন/UID দিয়ে খুঁজুন" value="${esc(Q)}" oninput="Q=this.value;draw();const p=$('pq');p.focus();p.setSelectionRange(Q.length,Q.length)"></div><div class="sc"><table><tr><th>প্লেয়ার ও UID</th><th>ব্যালেন্স</th><th>রোল / স্ট্যাটাস</th><th>অ্যাকশন</th></tr>`+
+  Object.entries(USERS).filter(([k,u])=>!q||[u.name,u.email,u.phone,u.username,k].join(' ').toLowerCase().includes(q)).slice(0,200).map(([k,u])=>{
+   const isAlreadyAdmin=!!ADM[k];
+   return`<tr>
+    <td>
+     <b>${esc(u.name||u.username||k)}</b>
+     <br><small>${esc(u.email||u.phone||'')}</small>
+     <br><span style="font-family:monospace;font-size:11px;background:var(--in);padding:2px 6px;border-radius:4px;cursor:pointer" onclick="copyTxt('${k}')" title="কপি করতে ক্লিক করুন">UID: ${esc(k)} 📋</span>
+    </td>
+    <td><b>${fmt(u.balance)}</b></td>
+    <td>
+     <span class="pl ${(u.status||'ACTIVE')==='ACTIVE'?'':'b'}">${esc(u.status||'ACTIVE')}</span>
+     ${isAlreadyAdmin?'<br><span class="pl" style="background:rgba(212,175,55,.2);color:var(--gold);margin-top:4px">👑 Admin</span>':''}
+     ${ADM[u.adminUid]?`<br><small>অ্যাডমিন: ${esc(ADM[u.adminUid].name||ADM[u.adminUid].email)}</small>`:(isAlreadyAdmin?'':'<br><span class="pl b" style="margin-top:4px">⚠ অ্যাডমিন নেই</span>')}
+    </td>
+    <td>
+     <button onclick="uAdjust('${k}')">৳ সমন্বয়</button> 
+     ${isAlreadyAdmin?'':`<button onclick="assignAdmin('${k}')">🔗 অ্যাডমিন সেট</button> `}
+     <button class="d" onclick="uStatus('${k}')">${(u.status||'ACTIVE')==='ACTIVE'?'ব্যান':'সক্রিয়'}</button>
+     ${!isAlreadyAdmin?`<button style="background:var(--gold);color:var(--on);font-weight:700;margin-left:4px" onclick="makeAdminFromPlayer('${k}')">👑 অ্যাডমিন বানান</button>`:`<button style="background:var(--in);margin-left:4px" onclick="openAdmin('${k}')">ভিউ অ্যাডমিন</button>`}
+    </td>
+   </tr>`}).join('')+`</table></div>`}
+ if(cur==='act'){h=actView()}
+ if(cur==='feat'){let g='';h=`<div class="row"><button class="p" onclick="fAll(true)">সব চালু</button><button class="d" onclick="fAll(false)">সব বন্ধ</button></div><div class="cd" style="margin-bottom:10px"><span>এখানে বন্ধ করা ফিচার User Admin প্যানেলে লুকিয়ে যাবে ও কাজ করবে না। চালু করলে আবার দেখা যাবে ও কাজ করবে।</span></div><div class="sc"><table>`+
+  FL.map(([k,gr,l])=>{const on=FEAT[k]!==false,hd=gr!==g?`<tr><th colspan="3" style="color:var(--gold)">${esc(gr)}</th></tr>`:'';g=gr;return hd+`<tr><td>${esc(l)}</td><td><span class="pl ${on?'':'b'}">${on?'চালু':'বন্ধ'}</span></td><td><button class="${on?'d':'p'}" onclick="fSet('${k}',${!on})">${on?'বন্ধ করুন':'চালু করুন'}</button></td></tr>`}).join('')+`</table></div>`}
+
+ if(cur==='admin'){const a=ADM[SEL];if(!a){cur='admins';return draw()}
+  const MF=a.features||{},my=Object.entries(USERS).filter(([k,u])=>u.adminUid===SEL),rq=Object.entries(REQ).filter(([k,r])=>r.uid===SEL).reverse(),lg=Object.values(LED).filter(l=>l.uid===SEL).reverse().slice(0,20);let g='';
+  h=`<div class="row"><button onclick="tab('admins')">← সব অ্যাডমিন</button></div>
+<div class="g"><div class="cd"><span>অ্যাডমিন</span><b style="font-size:18px">${esc(a.name||'-')}</b><small>${esc(a.email)}</small></div><div class="cd"><span>ব্যালেন্স</span><b>${fmt(a.balance)}</b></div><div class="cd"><span>অবস্থা</span><b style="font-size:16px">${a.active===false?'বন্ধ':'সক্রিয়'} · ${a.emailVerified?'ইমেইল ভেরিফাইড':'ইমেইল পেন্ডিং'}</b></div><div class="cd"><span>এই অ্যাডমিনের প্লেয়ার</span><b>${my.length}</b></div></div>
+${admBonRow(SEL)}
+<div class="row"><button class="p" onclick="send('${SEL}')">টাকা পাঠান</button><button onclick="reclaim('${SEL}')">টাকা ফেরত নিন</button><button class="d" onclick="toggle('${SEL}')">${a.active===false?'অ্যাডমিন চালু করুন':'অ্যাডমিন বন্ধ করুন'}</button><button class="d" onclick="delAdmin('${SEL}')">অ্যাডমিন মুছুন</button></div>
+<div class="cd" style="margin-bottom:10px"><b style="font-size:16px">ফিচার কন্ট্রোল (শুধু এই অ্যাডমিনের জন্য)</b><span>এখানে বন্ধ করলে শুধু এই অ্যাডমিনের প্যানেল থেকে ফিচার লুকাবে ও কাজ করবে না। "ফিচার কন্ট্রোল" ট্যাবে সবার জন্য বন্ধ থাকলে এই অ্যাডমিনের জন্যও বন্ধ থাকবে।</span></div>
+<div class="row"><button class="p" onclick="aAll('${SEL}',true)">সব চালু</button><button class="d" onclick="aAll('${SEL}',false)">সব বন্ধ</button></div>
+<div class="sc"><table>`+FL.map(([k,gr,l])=>{const gl=FEAT[k]!==false,on=MF[k]!==false,hd=gr!==g?`<tr><th colspan="3" style="color:var(--gold)">${esc(gr)}</th></tr>`:'';g=gr;return hd+`<tr><td>${esc(l)}</td><td><span class="pl ${on&&gl?'':'b'}">${on&&gl?'চালু':'বন্ধ'}</span>${gl?'':' <small>(সবার জন্য বন্ধ)</small>'}</td><td><button class="${on?'d':'p'}" onclick="aSet('${SEL}','${k}',${!on})">${on?'বন্ধ করুন':'চালু করুন'}</button></td></tr>`}).join('')+`</table></div>
+<div class="cd" style="margin:14px 0 10px"><b style="font-size:16px">এই অ্যাডমিনের প্লেয়ার (${my.length})</b></div>
+<div class="sc"><table><tr><th>প্লেয়ার</th><th>ব্যালেন্স</th><th>স্ট্যাটাস</th><th>অ্যাকশন</th></tr>`+my.slice(0,200).map(([k,u])=>`<tr><td>${esc(u.name||u.username||k)}<br><small>${esc(u.email||u.phone||'')}</small></td><td>${fmt(u.balance)}</td><td><span class="pl ${(u.status||'ACTIVE')==='ACTIVE'?'':'b'}">${esc(u.status||'ACTIVE')}</span></td><td><button onclick="uAdjust('${k}')">৳ সমন্বয়</button> <button class="d" onclick="uStatus('${k}')">${(u.status||'ACTIVE')==='ACTIVE'?'ব্যান':'সক্রিয়'}</button></td></tr>`).join('')+`</table></div>
+<div class="cd" style="margin:14px 0 10px"><b style="font-size:16px">ব্যালেন্স রিকোয়েস্ট</b></div>
+<div class="sc"><table><tr><th>পরিমাণ</th><th>নোট</th><th>সময়</th><th>স্ট্যাটাস</th><th></th></tr>`+rq.map(([k,r])=>`<tr><td>${fmt(r.amount)}</td><td>${esc(r.note)}</td><td>${r.createdAt?new Date(r.createdAt).toLocaleString('bn-BD'):''}</td><td><span class="pl ${r.status==='rejected'?'b':r.status==='pending'?'y':''}">${esc(r.status)}</span></td><td>${r.status==='pending'?`<button class="p" onclick="approve('${k}')">অনুমোদন</button> <button class="d" onclick="reject('${k}')">বাতিল</button>`:''}</td></tr>`).join('')+`</table></div>
+<div class="cd" style="margin:14px 0 10px"><b style="font-size:16px">সাম্প্রতিক লেনদেন (শেষ ২০টি)</b></div>
+<div class="sc"><table><tr><th>সময়</th><th>ধরন</th><th>পরিমাণ</th><th>নোট</th></tr>`+lg.map(l=>`<tr><td>${l.time?new Date(l.time).toLocaleString('bn-BD'):''}</td><td>${esc(l.type)}</td><td>${fmt(l.amount)}</td><td>${esc(l.note)}</td></tr>`).join('')+`</table></div>`}
+
+ if(cur==='tenants'){const L=getTenants();
+  h=`<div class="cd" style="margin-bottom:10px"><b style="font-size:16px">নতুন Firebase প্রজেক্ট যোগ করুন</b><span>প্রতিটা ব্যবসার আলাদা Firebase হলে এখানে যোগ করুন। যোগের আগে ওই প্রজেক্টে: ১) Realtime Database ও Authentication (Email/Password) চালু করুন, ২) আপনার database_rules.json পাবলিশ করুন, ৩) Authentication → Users এ আপনার Master ইমেইল দিয়ে একটা ইউজার বানান। তারপর নিচে কনফিগ পেস্ট করে যোগ করুন, তালিকায় "খুলুন" চেপে ওই প্রজেক্টের Master লগইন দিন।</span></div>
+<div class="row"><input id="tnm" placeholder="ব্যবসা / প্রজেক্টের নাম (যেমন: ABC Gaming)"></div>
+<div class="row"><textarea id="tcf" rows="8" placeholder='Firebase Console → Project settings → Your apps → Config থেকে কপি করে পেস্ট করুন। যেমন:
+apiKey: "AIza...",
+authDomain: "myproj.firebaseapp.com",
+databaseURL: "https://myproj-default-rtdb.firebaseio.com",
+projectId: "myproj",
+appId: "1:123:web:abc"'></textarea></div>
+<div class="row"><button class="p" onclick="addTenant()">+ প্রজেক্ট যোগ করুন</button></div>
+<div class="sc"><table><tr><th>নাম</th><th>Project ID</th><th>অবস্থা</th><th>অ্যাকশন</th></tr>
+<tr><td>মূল প্রজেক্ট</td><td>${esc(MAINCFG.projectId||'')}</td><td><span class="pl ${TID==='main'?'':'y'}">${TID==='main'?'এখন খোলা':'—'}</span></td><td>${TID==='main'?`<button class="sw ${UAON?'ok':''}" onclick="uaToggle()" title="User Admin সাইড ON/OFF"></button> <small>User Admin: <b style="color:${UAON?'var(--ok)':'var(--er)'}">${UAON?'ON':'OFF'}</b></small>`:`<button onclick="switchTenant('main')">খুলুন</button>`}</td></tr>`+
+  L.map(t=>`<tr><td>${esc(t.name)}</td><td>${esc(t.config.projectId||'')}</td><td><span class="pl ${TID===t.id?'':'y'}">${TID===t.id?'এখন খোলা':'—'}</span></td><td><button class="p" onclick="switchTenant('${esc(t.id)}')">খুলুন</button> <button class="d" onclick="delTenant('${esc(t.id)}')">সরান</button></td></tr>`).join('')+`</table></div>
+<div class="cd" style="margin-top:10px"><span>প্রজেক্টের তালিকা শুধু এই ডিভাইসের ব্রাউজারে সেভ থাকে (পাসওয়ার্ড সেভ হয় না)। অন্য ফোন বা কম্পিউটারে খুললে আবার যোগ করতে হবে।</span></div>`}
+
+ if(cur==='guide'){if(GV==='guide')return;
+  const st='style="background:var(--card);border:1px solid var(--bd);border-radius:14px;padding:12px 14px;margin-bottom:10px"',sm='style="cursor:pointer;font-weight:700;color:var(--gold);font-size:15px"',ol='style="padding-left:20px;line-height:1.9;margin-top:8px"';
+  h=`<div class="cd" style="margin-bottom:10px"><b style="font-size:18px">📖 Master গাইড বই</b><span>নতুন User Admin যোগ করা, নতুন Firebase প্রজেক্ট যোগ করা আর রুলস পাবলিশ করার ধাপগুলো এখানে সাজানো আছে। যেটা দরকার সেটা খুলে ধাপে ধাপে করুন।</span></div>
+
+<details ${st}><summary ${sm}>১) একই Firebase-এ নতুন User Admin যোগ করা</summary><ol ${ol}>
+<li>উপরে <b>User Admins</b> ট্যাবে যান।</li>
+<li>নাম, ইমেইল আর ৬+ অক্ষরের পাসওয়ার্ড লিখে <b>+ নতুন অ্যাডমিন</b> চাপুন।</li>
+<li>ওই ইমেইলে একটা ভেরিফিকেশন মেইল যাবে। admin লিংকে চাপ দিয়ে ইমেইল ভেরিফাই করবে।</li>
+<li>admin তার প্যানেলের ঠিকানায় (admin.html) ওই ইমেইল-পাসওয়ার্ড দিয়ে লগইন করবে।</li>
+<li>তালিকায় admin-এর পাশে <b>পাঠান</b> চেপে তাকে ব্যালেন্স দিন (তার ব্যালেন্স না থাকলে সে প্লেয়ারের ডিপোজিট অনুমোদন করতে পারবে না)।</li>
+<li>admin-এর <b>নামে ক্লিক</b> করলে তার সব ফিচার, প্লেয়ার, রিকোয়েস্ট ও লেনদেন কন্ট্রোল করতে পারবেন।</li></ol></details>
+
+<details ${st}><summary ${sm}>২) নতুন ব্যবসার জন্য আলাদা Firebase প্রজেক্ট যোগ করা (শুরু থেকে শেষ)</summary><ol ${ol}>
+<li><b>Firebase প্রজেক্ট বানান:</b> console.firebase.google.com → Add project।</li>
+<li><b>Realtime Database:</b> Build → Realtime Database → Create database (Locked mode বেছে নিন)।</li>
+<li><b>Authentication:</b> Build → Authentication → Get started → Sign-in method → <b>Email/Password</b> চালু করুন।</li>
+<li><b>রুলস:</b> Realtime Database → Rules এ যান। নিচের ৩ নম্বর অংশ থেকে রুলস কপি করে পেস্ট করুন, তারপর <b>Publish</b> চাপুন।</li>
+<li><b>Master ইউজার:</b> Authentication → Users → Add user। ইমেইল দিন <code>mijanbabu2015@gmail.com</code> (রুলসে শুধু এই ইমেইলই Master হিসেবে বসানো), সাথে একটা পাসওয়ার্ড।</li>
+<li><b>কনফিগ নিন:</b> Project settings → General → Your apps → Web (&lt;/&gt;) অ্যাপ রেজিস্টার করুন → Config কপি করুন।</li>
+<li><b>Master-এ যোগ:</b> <b>🔥 প্রজেক্টসমূহ</b> ট্যাবে নাম দিয়ে কনফিগ পেস্ট করে যোগ করুন → <b>খুলুন</b> চাপুন → ওই প্রজেক্টের Master ইমেইল-পাসওয়ার্ডে লগইন করুন।</li>
+<li><b>User Admin বানান:</b> ওই প্রজেক্ট খোলা অবস্থায় <b>User Admins</b> ট্যাবে নতুন admin যোগ করুন (১ নম্বরের ধাপ)।</li>
+<li><b>ওই ব্যবসার admin প্যানেল অনলাইনে দিন:</b> নতুন একটা GitHub রিপো বানিয়ে <code>admin.html</code> আর <b>ওই প্রজেক্টের নিজস্ব</b> <code>firebase-config.js</code> আপলোড করুন, Settings → Pages চালু করুন। তারপর ওই Firebase-এর Authentication → Settings → Authorized domains এ <code>ইউজারনেম.github.io</code> যোগ করুন।</li>
+<li><b>সতর্কতা:</b> <code>firebase-config.js</code> আপলোড করতে ভুলে গেলে বা ভুল কনফিগ দিলে admin প্যানেল ভুল করে মূল প্রজেক্টে (np-trunament-bd) যুক্ত হয়ে যাবে। আপলোডের পর লগইন করে নিশ্চিত হয়ে নিন।</li>
+<li>ওই ব্যবসার ইউজার অ্যাপেও একই কনফিগ বসাতে হবে।</li></ol>
+<div style="margin-top:8px;color:var(--mu)"><b>firebase-config.js</b> এর ফরম্যাট:</div>
+<textarea readonly rows="9" onclick="this.select()" style="margin-top:6px;font-family:monospace">window.NP_FIREBASE_CONFIG = {
+  apiKey: "...",
+  authDomain: "প্রজেক্ট-আইডি.firebaseapp.com",
+  databaseURL: "https://প্রজেক্ট-আইডি-default-rtdb.firebaseio.com",
+  projectId: "প্রজেক্ট-আইডি",
+  storageBucket: "প্রজেক্ট-আইডি.firebasestorage.app",
+  messagingSenderId: "...",
+  appId: "..."
+};</textarea></details>
+
+<details ${st} open><summary ${sm}>৩) Database Rules (প্রতিটা Firebase প্রজেক্টে একই রুলস)</summary>
+<div style="margin-top:8px;line-height:1.8">প্রতিটা নতুন প্রজেক্টে এই রুলসই পেস্ট করবেন, বদলানোর দরকার নেই। পেস্টের আগে ওই প্রজেক্টের পুরনো রুলস (থাকলে) কপি করে রেখে দিন। <b>Master চিনতে রুলসে শুধু একটা ইমেইল বসানো আছে:</b> mijanbabu2015@gmail.com। অন্য ইমেইলকে Master করতে চাইলে রুলসে ওই ইমেইল বদলাতে হবে।</div>
+<div class="row" style="margin-top:8px"><button class="p" onclick="copyRules()">📋 রুলস কপি করুন</button></div>
+<textarea id="rulesTxt" readonly rows="14" onclick="this.select()" style="font-family:monospace;font-size:12px">${esc(RULES_TXT)}</textarea></details>
+
+<details ${st}><summary ${sm}>৪) কোথায় কী কন্ট্রোল করবেন</summary><ol ${ol}>
+<li><b>User Admins:</b> admin যোগ, ব্যালেন্স পাঠানো/ফেরত নেওয়া, চালু/বন্ধ। নামে ক্লিক করলে ওই admin-এর আলাদা কন্ট্রোল পেজ।</li>
+<li><b>ফিচার কন্ট্রোল ট্যাব:</b> কোনো ফিচার এখানে বন্ধ করলে সব admin-এর জন্য বন্ধ।</li>
+<li><b>admin-এর নামে ক্লিক করে ফিচার কন্ট্রোল:</b> শুধু ওই একজন admin-এর জন্য বন্ধ/চালু।</li>
+<li><b>প্লেয়ার ট্যাব:</b> ব্যালেন্স সমন্বয় (টাকা কাটলে সেটা ওই প্লেয়ারের admin-এর ব্যালেন্সে ফেরত যায়) ও ব্যান।</li>
+<li><b>উপরের ড্রপডাউন:</b> এক ব্যবসা থেকে অন্য ব্যবসার প্রজেক্টে যাওয়া।</li></ol></details>
+
+<details ${st}><summary ${sm}>৫) সমস্যা হলে</summary><ol ${ol}>
+<li><b>"unauthorized domain" এরর:</b> ওই প্রজেক্টের Authentication → Settings → Authorized domains এ প্যানেলের ডোমেইন (<code>ইউজারনেম.github.io</code>) যোগ করুন।</li>
+<li><b>লগইন হয় না, ঠিকানা file:// দিয়ে শুরু:</b> ফাইল সরাসরি না খুলে GitHub Pages বা অন্য https ঠিকানায় খুলুন।</li>
+<li><b>"Master অ্যাক্সেস নেই":</b> ওই প্রজেক্টে রুলস পাবলিশ করা আছে কিনা এবং Authentication → Users এ Master ইমেইলের ইউজার আছে কিনা দেখুন।</li>
+<li><b>"permission denied":</b> ওই প্রজেক্টে রুলস পাবলিশ হয়নি বা ভুল ইমেইল দিয়ে লগইন করেছেন।</li>
+<li><b>admin লগইন করতে পারছে না:</b> সে ইমেইল ভেরিফাই করেছে কিনা আর User Admins তালিকায় তার অবস্থা "সক্রিয়" কিনা দেখুন।</li></ol></details>`}
+ const keep={};$('v').querySelectorAll('input,select,textarea').forEach(e=>{if(e.id)keep[e.id]=e.value});$('v').innerHTML=h;GV=cur;
+ Object.entries(keep).forEach(([i,v])=>{const e=$(i);if(e)e.value=v;});
+ const f=document.activeElement;if(f&&f.id==='pq'){}}
+
+/* ===== DEPOSIT PROMOTION (নতুন ফিচার) ===== */
+let PROMO={},PF={},PEDIT='';
+const _attachAll=attachAll;
+attachAll=function(){_attachAll();on(db.ref('depositPromotions'),s=>{PROMO=s.val()||{};draw()})};
+const _draw=draw;
+draw=function(){_draw();const b=$('t-promo');if(b)b.className=cur==='promo'?'on':'';if(started&&cur==='promo')promoDraw()};
+const pLoc=ms=>ms?new Date(+ms-new Date().getTimezoneOffset()*6e4).toISOString().slice(0,16):'';
+const pDt=ms=>ms?new Date(+ms).toLocaleString():'—';
+function pLog(a,t,d){try{db.ref('adminAuditLogs').push({admin:auth.currentUser.email,action:a,target:t,details:d,timestamp:Date.now()})}catch(e){}}
+function promoDraw(){
+ const f=PF,bt=f.bt||'percent',act=f.act!==false;
+ const rows=Object.entries(PROMO).sort((a,b)=>(+b[1].createdAt||0)-(+a[1].createdAt||0)).map(([k,p])=>`<tr><td><b>${esc(p.name)}</b></td><td>${fmt(p.minDeposit)} – ${fmt(p.maxDeposit)}</td><td>${p.bonusType==='fixed'?fmt(p.bonusValue):esc(p.bonusValue)+'%'}</td><td>${esc(p.turnoverMultiplier)}x</td><td>${pDt(p.startAt)}<br>${pDt(p.endAt)}</td><td>${p.adminCanToggle?'✅ Enable/Disable অনুমতি আছে':'🔒 শুধু Master'}</td><td><button class="${p.active?'p':'d'}" onclick="pToggle('${k}')">${p.active?'Active':'Inactive'}</button></td><td><button onclick="pEdit('${k}')">এডিট</button> <button class="d" onclick="pDel('${k}')">ডিলিট</button></td></tr>`).join('')||'<tr><td colspan="8">কোনো অফার নেই</td></tr>';
+ $('v').innerHTML=`<div class="cd" style="margin-bottom:10px"><b>🎁 ${PEDIT?'অফার এডিট করুন':'নতুন ডিপোজিট অফার'}</b><span>বোনাস ও টার্নওভার সার্ভার নিজে যোগ করবে। User Admin মূল অফার এডিট/ডিলিট করতে পারবে না।</span></div>
+<div class="row"><input placeholder="প্রোমোশনের নাম" value="${esc(f.name)}" oninput="PF.name=this.value"><input type="number" min="0" placeholder="ন্যূনতম ডিপোজিট" value="${esc(f.min)}" oninput="PF.min=this.value"><input type="number" min="1" placeholder="সর্বোচ্চ ডিপোজিট" value="${esc(f.max)}" oninput="PF.max=this.value"></div>
+<div class="row"><select oninput="PF.bt=this.value"><option value="percent" ${bt==='percent'?'selected':''}>বোনাস শতাংশ (%)</option><option value="fixed" ${bt==='fixed'?'selected':''}>ফিক্সড বোনাস (৳)</option></select><input type="number" min="0" step="any" placeholder="বোনাস পরিমাণ / শতাংশ" value="${esc(f.bv)}" oninput="PF.bv=this.value"><input type="number" min="0" step="any" placeholder="টার্নওভার গুণক (যেমন 3)" value="${esc(f.tm)}" oninput="PF.tm=this.value"></div>
+<div class="row"><label style="font-size:12px">শুরু<input type="datetime-local" value="${esc(f.start)}" oninput="PF.start=this.value"></label><label style="font-size:12px">শেষ<input type="datetime-local" value="${esc(f.end)}" oninput="PF.end=this.value"></label><select oninput="PF.act=this.value==='1'"><option value="1" ${act?'selected':''}>Active</option><option value="0" ${act?'':'selected'}>Inactive</option></select><select oninput="PF.tg=this.value==='1'"><option value="0" ${f.tg?'':'selected'}>User Admin Enable/Disable পারবে না</option><option value="1" ${f.tg?'selected':''}>User Admin Enable/Disable পারবে</option></select></div>
+<div class="row"><button class="p" onclick="pSave()">${PEDIT?'আপডেট করুন':'অফার তৈরি করুন'}</button>${PEDIT?'<button onclick="pCancel()">বাতিল</button>':''}</div>
+<div class="sc"><table><tr><th>নাম</th><th>ডিপোজিট সীমা</th><th>বোনাস</th><th>টার্নওভার</th><th>শুরু / শেষ</th><th>অ্যাডমিন পারমিশন</th><th>স্ট্যাটাস</th><th></th></tr>${rows}</table></div>`}
+async function pSave(){
+ const f=PF,n=(f.name||'').trim(),mn=+f.min,mx=+f.max,bv=+f.bv,tm=+f.tm,bt=f.bt==='fixed'?'fixed':'percent';
+ if(!n||!(mn>=0)||!(mx>0&&mx>=mn)||!(bv>0)||!(tm>=0)||(bt==='percent'&&bv>100))return toast('তথ্য সঠিক দিন: নাম, ন্যূনতম ≤ সর্বোচ্চ, বোনাস > 0 (শতাংশ হলে ≤ 100), টার্নওভার ≥ 0');
+ const s=f.start?new Date(f.start).getTime():0,e=f.end?new Date(f.end).getTime():0;
+ if(s&&e&&e<=s)return toast('শেষ তারিখ শুরুর পরে হতে হবে');
+ const id=PEDIT||db.ref('depositPromotions').push().key;
+ const o={name:n,minDeposit:mn,maxDeposit:mx,bonusType:bt,bonusValue:bv,turnoverMultiplier:tm,active:f.act!==false,startAt:s,endAt:e,adminCanToggle:!!f.tg,updatedAt:TS};
+ if(!PEDIT)o.createdAt=TS;
+ try{await db.ref('depositPromotions/'+id).update(o);pLog(PEDIT?'PROMO_UPDATE':'PROMO_CREATE',id,n);PF={};PEDIT='';toast('অফার সেভ হয়েছে ✅');draw()}catch(er){toast('ব্যর্থ: '+er.message)}}
+function pEdit(k){const p=PROMO[k];if(!p)return;PEDIT=k;PF={name:p.name,min:p.minDeposit,max:p.maxDeposit,bt:p.bonusType,bv:p.bonusValue,tm:p.turnoverMultiplier,start:pLoc(p.startAt),end:pLoc(p.endAt),act:p.active,tg:p.adminCanToggle};draw();scrollTo(0,0)}
+function pCancel(){PF={};PEDIT='';draw()}
+async function pToggle(k){const p=PROMO[k];if(!p)return;try{await db.ref('depositPromotions/'+k+'/active').set(!p.active);pLog('PROMO_TOGGLE',k,(!p.active)?'ON':'OFF')}catch(e){toast('ব্যর্থ: '+e.message)}}
+async function pDel(k){const p=PROMO[k];if(!p||!confirm('"'+p.name+'" অফারটি ডিলিট করবেন? (আগে দেওয়া বোনাস/টার্নওভার অপরিবর্তিত থাকবে)'))return;try{await db.ref('depositPromotions/'+k).remove();pLog('PROMO_DELETE',k,p.name);toast('অফার ডিলিট হয়েছে')}catch(e){toast('ব্যর্থ: '+e.message)}}
+
+/* ===== অ্যাডমিন চ্যাট (Support Center theme): মাস্টার ↔ ইউজার অ্যাডমিন ===== */
+function npmTime(ts){return ts?new Date(+ts).toLocaleTimeString('bn-BD',{hour:'2-digit',minute:'2-digit'}):''}
+function npmInit(n){return esc((String(n||'?').trim().charAt(0)||'?').toUpperCase())}
+function npmRows(){
+ const rows=[],seen={};
+ Object.keys(ADM).forEach(u=>{const a=ADM[u]||{},m=CHAT_METAS[u]||{};seen[u]=1;rows.push({u,name:a.name||m.adminName||a.email||u,email:a.email||m.adminEmail||'',last:m.lastMessage||'',ts:+m.lastTimestamp||0,unread:m.unreadForMaster===true})});
+ Object.keys(CHAT_METAS).forEach(u=>{if(seen[u])return;const m=CHAT_METAS[u]||{};rows.push({u,name:m.adminName||m.adminEmail||u,email:m.adminEmail||'',last:m.lastMessage||'',ts:+m.lastTimestamp||0,unread:m.unreadForMaster===true})});
+ rows.sort((a,b)=>(b.unread-a.unread)||(b.ts-a.ts)||String(a.name).localeCompare(String(b.name)));
+ return rows}
+function npmBack(){
+ SEL_CHAT_ADMIN='';
+ if(ACTIVE_CHAT_UNSUB){try{ACTIVE_CHAT_UNSUB.off()}catch(e){}ACTIVE_CHAT_UNSUB=null}
+ ACTIVE_CHAT_MSGS=[];draw()}
+function npmChatHtml(){
+ const rows=npmRows(),sel=SEL_CHAT_ADMIN,row=rows.find(r=>r.u===sel);
+ const list=rows.length?rows.map(r=>`<button type="button" class="npm-row${r.u===sel?' sel':''}" onclick="selectChatAdmin('${esc(r.u)}')"><span class="npm-av">${npmInit(r.name)}</span><span class="npm-ri"><b>${esc(r.name)}</b><small>${esc(r.last||r.email||'')}</small></span><span class="npm-rm">${r.ts?esc(npmTime(r.ts)):''}${r.unread?'<i class="npm-unread"></i>':''}</span></button>`).join(''):`<div class="npm-empty">কোনো অ্যাডমিন নেই</div>`;
+ let conv;
+ if(sel&&row){
+  const msgs=ACTIVE_CHAT_MSGS.map(m=>{const t=esc(npmTime(m.timestamp)),b=`<div class="npm-b">${esc(m.text)}<span class="npm-t">${t}</span></div>`;return m.sender==='MASTER'?`<div class="npm-m me">${b}</div>`:`<div class="npm-m"><span class="npm-av sm">${npmInit(row.name)}</span>${b}</div>`}).join('');
+  conv=`<div class="npm-head"><button type="button" class="npm-back" onclick="npmBack()" aria-label="ফিরে যান">‹</button><div class="npm-logo">NP</div><div class="npm-hi"><b>NP TOURNAMENT BD</b><small>Admin Support Desk</small></div></div>
+  <div class="npm-officer"><span class="npm-av">${npmInit(row.name)}</span><div class="npm-oi"><b>${esc(row.name)}</b><small>${esc(row.email||'User Admin')}</small></div></div>
+  <div class="npm-body" id="master-chat-body"><div class="npm-div"><span>NP TOURNAMENT BD • SUPPORT</span></div>${msgs}</div>
+  <form class="npm-bar" onsubmit="sendMasterChatReply(event)"><textarea id="master-chat-reply-input" rows="1" maxlength="1000" autocomplete="off" placeholder="রিপ্লাই লিখুন..." onkeydown="if(event.key==='Enter'&&!event.shiftKey&&!event.isComposing){event.preventDefault();sendMasterChatReply()}"></textarea><button type="submit" aria-label="পাঠান">➤</button></form>`;
+ }else{
+  conv=`<div class="npm-head"><div class="npm-logo">NP</div><div class="npm-hi"><b>NP TOURNAMENT BD</b><small>Admin Support Desk</small></div></div><div class="npm-phb">💬</div>`}
+ return `<div class="npm${sel&&row?' has-sel':''}"><div class="npm-list"><div class="npm-head"><div class="npm-logo">NP</div><div class="npm-hi"><b>ইউজার অ্যাডমিন</b><small>${rows.length} জন</small></div></div><div class="npm-rows">${list}</div></div><div class="npm-conv">${conv}</div></div>`}
+(function(){
+ const _d=draw,CLR={};
+ draw=function(){
+  let val='',had=false,pos=null,scr=null;
+  if(cur==='chat'){
+   const ta=$('master-chat-reply-input');
+   if(ta){val=ta.value;had=document.activeElement===ta;pos=[ta.selectionStart,ta.selectionEnd]}
+   const b=$('master-chat-body');
+   if(b)scr={top:b.scrollTop,end:b.scrollHeight-b.scrollTop-b.clientHeight<80}}
+  _d();
+  if(cur!=='chat'||!started)return;
+  $('v').innerHTML=npmChatHtml();
+  const ta=$('master-chat-reply-input'),b=$('master-chat-body');
+  if(ta&&val){ta.value=val;if(had){ta.focus();try{ta.setSelectionRange(pos[0],pos[1])}catch(e){}}}
+  else if(ta&&had)ta.focus();
+  if(b){if(!scr||scr.end)b.scrollTop=b.scrollHeight;else b.scrollTop=scr.top}
+  const s=SEL_CHAT_ADMIN;
+  if(s&&(CHAT_METAS[s]||{}).unreadForMaster===true&&Date.now()-(CLR[s]||0)>3000){CLR[s]=Date.now();db.ref('master_admin_chats/'+s+'/meta/unreadForMaster').set(false).catch(()=>{})}
+ };
+})();
+</script>
+<script>
+/* ===== শুধু থিম/স্টাইল সহায়ক (ফিচার বা পারমিশনে কোনো পরিবর্তন নেই) ===== */
+(function(){
+  var MOON='<svg viewBox="0 0 24 24"><path d="M12 3c-4.97 0-9 4.03-9 9s4.03 9 9 9 9-4.03 9-9c0-.46-.04-.92-.1-1.36-.98 1.37-2.58 2.26-4.4 2.26-2.98 0-5.4-2.42-5.4-5.4 0-1.81.89-3.42 2.26-4.4-.44-.06-.9-.1-1.36-.1z"/></svg>',SUN='<svg viewBox="0 0 24 24"><path d="M12 7a5 5 0 100 10 5 5 0 000-10zM2 13h2a1 1 0 000-2H2a1 1 0 000 2zm18 0h2a1 1 0 000-2h-2a1 1 0 000 2zM11 2v2a1 1 0 002 0V2a1 1 0 00-2 0zm0 18v2a1 1 0 002 0v-2a1 1 0 00-2 0zM5.99 4.58a1 1 0 00-1.41 1.41l1.06 1.06a1 1 0 001.41-1.41L5.99 4.58zm12.37 12.37a1 1 0 00-1.41 1.41l1.06 1.06a1 1 0 001.41-1.41l-1.06-1.06zm1.06-10.96a1 1 0 00-1.41-1.41l-1.06 1.06a1 1 0 001.41 1.41l1.06-1.06zM7.05 18.36a1 1 0 00-1.41-1.41l-1.06 1.06a1 1 0 001.41 1.41l1.06-1.06z"/></svg>';
+  window.applyTheme=function(t){
+    document.body.setAttribute('data-theme',t);
+    try{localStorage.setItem('np_admin_theme',t)}catch(e){}
+    var m=document.querySelector('meta[name="theme-color"]');if(m)m.setAttribute('content',t==='light'?'#F4F1EA':'#0A0A0A');
+    document.querySelectorAll('.theme-toggle-btn').forEach(function(b){b.innerHTML=t==='light'?SUN:MOON;b.title=t==='light'?'ডার্ক থিমে যান':'লাইট থিমে যান'});
+  };
+  window.cycleTheme=function(){applyTheme((document.body.getAttribute('data-theme')||'dark')==='dark'?'light':'dark')};
+  window.toggleSidebar=function(){document.getElementById('sidebar').classList.toggle('open')};
+  applyTheme(document.body.getAttribute('data-theme')||'dark');
+  document.querySelectorAll('.nav-item button').forEach(function(b){b.addEventListener('click',function(){document.getElementById('sidebar').classList.remove('open')})});
+  var _d=draw;
+  draw=function(){
+    _d();
+    try{
+      var u=auth&&auth.currentUser,em=(u&&u.email)||'';
+      document.getElementById('sidebar-email').textContent=em;
+      document.getElementById('sidebar-avatar').textContent=(em.charAt(0)||'M').toUpperCase();
+      document.getElementById('nav-pending').textContent=document.getElementById('s4').textContent;
+    }catch(e){}
+  };
+})();
+</script>
+<script>
+/* ===== নোটিফিকেশন + সাউন্ড (নতুন ব্যালেন্স রিকোয়েস্ট এলে) ===== */
+(function(){
+  var soundOn=true,read=new Set(),seen=new Set(),seenTid=null,t0=0,swReg=null,ac=null;
+  var hasNotif=('Notification' in window);
+  try{soundOn=localStorage.getItem('masterSoundOn')!=='false';read=new Set(JSON.parse(localStorage.getItem('master_read_notif_ids')||'[]'))}catch(e){}
+  function $$(i){return document.getElementById(i)}
+  function getAC(){try{if(!ac){var C=window.AudioContext||window.webkitAudioContext;if(C)ac=new C()}if(ac&&ac.state==='suspended')ac.resume().catch(function(){})}catch(e){}return ac}
+  ['click','touchstart','keydown'].forEach(function(ev){window.addEventListener(ev,getAC,{once:true,passive:true})});
+  function beep(){
+    if(!soundOn)return;
+    try{var c=getAC();if(!c)return;var now=c.currentTime;
+      [523.25,659.25,783.99].forEach(function(f,i){var o=c.createOscillator(),g=c.createGain();
+        o.type='sine';o.frequency.setValueAtTime(f,now+i*.12);
+        g.gain.setValueAtTime(0,now+i*.12);g.gain.linearRampToValueAtTime(.35,now+i*.12+.02);g.gain.exponentialRampToValueAtTime(.001,now+i*.12+.3);
+        o.connect(g);g.connect(c.destination);o.start(now+i*.12);o.stop(now+i*.12+.32)})}catch(e){}
+  }
+  function updSound(){var ic=$$('snd-ic'),lb=$$('snd-lb'),b=$$('btn-sound');if(!ic)return;
+    ic.textContent=soundOn?'🔊':'🔇';lb.textContent=soundOn?'সাউন্ড অন':'সাউন্ড অফ';b.className=soundOn?'':'off'}
+  window.toggleMasterSound=function(){soundOn=!soundOn;try{localStorage.setItem('masterSoundOn',soundOn?'true':'false')}catch(e){}updSound();if(soundOn){beep();toast('🔊 সাউন্ড নোটিফিকেশন চালু')}else toast('🔇 সাউন্ড নোটিফিকেশন বন্ধ')};
+  updSound();
+
+  if('serviceWorker' in navigator){
+    navigator.serviceWorker.ready.then(function(r){swReg=r}).catch(function(){});
+    navigator.serviceWorker.addEventListener('message',function(e){if(e.data&&e.data.view==='reqs'){try{tab('reqs')}catch(x){}}});
+  }
+  function showNotif(title,body,tag){
+    var o={body:body,icon:'./master-icon-192.png',badge:'./master-icon-192.png',tag:tag,renotify:true,requireInteraction:true,vibrate:[300,120,300,120,300],data:{view:'reqs'}};
+    if(swReg&&swReg.showNotification)swReg.showNotification(title,o);else{try{new Notification(title,o)}catch(e){}}
+  }
+  window.enableNotifications=async function(){
+    if(!hasNotif){toast('এই ব্রাউজারে নোটিফিকেশন সাপোর্ট নেই');return}
+    try{var r=await Notification.requestPermission();
+      if(r==='granted'){showNotif('✅ নোটিফিকেশন চালু হয়েছে','নতুন ব্যালেন্স রিকোয়েস্ট এলে এভাবে জানানো হবে।','master-test')}
+      else toast('নোটিফিকেশন Allow করা হয়নি')}catch(e){}
+    drawerNote();
+  };
+  function drawerNote(){
+    var b=$$('btn-enable-notif'),n=$$('nd-note');if(!b)return;
+    var p=hasNotif?Notification.permission:'unsupported';
+    if(p==='granted'){b.style.display='none';n.textContent='নোটিফিকেশন চালু আছে (অ্যাপ/ব্রাউজার খোলা থাকলে ব্যাকগ্রাউন্ডেও জানাবে)।'}
+    else if(p==='denied'){b.style.display='none';n.textContent='নোটিফিকেশন বন্ধ করা আছে। ফোন/ব্রাউজার সেটিংস থেকে এই সাইটের নোটিফিকেশন Allow করুন।'}
+    else if(p==='unsupported'){b.style.display='none';n.textContent='এই ব্রাউজারে নোটিফিকেশন সাপোর্ট নেই।'}
+    else{b.style.display='block';n.textContent='iPhone এ আগে "Add to Home Screen" করে অ্যাপ খুলুন।'}
+  }
+  function pend(){return Object.entries(REQ).filter(function(x){return x[1].status==='pending'}).reverse()}
+  function saveRead(){try{localStorage.setItem('master_read_notif_ids',JSON.stringify(Array.from(read).slice(-500)))}catch(e){}}
+  function badge(){var n=pend().filter(function(x){return !read.has(x[0])}).length,b=$$('notif-badge');if(!b)return;
+    b.style.display=n?'block':'none';b.textContent=n>99?'99+':n}
+  function renderDrawer(){
+    var L=$$('nd-list');if(!L)return;var P=pend();
+    L.innerHTML=P.length?P.map(function(x){var k=x[0],r=x[1];
+      return '<div class="nd-item" onclick="goReqs(\''+k+'\')"><span class="nd-dot'+(read.has(k)?' rd':'')+'"></span><div class="nd-main"><b>'+esc(r.email||'অ্যাডমিন')+'</b><span>'+esc(r.note||'ব্যালেন্স রিকোয়েস্ট')+(r.createdAt?' • '+new Date(r.createdAt).toLocaleString('bn-BD'):'')+'</span></div><div class="nd-amt">'+fmt(r.amount)+'</div></div>'}).join('')
+      :'<div class="nd-empty">কোনো পেন্ডিং রিকোয়েস্ট নেই ✅</div>';
+    drawerNote();
+  }
+  window.toggleNotifDrawer=function(){var d=$$('notif-drawer');d.classList.toggle('open');if(d.classList.contains('open'))renderDrawer()};
+  window.goReqs=function(k){read.add(k);saveRead();badge();$$('notif-drawer').classList.remove('open');tab('reqs')};
+  window.markAllNotifRead=function(){pend().forEach(function(x){read.add(x[0])});saveRead();badge();renderDrawer()};
+  document.addEventListener('click',function(e){var d=$$('notif-drawer');if(d&&d.classList.contains('open')&&!d.contains(e.target)&&!e.target.closest('#btn-notif-bell'))d.classList.remove('open')});
+
+  function check(){
+    if(!started)return;
+    if(seenTid!==TID){seenTid=TID;seen=new Set();t0=Date.now()}
+    var fresh=[];
+    pend().forEach(function(x){if(!seen.has(x[0])){seen.add(x[0]);if(Date.now()-t0>2500)fresh.push(x)}});
+    if(fresh.length){
+      beep();
+      fresh.forEach(function(x){var r=x[1];toast('🔔 নতুন ব্যালেন্স রিকোয়েস্ট: '+(r.email||'অ্যাডমিন')+' — '+fmt(r.amount));
+        if(hasNotif&&Notification.permission==='granted'&&!(document.visibilityState==='visible'&&document.hasFocus()))
+          showNotif('💰 নতুন ব্যালেন্স রিকোয়েস্ট',(r.email||'অ্যাডমিন')+' — '+fmt(r.amount),'req-'+x[0])});
+    }
+  }
+  var _d3=draw;
+  draw=function(){_d3();try{check();badge();if($$('notif-drawer').classList.contains('open'))renderDrawer()}catch(e){}};
+  drawerNote();
+})();
+</script>
+<script>if('serviceWorker' in navigator&&(location.protocol==='https:'||location.hostname==='localhost')){window.addEventListener('load',function(){navigator.serviceWorker.register('./master-sw.js').catch(function(){})})}</script>
+</body></html>
