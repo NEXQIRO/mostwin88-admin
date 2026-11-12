@@ -299,19 +299,35 @@ apply();window.addEventListener('load',function(){setTimeout(apply,150)});window
 @media (max-width:900px){.topbar-actions{gap:6px}}
 </style>
 <style>
-/* logo = MOSTWIN88 emblem (image) */
-.brand-logo{background:transparent !important;width:54px;height:54px;border-radius:0;overflow:visible}
-.brand-logo img{width:54px;height:54px;display:block;object-fit:contain}
-.login-logo{background:transparent !important;width:96px;height:96px;margin:0 auto 14px;border-radius:0}
-.login-logo img{width:96px;height:96px;display:block;object-fit:contain}
+/* EXACT MOSTWIN88 ANIMATED LOGO */
+.logo{--fs:34px;display:block;width:max-content;text-align:left;margin:0 auto 14px}
+.logo.sm{--fs:19px;margin:0}
+.lm{display:block;width:max-content;white-space:nowrap;font-weight:900;letter-spacing:.5px;line-height:1;font-size:var(--fs);color:#ffd23f;font-family:var(--font-display),sans-serif}
+.logo .w,.logo .r{color:#fff}
+.lo{display:inline-block;position:relative;width:.76em;height:.76em;margin:0 .035em;vertical-align:baseline;overflow:visible;filter:drop-shadow(0 0 .04em #ffffff77)}
+.lo svg{position:absolute;left:0;top:0;width:100%;height:100%;display:block;overflow:visible;transform:scale(1.12);transform-origin:50% 50%}
+.lo-r{transform-box:view-box;transform-origin:50px 50px;animation:loSpin 6s cubic-bezier(.2,.7,.2,1) infinite}
+@keyframes loSpin{0%,25%{transform:rotate(0deg)}70%,100%{transform:rotate(1440deg)}}
+.tag{display:block;white-space:nowrap;font-weight:700;color:#ffd23f;font-size:calc(var(--fs)*.17);margin-top:.55em;overflow:visible;letter-spacing:.4px}
+body[data-theme="light"] .logo .w,body[data-theme="light"] .logo .r{color:#1C1917}
+body[data-theme="light"] .lo circle[stroke="#fff"]{stroke:#1C1917}
+body[data-theme="light"] .lo circle[stroke*="255,255,255"]{stroke:rgba(28,25,23,.3)}
+@media (prefers-reduced-motion:reduce){.lo-r{animation:none}}
+.brand-header{flex-direction:column;align-items:flex-start;gap:4px}
+.login-logo{background:transparent !important;width:auto;height:auto;margin:0 auto 10px;border-radius:0;display:block}
 </style>
 </head>
 <body data-theme="dark">
 <script>try{var __t=localStorage.getItem("np_admin_theme");if(__t==="light"||__t==="dark")document.body.setAttribute("data-theme",__t);}catch(e){}</script>
 
 <div id="login"><div class="login-box">
-  <div class="login-logo"><img src="master-logo.png" alt="MOSTWIN88" width="96" height="96" decoding="async"></div>
-  <h2 class="login-title" id="lt">MOSTWIN88</h2>
+  <div class="login-logo">
+    <div class="logo" id="mLoginLogoWrap">
+      <span class="lm"><span class="w">M</span><span class="lo"><svg viewBox="0 0 100 100" aria-hidden="true"><g class="lo-r"><circle cx="50" cy="50" r="43" fill="none" stroke="rgba(255,255,255,.4)" stroke-width="14"/><circle cx="50" cy="50" r="43" fill="none" stroke="#fff" stroke-width="14" stroke-dasharray="7.4 3.86"/></g><circle cx="50" cy="50" r="18" fill="#ffd23f"/><circle cx="50" cy="50" r="18" fill="none" stroke="#fff2b3" stroke-width="3"/></svg></span><span class="w">ST</span>WIN<span class="r">88</span></span>
+      <span class="tag" id="mLoginTag">PLAY BIG, WIN BIGGER</span>
+    </div>
+  </div>
+  <h2 class="login-title" id="lt" style="display:none">MOSTWIN88</h2>
   <p class="login-sub">মাস্টার কন্ট্রোল প্যানেল</p>
   <div class="login-form">
     <input id="em" type="email" placeholder="Master ইমেইল"><input id="pw" type="password" placeholder="পাসওয়ার্ড">
@@ -322,11 +338,15 @@ apply();window.addEventListener('load',function(){setTimeout(apply,150)});window
 <div id="app">
   <aside class="sidebar" id="sidebar">
     <div class="brand-header">
-      <div class="brand-logo"><img src="master-logo.png" alt="MOSTWIN88" width="54" height="54" decoding="async"></div>
-      <div><div class="brand-title">MOSTWIN88</div><div class="brand-sub">MASTER ADMINISTRATOR</div></div>
+      <div class="logo sm" id="mBrandLogoWrap">
+        <span class="lm"><span class="w">M</span><span class="lo"><svg viewBox="0 0 100 100" aria-hidden="true"><g class="lo-r"><circle cx="50" cy="50" r="43" fill="none" stroke="rgba(255,255,255,.4)" stroke-width="14"/><circle cx="50" cy="50" r="43" fill="none" stroke="#fff" stroke-width="14" stroke-dasharray="7.4 3.86"/></g><circle cx="50" cy="50" r="18" fill="#ffd23f"/><circle cx="50" cy="50" r="18" fill="none" stroke="#fff2b3" stroke-width="3"/></svg></span><span class="w">ST</span>WIN<span class="r">88</span></span>
+        <span class="tag" id="mBrandTag">PLAY BIG, WIN BIGGER</span>
+      </div>
+      <div class="brand-sub" style="margin-top:4px">MASTER ADMINISTRATOR</div>
     </div>
     <ul class="nav-list">
         <li class="nav-item"><button id="t-admins" onclick="tab('admins')"><svg viewBox="0 0 24 24"><path d="M16 11c1.66 0 2.99-1.34 2.99-3S17.66 5 16 5c-1.66 0-3 1.34-3 3s1.34 3 3 3zm-8 0c1.66 0 2.99-1.34 2.99-3S9.66 5 8 5C6.34 5 5 6.34 5 8s1.34 3 3 3zm0 2c-2.33 0-7 1.17-7 3.5V19h14v-2.5c0-2.33-4.67-3.5-7-3.5zm8 0c-.29 0-.62.02-.97.05 1.16.84 1.97 1.97 1.97 3.45V19h6v-2.5c0-2.33-4.67-3.5-7-3.5z"/></svg><span class="nav-label">User Admins</span></button></li>
+        <li class="nav-item"><button id="t-agents" onclick="tab('agents')"><svg viewBox="0 0 24 24"><path d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z"/></svg><span class="nav-label">এজেন্ট (Agents)</span><span class="nav-badge" id="nav-agent-pending">0</span></button></li>
         <li class="nav-item"><button id="t-reqs" onclick="tab('reqs')"><svg viewBox="0 0 24 24"><path d="M21 18v1c0 1.1-.9 2-2 2H5c-1.11 0-2-.9-2-2V5c0-1.1.89-2 2-2h14c1.1 0 2 .9 2 2v1h-9c-1.11 0-2 .9-2 2v8c0 1.1.89 2 2 2h9zm-9-2h10V8H12v8zm4-2.5c-.83 0-1.5-.67-1.5-1.5s.67-1.5 1.5-1.5 1.5.67 1.5 1.5-.67 1.5-1.5 1.5z"/></svg><span class="nav-label">ব্যালেন্স রিকোয়েস্ট</span><span class="nav-badge" id="nav-pending">0</span></button></li>
         <li class="nav-item"><button id="t-led" onclick="tab('led')"><svg viewBox="0 0 24 24"><path d="M14 2H6c-1.1 0-1.99.9-1.99 2L4 20c0 1.1.89 2 1.99 2H18c1.1 0 2-.9 2-2V8l-6-6zm2 16H8v-2h8v2zm0-4H8v-2h8v2zm-3-5V3.5L18.5 9H13z"/></svg><span class="nav-label">লেজার</span></button></li>
         <li class="nav-item"><button id="t-games" onclick="tab('games')"><svg viewBox="0 0 24 24"><path d="M3 13h8V3H3v10zm0 8h8v-6H3v6zm10 0h8V11h-8v10zm0-18v6h8V3h-8z"/></svg><span class="nav-label">গেম ম্যানেজমেন্ট</span></button></li>
@@ -382,8 +402,39 @@ apply();window.addEventListener('load',function(){setTimeout(apply,150)});window
 const MAINCFG=window.NP_FIREBASE_CONFIG||{apiKey:"AIzaSyACoy90K8WHdxSU3_KtUiwWNPHGErT0P3w",authDomain:"mostwin88-febbf.firebaseapp.com",databaseURL:"https://mostwin88-febbf-default-rtdb.asia-southeast1.firebasedatabase.app",projectId:"mostwin88-febbf",storageBucket:"mostwin88-febbf.firebasestorage.app",messagingSenderId:"1091271266801",appId:"1:1091271266801:web:0b4da03572189864077450",measurementId:"G-5Q07GB1YD6"},MAINAPP=firebase.initializeApp(MAINCFG),TS=firebase.database.ServerValue.TIMESTAMP;
 let auth=MAINAPP.auth(),db=MAINAPP.database(),TID='main',TCFG=MAINCFG,TNAME='মূল প্রজেক্ট',LST=[],AUTHUNSUB=null;try{auth.setPersistence(firebase.auth.Auth.Persistence.LOCAL).catch(()=>{})}catch(e){}
 const $=i=>document.getElementById(i),fmt=n=>'৳ '+Math.round(n||0).toLocaleString('en-US'),esc=s=>String(s??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
-let ALK={},ADL=false,ALD=false,ADM={},REQ={},LED={},GAMES={},USERS={},ACT={},MB=0,cur='admins',started=false,Q='',FEAT={},SEL='',GV='',UAON=true,BON={};
-const FL=[["users", "পেজ", "প্লেয়ার / ইউজার (পেজ)"], ["wallet", "পেজ", "ওয়ালেট ও রিকোয়েস্ট (পেজ)"], ["promotions", "পেজ", "ডিপোজিট প্রোমোশন (পেজ)"], ["finance", "পেজ", "আর্থিক রিপোর্ট / Finance (পেজ)"], ["notices", "পেজ", "নোটিশ ও ঘোষণা (পেজ)"], ["notifications", "পেজ", "ইউজার নোটিফিকেশন (পেজ)"], ["settings", "পেজ", "অ্যাপ সেটিংস (পেজ)"], ["audit", "পেজ", "রিপোর্ট ও অডিট লগ (পেজ)"], ["u_ban", "প্লেয়ার", "প্লেয়ার ব্যান / সক্রিয় করা"], ["u_track", "প্লেয়ার", "প্লেয়ার ট্র্যাকিং (IP, ডিভাইস, অডিট)"], ["u_report", "প্লেয়ার", "প্লেয়ার আর্থিক রিপোর্ট ও CSV"], ["u_adjust", "প্লেয়ার", "প্লেয়ার ব্যালেন্স সমন্বয় (Adjust Balance)"], ["u_bonus", "প্লেয়ার", "প্লেয়ার বোনাস ও টার্নওভার সমন্বয়"], ["dep", "ওয়ালেট", "ডিপোজিট অনুমোদন / বাতিল"], ["wd", "ওয়ালেট", "উইথড্র সম্পন্ন / বাতিল"], ["bal_req", "ওয়ালেট", "Master-এর কাছে ব্যালেন্স রিকোয়েস্ট"], ["dep_bonus", "ওয়ালেট", "ডিপোজিটে বোনাস ও টার্নওভার সেট করা"], ["notice_pub", "নোটিশ", "নোটিশ পাবলিশ ও ডিলিট"], ["notif_send", "নোটিফিকেশন", "নোটিফিকেশন পাঠানো ও ডিলিট"], ["set_pay", "সেটিংস", "পেমেন্ট ও সোশ্যাল লিংক সেটিংস"], ["banners", "সেটিংস", "ব্যানার যোগ ও ডিলিট"]];
+let ALK={},ADL=false,ALD=false,ADM={},REQ={},LED={},GAMES={},USERS={},ACT={},GTX={},DEVREG={},AGENTS={},AGREQ={},MB=0,cur='admins',started=false,Q='',AQ_AG='',FEAT={},SEL='',GV='',UAON=true,BON={};
+const FL=[
+  ["dashboard", "পেজ", "ড্যাশবোর্ড ও সারাংশ (পেজ)"],
+  ["gameactivity", "পেজ", "গেম ও বেট ট্র্যাকার / লাইভ অ্যাক্টিভিটি (পেজ)"],
+  ["users", "পেজ", "প্লেয়ার / ইউজার (পেজ)"],
+  ["wallet", "পেজ", "ওয়ালেট ও রিকোয়েস্ট (পেজ)"],
+  ["agents", "পেজ", "এজেন্ট ম্যানেজমেন্ট (পেজ)"],
+  ["promotions", "পেজ", "ডিপোজিট প্রোমোশন (পেজ)"],
+  ["finance", "পেজ", "আর্থিক রিপোর্ট / Finance (পেজ)"],
+  ["notices", "পেজ", "নোটিশ ও ঘোষণা (পেজ)"],
+  ["notifications", "পেজ", "ইউজার নোটিফিকেশন (পেজ)"],
+  ["master_chat", "পেজ", "মাস্টার অ্যাডমিন সাপোর্ট চ্যাট"],
+  ["settings", "পেজ", "অ্যাপ সেটিংস (পেজ)"],
+  ["audit", "পেজ", "রিপোর্ট ও অডিট লগ (পেজ)"],
+  ["u_ban", "প্লেয়ার", "প্লেয়ার ব্যান / সক্রিয় করা"],
+  ["u_track", "প্লেয়ার", "প্লেয়ার ট্র্যাকিং (IP, ডিভাইস, গেম/বেট অডিট)"],
+  ["u_report", "প্লেয়ার", "প্লেয়ার আর্থিক রিপোর্ট ও CSV"],
+  ["u_adjust", "প্লেয়ার", "প্লেয়ার ব্যালেন্স সমন্বয় (Adjust Balance)"],
+  ["u_bonus", "প্লেয়ার", "প্লেয়ার বোনাস ও টার্নওভার সমন্বয়"],
+  ["dep", "ওয়ালেট ও এজেন্ট", "ডিপোজিট অনুমোদন / বাতিল"],
+  ["wd", "ওয়ালেট ও এজেন্ট", "উইথড্র সম্পন্ন / বাতিল / এজেন্ট অ্যাসাইন"],
+  ["bal_req", "ওয়ালেট ও এজেন্ট", "Master-এর কাছে ব্যালেন্স রিকোয়েস্ট"],
+  ["agent_manage", "ওয়ালেট ও এজেন্ট", "এজেন্ট তৈরি, ব্যালেন্স পাঠানো ও রিকোয়েস্ট অ্যাপ্রুভাল"],
+  ["dep_bonus", "ওয়ালেট ও এজেন্ট", "ডিপোজিটে বোনাস ও টার্নওভার সেট করা"],
+  ["promo_manage", "অন্যান্য ফিচার", "ডিপোজিট প্রোমোশন অফার এডিট / টগল"],
+  ["fin_export", "অন্যান্য ফিচার", "ফাইন্যান্স ও ইউজার রিপোর্ট CSV এক্সপোর্ট"],
+  ["notice_pub", "অন্যান্য ফিচার", "নোটিশ পাবলিশ ও ডিলিট"],
+  ["notif_send", "অন্যান্য ফিচার", "নোটিফিকেশন পাঠানো ও ডিলিট"],
+  ["set_pay", "অন্যান্য ফিচার", "পেমেন্ট ও সোশ্যাল লিংক সেটিংস"],
+  ["banners", "অন্যান্য ফিচার", "ব্যানার যোগ ও ডিলিট"],
+  ["ads_manage", "অন্যান্য ফিচার", "বিজ্ঞাপন / HTML Ads ম্যানেজমেন্ট"],
+  ["ref_link", "অন্যান্য ফিচার", "ইউজার রেফারেল লিংক কার্ড ও কপি"]
+];
 function toast(m){const t=$('toast');t.textContent=m;t.style.display='block';clearTimeout(t._t);t._t=setTimeout(()=>t.style.display='none',3500)}
 async function login(){try{await auth.signInWithEmailAndPassword($('em').value.trim(),$('pw').value)}catch(e){toast('লগইন ব্যর্থ: '+e.message)}}
 const on=(r,cb)=>{r.on('value',cb);LST.push(r)};
@@ -518,12 +569,16 @@ function attachAll(){
  on(db.ref('adminLinks'),s=>{ALK=s.val()||{};ALD=true;syncLinks()});
  on(db.ref('balanceRequests').limitToLast(100),s=>{REQ=s.val()||{};draw()});
  on(db.ref('adminFeatures'),s=>{FEAT=s.val()||{};draw()});
-on(db.ref('adminSettings/depositBonus'),s=>{BON=s.val()||{};draw()});
+ on(db.ref('adminSettings/depositBonus'),s=>{BON=s.val()||{};draw()});
  on(db.ref('adminSettings/userAdminOn'),s=>{UAON=s.val()!==false;draw()});
  on(db.ref('games'),s=>{GAMES=s.val()||{};draw()});
  on(db.ref('users'),s=>{USERS=s.val()||{};draw()});
+ on(db.ref('device_registry'),s=>{DEVREG=s.val()||{};draw()});
+ on(db.ref('game_transactions').limitToLast(2500),s=>{GTX=s.val()||{};draw()});
+ on(db.ref('agents'),s=>{AGENTS=s.val()||{};draw()});
+ on(db.ref('agentBalanceRequests').limitToLast(200),s=>{AGREQ=s.val()||{};draw()});
  on(db.ref('balanceLedger').limitToLast(100),s=>{LED=s.val()||{};draw()})}
-function detachAll(){LST.forEach(r=>{try{r.off()}catch(e){}});LST=[];started=false;ALK={};ADL=false;ALD=false;ADM={};REQ={};LED={};GAMES={};USERS={};ACT={};MB=0;FEAT={};SEL='';UAON=true;BON={};AQ='';AFULL={}}
+function detachAll(){LST.forEach(r=>{try{r.off()}catch(e){}});LST=[];started=false;ALK={};ADL=false;ALD=false;ADM={};REQ={};LED={};GAMES={};USERS={};ACT={};GTX={};DEVREG={};AGENTS={};AGREQ={};MB=0;FEAT={};SEL='';UAON=true;BON={};AQ='';AFULL={};GTXFULL={};AQ_AG=''}
 function bindAuth(){if(AUTHUNSUB)AUTHUNSUB();const my=TID;
  AUTHUNSUB=auth.onAuthStateChanged(async u=>{if(my!==TID)return;
   if(!u){$('lt').textContent=TID==='main'?'MOSTWIN88':'লগইন: '+TNAME;$('lback').style.display=TID==='main'?'none':'block';$('login').style.display='flex';$('app').style.display='none';return}
@@ -558,40 +613,133 @@ function delTenant(id){if(!confirm('এই প্রজেক্ট তালি
  localStorage.setItem('np_tenants',JSON.stringify(getTenants().filter(x=>x.id!==id)));if(TID===id)switchTenant('main');drawTn();draw()}
 bindAuth();
 function tab(t){cur=t;if(t==='act')loadAct();draw()}
-async function loadAct(){try{const s=await db.ref('game_sessions').limitToLast(200).once('value');ACT=s.val()||{}}catch(e){toast('অ্যাক্টিভিটি লোড ব্যর্থ: '+e.message)}draw()}
-let AQ='',AFULL={},AT=null;
-function actKey(s){const x=USERS[s.uid]||{};return [s.userName,s.uid,x.name,x.username,x.email,x.phone].map(v=>String(v||'').toLowerCase()).join(' ')}
+async function loadAct(){
+ try{
+  const [s1,s2]=await Promise.all([
+   db.ref('game_sessions').limitToLast(250).once('value'),
+   db.ref('game_transactions').limitToLast(2500).once('value')
+  ]);
+  ACT=s1.val()||{};
+  GTX=s2.val()||{};
+ }catch(e){toast('অ্যাক্টিভিটি লোড ব্যর্থ: '+e.message)}
+ draw()
+}
+let AQ='',AFULL={},GTXFULL={},AT=null;
+function actKey(s){const x=USERS[s.uid]||{};return [s.userName,s.uid,x.name,x.username,x.email,x.phone,s.ip,s.device,x.lastIp,x.lastDevice,s.gameName,s.game].map(v=>String(v||'').toLowerCase()).join(' ')}
 function actFocus(){const p=$('aq');if(p){p.focus();p.setSelectionRange(AQ.length,AQ.length)}}
 function actSearch(v){AQ=v;draw();actFocus();clearTimeout(AT);AT=setTimeout(actFetch,400)}
+function viewPlayerActivity(uid){AQ=uid;cur='act';loadAct();actFetch();window.scrollTo(0,0)}
 async function actFetch(){const q=AQ.trim().toLowerCase();if(!q)return;
- const ids=Object.keys(USERS).filter(u=>{const x=USERS[u]||{};return [u,x.name,x.username,x.email,x.phone].some(f=>String(f||'').toLowerCase().includes(q))}).slice(0,5).filter(u=>!AFULL[u]);
+ const ids=Object.keys(USERS).filter(u=>{const x=USERS[u]||{};return [u,x.name,x.username,x.email,x.phone,x.lastIp].some(f=>String(f||'').toLowerCase().includes(q))}).slice(0,5).filter(u=>!AFULL[u]||!GTXFULL[u]);
  if(!ids.length)return;
- try{await Promise.all(ids.map(async u=>{const r=await db.ref('game_sessions').orderByChild('uid').equalTo(u).limitToLast(500).once('value');AFULL[u]=r.val()||{}}))}catch(e){toast('ইউজারের হিস্ট্রি লোড ব্যর্থ: '+e.message);return}
+ try{await Promise.all(ids.map(async u=>{
+  const [r1,r2]=await Promise.all([
+   db.ref('game_sessions').orderByChild('uid').equalTo(u).limitToLast(500).once('value'),
+   db.ref('game_transactions').orderByChild('uid').equalTo(u).limitToLast(1500).once('value')
+  ]);
+  AFULL[u]=r1.val()||{};
+  GTXFULL[u]=r2.val()||{};
+ }))}catch(e){toast('ইউজারের হিস্ট্রি লোড ব্যর্থ: '+e.message);return}
  if(cur==='act'&&AQ.trim().toLowerCase()===q){const had=document.activeElement&&document.activeElement.id==='aq';draw();if(had)actFocus()}}
+
+function getPlayerBetStats(uid){
+ const txMap=Object.assign({},GTX);
+ if(GTXFULL[uid])Object.assign(txMap,GTXFULL[uid]);
+ const all=Object.values(txMap).filter(t=>t&&t.uid===uid);
+ let betCount=0,totalBet=0,totalWin=0,byGame={},recent=[];
+ all.forEach(t=>{
+  const tp=String(t.type||'').toLowerCase();
+  const gm=t.gameName||t.game||'Game';
+  const amt=Math.abs(parseFloat(t.amount)||0);
+  const winVal=parseFloat(t.win!==undefined?t.win:(t.payout!==undefined?t.payout:(tp.includes('win')||tp.includes('cashout')?amt:0)))||0;
+  if(!byGame[gm])byGame[gm]={bets:0,betAmt:0,winAmt:0};
+  if(tp==='bet'||tp==='game_bet'||tp.includes('bet')){
+   betCount++;totalBet+=amt;byGame[gm].bets++;byGame[gm].betAmt+=amt;
+  }else if(tp==='cashout'||tp==='win'||tp==='game_win'||tp.includes('win')||tp.includes('cashout')){
+   totalWin+=winVal;byGame[gm].winAmt+=winVal;
+  }
+  recent.push({gm,tp,amt,winVal,bal:t.balance,time:t.time||t.timestamp||0,ip:t.ip||'',device:t.device||''});
+ });
+ recent.sort((a,b)=>(+b.time||0)-(+a.time||0));
+ return {betCount,totalBet,totalWin,netPL:totalWin-totalBet,byGame,recent:recent.slice(0,40)};
+}
+function getPlayerIpAndDev(uid){
+ const u=USERS[uid]||{};
+ const ips=new Set();
+ if(u.lastIp&&u.lastIp!=='Unknown')ips.add(u.lastIp);
+ if(u.ipHistory&&typeof u.ipHistory==='object'){
+  Object.values(u.ipHistory).forEach(x=>{const v=typeof x==='object'?x.ip:x;if(v&&v!=='Unknown')ips.add(v)});
+ }
+ Object.values(ACT).forEach(s=>{if(s&&s.uid===uid&&s.ip&&s.ip!=='Unknown')ips.add(s.ip)});
+ Object.values(GTX).forEach(t=>{if(t&&t.uid===uid&&t.ip&&t.ip!=='Unknown')ips.add(t.ip)});
+ const devId=u.deviceId||(u.deviceHistory&&typeof u.deviceHistory==='object'?Object.keys(u.deviceHistory)[0]:'')||'';
+ let clones=[];
+ if(devId&&DEVREG&&DEVREG[devId]&&typeof DEVREG[devId]==='object'){
+  clones=Object.keys(DEVREG[devId]).filter(id=>id&&id!==uid);
+ }
+ return {lastIp:u.lastIp||([...ips][0])||'—',ipList:[...ips],device:u.lastDevice||'ওয়েব/অ্যাপ',deviceId:devId,clones};
+}
+
 function actView(){
  const q=AQ.trim().toLowerCase();
  const src=Object.assign({},ACT);
- if(q)Object.values(AFULL).forEach(o=>Object.assign(src,o));
- let L=Object.entries(src).map(([k,x])=>Object.assign({_k:k},x));
- if(q)L=L.filter(x=>actKey(x).includes(q));
- L.sort((a,b)=>(+b.startTime||0)-(+a.startTime||0));
- const net=x=>typeof x.netWinLoss==='number'?x.netWinLoss:(+x.exitBalance||0)-(+x.entryBalance||0);
- let top=`<div class="row"><input id="aq" placeholder="ইউজারের নাম/ইউজারনেম/ইমেইল/ফোন/UID লিখে খুঁজুন" value="${esc(AQ)}" oninput="actSearch(this.value)"></div>`;
+ const txSrc=Object.assign({},GTX);
  if(q){
-  const uids=[...new Set(L.map(x=>x.uid).filter(Boolean))];
-  let tn=0,w=0,l=0,by={};
-  L.forEach(x=>{const n=net(x);tn+=n;if(n>0)w++;else if(n<0)l++;const g=x.gameName||'-';by[g]=by[g]||{c:0,n:0};by[g].c++;by[g].n+=n});
-  const col=v=>v>=0?'var(--ok)':'var(--er)';
-  let who='<div class="cd"><span>ফলাফল</span><b style="font-size:16px">'+(uids.length?uids.length+' জন ইউজার মিলেছে':'কিছু পাওয়া যায়নি')+'</b></div>',bal='';
-  if(uids.length===1){const u=USERS[uids[0]]||{};
-   who=`<div class="cd"><span>ইউজার</span><b style="font-size:18px">${esc(u.name||(L[0]||{}).userName||'-')}</b><small>${esc(u.email||'-')}<br>${esc(u.phone||'-')} · @${esc(u.username||'-')}<br>UID: ${esc(uids[0])}</small></div>`;
-   bal=`<div class="cd"><span>বর্তমান ব্যালেন্স</span><b>${fmt(u.balance)}</b><small>${esc(u.status||'')}</small></div>`}
-  top+=`<div class="g">${who}${bal}<div class="cd"><span>মোট সেশন</span><b>${L.length}</b></div><div class="cd"><span>মোট নেট (জয়/হার)</span><b style="color:${col(tn)}">${fmt(tn)}</b></div><div class="cd"><span>জয় / হার</span><b>${w} / ${l}</b></div></div>`;
+  Object.values(AFULL).forEach(o=>Object.assign(src,o));
+  Object.values(GTXFULL).forEach(o=>Object.assign(txSrc,o));
+ }
+ let L=Object.entries(src).map(([k,x])=>Object.assign({_k:k},x));
+ let T=Object.entries(txSrc).map(([k,x])=>Object.assign({_k:k},x)).filter(x=>x&&x.uid);
+ if(q){
+  L=L.filter(x=>actKey(x).includes(q));
+  T=T.filter(x=>actKey(x).includes(q));
+ }
+ L.sort((a,b)=>(+b.startTime||0)-(+a.startTime||0));
+ T.sort((a,b)=>(+b.time||+b.timestamp||0)-(+a.time||+a.timestamp||0));
+ const net=x=>typeof x.netWinLoss==='number'?x.netWinLoss:(+x.exitBalance||0)-(+x.entryBalance||0);
+ const col=v=>v>=0?'var(--ok)':'var(--er)';
+ let totalBetCount=0,totalBetAmt=0,totalWinAmt=0,by={};
+ L.forEach(x=>{const g=x.gameName||'Game';if(!by[g])by[g]={c:0,n:0,bets:0,betAmt:0,winAmt:0};by[g].c++;by[g].n+=net(x)});
+ T.forEach(t=>{
+  const tp=String(t.type||'').toLowerCase(),g=t.gameName||t.game||'Game';
+  const amt=Math.abs(parseFloat(t.amount)||0);
+  const wv=parseFloat(t.win!==undefined?t.win:(t.payout!==undefined?t.payout:(tp.includes('win')||tp.includes('cashout')?amt:0)))||0;
+  if(!by[g])by[g]={c:0,n:0,bets:0,betAmt:0,winAmt:0};
+  if(tp==='bet'||tp==='game_bet'||tp.includes('bet')){totalBetCount++;totalBetAmt+=amt;by[g].bets++;by[g].betAmt+=amt;}
+  else if(tp==='cashout'||tp==='win'||tp==='game_win'||tp.includes('win')||tp.includes('cashout')){totalWinAmt+=wv;by[g].winAmt+=wv;}
+ });
+ let top=`<div class="row"><input id="aq" placeholder="ইউজারের নাম / ইউজারনেম / ইমেইল / ফোন / UID / IP লিখে খুঁজুন..." value="${esc(AQ)}" oninput="actSearch(this.value)"><button onclick="loadAct()">🔄 রিফ্রেশ</button></div>`;
+ const uids=[...new Set([...L.map(x=>x.uid),...T.map(x=>x.uid)].filter(Boolean))];
+ if(q){
+  let who='<div class="cd"><span>ফলাফল</span><b style="font-size:16px">'+(uids.length?uids.length+' জন প্লেয়ার মিলেছে':'কিছু পাওয়া যায়নি')+'</b></div>',bal='',ipdCard='';
+  if(uids.length===1){
+   const uid=uids[0],u=USERS[uid]||{},idInf=getPlayerIpAndDev(uid);
+   who=`<div class="cd"><span>প্লেয়ার</span><b style="font-size:18px">${esc(u.name||(L[0]||{}).userName||'-')}</b><small>${esc(u.email||'-')}<br>${esc(u.phone||'-')} · @${esc(u.username||'-')}<br>UID: ${esc(uid)}</small></div>`;
+   bal=`<div class="cd"><span>বর্তমান ব্যালেন্স</span><b>${fmt(u.balance)}</b><small>${esc(u.status||'ACTIVE')}</small></div>`;
+   ipdCard=`<div class="cd"><span>🌐 IP ও 📱 ডিভাইস</span><b style="font-size:14px">${esc(idInf.lastIp)}</b><small>${esc(idInf.device)}<br>মোট IP: ${idInf.ipList.length}টি ${idInf.clones.length?`<span class="pl b">⚠ ক্লোন ডিভাইস (${idInf.clones.length+1})</span>`:''}</small></div>`;
+  }
+  const sessNet=L.reduce((s,x)=>s+net(x),0);
+  const txNet=totalWinAmt-totalBetAmt;
+  top+=`<div class="stats-grid">${who}${bal}${ipdCard}
+   <div class="cd"><span>গেম সেশন / কতবার বেট</span><b>${L.length} / ${totalBetCount} বার</b></div>
+   <div class="cd"><span>মোট বেট (−) / মোট জয় (+)</span><b style="font-size:15px"><span style="color:var(--er)">-${fmt(totalBetAmt)}</span><br><span style="color:var(--ok)">+${fmt(totalWinAmt)}</span></b></div>
+   <div class="cd"><span>নিট গেম P&L (+/-)</span><b style="color:${col(totalBetCount?txNet:sessNet)}">${(totalBetCount?txNet:sessNet)>=0?'+':'-'}${fmt(Math.abs(totalBetCount?txNet:sessNet))}</b></div></div>`;
   const gk=Object.keys(by);
-  if(gk.length)top+=`<div class="sc" style="margin-bottom:10px"><table><tr><th>গেম</th><th>সেশন</th><th>নেট</th></tr>`+gk.map(g=>`<tr><td>${esc(g)}</td><td>${by[g].c}</td><td style="color:${col(by[g].n)}">${fmt(by[g].n)}</td></tr>`).join('')+`</table></div>`;
- }else top+=`<div class="cd" style="margin-bottom:10px"><span>এখন সর্বশেষ ২০০টি সেশন দেখানো হচ্ছে। কোনো ইউজারের নাম লিখলে তার সব হিস্ট্রি ও হিসাব এখানে আসবে।</span></div>`;
- const rows=L.map(x=>{const n=net(x);return`<tr><td>${esc(x.userName||(USERS[x.uid]||{}).name||x.uid)}</td><td>${esc(x.gameName||'-')}</td><td>${x.startTime?new Date(x.startTime).toLocaleString('bn-BD'):''}</td><td>${fmt(x.entryBalance)}</td><td>${fmt(x.exitBalance)}</td><td style="color:${n>=0?'var(--ok)':'var(--er)'}">${fmt(n)}</td><td><small>${esc(x.ip||'-')}<br>${esc(x.device||'')}</small></td><td>${esc(x.status||'')}</td></tr>`}).join('');
- return top+`<div class="sc"><table><tr><th>প্লেয়ার</th><th>গেম</th><th>শুরু</th><th>এন্ট্রি</th><th>এক্সিট</th><th>নেট</th><th>IP/ডিভাইস</th><th>স্ট্যাটাস</th></tr>`+(rows||`<tr><td colspan="8" style="text-align:center;color:var(--mu)">কোনো রেকর্ড পাওয়া যায়নি</td></tr>`)+`</table></div>`}
+  if(gk.length)top+=`<div class="sc" style="margin-bottom:12px"><table><tr><th>গেমের নাম</th><th>সেশন</th><th>বেট সংখ্যা (কতবার)</th><th>মোট বেট (−)</th><th>মোট জয় (+)</th><th>নিট (+/-)</th></tr>`+gk.map(g=>{const b=by[g],gn=b.bets?(b.winAmt-b.betAmt):b.n;return`<tr><td><b>${esc(g)}</b></td><td>${b.c}</td><td><b>${b.bets} বার</b></td><td style="color:var(--er)">-${fmt(b.betAmt)}</td><td style="color:var(--ok)">+${fmt(b.winAmt)}</td><td style="color:${col(gn)};font-weight:700">${gn>=0?'+':'-'}${fmt(Math.abs(gn))}</td></tr>`}).join('')+`</table></div>`;
+ }else{
+  top+=`<div class="stats-grid">
+   <div class="cd"><span>সাম্প্রতিক সেশন</span><b>${L.length} টি</b></div>
+   <div class="cd"><span>মোট বেট (সাম্প্রতিক)</span><b>${totalBetCount} বার</b></div>
+   <div class="cd"><span>মোট বেট ভলিউম (−)</span><b style="color:var(--er)">-${fmt(totalBetAmt)}</b></div>
+   <div class="cd"><span>মোট জয় (+)</span><b style="color:var(--ok)">+${fmt(totalWinAmt)}</b></div>
+  </div>`;
+ }
+ const rows=L.slice(0,250).map(x=>{const n=net(x),idInf=getPlayerIpAndDev(x.uid),bs=getPlayerBetStats(x.uid);return`<tr><td><b>${esc(x.userName||(USERS[x.uid]||{}).name||x.uid)}</b><br><small style="color:var(--mu)">${esc(x.uid||'')}</small></td><td><b>${esc(x.gameName||'-')}</b></td><td>${bs.betCount} বার<br><small style="color:var(--er)">-${fmt(bs.totalBet)}</small> / <small style="color:var(--ok)">+${fmt(bs.totalWin)}</small></td><td>${x.startTime?new Date(x.startTime).toLocaleString('bn-BD'):''}</td><td>${fmt(x.entryBalance)}</td><td>${fmt(x.exitBalance)}</td><td style="color:${col(n)};font-weight:700">${n>=0?'+':'-'}${fmt(Math.abs(n))}</td><td><small>🌐 ${esc(x.ip||idInf.lastIp)}<br>📱 ${esc(x.device||idInf.device)}</small></td><td><span class="pl ${x.status==='ACTIVE'?'y':''}">${esc(x.status||'')}</span></td></tr>`}).join('');
+ const txRows=T.slice(0,120).map(t=>{
+  const u=USERS[t.uid]||{},tp=String(t.type||'').toLowerCase(),isW=tp.includes('win')||tp.includes('cashout'),amt=Math.abs(parseFloat(t.win!==undefined?t.win:t.amount)||0);
+  return`<tr><td>${esc(u.name||u.username||t.uid)}</td><td><b>${esc(t.gameName||t.game||'-')}</b></td><td><span class="pl ${isW?'':'b'}">${isW?'WIN (+)':'BET (−)'}</span></td><td style="color:${isW?'var(--ok)':'var(--er)'};font-weight:700">${isW?'+':'-'}${fmt(amt)}</td><td>${t.balance!==undefined?fmt(t.balance):'—'}</td><td><small>${t.ip?esc(t.ip):esc(u.lastIp||'—')} · ${t.device?esc(t.device):esc(u.lastDevice||'')}</small></td><td>${(t.time||t.timestamp)?new Date(t.time||t.timestamp).toLocaleString('bn-BD'):''}</td></tr>`;
+ }).join('');
+ return top+`<div class="cd" style="margin-bottom:8px"><b style="font-size:15px">🎮 গেম সেশন ও এন্ট্রি/এক্সিট</b></div><div class="sc" style="margin-bottom:14px"><table><tr><th>প্লেয়ার</th><th>গেম</th><th>মোট বেট (− / +)</th><th>শুরু</th><th>এন্ট্রি</th><th>এক্সিট</th><th>নেট (+/-)</th><th>IP / ডিভাইস</th><th>স্ট্যাটাস</th></tr>`+(rows||`<tr><td colspan="9" style="text-align:center;color:var(--mu)">কোনো সেশন পাওয়া যায়নি</td></tr>`)+`</table></div><div class="cd" style="margin-bottom:8px"><b style="font-size:15px">🎲 সাম্প্রতিক প্রতি-বেট ও জয়/হার (+/-) লগ</b></div><div class="sc"><table><tr><th>প্লেয়ার</th><th>গেম</th><th>ধরন</th><th>পরিমাণ (+/-)</th><th>পরবর্তী ব্যালেন্স</th><th>IP / ডিভাইস</th><th>সময়</th></tr>`+(txRows||`<tr><td colspan="7" style="text-align:center;color:var(--mu)">কোনো বেট লেনদেন পাওয়া যায়নি</td></tr>`)+`</table></div>`}
 async function saveGame(id){const g=id?GAMES[id]:{};
  const name=id?prompt('গেমের নাম:',g.name||''):$('gn').value.trim(),cat=id?prompt('ক্যাটাগরি (Popular Games / Crash Games):',g.category||'Popular Games'):$('gc').value,
  img=id?prompt('ছবির লিংক:',g.image||''):$('gi').value.trim(),url=id?prompt('গেমের লিংক:',g.url||''):$('gu').value.trim();
@@ -665,7 +813,7 @@ const RULES_TXT=`{
     "adminFcmTokens": {
       ".read": false,
       "$uid": {
-        ".write": "auth != null && auth.uid == $uid && root.child('admins').child(auth.uid).exists()"
+        ".write": "auth != null && auth.uid == $uid && (root.child('admins').child(auth.uid).exists() || root.child('agents').child(auth.uid).exists())"
       }
     },
     "adminLinks": {
@@ -741,7 +889,32 @@ const RULES_TXT=`{
       ".read": "auth != null && ((root.child('admins').child(auth.uid).exists() && root.child('admins').child(auth.uid).child('active').val() != false && root.child('adminSettings').child('userAdminOn').val() != false) || auth.token.email == 'mijanbabu2015@gmail.com')",
       "$agentId": {
         ".read": "auth != null && (auth.uid == $agentId || (root.child('admins').child(auth.uid).exists() && root.child('admins').child(auth.uid).child('active').val() != false) || auth.token.email == 'mijanbabu2015@gmail.com')",
-        ".write": "auth != null && ((root.child('admins').child(auth.uid).exists() && root.child('admins').child(auth.uid).child('active').val() != false && root.child('adminSettings').child('userAdminOn').val() != false) || auth.token.email == 'mijanbabu2015@gmail.com')"
+        ".write": "auth != null && ((root.child('admins').child(auth.uid).exists() && root.child('admins').child(auth.uid).child('active').val() != false && root.child('adminSettings').child('userAdminOn').val() != false) || auth.token.email == 'mijanbabu2015@gmail.com')",
+        "balance": {
+          ".write": "auth != null && (auth.token.email == 'mijanbabu2015@gmail.com' || (root.child('admins').child(auth.uid).exists() && root.child('admins').child(auth.uid).child('active').val() != false && root.child('adminSettings').child('userAdminOn').val() != false) || (auth.uid == $agentId && root.child('agents').child($agentId).child('active').val() != false && data.exists() && newData.isNumber() && newData.val() >= 0 && newData.val() <= data.val()))",
+          ".validate": "newData.isNumber() && newData.val() >= 0"
+        },
+        "totalProcessedDeposits": {
+          ".write": "auth != null && (auth.uid == $agentId || (root.child('admins').child(auth.uid).exists() && root.child('admins').child(auth.uid).child('active').val() != false) || auth.token.email == 'mijanbabu2015@gmail.com')"
+        },
+        "totalProcessedWithdrawals": {
+          ".write": "auth != null && (auth.uid == $agentId || (root.child('admins').child(auth.uid).exists() && root.child('admins').child(auth.uid).child('active').val() != false) || auth.token.email == 'mijanbabu2015@gmail.com')"
+        },
+        "reservedBalance": {
+          ".write": "auth != null && (auth.uid == $agentId || (root.child('admins').child(auth.uid).exists() && root.child('admins').child(auth.uid).child('active').val() != false) || auth.token.email == 'mijanbabu2015@gmail.com')"
+        },
+        "lastSeen": {
+          ".write": "auth != null && (auth.uid == $agentId || auth.token.email == 'mijanbabu2015@gmail.com')"
+        }
+      }
+    },
+    "agentBalanceRequests": {
+      ".indexOn": ["agentUid", "parentAdminId", "status"],
+      ".read": "auth != null && ((query.orderByChild == 'agentUid' && query.equalTo == auth.uid) || (root.child('admins').child(auth.uid).exists() && root.child('admins').child(auth.uid).child('active').val() != false && root.child('adminSettings').child('userAdminOn').val() != false) || auth.token.email == 'mijanbabu2015@gmail.com')",
+      "$reqId": {
+        ".read": "auth != null && (data.child('agentUid').val() == auth.uid || (root.child('admins').child(auth.uid).exists() && root.child('admins').child(auth.uid).child('active').val() != false) || auth.token.email == 'mijanbabu2015@gmail.com')",
+        ".write": "auth != null && (auth.token.email == 'mijanbabu2015@gmail.com' || (root.child('admins').child(auth.uid).exists() && root.child('admins').child(auth.uid).child('active').val() != false && root.child('adminSettings').child('userAdminOn').val() != false) || (!data.exists() && root.child('agents').child(auth.uid).exists() && root.child('agents').child(auth.uid).child('active').val() != false && newData.child('agentUid').val() == auth.uid && newData.child('status').val() == 'pending' && newData.child('amount').isNumber() && newData.child('amount').val() > 0))",
+        ".validate": "newData.hasChildren(['agentUid', 'amount', 'status']) && newData.child('amount').isNumber() && newData.child('amount').val() > 0"
       }
     },
     "affiliates": {
@@ -780,14 +953,15 @@ const RULES_TXT=`{
       }
     },
     "game_transactions": {
-      ".read": "auth != null && ((root.child('admins').child(auth.uid).exists() && root.child('admins').child(auth.uid).child('active').val() != false && root.child('adminSettings').child('userAdminOn').val() != false) || auth.token.email == 'mijanbabu2015@gmail.com')",
+      ".indexOn": ["uid", "time"],
+      ".read": "auth != null && ((query.orderByChild == 'uid' && query.equalTo == auth.uid) || (root.child('admins').child(auth.uid).exists() && root.child('admins').child(auth.uid).child('active').val() != false && root.child('adminSettings').child('userAdminOn').val() != false) || auth.token.email == 'mijanbabu2015@gmail.com')",
       "$txKey": {
         ".read": "auth != null && (data.child('uid').val() == auth.uid || (root.child('admins').child(auth.uid).exists() && root.child('admins').child(auth.uid).child('active').val() != false && root.child('adminSettings').child('userAdminOn').val() != false) || auth.token.email == 'mijanbabu2015@gmail.com')",
-        ".write": "auth != null && ((root.child('admins').child(auth.uid).exists() && root.child('admins').child(auth.uid).child('active').val() != false && root.child('adminSettings').child('userAdminOn').val() != false) || auth.token.email == 'mijanbabu2015@gmail.com')"
+        ".write": "auth != null && ((!data.exists() && newData.child('uid').val() == auth.uid) || (root.child('admins').child(auth.uid).exists() && root.child('admins').child(auth.uid).child('active').val() != false && root.child('adminSettings').child('userAdminOn').val() != false) || auth.token.email == 'mijanbabu2015@gmail.com')"
       }
     },
     "game_sessions": {
-      ".read": "auth != null && ((root.child('admins').child(auth.uid).exists() && root.child('admins').child(auth.uid).child('active').val() != false && root.child('adminSettings').child('userAdminOn').val() != false) || auth.token.email == 'mijanbabu2015@gmail.com')",
+      ".read": "auth != null && ((query.orderByChild == 'uid' && query.equalTo == auth.uid) || (root.child('admins').child(auth.uid).exists() && root.child('admins').child(auth.uid).child('active').val() != false && root.child('adminSettings').child('userAdminOn').val() != false) || auth.token.email == 'mijanbabu2015@gmail.com')",
       ".indexOn": ["startTime", "uid"],
       "$sessionId": {
         ".read": "auth != null && (data.child('uid').val() == auth.uid || (root.child('admins').child(auth.uid).exists() && root.child('admins').child(auth.uid).child('active').val() != false && root.child('adminSettings').child('userAdminOn').val() != false) || auth.token.email == 'mijanbabu2015@gmail.com')",
@@ -837,30 +1011,30 @@ const RULES_TXT=`{
       }
     },
     "depositRequests": {
-      ".read": "auth != null && ((query.orderByChild == 'uid' && query.equalTo == auth.uid) || (root.child('admins').child(auth.uid).exists() && root.child('admins').child(auth.uid).child('active').val() != false && root.child('adminSettings').child('userAdminOn').val() != false) || auth.token.email == 'mijanbabu2015@gmail.com')",
+      ".read": "auth != null && ((query.orderByChild == 'uid' && query.equalTo == auth.uid) || (query.orderByChild == 'assignedAgentId' && query.equalTo == auth.uid) || (root.child('agents').child(auth.uid).exists() && root.child('agents').child(auth.uid).child('active').val() != false) || (root.child('admins').child(auth.uid).exists() && root.child('admins').child(auth.uid).child('active').val() != false && root.child('adminSettings').child('userAdminOn').val() != false) || auth.token.email == 'mijanbabu2015@gmail.com')",
       "$reqId": {
-        ".read": "auth != null && (data.child('uid').val() == auth.uid || (root.child('admins').child(auth.uid).exists() && root.child('admins').child(auth.uid).child('active').val() != false && root.child('adminSettings').child('userAdminOn').val() != false) || auth.token.email == 'mijanbabu2015@gmail.com')",
-        ".write": "auth != null && ((!data.exists() && newData.child('uid').val() == auth.uid && newData.child('status').val() == 'Pending' && root.child('users').child(auth.uid).child('adminUid').exists() && newData.child('adminUid').val() == root.child('users').child(auth.uid).child('adminUid').val()) || (root.child('admins').child(auth.uid).exists() && root.child('admins').child(auth.uid).child('active').val() != false && root.child('adminSettings').child('userAdminOn').val() != false) || auth.token.email == 'mijanbabu2015@gmail.com')",
+        ".read": "auth != null && (data.child('uid').val() == auth.uid || data.child('assignedAgentId').val() == auth.uid || (root.child('agents').child(auth.uid).exists() && root.child('agents').child(auth.uid).child('active').val() != false && data.child('adminUid').val() == root.child('agents').child(auth.uid).child('parentAdminId').val()) || (root.child('admins').child(auth.uid).exists() && root.child('admins').child(auth.uid).child('active').val() != false && root.child('adminSettings').child('userAdminOn').val() != false) || auth.token.email == 'mijanbabu2015@gmail.com')",
+        ".write": "auth != null && ((!data.exists() && newData.child('uid').val() == auth.uid && newData.child('status').val() == 'Pending' && root.child('users').child(auth.uid).child('adminUid').exists() && newData.child('adminUid').val() == root.child('users').child(auth.uid).child('adminUid').val()) || (root.child('agents').child(auth.uid).exists() && root.child('agents').child(auth.uid).child('active').val() != false && (data.child('assignedAgentId').val() == auth.uid || data.child('adminUid').val() == root.child('agents').child(auth.uid).child('parentAdminId').val())) || (root.child('admins').child(auth.uid).exists() && root.child('admins').child(auth.uid).child('active').val() != false && root.child('adminSettings').child('userAdminOn').val() != false) || auth.token.email == 'mijanbabu2015@gmail.com')",
         ".validate": "newData.hasChildren(['uid', 'status']) && newData.child('uid').isString()"
       },
-      ".indexOn": ["uid"]
+      ".indexOn": ["uid", "assignedAgentId", "adminUid"]
     },
     "withdrawalRequests": {
-      ".read": "auth != null && ((query.orderByChild == 'uid' && query.equalTo == auth.uid) || (root.child('admins').child(auth.uid).exists() && root.child('admins').child(auth.uid).child('active').val() != false && root.child('adminSettings').child('userAdminOn').val() != false) || auth.token.email == 'mijanbabu2015@gmail.com')",
+      ".read": "auth != null && ((query.orderByChild == 'uid' && query.equalTo == auth.uid) || (query.orderByChild == 'assignedAgentId' && query.equalTo == auth.uid) || (root.child('agents').child(auth.uid).exists() && root.child('agents').child(auth.uid).child('active').val() != false) || (root.child('admins').child(auth.uid).exists() && root.child('admins').child(auth.uid).child('active').val() != false && root.child('adminSettings').child('userAdminOn').val() != false) || auth.token.email == 'mijanbabu2015@gmail.com')",
       "$reqId": {
-        ".read": "auth != null && (data.child('uid').val() == auth.uid || (root.child('admins').child(auth.uid).exists() && root.child('admins').child(auth.uid).child('active').val() != false && root.child('adminSettings').child('userAdminOn').val() != false) || auth.token.email == 'mijanbabu2015@gmail.com')",
-        ".write": "auth != null && ((!data.exists() && newData.child('uid').val() == auth.uid && newData.child('status').val() == 'Pending' && root.child('users').child(auth.uid).child('adminUid').exists() && newData.child('adminUid').val() == root.child('users').child(auth.uid).child('adminUid').val() && (!root.child('users').child(auth.uid).child('turnoverRequired').exists() || root.child('users').child(auth.uid).child('turnoverRequired').val() <= (root.child('users').child(auth.uid).child('turnoverDone').exists() ? root.child('users').child(auth.uid).child('turnoverDone').val() : (root.child('users').child(auth.uid).child('turnoverCompleted').exists() ? root.child('users').child(auth.uid).child('turnoverCompleted').val() : 0)))) || (root.child('admins').child(auth.uid).exists() && root.child('admins').child(auth.uid).child('active').val() != false && root.child('adminSettings').child('userAdminOn').val() != false) || auth.token.email == 'mijanbabu2015@gmail.com')",
+        ".read": "auth != null && (data.child('uid').val() == auth.uid || data.child('assignedAgentId').val() == auth.uid || (root.child('agents').child(auth.uid).exists() && root.child('agents').child(auth.uid).child('active').val() != false && data.child('adminUid').val() == root.child('agents').child(auth.uid).child('parentAdminId').val()) || (root.child('admins').child(auth.uid).exists() && root.child('admins').child(auth.uid).child('active').val() != false && root.child('adminSettings').child('userAdminOn').val() != false) || auth.token.email == 'mijanbabu2015@gmail.com')",
+        ".write": "auth != null && ((!data.exists() && newData.child('uid').val() == auth.uid && newData.child('status').val() == 'Pending' && root.child('users').child(auth.uid).child('adminUid').exists() && newData.child('adminUid').val() == root.child('users').child(auth.uid).child('adminUid').val() && (!root.child('users').child(auth.uid).child('turnoverRequired').exists() || root.child('users').child(auth.uid).child('turnoverRequired').val() <= (root.child('users').child(auth.uid).child('turnoverDone').exists() ? root.child('users').child(auth.uid).child('turnoverDone').val() : (root.child('users').child(auth.uid).child('turnoverCompleted').exists() ? root.child('users').child(auth.uid).child('turnoverCompleted').val() : 0)))) || (root.child('agents').child(auth.uid).exists() && root.child('agents').child(auth.uid).child('active').val() != false && data.child('assignedAgentId').val() == auth.uid) || (root.child('admins').child(auth.uid).exists() && root.child('admins').child(auth.uid).child('active').val() != false && root.child('adminSettings').child('userAdminOn').val() != false) || auth.token.email == 'mijanbabu2015@gmail.com')",
         ".validate": "newData.hasChildren(['uid', 'status']) && newData.child('uid').isString()"
       },
-      ".indexOn": ["uid"]
+      ".indexOn": ["uid", "assignedAgentId", "adminUid"]
     },
     "users": {
-      ".read": "auth != null && ((root.child('admins').child(auth.uid).exists() && root.child('admins').child(auth.uid).child('active').val() != false && root.child('adminSettings').child('userAdminOn').val() != false) || auth.token.email == 'mijanbabu2015@gmail.com')",
+      ".read": "auth != null && ((root.child('admins').child(auth.uid).exists() && root.child('admins').child(auth.uid).child('active').val() != false && root.child('adminSettings').child('userAdminOn').val() != false) || (root.child('agents').child(auth.uid).exists() && root.child('agents').child(auth.uid).child('active').val() != false) || auth.token.email == 'mijanbabu2015@gmail.com')",
       "$uid": {
-        ".read": "auth != null && (auth.uid == $uid || (root.child('admins').child(auth.uid).exists() && root.child('admins').child(auth.uid).child('active').val() != false && root.child('adminSettings').child('userAdminOn').val() != false) || auth.token.email == 'mijanbabu2015@gmail.com')",
+        ".read": "auth != null && (auth.uid == $uid || (root.child('admins').child(auth.uid).exists() && root.child('admins').child(auth.uid).child('active').val() != false && root.child('adminSettings').child('userAdminOn').val() != false) || (root.child('agents').child(auth.uid).exists() && root.child('agents').child(auth.uid).child('active').val() != false) || auth.token.email == 'mijanbabu2015@gmail.com')",
         ".write": "auth != null && ((root.child('admins').child(auth.uid).exists() && root.child('admins').child(auth.uid).child('active').val() != false && root.child('adminSettings').child('userAdminOn').val() != false) || auth.token.email == 'mijanbabu2015@gmail.com' || (auth.uid == $uid && !data.exists() && newData.child('balance').val() == 0 && root.child('adminLinks').child(newData.child('adminUid').val()).val() == true))",
         "balance": {
-          ".write": "auth != null && ((root.child('admins').child(auth.uid).exists() && root.child('admins').child(auth.uid).child('active').val() != false && root.child('adminSettings').child('userAdminOn').val() != false) || auth.token.email == 'mijanbabu2015@gmail.com' || (auth.uid == $uid && data.exists() && newData.isNumber() && newData.val() <= data.val()))",
+          ".write": "auth != null && ((root.child('admins').child(auth.uid).exists() && root.child('admins').child(auth.uid).child('active').val() != false && root.child('adminSettings').child('userAdminOn').val() != false) || (root.child('agents').child(auth.uid).exists() && root.child('agents').child(auth.uid).child('active').val() != false && data.exists() && newData.isNumber() && newData.val() >= data.val()) || auth.token.email == 'mijanbabu2015@gmail.com' || (auth.uid == $uid && data.exists() && newData.isNumber() && newData.val() <= data.val()))",
           ".validate": "newData.isNumber() && newData.val() >= 0"
         },
         "name": {
@@ -881,6 +1055,21 @@ const RULES_TXT=`{
         "lastSeen": {
           ".write": "auth != null && (auth.uid == $uid || (root.child('admins').child(auth.uid).exists() && root.child('admins').child(auth.uid).child('active').val() != false && root.child('adminSettings').child('userAdminOn').val() != false) || auth.token.email == 'mijanbabu2015@gmail.com')"
         },
+        "lastIp": {
+          ".write": "auth != null && (auth.uid == $uid || (root.child('admins').child(auth.uid).exists() && root.child('admins').child(auth.uid).child('active').val() != false) || auth.token.email == 'mijanbabu2015@gmail.com')"
+        },
+        "lastDevice": {
+          ".write": "auth != null && (auth.uid == $uid || (root.child('admins').child(auth.uid).exists() && root.child('admins').child(auth.uid).child('active').val() != false) || auth.token.email == 'mijanbabu2015@gmail.com')"
+        },
+        "deviceId": {
+          ".write": "auth != null && (auth.uid == $uid || (root.child('admins').child(auth.uid).exists() && root.child('admins').child(auth.uid).child('active').val() != false) || auth.token.email == 'mijanbabu2015@gmail.com')"
+        },
+        "ipHistory": {
+          ".write": "auth != null && (auth.uid == $uid || (root.child('admins').child(auth.uid).exists() && root.child('admins').child(auth.uid).child('active').val() != false) || auth.token.email == 'mijanbabu2015@gmail.com')"
+        },
+        "deviceHistory": {
+          ".write": "auth != null && (auth.uid == $uid || (root.child('admins').child(auth.uid).exists() && root.child('admins').child(auth.uid).child('active').val() != false) || auth.token.email == 'mijanbabu2015@gmail.com')"
+        },
         "dpUrl": {
           ".write": "auth != null && (auth.uid == $uid || (root.child('admins').child(auth.uid).exists() && root.child('admins').child(auth.uid).child('active').val() != false && root.child('adminSettings').child('userAdminOn').val() != false) || auth.token.email == 'mijanbabu2015@gmail.com')"
         },
@@ -894,7 +1083,7 @@ const RULES_TXT=`{
           ".write": "auth != null && (auth.uid == $uid || (root.child('admins').child(auth.uid).exists() && root.child('admins').child(auth.uid).child('active').val() != false && root.child('adminSettings').child('userAdminOn').val() != false) || auth.token.email == 'mijanbabu2015@gmail.com')"
         },
         "turnoverRequired": {
-          ".write": "auth != null && ((root.child('admins').child(auth.uid).exists() && root.child('admins').child(auth.uid).child('active').val() != false && root.child('adminSettings').child('userAdminOn').val() != false) || auth.token.email == 'mijanbabu2015@gmail.com')",
+          ".write": "auth != null && ((root.child('admins').child(auth.uid).exists() && root.child('admins').child(auth.uid).child('active').val() != false && root.child('adminSettings').child('userAdminOn').val() != false) || (root.child('agents').child(auth.uid).exists() && root.child('agents').child(auth.uid).child('active').val() != false) || auth.token.email == 'mijanbabu2015@gmail.com')",
           ".validate": "newData.isNumber() && newData.val() >= 0"
         },
         "turnoverDone": {
@@ -912,11 +1101,11 @@ const RULES_TXT=`{
       ".write": "auth != null"
     },
     "transactions": {
-      ".read": "auth != null && ((query.orderByChild == 'uid' && query.equalTo == auth.uid) || (root.child('admins').child(auth.uid).exists() && root.child('admins').child(auth.uid).child('active').val() != false && root.child('adminSettings').child('userAdminOn').val() != false) || auth.token.email == 'mijanbabu2015@gmail.com')",
-      ".indexOn": ["uid"],
+      ".read": "auth != null && ((query.orderByChild == 'uid' && query.equalTo == auth.uid) || (query.orderByChild == 'agentUid' && query.equalTo == auth.uid) || (root.child('admins').child(auth.uid).exists() && root.child('admins').child(auth.uid).child('active').val() != false && root.child('adminSettings').child('userAdminOn').val() != false) || auth.token.email == 'mijanbabu2015@gmail.com')",
+      ".indexOn": ["uid", "agentUid", "adminUid"],
       "$trxId": {
-        ".read": "auth != null && (data.child('uid').val() == auth.uid || (root.child('admins').child(auth.uid).exists() && root.child('admins').child(auth.uid).child('active').val() != false && root.child('adminSettings').child('userAdminOn').val() != false) || auth.token.email == 'mijanbabu2015@gmail.com')",
-        ".write": "auth != null && (newData.child('uid').val() == auth.uid || (root.child('admins').child(auth.uid).exists() && root.child('admins').child(auth.uid).child('active').val() != false && root.child('adminSettings').child('userAdminOn').val() != false) || auth.token.email == 'mijanbabu2015@gmail.com')"
+        ".read": "auth != null && (data.child('uid').val() == auth.uid || data.child('agentUid').val() == auth.uid || (root.child('admins').child(auth.uid).exists() && root.child('admins').child(auth.uid).child('active').val() != false && root.child('adminSettings').child('userAdminOn').val() != false) || auth.token.email == 'mijanbabu2015@gmail.com')",
+        ".write": "auth != null && (newData.child('uid').val() == auth.uid || (root.child('agents').child(auth.uid).exists() && root.child('agents').child(auth.uid).child('active').val() != false && newData.child('agentUid').val() == auth.uid) || (root.child('admins').child(auth.uid).exists() && root.child('admins').child(auth.uid).child('active').val() != false && root.child('adminSettings').child('userAdminOn').val() != false) || auth.token.email == 'mijanbabu2015@gmail.com')"
       }
     },
     "settings": {
@@ -933,7 +1122,7 @@ const RULES_TXT=`{
     },
     "adminAuditLogs": {
       ".read": "auth != null && ((root.child('admins').child(auth.uid).exists() && root.child('admins').child(auth.uid).child('active').val() != false && root.child('adminSettings').child('userAdminOn').val() != false) || auth.token.email == 'mijanbabu2015@gmail.com')",
-      ".write": "auth != null && ((root.child('admins').child(auth.uid).exists() && root.child('admins').child(auth.uid).child('active').val() != false && root.child('adminSettings').child('userAdminOn').val() != false) || auth.token.email == 'mijanbabu2015@gmail.com')"
+      ".write": "auth != null && ((root.child('admins').child(auth.uid).exists() && root.child('admins').child(auth.uid).child('active').val() != false && root.child('adminSettings').child('userAdminOn').val() != false) || (root.child('agents').child(auth.uid).exists() && root.child('agents').child(auth.uid).child('active').val() != false) || auth.token.email == 'mijanbabu2015@gmail.com')"
     },
     "usernames": {
       ".read": true,
@@ -941,7 +1130,7 @@ const RULES_TXT=`{
     },
     "notifications": {
       ".read": "auth != null",
-      ".write": "auth != null && ((root.child('admins').child(auth.uid).exists() && root.child('admins').child(auth.uid).child('active').val() != false && root.child('adminSettings').child('userAdminOn').val() != false) || auth.token.email == 'mijanbabu2015@gmail.com')"
+      ".write": "auth != null && ((root.child('admins').child(auth.uid).exists() && root.child('admins').child(auth.uid).child('active').val() != false && root.child('adminSettings').child('userAdminOn').val() != false) || (root.child('agents').child(auth.uid).exists() && root.child('agents').child(auth.uid).child('active').val() != false) || auth.token.email == 'mijanbabu2015@gmail.com')"
     },
     "userNotificationReads": {
       "$uid": {
@@ -1285,10 +1474,76 @@ function copyTxt(t){
  else{prompt('কপি করতে Ctrl+C চাপুন:',t)}
 }
 
+async function createAgentMaster(){
+ const n=$('agn').value.trim(),e=$('age').value.trim(),ph=$('agph').value.trim(),pa=$('agpa').value,p=$('agpw').value;
+ const bk=$('agbk').value.trim(),ng=$('agng').value.trim();
+ if(!n||!e||p.length<6||!pa){toast('নাম, ইমেইল, ৬+ অক্ষরের পাসওয়ার্ড ও User Admin নির্বাচন করুন');return}
+ try{
+  const sec=firebase.apps.find(a=>a.name==='sec_ag_'+TID)||firebase.initializeApp(TCFG,'sec_ag_'+TID);
+  const cr=await sec.auth().createUserWithEmailAndPassword(e,p);
+  const adm=ADM[pa]||{};
+  const pm={};if(bk)pm.bKash=bk;if(ng)pm.Nagad=ng;
+  await db.ref('agents/'+cr.user.uid).set({
+   id:cr.user.uid,name:n,email:e,phone:ph,parentAdminId:pa,parentAdminName:adm.name||adm.email||pa,
+   paymentNumbers:pm,balance:0,receivedFromAdmin:0,totalProcessedDeposits:0,totalProcessedWithdrawals:0,
+   active:true,status:'active',createdAt:TS,updatedAt:TS
+  });
+  const clean=n.toLowerCase().replace(/[^a-z0-9_]/g,'');
+  if(clean){try{await db.ref('usernames/'+clean).set({uid:cr.user.uid,email:e,role:'AGENT',updatedAt:TS})}catch(_u){}}
+  try{await db.ref('adminAuditLogs').push({admin:auth.currentUser.email,action:'AGENT_CREATED',target:cr.user.uid,details:`Name=${n}, Admin=${pa}`,timestamp:Date.now()})}catch(_l){}
+  await sec.auth().signOut();
+  toast('এজেন্ট তৈরি ও সক্রিয় হয়েছে ✅ ('+e+')');
+  ['agn','age','agph','agpw','agbk','agng'].forEach(i=>{if($(i))$(i).value=''});draw();
+ }catch(x){toast('এজেন্ট তৈরি ব্যর্থ: '+x.message)}
+}
+async function sendAgentFund(uid){
+ const ag=AGENTS[uid];if(!ag)return;
+ const a=Math.floor(parseFloat(prompt(`"${ag.name||ag.email}" এজেন্টকে Master ব্যালেন্স থেকে কত টাকা পাঠাবেন?`,'5000')));
+ if(!a||a<=0)return;
+ if(!await tx('master/balance',dec(a))){toast('Master ব্যালেন্স যথেষ্ট নয়');return}
+ try{if(!await tx(`agents/${uid}/balance`,inc(a)))throw 0}catch(e){await tx('master/balance',inc(a));toast('ব্যর্থ হয়েছে');return}
+ await log({type:'AGENT_CREDIT',uid,email:ag.email||'',amount:a,note:'Master -> Agent direct fund'});
+ toast('এজেন্টকে '+fmt(a)+' পাঠানো হয়েছে ✅');
+}
+async function reclaimAgentFund(uid){
+ const ag=AGENTS[uid];if(!ag)return;
+ const a=Math.floor(parseFloat(prompt(`"${ag.name||ag.email}" (ব্যালেন্স ${fmt(ag.balance)}) থেকে কত টাকা Master-এ ফেরত নেবেন?`,'1000')));
+ if(!a||a<=0)return;
+ if(!await tx(`agents/${uid}/balance`,dec(a))){toast('এজেন্ট ব্যালেন্স যথেষ্ট নয়');return}
+ await tx('master/balance',inc(a));
+ await log({type:'AGENT_RECLAIM',uid,email:ag.email||'',amount:a,note:'Agent -> Master reclaim'});
+ toast('ফেরত নেওয়া হয়েছে ✅');
+}
+async function toggleAgentActive(uid){
+ const ag=AGENTS[uid];if(!ag)return;
+ const nxt=ag.active===false;
+ await db.ref('agents/'+uid).update({active:nxt,status:nxt?'active':'inactive',updatedAt:TS});
+ toast(nxt?'এজেন্ট চালু করা হয়েছে ✅':'এজেন্ট বন্ধ করা হয়েছে ⛔');
+}
+async function approveAgentReq(id){
+ const r=AGREQ[id];if(!r||!r.agentUid)return;
+ const ag=AGENTS[r.agentUid];if(!ag||ag.active===false){toast('এজেন্ট সক্রিয় নয়');return}
+ const a=parseFloat(r.amount)||0;if(a<=0)return;
+ if(!confirm(`"${ag.name||ag.email}"-এর ${fmt(a)} ব্যালেন্স রিকোয়েস্ট Master থেকে অনুমোদন করবেন?`))return;
+ const c=await db.ref(`agentBalanceRequests/${id}/status`).transaction(s=>s==='pending'?'processing':undefined);
+ if(!c.committed)return;
+ if(!await tx('master/balance',dec(a))){await db.ref(`agentBalanceRequests/${id}/status`).set('pending');toast('Master ব্যালেন্স যথেষ্ট নয়');return}
+ try{if(!await tx(`agents/${r.agentUid}/balance`,inc(a)))throw 0}catch(e){await tx('master/balance',inc(a));await db.ref(`agentBalanceRequests/${id}/status`).set('pending');toast('ব্যর্থ হয়েছে');return}
+ await db.ref('agentBalanceRequests/'+id).update({status:'approved',approvedBy:'MASTER',processedAt:TS});
+ await log({type:'AGENT_REQ_APPROVED',uid:r.agentUid,email:ag.email||'',amount:a,note:r.note||''});
+ toast('এজেন্ট রিকোয়েস্ট অনুমোদিত ✅');
+}
+async function rejectAgentReq(id){
+ if(!confirm('এজেন্ট ব্যালেন্স রিকোয়েস্ট বাতিল করবেন?'))return;
+ await db.ref('agentBalanceRequests/'+id).update({status:'rejected',processedAt:TS});
+ toast('বাতিল করা হয়েছে');
+}
+
 function draw(){if(!started)return;
- const A=Object.entries(ADM),P=Object.entries(REQ).filter(([k,r])=>r.status==='pending');
+ const A=Object.entries(ADM),P=Object.entries(REQ).filter(([k,r])=>r.status==='pending'),AG=Object.entries(AGENTS),AGP=Object.entries(AGREQ).filter(([k,r])=>r.status==='pending');
  $('mb').textContent=$('s1').textContent=fmt(MB);$('s2').textContent=fmt(A.reduce((s,[k,a])=>s+(+a.balance||0),0));$('s3').textContent=A.length;$('s4').textContent=P.length;
- drawTn();['admins','reqs','led','games','players','act','feat','promo','chat','tenants','guide'].forEach(t=>$('t-'+t).className=(t===cur||(t==='admins'&&cur==='admin'))?'on':'');let h='';
+ if($('nav-agent-pending'))$('nav-agent-pending').textContent=AGP.length;
+ drawTn();['admins','agents','reqs','led','games','players','act','feat','promo','chat','tenants','guide'].forEach(t=>{const el=$('t-'+t);if(el)el.className=(t===cur||(t==='admins'&&cur==='admin'))?'on':''});let h='';
  if(cur==='admins'){
   h=`<div class="cd" style="margin-bottom:12px;background:var(--in);border:1px solid var(--bg2)">
    <b style="font-size:16px;color:var(--gold);display:flex;align-items:center;gap:6px">👑 ১) সরাসরি নতুন ইউজার অ্যাডমিন তৈরি করুন</b>
@@ -1336,15 +1591,47 @@ function draw(){if(!started)return;
     <button class="d" onclick="delAdmin('${u}')">মুছুন</button>
    </td>
   </tr>`).join('')+`</table></div>`}
+ if(cur==='agents'){
+  const qa=AQ_AG.toLowerCase();
+  const admOpts=A.map(([u,a])=>`<option value="${esc(u)}">${esc(a.name||a.email||u)}</option>`).join('');
+  h=`<div class="cd" style="margin-bottom:12px;background:var(--in);border:1px solid var(--bg2)">
+   <b style="font-size:16px;color:var(--gold)">🧑‍💼 নতুন লাইভ এজেন্ট তৈরি করুন (অরিজিনাল Agent App অ্যাকাউন্ট)</b>
+   <span style="display:block;margin-top:4px">এখানে তৈরি এজেন্টরা সরাসরি <code>agent.html</code> এ লগইন করে ডিপোজিট/উইথড্র প্রসেস করতে পারবে:</span>
+   <div class="row" style="margin-top:10px">
+    <input id="agn" placeholder="এজেন্টের নাম (যেমন: Rahim Agent)">
+    <input id="age" type="email" placeholder="ইমেইল (যেমন: rahim@agent.com)">
+    <input id="agph" placeholder="মোবাইল নম্বর">
+    <select id="agpa"><option value="">User Admin বেছে নিন</option>${admOpts}</select>
+    <input id="agpw" type="password" placeholder="পাসওয়ার্ড (৬+ অক্ষর)">
+    <input id="agbk" placeholder="bKash নম্বর (ঐচ্ছিক)">
+    <input id="agng" placeholder="Nagad নম্বর (ঐচ্ছিক)">
+    <button class="p" onclick="createAgentMaster()">+ এজেন্ট তৈরি ও চালু করুন</button>
+   </div>
+  </div>
+  <div class="row"><input id="agq" placeholder="এজেন্টের নাম / ইমেইল / নম্বর দিয়ে খুঁজুন..." value="${esc(AQ_AG)}" oninput="AQ_AG=this.value;draw();const p=$('agq');if(p){p.focus();p.setSelectionRange(AQ_AG.length,AQ_AG.length)}"></div>
+  <div class="sc" style="margin-bottom:16px"><table><tr><th>এজেন্ট / UID</th><th>Parent User Admin</th><th>ব্যালেন্স</th><th>মোট প্রসেসড</th><th>স্ট্যাটাস</th><th>অ্যাকশন</th></tr>`+
+  AG.filter(([k,g])=>!qa||[g.name,g.email,g.phone,k].join(' ').toLowerCase().includes(qa)).map(([k,g])=>{
+   const pa=ADM[g.parentAdminId]||{};
+   return`<tr>
+    <td><b>${esc(g.name||'-')}</b><br><small style="color:var(--mu)">${esc(g.email||'')} · ${esc(g.phone||'')}</small><br><span style="font-family:monospace;font-size:11px;cursor:pointer" onclick="copyTxt('${k}')">UID: ${esc(k)} 📋</span></td>
+    <td>${esc(pa.name||pa.email||g.parentAdminName||g.parentAdminId||'Direct')}</td>
+    <td><b style="color:var(--gold)">${fmt(g.balance)}</b></td>
+    <td><small style="color:var(--ok)">ডিপো: ${fmt(g.totalProcessedDeposits)}</small><br><small style="color:var(--info)">উইথ: ${fmt(g.totalProcessedWithdrawals)}</small></td>
+    <td><span class="pl ${g.active===false?'b':''}">${g.active===false?'বন্ধ':'সক্রিয়'}</span></td>
+    <td><button onclick="sendAgentFund('${k}')">পাঠান</button> <button onclick="reclaimAgentFund('${k}')">ফেরত</button> <button class="d" onclick="toggleAgentActive('${k}')">${g.active===false?'চালু':'বন্ধ'}</button></td>
+   </tr>`}).join('')+`</table></div>
+  <div class="cd" style="margin-bottom:10px"><b style="font-size:16px">📥 এজেন্টদের ব্যালেন্স রিকোয়েস্ট (${AGP.length} পেন্ডিং)</b></div>
+  <div class="sc"><table><tr><th>এজেন্ট</th><th>পরিমাণ</th><th>পদ্ধতি / নোট</th><th>সময়</th><th>স্ট্যাটাস</th><th>অ্যাকশন</th></tr>`+
+  (Object.entries(AGREQ).reverse().map(([k,r])=>`<tr><td><b>${esc(r.agentName||r.agentEmail||r.agentUid)}</b></td><td><b>${fmt(r.amount)}</b></td><td><small>${esc(r.paymentMethod||'—')} · ${esc(r.note||'')}</small></td><td>${r.createdAt?new Date(r.createdAt).toLocaleString('bn-BD'):''}</td><td><span class="pl ${r.status==='rejected'?'b':r.status==='pending'?'y':''}">${esc(r.status)}</span></td><td>${r.status==='pending'?`<button class="p" onclick="approveAgentReq('${k}')">অনুমোদন</button> <button class="d" onclick="rejectAgentReq('${k}')">বাতিল</button>`:''}</td></tr>`).join('')||`<tr><td colspan="6" style="text-align:center;color:var(--mu)">কোনো এজেন্ট রিকোয়েস্ট নেই</td></tr>`)+`</table></div>`}
  if(cur==='reqs'){h=`<div class="sc"><table><tr><th>অ্যাডমিন</th><th>পরিমাণ</th><th>নোট</th><th>সময়</th><th>স্ট্যাটাস</th><th></th></tr>`+
   Object.entries(REQ).reverse().map(([k,r])=>`<tr><td>${esc(r.email)}</td><td>${fmt(r.amount)}</td><td>${esc(r.note)}</td><td>${r.createdAt?new Date(r.createdAt).toLocaleString('bn-BD'):''}</td><td><span class="pl ${r.status==='rejected'?'b':r.status==='pending'?'y':''}">${esc(r.status)}</span></td><td>${r.status==='pending'?`<button class="p" onclick="approve('${k}')">অনুমোদন</button> <button class="d" onclick="reject('${k}')">বাতিল</button>`:''}</td></tr>`).join('')+`</table></div>`}
  if(cur==='led'){h=`<div class="row"><button class="d" onclick="clearAdminTx()">🗑 সব লেনদেন মুছুন</button></div><div class="sc"><table><tr><th>সময়</th><th>ধরন</th><th>অ্যাডমিন</th><th>পরিমাণ</th><th>নোট</th></tr>`+
   Object.values(LED).reverse().map(l=>`<tr><td>${l.time?new Date(l.time).toLocaleString('bn-BD'):''}</td><td>${esc(l.type)}</td><td>${esc(l.email)}</td><td>${fmt(l.amount)}</td><td>${esc(l.note)}</td></tr>`).join('')+`</table></div>`}
  if(cur==='games'){h=`<div class="row"><input id="gn" placeholder="ক্যাসিনো গেমের নাম"><input id="gc" list="gcl" value="Popular Games" placeholder="ক্যাটাগরি" style="height:42px"><datalist id="gcl">${[...new Set(["Popular Games","Crash Games","Live Casino","Slot Games","Table Games",...Object.values(GAMES).map(x=>x.category).filter(Boolean)])].map(c=>`<option value="${esc(c)}">`).join('')}</datalist><input id="gi" placeholder="ছবির লিংক"><input id="gu" placeholder="গেমের লিংক"><input id="gh" placeholder="গেম সার্ভারের /health লিংক (ঐচ্ছিক, সার্ভার জাগাতে)"><label style="display:flex;align-items:center;gap:6px;font-size:.85rem"><input id="gint" type="checkbox" checked style="width:auto"> নিজস্ব গেম (টোকেন + প্রস্তুত সংকেত)</label><button class="p" onclick="saveGame()">+ নতুন গেম</button></div><div class="cd" style="margin-bottom:10px"><span>Pro Casino গেমস তালিকা — Popular, Crash, Live Casino, Slot & Table (Firebase Node: games) — ${Object.keys(GAMES).length} টি</span></div><div class="sc"><table><tr><th>নাম / গেম ID</th><th>ক্যাটাগরি</th><th>ধরন</th><th>স্ট্যাটাস</th><th>অ্যাকশন</th></tr>`+
   Object.entries(GAMES).map(([k,g])=>`<tr><td>${esc(g.name)}<br><small style="opacity:.6">ID: ${esc(k)}</small></td><td>${esc(g.category)}</td><td>${g.integrated===true?'নিজস্ব':(g.integrated===false?'বাইরের':'পুরোনো (অটো)')}${g.healthUrl?' 🩺':''}</td><td><span class="pl ${(g.status||'Active')==='Active'?'':'b'}">${esc(g.status||'Active')}</span></td><td><button onclick="saveGame('${k}')">এডিট</button> <button onclick="gToggle('${k}')">চালু/বন্ধ</button> <button onclick="gInteg('${k}')">🔌 ধরন</button> <button onclick="gHealth('${k}')">🩺</button> <button class="d" onclick="gDel('${k}')">মুছুন</button></td></tr>`).join('')+`</table></div>`}
- if(cur==='players'){const q=Q.toLowerCase();const _orph=Object.keys(USERS).filter(k=>!ADM[k]&&!(USERS[k].adminUid&&ADM[USERS[k].adminUid])).length;h=(_orph?`<div class="cd" style="margin-bottom:10px;border:1px solid #ef4444"><b>⚠ ${_orph} জন ইউজারের কোনো অ্যাডমিন নেই</b><span>অ্যাডমিন না থাকলে সে ডিপোজিট/উইথড্র করতে পারবে না এবং কোনো অ্যাডমিন তাকে দেখবে না।</span><div class="row"><button class="p" onclick="assignAllOrphans()">সবাইকে একজন অ্যাডমিনের অধীনে দিন</button></div></div>`:'')+`<div class="row"><input id="pq" placeholder="নাম/ইমেইল/ফোন/UID দিয়ে খুঁজুন" value="${esc(Q)}" oninput="Q=this.value;draw();const p=$('pq');p.focus();p.setSelectionRange(Q.length,Q.length)"></div><div class="sc"><table><tr><th>প্লেয়ার ও UID</th><th>ব্যালেন্স</th><th>রোল / স্ট্যাটাস</th><th>অ্যাকশন</th></tr>`+
-  Object.entries(USERS).filter(([k,u])=>!q||[u.name,u.email,u.phone,u.username,k].join(' ').toLowerCase().includes(q)).slice(0,200).map(([k,u])=>{
-   const isAlreadyAdmin=!!ADM[k];
+ if(cur==='players'){const q=Q.toLowerCase();const _orph=Object.keys(USERS).filter(k=>!ADM[k]&&!(USERS[k].adminUid&&ADM[USERS[k].adminUid])).length;h=(_orph?`<div class="cd" style="margin-bottom:10px;border:1px solid #ef4444"><b>⚠ ${_orph} জন ইউজারের কোনো অ্যাডমিন নেই</b><span>অ্যাডমিন না থাকলে সে ডিপোজিট/উইথড্র করতে পারবে না এবং কোনো অ্যাডমিন তাকে দেখবে না।</span><div class="row"><button class="p" onclick="assignAllOrphans()">সবাইকে একজন অ্যাডমিনের অধীনে দিন</button></div></div>`:'')+`<div class="row"><input id="pq" placeholder="নাম/ইমেইল/ফোন/UID/IP দিয়ে খুঁজুন" value="${esc(Q)}" oninput="Q=this.value;draw();const p=$('pq');p.focus();p.setSelectionRange(Q.length,Q.length)"></div><div class="sc"><table><tr><th>প্লেয়ার ও UID</th><th>ব্যালেন্স</th><th>বেট সংখ্যা ও (− / +)</th><th>IP ও ডিভাইস</th><th>রোল / স্ট্যাটাস</th><th>অ্যাকশন</th></tr>`+
+  Object.entries(USERS).filter(([k,u])=>!q||[u.name,u.email,u.phone,u.username,u.lastIp,u.lastDevice,k].join(' ').toLowerCase().includes(q)).slice(0,200).map(([k,u])=>{
+   const isAlreadyAdmin=!!ADM[k],bs=getPlayerBetStats(k),idInf=getPlayerIpAndDev(k);
    return`<tr>
     <td>
      <b>${esc(u.name||u.username||k)}</b>
@@ -1353,11 +1640,20 @@ function draw(){if(!started)return;
     </td>
     <td><b>${fmt(u.balance)}</b></td>
     <td>
+     <b>${bs.betCount} বার বেট</b>
+     <br><small style="color:var(--er)">−${fmt(bs.totalBet)}</small> / <small style="color:var(--ok)">+${fmt(bs.totalWin)}</small>
+    </td>
+    <td>
+     <small style="font-family:monospace">🌐 ${esc(idInf.lastIp)}</small>${idInf.ipList.length>1?` <span class="pl y">${idInf.ipList.length} IP</span>`:''}
+     <br><small>📱 ${esc(idInf.device)}</small>${idInf.clones.length?` <span class="pl b">ক্লোন (${idInf.clones.length+1})</span>`:''}
+    </td>
+    <td>
      <span class="pl ${(u.status||'ACTIVE')==='ACTIVE'?'':'b'}">${esc(u.status||'ACTIVE')}</span>
      ${isAlreadyAdmin?'<br><span class="pl" style="background:rgba(212,175,55,.2);color:var(--gold);margin-top:4px">👑 Admin</span>':''}
      ${ADM[u.adminUid]?`<br><small>অ্যাডমিন: ${esc(ADM[u.adminUid].name||ADM[u.adminUid].email)}</small>`:(isAlreadyAdmin?'':'<br><span class="pl b" style="margin-top:4px">⚠ অ্যাডমিন নেই</span>')}
     </td>
     <td>
+     <button onclick="viewPlayerActivity('${k}')" title="গেম, বেট ও IP বিস্তারিত দেখুন">🎮 ট্র্যাক ও বেট</button>
      <button onclick="uAdjust('${k}')">৳ সমন্বয়</button> 
      ${isAlreadyAdmin?'':`<button onclick="assignAdmin('${k}')">🔗 অ্যাডমিন সেট</button> `}
      <button class="d" onclick="uStatus('${k}')">${(u.status||'ACTIVE')==='ACTIVE'?'ব্যান':'সক্রিয়'}</button>
@@ -1641,4 +1937,25 @@ function npmChatHtml(){
 })();
 </script>
 <script>if('serviceWorker' in navigator&&(location.protocol==='https:'||location.hostname==='localhost')){window.addEventListener('load',function(){navigator.serviceWorker.register('./master-sw.js').catch(function(){})})}</script>
+<script>
+(function(){
+  function fitLogo(wrapId, tagId){
+    const w=document.getElementById(wrapId), t=document.getElementById(tagId);
+    if(!w||!t) return;
+    const lm=w.querySelector('.lm'); if(!lm) return;
+    const lw=lm.getBoundingClientRect().width;
+    if(!lw) return;
+    t.style.letterSpacing='0px';
+    const base=t.getBoundingClientRect().width;
+    const n=Math.max(1,t.textContent.trim().length-1);
+    const sp=Math.max(0,(lw-base)/n);
+    t.style.letterSpacing=sp.toFixed(2)+'px';
+  }
+  function fitAll(){fitLogo('mLoginLogoWrap','mLoginTag');fitLogo('mBrandLogoWrap','mBrandTag')}
+  window.addEventListener('load',()=>setTimeout(fitAll,60));
+  window.addEventListener('resize',fitAll);
+  if(document.fonts&&document.fonts.ready)document.fonts.ready.then(fitAll);
+  setTimeout(fitAll,200);
+})();
+</script>
 </body></html>

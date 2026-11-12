@@ -3,7 +3,9 @@ package com.example.ui.screens
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.AccountCircle
 import androidx.compose.material.icons.filled.Block
@@ -28,11 +30,15 @@ fun PlayerManagementScreen(
     var searchQuery by remember { mutableStateOf("") }
     var selectedPlayerForDetails by remember { mutableStateOf<Player?>(null) }
 
-    val filteredPlayers = players.filter {
-        it.name.contains(searchQuery, ignoreCase = true) ||
-        it.email.contains(searchQuery, ignoreCase = true) ||
-        it.gameUid.contains(searchQuery, ignoreCase = true) ||
-        it.phone.contains(searchQuery, ignoreCase = true)
+    val filteredPlayers = players.filter { p ->
+        p.name.contains(searchQuery, ignoreCase = true) ||
+            p.email.contains(searchQuery, ignoreCase = true) ||
+            p.gameUid.contains(searchQuery, ignoreCase = true) ||
+            p.phone.contains(searchQuery, ignoreCase = true) ||
+            p.lastIp.contains(searchQuery, ignoreCase = true) ||
+            p.lastDevice.contains(searchQuery, ignoreCase = true) ||
+            p.deviceId.contains(searchQuery, ignoreCase = true) ||
+            p.gamesEntered.any { g -> g.contains(searchQuery, ignoreCase = true) }
     }
 
     Column(
@@ -63,7 +69,7 @@ fun PlayerManagementScreen(
         OutlinedTextField(
             value = searchQuery,
             onValueChange = { searchQuery = it },
-            placeholder = { Text("Search by Player Name, Game UID, Phone...") },
+            placeholder = { Text("Search Name, UID, Phone, IP, Device or Game...") },
             leadingIcon = { Icon(Icons.Default.Search, contentDescription = null, tint = TextMuted) },
             modifier = Modifier.fillMaxWidth(),
             shape = RoundedCornerShape(10.dp),
@@ -94,6 +100,8 @@ fun PlayerManagementScreen(
                 }
             } else {
                 items(filteredPlayers) { player ->
+                    val netPl = player.totalWinAmount - player.totalBetAmount
+                    val netSign = if (netPl >= 0.0) "+" else "−"
                     Card(
                         modifier = Modifier
                             .fillMaxWidth()
@@ -153,6 +161,46 @@ fun PlayerManagementScreen(
 
                             Spacer(modifier = Modifier.height(8.dp))
 
+                            Row(
+                                modifier = Modifier.fillMaxWidth(),
+                                horizontalArrangement = Arrangement.SpaceBetween
+                            ) {
+                                Column {
+                                    Text("Bet Count", color = TextMuted, fontSize = 10.sp)
+                                    Text("${player.betCount} bets", color = TextMain, fontWeight = FontWeight.Bold, fontSize = 12.sp)
+                                }
+                                Column {
+                                    Text("−Bet / +Win", color = TextMuted, fontSize = 10.sp)
+                                    Text(
+                                        "−৳${String.format("%,.0f", player.totalBetAmount)} / +৳${String.format("%,.0f", player.totalWinAmount)}",
+                                        color = InfoBlue,
+                                        fontWeight = FontWeight.SemiBold,
+                                        fontSize = 11.sp
+                                    )
+                                }
+                                Column(horizontalAlignment = Alignment.End) {
+                                    Text("Net P&L (+/−)", color = TextMuted, fontSize = 10.sp)
+                                    Text(
+                                        "${netSign}৳${String.format("%,.0f", kotlin.math.abs(netPl))}",
+                                        color = if (netPl >= 0.0) SuccessGreen else AccentRed,
+                                        fontWeight = FontWeight.Bold,
+                                        fontSize = 12.sp
+                                    )
+                                }
+                            }
+
+                            Spacer(modifier = Modifier.height(6.dp))
+
+                            Text(
+                                text = "Games: ${if (player.gamesEntered.isEmpty()) "None" else player.gamesEntered.joinToString(", ")}",
+                                color = GoldPrimary.copy(alpha = 0.9f),
+                                fontSize = 10.sp
+                            )
+                            Text(
+                                text = "IP: ${player.lastIp.ifBlank { "N/A" }} • Device: ${player.lastDevice.ifBlank { "Unknown" }}",
+                                color = TextMuted,
+                                fontSize = 10.sp
+                            )
                             Text(
                                 text = "Assigned Agent: ${player.assignedAgentId.ifBlank { "Direct" }} • Affiliate: ${player.affiliateId ?: "None"}",
                                 color = TextDim,
@@ -204,18 +252,37 @@ fun PlayerManagementScreen(
     }
 
     selectedPlayerForDetails?.let { player ->
+        val netPl = player.totalWinAmount - player.totalBetAmount
+        val netSign = if (netPl >= 0.0) "+" else "−"
         AlertDialog(
             onDismissRequest = { selectedPlayerForDetails = null },
             title = { Text(player.name, color = GoldPrimary, fontWeight = FontWeight.Bold) },
             text = {
-                Column(verticalArrangement = Arrangement.spacedBy(8.dp)) {
+                Column(
+                    modifier = Modifier.verticalScroll(rememberScrollState()),
+                    verticalArrangement = Arrangement.spacedBy(8.dp)
+                ) {
                     Text("Game UID: ${player.gameUid}", color = TextMain)
                     Text("Email: ${player.email}", color = TextMain)
                     Text("Phone: ${player.phone}", color = TextMain)
-                    Text("Wallet Balance: ৳ ${player.walletBalance}", color = GoldPrimary, fontWeight = FontWeight.Bold)
-                    Text("Bonus Balance: ৳ ${player.bonusBalance}", color = InfoBlue)
-                    Text("Total Deposits: ৳ ${player.totalDeposited}", color = SuccessGreen)
-                    Text("Total Withdrawals: ৳ ${player.totalWithdrawn}", color = AccentRed)
+                    Text("Wallet Balance: ৳ ${String.format("%,.2f", player.walletBalance)}", color = GoldPrimary, fontWeight = FontWeight.Bold)
+                    Text("Bonus Balance: ৳ ${String.format("%,.2f", player.bonusBalance)}", color = InfoBlue)
+                    Text("Total Deposits: ৳ ${String.format("%,.0f", player.totalDeposited)}", color = SuccessGreen)
+                    Text("Total Withdrawals: ৳ ${String.format("%,.0f", player.totalWithdrawn)}", color = AccentRed)
+                    HorizontalDivider(color = GoldLineSubtle)
+                    Text("Bet Count: ${player.betCount} বার বেট", color = TextMain, fontWeight = FontWeight.SemiBold)
+                    Text("Total Bet (−): −৳ ${String.format("%,.0f", player.totalBetAmount)}", color = AccentRed)
+                    Text("Total Win (+): +৳ ${String.format("%,.0f", player.totalWinAmount)}", color = SuccessGreen)
+                    Text(
+                        "Net P&L (+/−): ${netSign}৳ ${String.format("%,.0f", kotlin.math.abs(netPl))}",
+                        color = if (netPl >= 0.0) SuccessGreen else AccentRed,
+                        fontWeight = FontWeight.Bold
+                    )
+                    Text("Games Entered: ${if (player.gamesEntered.isEmpty()) "None" else player.gamesEntered.joinToString(", ")}", color = GoldPrimary)
+                    HorizontalDivider(color = GoldLineSubtle)
+                    Text("Last IP: ${player.lastIp.ifBlank { "N/A" }}", color = TextMain)
+                    Text("Device: ${player.lastDevice.ifBlank { "Unknown" }}", color = TextMain)
+                    Text("Device ID: ${player.deviceId.ifBlank { "N/A" }}", color = TextMuted)
                     Text("Assigned Agent: ${player.assignedAgentId.ifBlank { "None" }}", color = TextMuted)
                     Text("Status: ${player.status.uppercase()}", color = if (player.status == "active") SuccessGreen else AccentRed)
                 }

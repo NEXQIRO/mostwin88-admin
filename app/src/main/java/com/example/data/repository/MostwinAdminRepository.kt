@@ -141,6 +141,13 @@ class MostwinAdminRepository {
                 bonusBalance = 300.0,
                 totalDeposited = 15000.0,
                 totalWithdrawn = 8500.0,
+                lastIp = "103.145.74.22",
+                lastDevice = "Samsung Galaxy A54 (Android 14)",
+                deviceId = "DEV_A54_9F21",
+                gamesEntered = listOf("Aviator Crash", "Crazy Time Live", "Mines Gold"),
+                betCount = 42,
+                totalBetAmount = 18500.0,
+                totalWinAmount = 21200.0,
                 status = "active"
             ),
             Player(
@@ -156,6 +163,13 @@ class MostwinAdminRepository {
                 bonusBalance = 100.0,
                 totalDeposited = 9000.0,
                 totalWithdrawn = 4200.0,
+                lastIp = "103.112.53.19",
+                lastDevice = "Redmi Note 13 Pro (Android 14)",
+                deviceId = "DEV_RN13_4C88",
+                gamesEntered = listOf("JetX Rocket", "Plinko Luck"),
+                betCount = 27,
+                totalBetAmount = 9400.0,
+                totalWinAmount = 7850.0,
                 status = "active"
             ),
             Player(
@@ -171,6 +185,13 @@ class MostwinAdminRepository {
                 bonusBalance = 0.0,
                 totalDeposited = 4000.0,
                 totalWithdrawn = 2000.0,
+                lastIp = "27.147.206.104",
+                lastDevice = "Realme C55 (Android 13)",
+                deviceId = "DEV_RM55_1B09",
+                gamesEntered = listOf("Mines Gold"),
+                betCount = 11,
+                totalBetAmount = 3200.0,
+                totalWinAmount = 2450.0,
                 status = "active"
             )
         )

@@ -77,6 +77,13 @@ data class Player(
     val bonusBalance: Double = 0.0,
     val totalDeposited: Double = 0.0,
     val totalWithdrawn: Double = 0.0,
+    val lastIp: String = "",
+    val lastDevice: String = "",
+    val deviceId: String = "",
+    val gamesEntered: List<String> = emptyList(),
+    val betCount: Int = 0,
+    val totalBetAmount: Double = 0.0,
+    val totalWinAmount: Double = 0.0,
     val status: String = "active", // active, suspended
     val createdAt: Long = System.currentTimeMillis()
 )

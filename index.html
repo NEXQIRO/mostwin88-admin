@@ -205,23 +205,24 @@
     }
 
     .brand-logo {
-      width: 42px;
-      height: 42px;
-      border-radius: var(--radius-md);
-      background: #F59E0B;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      box-shadow: 0 0 16px var(--primary-glow);
-      flex-shrink: 0;
-      overflow: hidden;
+      display: none;
     }
 
-    .brand-logo svg {
-      width: 24px;
-      height: 24px;
-      fill: var(--c-on-primary);
-    }
+    /* EXACT MOSTWIN88 ANIMATED LOGO */
+    .logo{--fs:34px;display:block;width:max-content;text-align:left;margin:0 auto 12px}
+    .logo.sm{--fs:19px;margin:0}
+    .lm{display:block;width:max-content;white-space:nowrap;font-weight:900;letter-spacing:.5px;line-height:1;font-size:var(--fs);color:#ffd23f;font-family:var(--font-display),sans-serif}
+    .logo .w,.logo .r{color:#fff}
+    .lo{display:inline-block;position:relative;width:.76em;height:.76em;margin:0 .035em;vertical-align:baseline;overflow:visible;filter:drop-shadow(0 0 .04em #ffffff77)}
+    .lo svg{position:absolute;left:0;top:0;width:100%;height:100%;display:block;overflow:visible;transform:scale(1.12);transform-origin:50% 50%}
+    .lo-r{transform-box:view-box;transform-origin:50px 50px;animation:loSpin 6s cubic-bezier(.2,.7,.2,1) infinite}
+    @keyframes loSpin{0%,25%{transform:rotate(0deg)}70%,100%{transform:rotate(1440deg)}}
+    .tag{display:block;white-space:nowrap;font-weight:700;color:#ffd23f;font-size:calc(var(--fs)*.17);margin-top:.55em;overflow:visible;letter-spacing:.4px}
+    body[data-theme="light"] .logo .w,body[data-theme="light"] .logo .r{color:#1C1917}
+    body[data-theme="light"] .lo circle[stroke="#fff"]{stroke:#1C1917}
+    body[data-theme="light"] .lo circle[stroke*="255,255,255"]{stroke:rgba(28,25,23,.3)}
+    @media (prefers-reduced-motion:reduce){.lo-r{animation:none}}
+    .brand-header{flex-direction:column;align-items:flex-start;gap:4px}
 
     .brand-title {
       font-size: 1.15rem;
@@ -414,7 +415,7 @@
       letter-spacing: 0.3px;
     }
 
-    .status-indicator.demo {
+    .status-indicator.offline {
       border-color: var(--c-gold-line);
       color: #F59E0B;
     }
@@ -1265,21 +1266,13 @@
     }
 
     .login-logo {
-      width: 60px;
-      height: 60px;
-      margin: 0 auto 16px;
-      border-radius: var(--radius-lg);
-      background: #F59E0B;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      box-shadow: 0 0 20px var(--primary-glow);
-    }
-
-    .login-logo svg {
-      width: 32px;
-      height: 32px;
-      fill: var(--c-on-primary);
+      background: transparent !important;
+      width: auto;
+      height: auto;
+      margin: 0 auto 10px;
+      border-radius: 0;
+      display: block;
+      box-shadow: none !important;
     }
 
     .login-title {
@@ -1530,7 +1523,7 @@
     body[data-theme="light"] .topbar { backdrop-filter: none; }
     body[data-theme="light"] .bottom-nav { box-shadow: 0 -2px 10px rgba(60, 40, 10, 0.08); }
     body[data-theme="light"] .badge-pending, body[data-theme="light"] .bal, body[data-theme="light"] .gold,
-    body[data-theme="light"] .ad, body[data-theme="light"] .nv .on, body[data-theme="light"] .status-indicator.demo { color: #B45309; }
+    body[data-theme="light"] .ad, body[data-theme="light"] .nv .on, body[data-theme="light"] .status-indicator.offline { color: #B45309; }
     body[data-theme="light"] #topbar-admin-balance-val { color: #B45309 !important; }
     body[data-theme="light"] [style*="#141c30" i]:not(.modal-card *):not(.toast) { background: linear-gradient(90deg, #FFF7E6, #FFFFFF) !important; }
     body[data-theme="light"] [style*="14, 19, 31"]:not(.modal-card *),
@@ -1567,19 +1560,22 @@
   <div id="login-overlay">
     <div class="login-box">
       <div class="login-logo">
-        <svg viewBox="0 0 24 24"><path d="M12 1L3 5v6c0 5.55 3.84 10.74 9 12 5.16-1.26 9-6.45 9-12V5l-9-4zm0 10.99h7c-.53 4.12-3.28 7.79-7 8.94V12H5V6.3l7-3.11v8.8z"/></svg>
+        <div class="logo" id="uLoginLogoWrap">
+          <span class="lm"><span class="w">M</span><span class="lo"><svg viewBox="0 0 100 100" aria-hidden="true"><g class="lo-r"><circle cx="50" cy="50" r="43" fill="none" stroke="rgba(255,255,255,.4)" stroke-width="14"/><circle cx="50" cy="50" r="43" fill="none" stroke="#fff" stroke-width="14" stroke-dasharray="7.4 3.86"/></g><circle cx="50" cy="50" r="18" fill="#ffd23f"/><circle cx="50" cy="50" r="18" fill="none" stroke="#fff2b3" stroke-width="3"/></svg></span><span class="w">ST</span>WIN<span class="r">88</span></span>
+          <span class="tag" id="uLoginTag">PLAY BIG, WIN BIGGER</span>
+        </div>
       </div>
-      <h2 class="login-title">MOSTWIN88</h2>
+      <h2 class="login-title" style="display:none">MOSTWIN88</h2>
       <p class="login-sub" data-bn="অ্যাডমিন কন্ট্রোল প্যানেল" data-en="Admin Control Panel">অ্যাডমিন কন্ট্রোল প্যানেল</p>
       
       <form id="admin-login-form" onsubmit="handleAdminLogin(event)">
         <div class="form-group" style="text-align: left; margin-bottom: 14px;">
           <label data-bn="অ্যাডমিন ইউজারনেম বা ইমেইল" data-en="Admin Username or Email">অ্যাডমিন ইউজারনেম বা ইমেইল</label>
-          <input type="text" id="login-email" class="form-control" placeholder="admin" value="admin" required autocomplete="username">
+          <input type="text" id="login-email" class="form-control" placeholder="অ্যাডমিন ইমেইল বা ইউজারনেম লিখুন" value="" required autocomplete="username">
         </div>
         <div class="form-group" style="text-align: left; margin-bottom: 20px;">
           <label data-bn="পাসওয়ার্ড" data-en="Password">পাসওয়ার্ড</label>
-          <input type="password" id="login-password" class="form-control" placeholder="••••••••" value="admin12345" required autocomplete="current-password">
+          <input type="password" id="login-password" class="form-control" placeholder="পাসওয়ার্ড লিখুন" value="" required autocomplete="current-password">
         </div>
 
         <button type="submit" class="btn btn-primary" id="btn-admin-login" style="width: 100%;">
@@ -1601,13 +1597,11 @@
     <!-- SIDEBAR -->
     <aside class="sidebar" id="sidebar">
       <div class="brand-header">
-        <div class="brand-logo">
-          <svg viewBox="0 0 24 24"><path d="M12 2L1 7l11 5 9-4.09V17h2V7L12 2zm0 13.09L4.27 11.5 2 12.53l10 4.55 10-4.55-2.27-1.03L12 15.09zm0 4.54l-7.73-3.51L2 17.16l10 4.55 10-4.55-2.27-1.04L12 19.63z"/></svg>
+        <div class="logo sm" id="uBrandLogoWrap">
+          <span class="lm"><span class="w">M</span><span class="lo"><svg viewBox="0 0 100 100" aria-hidden="true"><g class="lo-r"><circle cx="50" cy="50" r="43" fill="none" stroke="rgba(255,255,255,.4)" stroke-width="14"/><circle cx="50" cy="50" r="43" fill="none" stroke="#fff" stroke-width="14" stroke-dasharray="7.4 3.86"/></g><circle cx="50" cy="50" r="18" fill="#ffd23f"/><circle cx="50" cy="50" r="18" fill="none" stroke="#fff2b3" stroke-width="3"/></svg></span><span class="w">ST</span>WIN<span class="r">88</span></span>
+          <span class="tag" id="uBrandTag">PLAY BIG, WIN BIGGER</span>
         </div>
-        <div>
-          <div class="brand-title">MOSTWIN88</div>
-          <div class="brand-sub">ADMIN CONTROL PANEL</div>
-        </div>
+        <div class="brand-sub" style="margin-top:4px;">USER ADMIN PANEL</div>
       </div>
 
       <ul class="nav-list">
@@ -1617,17 +1611,30 @@
             <span class="nav-label">ড্যাশবোর্ড</span>
           </button>
         </li>
+        <li class="nav-item" data-view="view-gameactivity">
+          <button onclick="switchView('view-gameactivity')">
+            <svg viewBox="0 0 24 24"><path d="M21 6H3c-1.1 0-2 .9-2 2v8c0 1.1.9 2 2 2h18c1.1 0 2-.9 2-2V8c0-1.1-.9-2-2-2zm-10 7H8v3H6v-3H3v-2h3V8h2v3h3v2zm4.5 2c-.83 0-1.5-.67-1.5-1.5s.67-1.5 1.5-1.5 1.5.67 1.5 1.5-.67 1.5-1.5 1.5zm4-3c-.83 0-1.5-.67-1.5-1.5S18.67 9 19.5 9s1.5.67 1.5 1.5-.67 1.5-1.5 1.5z"/></svg>
+            <span class="nav-label">গেম ও বেট ট্র্যাকার</span>
+          </button>
+        </li>
         <li class="nav-item" data-view="view-users">
           <button onclick="switchView('view-users')">
             <svg viewBox="0 0 24 24"><path d="M16 11c1.66 0 2.99-1.34 2.99-3S17.66 5 16 5c-1.66 0-3 1.34-3 3s1.34 3 3 3zm-8 0c1.66 0 2.99-1.34 2.99-3S9.66 5 8 5C6.34 5 5 6.34 5 8s1.34 3 3 3zm0 2c-2.33 0-7 1.17-7 3.5V19h14v-2.5c0-2.33-4.67-3.5-7-3.5zm8 0c-.29 0-.62.02-.97.05 1.16.84 1.97 1.97 1.97 3.45V19h6v-2.5c0-2.33-4.67-3.5-7-3.5z"/></svg>
             <span class="nav-label">প্লেয়ার / ইউজার</span>
           </button>
         </li>
-                <li class="nav-item" data-view="view-wallet">
+        <li class="nav-item" data-view="view-wallet">
           <button onclick="switchView('view-wallet')">
             <svg viewBox="0 0 24 24"><path d="M21 18v1c0 1.1-.9 2-2 2H5c-1.11 0-2-.9-2-2V5c0-1.1.89-2 2-2h14c1.1 0 2 .9 2 2v1h-9c-1.11 0-2 .9-2 2v8c0 1.1.89 2 2 2h9zm-9-2h10V8H12v8zm4-2.5c-.83 0-1.5-.67-1.5-1.5s.67-1.5 1.5-1.5 1.5.67 1.5 1.5-.67 1.5-1.5 1.5z"/></svg>
             <span class="nav-label">ওয়ালেট ও রিকোয়েস্ট</span>
             <span class="nav-badge" id="sidebar-pending-badge">0</span>
+          </button>
+        </li>
+        <li class="nav-item" data-view="view-agents">
+          <button onclick="switchView('view-agents')">
+            <svg viewBox="0 0 24 24"><path d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z"/></svg>
+            <span class="nav-label">এজেন্ট ম্যানেজমেন্ট</span>
+            <span class="nav-badge" id="sidebar-agent-req-badge" style="display:none;">0</span>
           </button>
         </li>
         <li class="nav-item" data-view="view-promotions">
@@ -2099,6 +2106,7 @@
                     <th>ওয়ালেট ব্যালেন্স</th>
                     <th>মোট ডিপোজিট</th>
                     <th>মোট উইথড্র</th>
+                    <th>গেম ও বেট (− / +)</th>
                     <th>আইপি ও ডিভাইস</th>
                     <th>সিকিউরিটি সিগন্যাল</th>
                     <th>অ্যাকাউন্ট স্ট্যাটাস</th>
@@ -3021,8 +3029,107 @@
           </div>
         </section>
 
-        <!-- ==================== GAME ACTIVITY (who played, how long, balance in/out) ==================== -->
-        <section id="view-gameactivity" class="view-section" style="display:none !important" hidden>
+        <!-- ==================== AGENTS MANAGEMENT (Live Agent App Connect) ==================== -->
+        <section id="view-agents" class="view-section">
+          <div class="stats-grid" id="agents-summary-grid" style="margin-bottom:18px;"></div>
+
+          <!-- Pending Agent Fund Requests -->
+          <div class="card" style="margin-bottom:20px; border-color:var(--border-color);">
+            <div class="card-header">
+              <div class="card-title">
+                <svg viewBox="0 0 24 24"><path d="M21 18v1c0 1.1-.9 2-2 2H5c-1.11 0-2-.9-2-2V5c0-1.1.89-2 2-2h14c1.1 0 2 .9 2 2v1h-9c-1.11 0-2 .9-2 2v8c0 1.1.89 2 2 2h9z"/></svg>
+                <span>এজেন্টদের ব্যালেন্স রিকোয়েস্ট (Pending Agent Fund Requests)</span>
+              </div>
+              <span class="badge badge-pending" id="ag-req-count-badge">0</span>
+            </div>
+            <div class="table-container">
+              <table>
+                <thead>
+                  <tr>
+                    <th>এজেন্ট</th>
+                    <th>পরিমাণ</th>
+                    <th>মাধ্যম ও নোট</th>
+                    <th>সময়</th>
+                    <th>স্ট্যাটাস</th>
+                    <th style="text-align:right;">অ্যাকশন</th>
+                  </tr>
+                </thead>
+                <tbody id="agent-requests-tbody"></tbody>
+              </table>
+            </div>
+          </div>
+
+          <!-- Create New Agent -->
+          <div class="card" style="margin-bottom:20px;">
+            <div class="card-header">
+              <div class="card-title">
+                <svg viewBox="0 0 24 24"><path d="M15 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm-9-2V7H4v3H1v2h3v3h2v-3h3v-2H6zm9 4c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z"/></svg>
+                <span>নতুন লাইভ এজেন্ট তৈরি করুন (Connect agent.html)</span>
+              </div>
+            </div>
+            <form onsubmit="createUserAdminAgent(event)">
+              <div class="form-row-3">
+                <div class="form-group">
+                  <label>এজেন্টের নাম *</label>
+                  <input type="text" id="ua-ag-name" class="form-control" placeholder="যেমন: Rahim Agent" required>
+                </div>
+                <div class="form-group">
+                  <label>ইমেইল *</label>
+                  <input type="email" id="ua-ag-email" class="form-control" placeholder="agent@mostwin88.com" required>
+                </div>
+                <div class="form-group">
+                  <label>পাসওয়ার্ড (৬+ অক্ষর) *</label>
+                  <input type="password" id="ua-ag-pass" class="form-control" placeholder="কমপক্ষে ৬ অক্ষর" minlength="6" required>
+                </div>
+              </div>
+              <div class="form-row-3" style="margin-top:12px;">
+                <div class="form-group">
+                  <label>মোবাইল নম্বর *</label>
+                  <input type="text" id="ua-ag-phone" class="form-control" placeholder="017xxxxxxxx" required>
+                </div>
+                <div class="form-group">
+                  <label>bKash নাম্বার</label>
+                  <input type="text" id="ua-ag-bkash" class="form-control" placeholder="017xxxxxxxx">
+                </div>
+                <div class="form-group">
+                  <label>Nagad নাম্বার</label>
+                  <input type="text" id="ua-ag-nagad" class="form-control" placeholder="018xxxxxxxx">
+                </div>
+              </div>
+              <div style="margin-top:14px; display:flex; justify-content:flex-end;">
+                <button type="submit" class="btn btn-primary" id="btn-create-ua-agent">+ এজেন্ট তৈরি করুন</button>
+              </div>
+            </form>
+          </div>
+
+          <!-- Active Agents List -->
+          <div class="card">
+            <div class="card-header">
+              <div class="card-title">
+                <svg viewBox="0 0 24 24"><path d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z"/></svg>
+                <span>আপনার সকল লাইভ এজেন্ট তালিকা (Live Agents)</span>
+              </div>
+            </div>
+            <div class="table-container">
+              <table>
+                <thead>
+                  <tr>
+                    <th>এজেন্ট</th>
+                    <th>পেমেন্ট নাম্বার</th>
+                    <th>বর্তমান ব্যালেন্স</th>
+                    <th>প্রসেসড (ডিপো / উইথ)</th>
+                    <th>স্ট্যাটাস</th>
+                    <th style="text-align:right;">ফান্ড ও নিয়ন্ত্রণ</th>
+                  </tr>
+                </thead>
+                <tbody id="ua-agents-tbody"></tbody>
+              </table>
+            </div>
+          </div>
+        </section>
+
+        <!-- ==================== GAME ACTIVITY (who played, how long, bet count, +/-, IP & Device) ==================== -->
+        <section id="view-gameactivity" class="view-section">
           <div class="toolbar">
             <div class="search-box">
               <svg viewBox="0 0 24 24"><path d="M15.5 14h-.79l-.28-.27C15.41 12.59 16 11.11 16 9.5 16 5.91 13.09 3 9.5 3S3 5.91 3 9.5 5.91 16 9.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99L20.49 19l-4.99-5zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14z"/></svg>
@@ -3045,7 +3152,7 @@
             <div class="card-header">
               <div class="card-title">
                 <svg viewBox="0 0 24 24"><path d="M3 13h2v8H3zm4-5h2v13H7zm4-5h2v18h-2zm4 9h2v9h-2zm4-4h2v13h-2z"/></svg>
-                <span>খেলোয়াড়ের গেম সেশন (শেষ ১০ মিনিটের বেশি বিরতি হলে নতুন সেশন)</span>
+                <span>খেলোয়াড়ের গেম, বেট সংখ্যা (− / +) ও আইপি-ডিভাইস অ্যাক্টিভিটি</span>
               </div>
               <span class="badge badge-upcoming" id="ga-count-badge">0</span>
             </div>
@@ -3057,12 +3164,14 @@
                     <th>গেমের নাম</th>
                     <th>ঢোকার সময়</th>
                     <th>বের হওয়ার সময়</th>
-                    <th>খেলার সময় (Duration)</th>
+                    <th>খেলার সময়</th>
+                    <th>বেট সংখ্যা</th>
+                    <th>মোট বেট (−) / উইন (+)</th>
                     <th>ঢোকার ব্যালেন্স</th>
                     <th>বের হওয়ার ব্যালেন্স</th>
-                    <th>লাভ / ক্ষতি (P&L)</th>
+                    <th>নিট লাভ/ক্ষতি (+/−)</th>
                     <th>আইপি ও ডিভাইস</th>
-                    <th>অবস্থা (Status)</th>
+                    <th>অবস্থা</th>
                   </tr>
                 </thead>
                 <tbody id="ga-tbody"></tbody>
@@ -3453,13 +3562,68 @@
           </div>
         </div>
 
+        <!-- Betting & Game Telemetry Summary (Bet count, -Bet, +Win, Net P&L) -->
+        <div class="card" style="margin-bottom: 16px; padding: 14px;">
+          <div class="card-title" style="margin-bottom: 10px; font-size: 0.95rem;">
+            <svg viewBox="0 0 24 24"><path d="M19 3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zM9 17H7v-7h2v7zm4 0h-2V7h2v10zm4 0h-2v-4h2v4z"/></svg>
+            <span>বেটিং পরিসংখ্যান ও লাভ/ক্ষতি (Bet Count, −Bet / +Win)</span>
+          </div>
+          <div style="display:grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 10px; margin-bottom: 12px;">
+            <div style="background:var(--bg-surface); padding:10px 12px; border-radius:var(--radius-sm); border:1px solid var(--border-subtle);">
+              <div style="font-size:0.74rem; color:var(--text-dim);">মোট বেট সংখ্যা (কতবার বেট)</div>
+              <div style="font-size:1.15rem; font-weight:800; color:var(--primary);" id="psec-bet-count">0 টি</div>
+            </div>
+            <div style="background:var(--bg-surface); padding:10px 12px; border-radius:var(--radius-sm); border:1px solid var(--border-subtle);">
+              <div style="font-size:0.74rem; color:var(--text-dim);">মোট বেট (বাজি)</div>
+              <div style="font-size:1.15rem; font-weight:800; color:#f87171;" id="psec-bet-amt">−৳ 0</div>
+            </div>
+            <div style="background:var(--bg-surface); padding:10px 12px; border-radius:var(--radius-sm); border:1px solid var(--border-subtle);">
+              <div style="font-size:0.74rem; color:var(--text-dim);">মোট জয় (Win / Cashout)</div>
+              <div style="font-size:1.15rem; font-weight:800; color:#4ade80;" id="psec-win-amt">+৳ 0</div>
+            </div>
+            <div style="background:var(--bg-surface); padding:10px 12px; border-radius:var(--radius-sm); border:1px solid var(--border-subtle);">
+              <div style="font-size:0.74rem; color:var(--text-dim);">নিট গেম P&amp;L (+ / −)</div>
+              <div style="font-size:1.15rem; font-weight:800;" id="psec-net-pl">৳ 0</div>
+            </div>
+          </div>
+          <div class="table-container" style="max-height: 170px; overflow-y: auto; margin-bottom: 12px;">
+            <table>
+              <thead>
+                <tr>
+                  <th>গেমের নাম</th>
+                  <th>বেট সংখ্যা</th>
+                  <th>মোট বেট (−)</th>
+                  <th>মোট উইন (+)</th>
+                  <th>নিট (+/−)</th>
+                </tr>
+              </thead>
+              <tbody id="psec-game-stats-tbody"></tbody>
+            </table>
+          </div>
+          <div style="font-size:0.82rem; font-weight:700; margin-bottom:6px; color:var(--text-muted);">সাম্প্রতিক বেট ও ক্যাশআউট লগ (Recent Bets)</div>
+          <div class="table-container" style="max-height: 180px; overflow-y: auto;">
+            <table>
+              <thead>
+                <tr>
+                  <th>সময়</th>
+                  <th>গেম</th>
+                  <th>ধরন</th>
+                  <th>বেট / উইন (− / +)</th>
+                  <th>পরের ব্যালেন্স</th>
+                </tr>
+              </thead>
+              <tbody id="psec-recent-bets-tbody"></tbody>
+            </table>
+          </div>
+        </div>
+
         <!-- User Game Sessions History (Entered Game, Duration, Bal in/out) -->
         <div class="card" style="padding: 14px;">
           <div class="card-title" style="margin-bottom: 10px; font-size: 0.95rem;">
             <svg viewBox="0 0 24 24"><path d="M21 6H3c-1.1 0-2 .9-2 2v8c0 1.1.9 2 2 2h18c1.1 0 2-.9 2-2V8c0-1.1-.9-2-2-2zm-10 7H8v3H6v-3H3v-2h3V8h2v3h3v2zm4.5 2c-.83 0-1.5-.67-1.5-1.5s.67-1.5 1.5-1.5 1.5.67 1.5 1.5-.67 1.5-1.5 1.5zm4-3c-.83 0-1.5-.67-1.5-1.5S18.67 9 19.5 9s1.5.67 1.5 1.5-.67 1.5-1.5 1.5z"/></svg>
-            <span>এই ইউজারের গেম খেলার ইতিহাস (কোন গেমে ঢুকল, কতক্ষণ খেলল, ব্যালেন্স ইন/আউট)</span>
+            <span>এই ইউজারের গেম সেশন ইতিহাস (কোন গেমে ঢুকল, কতক্ষণ খেলল, ব্যালেন্স ইন/আউট)</span>
           </div>
-          <div class="table-container" style="max-height: 250px; overflow-y: auto;">
+          <div class="table-container" style="max-height: 220px; overflow-y: auto;">
             <table>
               <thead>
                 <tr>
@@ -3629,7 +3793,7 @@
     // ---- Admin-ভিত্তিক ইউজার: প্রতিটি অ্যাডমিন শুধু নিজের ইউজার ও তাদের রিকোয়েস্ট দেখে ----
     // (যে ইউজারের এখনো কোনো অ্যাডমিন নেই, সে আগের মতোই সবার কাছে দৃশ্যমান থাকে)
     let NP_OWNER = {};
-    const NP_RAW = { deposits: [], withdrawals: [], ledger: [], sessions: [] };
+    const NP_RAW = { deposits: [], withdrawals: [], ledger: [], sessions: [], gameTransactions: [] };
     function npMyUid() { return (STATE.adminUser && STATE.adminUser.uid) || (auth && auth.currentUser && auth.currentUser.uid) || null; }
     function npOwns(uid, reqAdmin) { const o = reqAdmin || NP_OWNER[uid] || null; const me = npMyUid(); return !o || !me || o === me; }
     function npRefilter() {
@@ -3637,6 +3801,7 @@
       STATE.withdrawals = NP_RAW.withdrawals.filter(w => npOwns(w.uid, w.adminUid));
       STATE.ledger = NP_RAW.ledger.filter(t => npOwns(t.uid));
       STATE.gameSessions = NP_RAW.sessions.filter(x => npOwns(x.uid));
+      STATE.gameTransactions = NP_RAW.gameTransactions.filter(x => npOwns(x.uid));
     }
     function npRefreshRefLink() {
       const el = document.getElementById('np-ref-link'), me = npMyUid();
@@ -3654,7 +3819,7 @@
       currentView: 'view-dashboard',
       adminUser: {
         uid: '',
-        email: 'Mijanbabu2015@gmail.com',
+        email: '',
         role: 'USER_ADMIN'
       },
       games: [],
@@ -3663,6 +3828,9 @@
       withdrawals: [],
       ledger: [],
       gameSessions: [],
+      gameTransactions: [],
+      agents: [],
+      agentBalanceRequests: [],
       deviceRegistry: {},
       userSecurityFilter: 'ALL',
       notices: [],
@@ -3783,7 +3951,7 @@
             ind.className = 'status-indicator';
             txt.innerText = '🟢 রিয়েলটাইম ফায়ারবেস কানেক্টেড (mostwin88-febbf)';
           } else {
-            ind.className = 'status-indicator demo';
+            ind.className = 'status-indicator offline';
             txt.innerText = '⚡ ফায়ারবেস কানেক্টিং...';
           }
         }
@@ -3896,6 +4064,44 @@
       }, (err) => {
         console.warn('Game sessions listener notice:', err);
       });
+
+      // 6b. Game Transactions (Live bet count, -Bet / +Win per player & game)
+      db.ref('game_transactions').limitToLast(1500).on('value', (snap) => {
+        if (snap.exists()) {
+          const val = snap.val();
+          NP_RAW.gameTransactions = Object.keys(val).map(k => ({ id: k, ...val[k] }));
+          STATE.gameTransactions = NP_RAW.gameTransactions.filter(x => npOwns(x.uid));
+        } else {
+          NP_RAW.gameTransactions = []; STATE.gameTransactions = [];
+        }
+        renderUsers();
+        renderGameActivity();
+        renderDashboard();
+      }, (err) => {
+        console.warn('Game transactions listener notice:', err);
+      });
+
+      // 6c. Agents & Agent Balance Requests (Live Agent App Sync)
+      db.ref('agents').on('value', (snap) => {
+        const val = snap.val() || {};
+        const me = npMyUid();
+        STATE.agents = Object.keys(val).map(k => ({ id: k, ...val[k] }))
+          .filter(a => !me || !a.parentAdminId || a.parentAdminId === me);
+        renderAgents();
+        renderWallet();
+      }, (err) => { console.warn('Agents listener notice:', err); });
+
+      db.ref('agentBalanceRequests').on('value', (snap) => {
+        const val = snap.val() || {};
+        const me = npMyUid();
+        STATE.agentBalanceRequests = Object.keys(val).map(k => ({ id: k, ...val[k] }))
+          .filter(r => !me || !r.parentAdminId || r.parentAdminId === me)
+          .reverse();
+        const pendCnt = STATE.agentBalanceRequests.filter(r => String(r.status || '').toLowerCase() === 'pending').length;
+        const bEl = document.getElementById('sidebar-agent-req-badge');
+        if (bEl) { bEl.textContent = pendCnt; bEl.style.display = pendCnt > 0 ? 'inline-block' : 'none'; }
+        renderAgents();
+      }, (err) => { console.warn('Agent balance requests listener notice:', err); });
 
       // 7. Device Registry (For Multi-Account & Clone Device Signal)
       db.ref('device_registry').on('value', (snap) => {
@@ -4860,18 +5066,19 @@
       });
 
       if (filtered.length === 0) {
-        tbody.innerHTML = `<tr><td colspan="11" style="text-align:center; padding:24px; color:var(--text-dim);">কোনো প্লেয়ার পাওয়া যায়নি</td></tr>`;
+        tbody.innerHTML = `<tr><td colspan="12" style="text-align:center; padding:24px; color:var(--text-dim);">কোনো প্লেয়ার পাওয়া যায়নি</td></tr>`;
         return;
       }
 
       tbody.innerHTML = filtered.map(u => {
-        // Calculate Total Deposits and Total Withdrawals for this user
+        // Calculate Total Deposits, Withdrawals and Game Bet Count / -Bet / +Win for this user
         const depTotal = (STATE.deposits || [])
           .filter(d => d.uid === u.uid && (d.status === 'Approved' || d.status === 'Completed'))
           .reduce((sum, d) => sum + (parseFloat(d.amount) || 0), 0);
         const withTotal = (STATE.withdrawals || [])
           .filter(w => w.uid === u.uid && (w.status === 'Approved' || w.status === 'Completed'))
           .reduce((sum, w) => sum + (parseFloat(w.amount) || 0), 0);
+        const bs = getUserBetStats(u.uid);
 
         const currentIp = u.lastIp && u.lastIp !== 'Unknown' ? u.lastIp : (u._ipList && u._ipList[0] ? u._ipList[0] : '—');
         const currentDevice = u.lastDevice && u.lastDevice !== 'Unknown' ? u.lastDevice : 'ওয়েব ক্লায়েন্ট';
@@ -4917,6 +5124,11 @@
             <td><b style="color:#10b981; font-family:var(--font-display); font-size:1rem;">৳ ${depTotal.toLocaleString('bn-BD')}</b></td>
             <td><b style="color:#ef4444; font-family:var(--font-display); font-size:1rem;">৳ ${withTotal.toLocaleString('bn-BD')}</b></td>
             <td>
+              <div style="font-weight:800; color:var(--primary); font-size:0.85rem;">🎯 ${bs.totalBets} বার বেট</div>
+              <div style="font-size:0.75rem;"><span style="color:#ef4444;">−৳${Math.round(bs.totalBetAmt)}</span> / <span style="color:#10b981;">+৳${Math.round(bs.totalWinAmt)}</span></div>
+              <div style="font-size:0.74rem; font-weight:800; color:${bs.netPL >= 0 ? '#10b981' : '#ef4444'};">${bs.netPL >= 0 ? '+' : '−'}৳${Math.abs(Math.round(bs.netPL))}</div>
+            </td>
+            <td>
               <div style="display:flex; align-items:center; gap:10px; white-space:nowrap;">
               <div style="font-family:monospace; font-size:0.85rem; color:#F5EFE0; font-weight:700;">🌐 ${escapeHtml(currentIp)}</div>
               <div style="font-size:0.75rem; color:var(--text-dim); max-width:150px; overflow:hidden; text-overflow:ellipsis; white-space:nowrap;" title="${escapeHtml(currentDevice)}">📱 ${escapeHtml(currentDevice)}</div>
@@ -4935,8 +5147,8 @@
               <button class="btn btn-outline btn-sm" onclick="openTurnoverBonusModal('${escapeHtml(String(u.uid))}')" title="টার্নওভার ও বোনাস সমন্বয়" style="border-color:#8b5cf6; color:#a78bfa;">
                 🎁 বোনাস/টার্ন
               </button>
-              <button class="btn btn-outline btn-sm" onclick="openPlayerSecurityModal('${escapeHtml(String(u.uid))}')" title="আইপি, ডিভাইস ও গেম খেলার সম্পূর্ণ অডিট" style="border-color:var(--primary); color:var(--primary);">
-                🛡️ ট্র্যাকিং
+              <button class="btn btn-outline btn-sm" onclick="openPlayerSecurityModal('${escapeHtml(String(u.uid))}')" title="আইপি, ডিভাইস ও গেম বেটিং সম্পূর্ণ অডিট" style="border-color:var(--primary); color:var(--primary);">
+                🛡️ ট্র্যাক ও বেট
               </button>
               <button class="btn btn-outline btn-sm" onclick="openPlayerFinancialReport('${escapeHtml(String(u.uid))}')" title="প্লেয়ার বিস্তারিত আর্থিক স্টেটমেন্ট ও হিসাব">
                 📊 রিপোর্ট
@@ -5161,6 +5373,47 @@
         }
       }
 
+      // Betting Stats & Recent Bets for this user
+      const bs = getUserBetStats(u.uid);
+      if (document.getElementById('psec-bet-count')) document.getElementById('psec-bet-count').innerText = `${bs.totalBets} বার বেট`;
+      if (document.getElementById('psec-bet-amt')) document.getElementById('psec-bet-amt').innerText = `−৳ ${Math.round(bs.totalBetAmt).toLocaleString('bn-BD')}`;
+      if (document.getElementById('psec-win-amt')) document.getElementById('psec-win-amt').innerText = `+৳ ${Math.round(bs.totalWinAmt).toLocaleString('bn-BD')}`;
+      const netPlEl = document.getElementById('psec-net-pl');
+      if (netPlEl) {
+        netPlEl.innerText = `${bs.netPL >= 0 ? '+' : '−'}৳ ${Math.abs(Math.round(bs.netPL)).toLocaleString('bn-BD')}`;
+        netPlEl.style.color = bs.netPL >= 0 ? '#4ade80' : '#f87171';
+      }
+      const gStatsBody = document.getElementById('psec-game-stats-tbody');
+      if (gStatsBody) {
+        const gEntries = Object.entries(bs.gamesMap);
+        gStatsBody.innerHTML = gEntries.length ? gEntries.map(([gName, st]) => {
+          const gNet = st.wins - st.bets;
+          return `<tr>
+            <td><b>${escapeHtml(gName)}</b></td>
+            <td><b>${st.count} বার</b></td>
+            <td style="color:#f87171;font-weight:700;">−৳ ${Math.round(st.bets).toLocaleString('bn-BD')}</td>
+            <td style="color:#4ade80;font-weight:700;">+৳ ${Math.round(st.wins).toLocaleString('bn-BD')}</td>
+            <td style="font-weight:800;color:${gNet >= 0 ? '#10b981' : '#ef4444'};">${gNet >= 0 ? '+' : '−'}৳ ${Math.abs(Math.round(gNet)).toLocaleString('bn-BD')}</td>
+          </tr>`;
+        }).join('') : `<tr><td colspan="5" style="text-align:center; padding:12px; color:var(--text-dim);">কোনো বেটিং রেকর্ড পাওয়া যায়নি</td></tr>`;
+      }
+      const rBetsBody = document.getElementById('psec-recent-bets-tbody');
+      if (rBetsBody) {
+        rBetsBody.innerHTML = bs.recent.length ? bs.recent.map(t => {
+          const tp = String(t.type || '').toLowerCase();
+          const isWin = tp === 'cashout' || tp === 'win' || tp === 'game_win';
+          const amt = Number(isWin ? (t.win || t.payout || t.amount) : t.amount) || 0;
+          const tm = t.time || t.timestamp;
+          return `<tr>
+            <td style="font-size:0.78rem;">${tm ? new Date(tm).toLocaleString('bn-BD') : '—'}</td>
+            <td><b>${escapeHtml(t.game || t.gameName || 'Casino')}</b></td>
+            <td><span class="badge ${isWin ? 'badge-approved' : 'badge-pending'}">${escapeHtml(t.type || 'BET')}</span></td>
+            <td style="font-weight:800;color:${isWin ? '#10b981' : '#ef4444'};">${isWin ? '+' : '−'}৳ ${Math.round(amt).toLocaleString('bn-BD')}</td>
+            <td style="font-family:monospace;">৳ ${typeof t.balance === 'number' ? Math.round(t.balance).toLocaleString('bn-BD') : '—'}</td>
+          </tr>`;
+        }).join('') : `<tr><td colspan="5" style="text-align:center; padding:12px; color:var(--text-dim);">কোনো সাম্প্রতিক বেট নেই</td></tr>`;
+      }
+
       // Game Sessions History for this user
       const gamesTbody = document.getElementById('psec-games-tbody');
       if (gamesTbody) {
@@ -5229,12 +5482,15 @@
     }
 
     function renderWallet() {
+      const activeAgents = (STATE.agents || []).filter(a => a.active !== false && a.status !== 'suspended');
+      const agentOptsHtml = activeAgents.map(a => `<option value="${escapeHtml(a.id)}">🤝 ${escapeHtml(a.name || a.email)} (৳${Math.round(a.balance || 0)})</option>`).join('');
+
       // 1. Deposits Table
       const depTbody = document.getElementById('deposits-table-tbody');
       depTbody.innerHTML = STATE.deposits.map(d => `
         <tr>
           <td><small style="font-family:monospace;">${d.id || 'DEP'}</small></td>
-          <td><b>${escapeHtml(d.userName || 'Player')}</b><br><small style="color:var(--text-dim);">${d.uid}</small></td>
+          <td><b>${escapeHtml(d.userName || 'Player')}</b><br><small style="color:var(--text-dim);">${d.uid}</small>${d.assignedAgentName ? `<div style="margin-top:2px;"><span class="badge badge-upcoming" style="font-size:0.68rem;">🤝 এজেন্ট: ${escapeHtml(d.assignedAgentName)}</span></div>` : ''}</td>
           <td><span class="badge badge-upcoming">${d.method}</span></td>
           <td style="font-family:monospace;">${escapeHtml(d.senderNumber)}</td>
           <td><b style="color:var(--primary); font-family:monospace;">${escapeHtml(d.trxId)}</b></td>
@@ -5247,11 +5503,16 @@
           <td><span class="badge ${d.status === 'Pending' ? 'badge-pending' : d.status === 'Approved' ? 'badge-approved' : 'badge-rejected'}">${d.status}</span></td>
           <td style="text-align: right; white-space: nowrap;">
             ${d.status === 'Pending' ? `
-              <select class="action-dropdown-select" onchange="handleDepositActionDropdown(this, '${d.id}')" title="অ্যাকশন নির্বাচন করুন">
-                <option value="" disabled selected>⚡ ব্যবস্থা নিন ▾</option>
-                <option value="approve" style="color:#22c55e; font-weight:700;">✓ অনুমোদন</option>
-                <option value="reject" style="color:#ef4444; font-weight:700;">✕ বাতিল</option>
-              </select>
+              <div style="display:inline-flex; gap:6px; align-items:center; flex-wrap:wrap; justify-content:flex-end;">
+                <select class="action-dropdown-select" onchange="handleDepositActionDropdown(this, '${d.id}')" title="অ্যাকশন নির্বাচন করুন">
+                  <option value="" disabled selected>⚡ ব্যবস্থা নিন ▾</option>
+                  <option value="approve" style="color:#22c55e; font-weight:700;">✓ অনুমোদন</option>
+                  <option value="reject" style="color:#ef4444; font-weight:700;">✕ বাতিল</option>
+                </select>
+                ${activeAgents.length ? `<select class="action-dropdown-select" style="font-size:0.72rem; max-width:140px;" onchange="if(this.value){assignRequestToAgent('deposit','${d.id}',this.value);this.selectedIndex=0;}" title="এজেন্টে পাঠান">
+                  <option value="" selected>🤝 এজেন্ট অ্যাসাইন ▾</option>${agentOptsHtml}
+                </select>` : ''}
+              </div>
             ` : `<span class="badge ${d.status === 'Approved' ? 'badge-approved' : 'badge-rejected'}" style="font-size:0.75rem;">${d.status === 'Approved' ? '✓ অনুমোদিত' : '✕ বাতিল'}</span>`}
           </td>
         </tr>
@@ -5262,7 +5523,7 @@
       withTbody.innerHTML = STATE.withdrawals.map(w => `
         <tr>
           <td><small style="font-family:monospace;">${w.id || 'WTH'}</small></td>
-          <td><b>${escapeHtml(w.userName || 'Player')}</b><br><small style="color:var(--text-dim);">${w.uid}</small></td>
+          <td><b>${escapeHtml(w.userName || 'Player')}</b><br><small style="color:var(--text-dim);">${w.uid}</small>${w.assignedAgentName ? `<div style="margin-top:2px;"><span class="badge badge-upcoming" style="font-size:0.68rem;">🤝 এজেন্ট: ${escapeHtml(w.assignedAgentName)}</span></div>` : ''}</td>
           <td><span class="badge badge-upcoming">${w.method}</span></td>
           <td style="font-family:monospace;">${escapeHtml(w.receiverNumber)}</td>
           <td><b style="color:var(--accent); font-size:1.05rem; font-family:var(--font-display);">৳ ${w.amount}</b></td>
@@ -5292,13 +5553,18 @@
           </td>
           <td style="text-align: right; white-space: nowrap;">
             ${isWithdrawalOpen(w.status) ? `
-              <select class="action-dropdown-select" onchange="handleWithdrawalActionDropdown(this, '${w.id}')" title="অ্যাকশন নির্বাচন করুন">
-                <option value="" disabled selected>⚡ ব্যবস্থা নিন ▾</option>
-                <option value="verify" ${w.status === 'Verified' ? 'disabled' : ''} style="color:#3b82f6; font-weight:700;">🔍 ভেরিফাই করা হয়েছে</option>
-                <option value="processing" ${w.status === 'Processing' ? 'disabled' : ''} style="color:#f59e0b; font-weight:700;">⏳ প্রসেসিং চলছে</option>
-                <option value="complete" style="color:#22c55e; font-weight:700;">✓ কনফার্ম (টাকা পাঠানো হয়েছে)</option>
-                <option value="reject" style="color:#ef4444; font-weight:700;">✕ রিফান্ড / বাতিল</option>
-              </select>
+              <div style="display:inline-flex; gap:6px; align-items:center; flex-wrap:wrap; justify-content:flex-end;">
+                <select class="action-dropdown-select" onchange="handleWithdrawalActionDropdown(this, '${w.id}')" title="অ্যাকশন নির্বাচন করুন">
+                  <option value="" disabled selected>⚡ ব্যবস্থা নিন ▾</option>
+                  <option value="verify" ${w.status === 'Verified' ? 'disabled' : ''} style="color:#3b82f6; font-weight:700;">🔍 ভেরিফাই করা হয়েছে</option>
+                  <option value="processing" ${w.status === 'Processing' ? 'disabled' : ''} style="color:#f59e0b; font-weight:700;">⏳ প্রসেসিং চলছে</option>
+                  <option value="complete" style="color:#22c55e; font-weight:700;">✓ কনফার্ম (টাকা পাঠানো হয়েছে)</option>
+                  <option value="reject" style="color:#ef4444; font-weight:700;">✕ রিফান্ড / বাতিল</option>
+                </select>
+                ${activeAgents.length ? `<select class="action-dropdown-select" style="font-size:0.72rem; max-width:140px;" onchange="if(this.value){assignRequestToAgent('withdrawal','${w.id}',this.value);this.selectedIndex=0;}" title="এজেন্টে পাঠান">
+                  <option value="" selected>🤝 এজেন্ট অ্যাসাইন ▾</option>${agentOptsHtml}
+                </select>` : ''}
+              </div>
             ` : `<span class="badge ${wdStatusMeta(w.status).cls}" style="font-size:0.75rem;">${wdStatusMeta(w.status).label}</span>`}
           </td>
         </tr>
@@ -5333,17 +5599,37 @@
 
     // Withdrawal status flow: Pending -> Verified -> Processing -> Completed (or Rejected)
     function isWithdrawalOpen(status) {
-      return ['Pending', 'Verified', 'Processing'].includes(status);
+      return ['Pending', 'Verified', 'Processing', 'AssignedToAgent'].includes(status);
     }
     function wdStatusMeta(status) {
       switch (status) {
         case 'Pending':    return { label: '⏳ পেন্ডিং', cls: 'badge-pending' };
+        case 'AssignedToAgent': return { label: '🤝 এজেন্টে অ্যাসাইন', cls: 'badge-upcoming' };
         case 'Verified':   return { label: '🔍 ভেরিফাইড', cls: 'badge-upcoming' };
         case 'Processing': return { label: '⚙️ প্রসেসিং', cls: 'badge-pending' };
         case 'Completed':
         case 'Approved':   return { label: '✓ সম্পন্ন', cls: 'badge-approved' };
         case 'Rejected':   return { label: '✕ বাতিল', cls: 'badge-rejected' };
         default:           return { label: status || '—', cls: 'badge-rejected' };
+      }
+    }
+
+    async function assignRequestToAgent(kind, reqId, agentUid) {
+      if (!db || !reqId || !agentUid) return;
+      const ag = (STATE.agents || []).find(a => a.id === agentUid);
+      if (!ag) { showToast('সক্রিয় এজেন্ট পাওয়া যায়নি', 'error'); return; }
+      const node = kind === 'deposit' ? 'depositRequests' : 'withdrawalRequests';
+      try {
+        const updates = {};
+        updates[`${node}/${reqId}/assignedAgentId`] = agentUid;
+        updates[`${node}/${reqId}/assignedAgentName`] = ag.name || ag.email || 'Agent';
+        updates[`${node}/${reqId}/assignedAt`] = firebase.database.ServerValue.TIMESTAMP;
+        if (kind === 'withdrawal') updates[`${node}/${reqId}/status`] = 'AssignedToAgent';
+        await db.ref().update(updates);
+        recordAuditLog('ASSIGN_TO_AGENT', reqId, `${kind.toUpperCase()} assigned to ${ag.name || agentUid}`);
+        showToast(`✅ এজেন্ট ${ag.name || agentUid}-এর কাছে পাঠানো হয়েছে`, 'success');
+      } catch (err) {
+        showToast('এজেন্ট অ্যাসাইন ব্যর্থ: ' + err.message, 'error');
       }
     }
 
@@ -7735,10 +8021,12 @@
       // 1. Navigation items
       const navMap = {
         'view-dashboard': { bn: 'ড্যাশবোর্ড', en: 'Dashboard' },
-        'view-gameactivity': { bn: 'গেম অ্যাক্টিভিটি', en: 'Game Activity' },
+        'view-gameactivity': { bn: 'গেম ও বেট ট্র্যাকার', en: 'Game & Bet Tracker' },
         'view-games': { bn: 'গেম ম্যানেজমেন্ট', en: 'Game Management' },
         'view-users': { bn: 'প্লেয়ার / ইউজার', en: 'Players / Users' },
         'view-wallet': { bn: 'ওয়ালেট ও রিকোয়েস্ট', en: 'Wallet & Requests' },
+        'view-agents': { bn: 'এজেন্ট ম্যানেজমেন্ট', en: 'Agent Management' },
+        'view-promotions': { bn: 'ডিপোজিট প্রোমোশন', en: 'Promotions' },
         'view-finance': { bn: 'আর্থিক রিপোর্ট (Finance)', en: 'Financial Reports' },
         'view-notices': { bn: 'নোটিশ ও ঘোষণা', en: 'Notices & Broadcasts' },
         'view-notifications': { bn: 'ইউজার নোটিফিকেশন', en: 'User Notifications' },
@@ -7925,37 +8213,281 @@
     }
     applyTheme(document.body.getAttribute('data-theme') || 'dark');
 
-    // ---------- Game Activity: which user played which game, how long, balance in/out, IP & Device ----------
+    // ---------- Per-User Bet Count, -Bet / +Win Telemetry ----------
+    function getUserBetStats(uid) {
+      const txs = (STATE.gameTransactions || []).filter(t => t && t.uid === uid);
+      let totalBets = 0, totalBetAmt = 0, totalWinAmt = 0;
+      const gamesMap = {};
+      txs.forEach(t => {
+        const g = t.game || t.gameName || 'Casino Game';
+        const tp = String(t.type || '').toLowerCase();
+        const amt = Number(t.amount) || 0;
+        const winAmt = Number(t.win || t.payout || (tp === 'cashout' || tp === 'win' || tp === 'game_win' ? amt : 0)) || 0;
+        if (!gamesMap[g]) gamesMap[g] = { count: 0, bets: 0, wins: 0 };
+        if (tp === 'bet' || tp === 'game_bet' || (!tp && amt > 0 && winAmt === 0)) {
+          totalBets++;
+          totalBetAmt += amt;
+          gamesMap[g].count++;
+          gamesMap[g].bets += amt;
+        }
+        if (tp === 'cashout' || tp === 'win' || tp === 'game_win' || winAmt > 0) {
+          totalWinAmt += winAmt;
+          gamesMap[g].wins += winAmt;
+        }
+      });
+      const recent = [...txs].sort((a, b) => (b.time || b.timestamp || 0) - (a.time || a.timestamp || 0)).slice(0, 60);
+      return { totalBets, totalBetAmt, totalWinAmt, netPL: totalWinAmt - totalBetAmt, gamesMap, recent };
+    }
+
+    // ---------- Agent Management (Live Agent App Connect) ----------
+    function renderAgents() {
+      const sumEl = document.getElementById('agents-summary-grid');
+      const reqBody = document.getElementById('agent-requests-tbody');
+      const agBody = document.getElementById('ua-agents-tbody');
+      const agents = STATE.agents || [];
+      const agReqs = STATE.agentBalanceRequests || [];
+      const pendReqs = agReqs.filter(r => String(r.status || '').toLowerCase() === 'pending');
+
+      const rBadge = document.getElementById('ag-req-count-badge');
+      if (rBadge) rBadge.innerText = pendReqs.length + ' পেন্ডিং';
+
+      if (sumEl) {
+        const activeCnt = agents.filter(a => a.active !== false && a.status !== 'suspended').length;
+        const agBal = agents.reduce((s, a) => s + (parseFloat(a.balance) || 0), 0);
+        sumEl.innerHTML = `
+          <div class="stat-card"><div class="stat-info"><div class="stat-title">মোট এজেন্ট</div><div class="stat-value">${agents.length}</div></div></div>
+          <div class="stat-card"><div class="stat-info"><div class="stat-title">সক্রিয় এজেন্ট</div><div class="stat-value" style="color:var(--success);">${activeCnt}</div></div></div>
+          <div class="stat-card"><div class="stat-info"><div class="stat-title">এজেন্ট ওয়ালেট তহবিল</div><div class="stat-value" style="color:var(--primary);">৳ ${Math.round(agBal).toLocaleString('en-US')}</div></div></div>
+          <div class="stat-card"><div class="stat-info"><div class="stat-title">পেন্ডিং রিকোয়েস্ট</div><div class="stat-value" style="color:var(--accent);">${pendReqs.length}</div></div></div>
+        `;
+      }
+
+      if (reqBody) {
+        reqBody.innerHTML = agReqs.length ? agReqs.map(r => {
+          const isPend = String(r.status || '').toLowerCase() === 'pending';
+          return `<tr>
+            <td><b>${escapeHtml(r.agentName || 'Agent')}</b><br><small style="color:var(--text-dim);">${escapeHtml(r.agentEmail || r.agentUid || '')}</small></td>
+            <td><b style="color:var(--primary);">৳ ${Math.round(r.amount || 0).toLocaleString('en-US')}</b></td>
+            <td><div><span class="badge badge-upcoming">${escapeHtml(r.paymentMethod || 'Wallet')}</span></div><small style="color:var(--text-dim);">${escapeHtml(r.note || '')}</small></td>
+            <td style="font-size:0.8rem;">${r.createdAt ? new Date(r.createdAt).toLocaleString('bn-BD') : '—'}</td>
+            <td><span class="badge ${isPend ? 'badge-pending' : (String(r.status).toLowerCase() === 'approved' ? 'badge-approved' : 'badge-rejected')}">${escapeHtml(r.status || 'pending')}</span></td>
+            <td style="text-align:right; white-space:nowrap;">
+              ${isPend ? `
+                <button class="btn btn-sm btn-success" onclick="approveAgentReqAdmin('${r.id}')">✓ ফান্ড দিন</button>
+                <button class="btn btn-sm btn-accent" onclick="rejectAgentReqAdmin('${r.id}')">✕ বাতিল</button>
+              ` : '—'}
+            </td>
+          </tr>`;
+        }).join('') : `<tr><td colspan="6" style="text-align:center; padding:18px; color:var(--text-dim);">কোনো এজেন্ট ব্যালেন্স রিকোয়েস্ট নেই</td></tr>`;
+      }
+
+      if (agBody) {
+        agBody.innerHTML = agents.length ? agents.map(a => {
+          const isAct = a.active !== false && a.status !== 'suspended';
+          const pm = a.paymentNumbers || {};
+          const pmTxt = [pm.bKash ? 'bKash: ' + pm.bKash : '', pm.Nagad ? 'Nagad: ' + pm.Nagad : '', pm.Rocket ? 'Rocket: ' + pm.Rocket : ''].filter(Boolean).join(' | ') || (a.phone || '—');
+          return `<tr>
+            <td><b>${escapeHtml(a.name || 'Agent')}</b><br><small style="color:var(--text-dim);">${escapeHtml(a.email || a.id)}</small></td>
+            <td style="font-size:0.8rem; font-family:monospace;">${escapeHtml(pmTxt)}</td>
+            <td><b style="color:var(--primary); font-size:1.05rem;">৳ ${Math.round(a.balance || 0).toLocaleString('en-US')}</b></td>
+            <td style="font-size:0.8rem;">
+              <span style="color:#10b981;">ড: ৳${Math.round(a.totalProcessedDeposits || 0)}</span> •
+              <span style="color:#ef4444;">উ: ৳${Math.round(a.totalProcessedWithdrawals || 0)}</span>
+            </td>
+            <td><span class="badge ${isAct ? 'badge-approved' : 'badge-rejected'}">${isAct ? 'সক্রিয়' : 'নিষ্ক্রিয়'}</span></td>
+            <td style="text-align:right; white-space:nowrap;">
+              <button class="btn btn-sm btn-primary" onclick="sendAgentFundAdmin('${a.id}')">+ ফান্ড</button>
+              <button class="btn btn-sm btn-outline" onclick="reclaimAgentFundAdmin('${a.id}')">↩ ফেরত</button>
+              <button class="btn btn-sm ${isAct ? 'btn-accent' : 'btn-success'}" onclick="toggleAgentActiveAdmin('${a.id}')">${isAct ? 'স্থগিত' : 'চালু'}</button>
+            </td>
+          </tr>`;
+        }).join('') : `<tr><td colspan="6" style="text-align:center; padding:20px; color:var(--text-dim);">কোনো এজেন্ট তৈরি করা হয়নি</td></tr>`;
+      }
+    }
+
+    async function createUserAdminAgent(e) {
+      if (e) e.preventDefault();
+      if (!db || !npMyUid()) return;
+      const name = document.getElementById('ua-ag-name').value.trim();
+      const email = document.getElementById('ua-ag-email').value.trim();
+      const pass = document.getElementById('ua-ag-pass').value;
+      const phone = document.getElementById('ua-ag-phone').value.trim();
+      const bk = document.getElementById('ua-ag-bkash').value.trim();
+      const ng = document.getElementById('ua-ag-nagad').value.trim();
+      if (!name || !email || pass.length < 6) { showToast('নাম, ইমেইল ও ৬+ অক্ষরের পাসওয়ার্ড দিন', 'error'); return; }
+      const btn = document.getElementById('btn-create-ua-agent');
+      if (btn) btn.disabled = true;
+      try {
+        const cfg = firebaseApp.options;
+        const sec = firebase.apps.find(a => a.name === 'sec_uag') || firebase.initializeApp(cfg, 'sec_uag');
+        const cr = await sec.auth().createUserWithEmailAndPassword(email, pass);
+        const me = npMyUid();
+        const pm = {}; if (bk) pm.bKash = bk; if (ng) pm.Nagad = ng;
+        await db.ref('agents/' + cr.user.uid).set({
+          id: cr.user.uid, name, email, phone, parentAdminId: me,
+          parentAdminName: (STATE.adminUser && (STATE.adminUser.name || STATE.adminUser.email)) || 'Admin',
+          paymentNumbers: pm, balance: 0, receivedFromAdmin: 0,
+          totalProcessedDeposits: 0, totalProcessedWithdrawals: 0,
+          active: true, status: 'active',
+          createdAt: firebase.database.ServerValue.TIMESTAMP, updatedAt: firebase.database.ServerValue.TIMESTAMP
+        });
+        const clean = name.toLowerCase().replace(/[^a-z0-9_]/g, '');
+        if (clean) {
+          await db.ref('usernames/' + clean).set({ uid: cr.user.uid, email, role: 'AGENT', updatedAt: firebase.database.ServerValue.TIMESTAMP }).catch(() => {});
+        }
+        await sec.auth().signOut();
+        recordAuditLog('AGENT_CREATED', cr.user.uid, `Agent ${name} (${email}) created`);
+        showToast(`✅ এজেন্ট ${name} সফলভাবে তৈরি হয়েছে`, 'success');
+        ['ua-ag-name', 'ua-ag-email', 'ua-ag-pass', 'ua-ag-phone', 'ua-ag-bkash', 'ua-ag-nagad'].forEach(id => { const el = document.getElementById(id); if (el) el.value = ''; });
+      } catch (err) {
+        showToast('এজেন্ট তৈরি ব্যর্থ: ' + err.message, 'error');
+      } finally {
+        if (btn) btn.disabled = false;
+      }
+    }
+
+    async function sendAgentFundAdmin(agentId) {
+      const a = (STATE.agents || []).find(x => x.id === agentId);
+      const me = npMyUid();
+      if (!a || !me || !db) return;
+      const amt = Math.floor(parseFloat(prompt(`${a.name || a.email}-কে আপনার তহবিল থেকে কত ৳ পাঠাবেন? (আপনার ব্যালেন্স: ৳${Math.round(STATE.adminBalance || 0)})`, '5000')));
+      if (!amt || amt <= 0) return;
+      if ((STATE.adminBalance || 0) < amt) { showToast(`আপনার ব্যালেন্স পর্যাপ্ত নয় (৳${Math.round(STATE.adminBalance || 0)})`, 'error'); return; }
+      try {
+        const updates = {};
+        updates[`admins/${me}/balance`] = firebase.database.ServerValue.increment(-amt);
+        updates[`agents/${agentId}/balance`] = firebase.database.ServerValue.increment(amt);
+        updates[`agents/${agentId}/receivedFromAdmin`] = firebase.database.ServerValue.increment(amt);
+        const trxKey = db.ref('transactions').push().key;
+        updates[`transactions/${trxKey}`] = {
+          trxId: trxKey, uid: agentId, agentUid: agentId, adminUid: me,
+          type: 'AGENT_ALLOCATE', amount: amt,
+          beforeBal: a.balance || 0, afterBal: (a.balance || 0) + amt,
+          date: new Date().toLocaleString('bn-BD'), timestamp: firebase.database.ServerValue.TIMESTAMP,
+          note: `Admin fund allocation to Agent ${a.name || agentId}`
+        };
+        await db.ref().update(updates);
+        recordAuditLog('AGENT_ALLOCATE', agentId, `Allocated ৳${amt} to ${a.name || agentId}`);
+        showToast(`✅ ৳${amt} এজেন্ট ${a.name}-কে পাঠানো হয়েছে`, 'success');
+      } catch (err) { showToast('ফান্ড পাঠানো ব্যর্থ: ' + err.message, 'error'); }
+    }
+
+    async function reclaimAgentFundAdmin(agentId) {
+      const a = (STATE.agents || []).find(x => x.id === agentId);
+      const me = npMyUid();
+      if (!a || !me || !db) return;
+      const amt = Math.floor(parseFloat(prompt(`${a.name || a.email} থেকে কত ৳ ফেরত নেবেন? (এজেন্ট ব্যালেন্স: ৳${Math.round(a.balance || 0)})`, String(Math.round(a.balance || 0)))));
+      if (!amt || amt <= 0) return;
+      if ((a.balance || 0) < amt) { showToast('এজেন্টের ব্যালেন্স পর্যাপ্ত নয়', 'error'); return; }
+      try {
+        const updates = {};
+        updates[`agents/${agentId}/balance`] = firebase.database.ServerValue.increment(-amt);
+        updates[`admins/${me}/balance`] = firebase.database.ServerValue.increment(amt);
+        const trxKey = db.ref('transactions').push().key;
+        updates[`transactions/${trxKey}`] = {
+          trxId: trxKey, uid: agentId, agentUid: agentId, adminUid: me,
+          type: 'AGENT_RETRIEVE', amount: amt,
+          beforeBal: a.balance || 0, afterBal: (a.balance || 0) - amt,
+          date: new Date().toLocaleString('bn-BD'), timestamp: firebase.database.ServerValue.TIMESTAMP,
+          note: `Reclaimed from Agent ${a.name || agentId}`
+        };
+        await db.ref().update(updates);
+        recordAuditLog('AGENT_RETRIEVE', agentId, `Retrieved ৳${amt} from ${a.name || agentId}`);
+        showToast(`✅ ৳${amt} এজেন্ট থেকে ফেরত নেওয়া হয়েছে`, 'success');
+      } catch (err) { showToast('ফেরত নেওয়া ব্যর্থ: ' + err.message, 'error'); }
+    }
+
+    async function toggleAgentActiveAdmin(agentId) {
+      const a = (STATE.agents || []).find(x => x.id === agentId);
+      if (!a || !db) return;
+      const next = !(a.active !== false && a.status !== 'suspended');
+      try {
+        await db.ref('agents/' + agentId).update({ active: next, status: next ? 'active' : 'suspended', updatedAt: firebase.database.ServerValue.TIMESTAMP });
+        recordAuditLog('AGENT_STATUS', agentId, next ? 'ACTIVATED' : 'SUSPENDED');
+        showToast(next ? 'এজেন্ট সক্রিয় করা হয়েছে ✅' : 'এজেন্ট স্থগিত করা হয়েছে ⛔', 'info');
+      } catch (err) { showToast('ব্যর্থ: ' + err.message, 'error'); }
+    }
+
+    async function approveAgentReqAdmin(reqId) {
+      const r = (STATE.agentBalanceRequests || []).find(x => x.id === reqId);
+      const me = npMyUid();
+      if (!r || !me || !db) return;
+      const amt = parseFloat(r.amount) || 0;
+      if ((STATE.adminBalance || 0) < amt) { showToast(`আপনার ব্যালেন্স পর্যাপ্ত নয় (৳${Math.round(STATE.adminBalance || 0)})`, 'error'); return; }
+      if (!confirm(`এজেন্ট ${r.agentName || r.agentUid}-এর ৳${amt} ব্যালেন্স রিকোয়েস্ট অনুমোদন করবেন?`)) return;
+      try {
+        const updates = {};
+        updates[`agentBalanceRequests/${reqId}/status`] = 'approved';
+        updates[`agentBalanceRequests/${reqId}/processedAt`] = firebase.database.ServerValue.TIMESTAMP;
+        updates[`admins/${me}/balance`] = firebase.database.ServerValue.increment(-amt);
+        updates[`agents/${r.agentUid}/balance`] = firebase.database.ServerValue.increment(amt);
+        updates[`agents/${r.agentUid}/receivedFromAdmin`] = firebase.database.ServerValue.increment(amt);
+        await db.ref().update(updates);
+        recordAuditLog('AGENT_REQ_APPROVED', reqId, `Approved ৳${amt} for ${r.agentName || r.agentUid}`);
+        showToast(`✅ ৳${amt} এজেন্টকে প্রদান করা হয়েছে`, 'success');
+      } catch (err) { showToast('অনুমোদন ব্যর্থ: ' + err.message, 'error'); }
+    }
+
+    async function rejectAgentReqAdmin(reqId) {
+      if (!confirm('এজেন্ট ব্যালেন্স রিকোয়েস্টটি বাতিল করবেন?')) return;
+      try {
+        await db.ref('agentBalanceRequests/' + reqId).update({ status: 'rejected', processedAt: firebase.database.ServerValue.TIMESTAMP });
+        showToast('এজেন্ট রিকোয়েস্ট বাতিল করা হয়েছে', 'info');
+      } catch (err) { showToast('ব্যর্থ: ' + err.message, 'error'); }
+    }
+
+    // ---------- Game Activity: which user played which game, how long, bet count, -/+, IP & Device ----------
     const GA = { rows: [], loading: false };
     const GA_SESSION_GAP_MS = 10 * 60 * 1000;
 
     async function loadGameActivity() {
-      showToast('এটি শুধু MASTER ADMINISTRATOR করতে পারবেন।', 'error'); return;
       if (GA.loading || !db) return;
       GA.loading = true;
       const body = document.getElementById('ga-tbody');
-      if (body) body.innerHTML = '<tr><td colspan="10" style="text-align:center; padding:20px;">লোড হচ্ছে...</td></tr>';
+      if (body) body.innerHTML = '<tr><td colspan="12" style="text-align:center; padding:20px;">লোড হচ্ছে...</td></tr>';
       try {
-        // 1. Fetch game_sessions from Firebase
-        const sessSnap = await db.ref('game_sessions').limitToLast(500).once('value');
+        // 1. Fetch game_sessions & game_transactions from Firebase
+        const [sessSnap, txSnap] = await Promise.all([
+          db.ref('game_sessions').limitToLast(500).once('value'),
+          db.ref('game_transactions').limitToLast(2000).once('value')
+        ]);
         const sessVal = sessSnap.val() || {};
+        const txVal = txSnap.val() || {};
+        const allTxs = Object.keys(txVal).map(k => ({ id: k, ...txVal[k] })).filter(t => t && t.uid && npOwns(t.uid));
+        if (allTxs.length) {
+          NP_RAW.gameTransactions = allTxs;
+          STATE.gameTransactions = allTxs;
+        }
+
         const liveSessions = Object.keys(sessVal).map(k => {
           const s = sessVal[k];
+          if (!s || !npOwns(s.uid)) return null;
           const u = STATE.users.find(x => x.uid === s.uid) || {};
           const startMs = s.startTime || Date.now();
           const endMs = s.endTime || (s.status === 'ACTIVE' ? null : startMs);
           const entryBal = typeof s.entryBalance === 'number' ? s.entryBalance : 0;
           const exitBal = typeof s.exitBalance === 'number' ? s.exitBalance : entryBal;
           const net = typeof s.netWinLoss === 'number' ? s.netWinLoss : (exitBal - entryBal);
+          const gName = s.gameName || 'Casino Game';
+          const sesTxs = allTxs.filter(t => t.uid === s.uid && (!s.startTime || (t.time || t.timestamp || 0) >= startMs - 60000) && (!endMs || (t.time || t.timestamp || 0) <= endMs + 60000));
+          let betCount = 0, betAmt = 0, winAmt = 0;
+          sesTxs.forEach(t => {
+            const tp = String(t.type || '').toLowerCase();
+            if (tp === 'bet' || tp === 'game_bet') { betCount++; betAmt += Number(t.amount) || 0; }
+            if (tp === 'cashout' || tp === 'win' || tp === 'game_win' || Number(t.win || t.payout) > 0) {
+              winAmt += Number(t.win || t.payout || t.amount) || 0;
+            }
+          });
           return {
             id: k,
             uid: s.uid,
             userName: s.userName || u.name || 'Player',
             userEmail: s.userEmail || u.email || '',
-            game: s.gameName || 'Aviator (অ্যাভিয়েটর)',
+            game: gName,
             start: startMs,
             end: endMs,
             duration: s.duration || gaDuration((endMs || Date.now()) - startMs),
+            betCount, betAmt, winAmt,
             entry: entryBal,
             exit: exitBal,
             net,
@@ -7963,21 +8495,13 @@
             device: s.device || u.lastDevice || 'ওয়েব ক্লায়েন্ট',
             status: s.status || (endMs ? 'COMPLETED' : 'ACTIVE')
           };
-        });
+        }).filter(Boolean);
 
-        // 2. Fetch game_transactions and build synthetic sessions for any uncaptured rounds
-        const txSnap = await db.ref('game_transactions').orderByKey().limitToLast(3000).once('value');
-        const txVal = txSnap.val() || {};
-        const txs = Object.keys(txVal).map(k => ({ id: k, ...txVal[k] })).filter(t => t && t.uid && t.time);
-        const txSessions = buildGameSessions(txs);
-
-        // Merge: avoid duplicating if live sessions already cover user/time
+        const txSessions = buildGameSessions(allTxs.filter(t => t.time || t.timestamp));
         const allRows = [...liveSessions];
         txSessions.forEach(ts => {
           const exists = liveSessions.some(ls => ls.uid === ts.uid && Math.abs(ls.start - ts.start) < 60000);
-          if (!exists) {
-            allRows.push(ts);
-          }
+          if (!exists) allRows.push(ts);
         });
 
         GA.rows = allRows.sort((a, b) => (b.start || 0) - (a.start || 0));
@@ -7991,42 +8515,47 @@
 
     function buildGameSessions(txs) {
       const byUser = {};
-      txs.forEach(t => { (byUser[t.uid] = byUser[t.uid] || []).push(t); });
+      txs.forEach(t => { if (t && t.uid) (byUser[t.uid] = byUser[t.uid] || []).push(t); });
       const out = [];
       Object.keys(byUser).forEach(uid => {
         const u = STATE.users.find(x => x.uid === uid) || {};
-        const list = byUser[uid].sort((a, b) => a.time - b.time);
+        const list = byUser[uid].sort((a, b) => (a.time || a.timestamp || 0) - (b.time || b.timestamp || 0));
         let cur = null;
         list.forEach(t => {
-          const game = t.game || 'Aviator (অ্যাভিয়েটর)';
-          if (!cur || t.time - cur.end > GA_SESSION_GAP_MS || cur.game !== game) {
+          const tm = t.time || t.timestamp || Date.now();
+          const game = t.game || t.gameName || 'Casino Game';
+          if (!cur || tm - cur.end > GA_SESSION_GAP_MS || cur.game !== game) {
             cur = {
               uid,
               userName: u.name || 'Player',
               userEmail: u.email || '',
               game,
-              start: t.time,
-              end: t.time,
+              start: tm,
+              end: tm,
               duration: '১ মিনিটের কম',
+              betCount: 0, betAmt: 0, winAmt: 0,
               entry: typeof t.balance === 'number' ? t.balance : 0,
               exit: typeof t.balance === 'number' ? t.balance : 0,
               net: 0,
-              ip: u.lastIp || '—',
-              device: u.lastDevice || 'ওয়েব ক্লায়েন্ট',
+              ip: t.ip || u.lastIp || '—',
+              device: t.device || u.lastDevice || 'ওয়েব ক্লায়েন্ট',
               status: 'COMPLETED'
             };
             out.push(cur);
           }
-          cur.end = t.time;
+          cur.end = tm;
           const amt = Number(t.amount) || 0;
-          if (t.type === 'bet') {
+          const tp = String(t.type || '').toLowerCase();
+          if (tp === 'bet' || tp === 'game_bet') {
+            cur.betCount++;
+            cur.betAmt += amt;
             if (typeof t.balance === 'number' && cur.entry === 0) cur.entry = t.balance + amt;
-          } else if (t.type === 'cashout') {
-            const w = Number(t.win) || 0;
+          } else if (tp === 'cashout' || tp === 'win' || tp === 'game_win' || Number(t.win || t.payout) > 0) {
+            cur.winAmt += Number(t.win || t.payout || amt) || 0;
             if (typeof t.balance === 'number') cur.exit = t.balance;
           }
           if (typeof t.balance === 'number') cur.exit = t.balance;
-          cur.net = cur.exit - cur.entry;
+          cur.net = cur.betAmt > 0 || cur.winAmt > 0 ? (cur.winAmt - cur.betAmt) : (cur.exit - cur.entry);
           cur.duration = gaDuration(cur.end - cur.start);
         });
       });
@@ -8054,32 +8583,29 @@
       if (days === 1) { const d = new Date(); d.setHours(0, 0, 0, 0); since = d.getTime(); }
       else if (days > 1) since = Date.now() - days * 86400000;
 
-      // Merge realtime state if exists
+      // Merge realtime state if GA.rows is empty
       let sourceRows = GA.rows;
-      if (STATE.gameSessions && STATE.gameSessions.length > 0 && GA.rows.length === 0) {
-        sourceRows = STATE.gameSessions.map(s => {
+      if (sourceRows.length === 0 && ((STATE.gameSessions && STATE.gameSessions.length > 0) || (STATE.gameTransactions && STATE.gameTransactions.length > 0))) {
+        const liveSess = (STATE.gameSessions || []).map(s => {
           const u = STATE.users.find(x => x.uid === s.uid) || {};
           const startMs = s.startTime || Date.now();
           const endMs = s.endTime || (s.status === 'ACTIVE' ? null : startMs);
           const entryBal = typeof s.entryBalance === 'number' ? s.entryBalance : 0;
           const exitBal = typeof s.exitBalance === 'number' ? s.exitBalance : entryBal;
           return {
-            id: s.id,
-            uid: s.uid,
-            userName: s.userName || u.name || 'Player',
-            userEmail: s.userEmail || u.email || '',
-            game: s.gameName || 'Aviator',
-            start: startMs,
-            end: endMs,
+            id: s.id, uid: s.uid, userName: s.userName || u.name || 'Player', userEmail: s.userEmail || u.email || '',
+            game: s.gameName || 'Casino Game', start: startMs, end: endMs,
             duration: s.duration || gaDuration((endMs || Date.now()) - startMs),
-            entry: entryBal,
-            exit: exitBal,
-            net: typeof s.netWinLoss === 'number' ? s.netWinLoss : (exitBal - entryBal),
-            ip: s.ip || u.lastIp || '—',
-            device: s.device || u.lastDevice || 'ওয়েব ক্লায়েন্ট',
+            betCount: s.betCount || 0, betAmt: s.betAmt || 0, winAmt: s.winAmt || 0,
+            entry: entryBal, exit: exitBal, net: typeof s.netWinLoss === 'number' ? s.netWinLoss : (exitBal - entryBal),
+            ip: s.ip || u.lastIp || '—', device: s.device || u.lastDevice || 'ওয়েব ক্লায়েন্ট',
             status: s.status || (endMs ? 'COMPLETED' : 'ACTIVE')
           };
         });
+        const txSess = buildGameSessions(STATE.gameTransactions || []);
+        sourceRows = [...liveSess];
+        txSess.forEach(ts => { if (!liveSess.some(ls => ls.uid === ts.uid && Math.abs(ls.start - ts.start) < 60000)) sourceRows.push(ts); });
+        sourceRows.sort((a, b) => (b.start || 0) - (a.start || 0));
       }
 
       const rows = sourceRows.filter(r => {
@@ -8091,8 +8617,9 @@
 
       // Summary
       const players = new Set(rows.map(r => r.uid)).size;
-      const totEntry = rows.reduce((a, r) => a + (Number(r.entry) || 0), 0);
-      const totExit = rows.reduce((a, r) => a + (Number(r.exit) || 0), 0);
+      const totBets = rows.reduce((a, r) => a + (Number(r.betCount) || 0), 0);
+      const totBetAmt = rows.reduce((a, r) => a + (Number(r.betAmt) || 0), 0);
+      const totWinAmt = rows.reduce((a, r) => a + (Number(r.winAmt) || 0), 0);
       const playerNet = rows.reduce((a, r) => a + (Number(r.net) || 0), 0);
       const houseNet = -playerNet;
 
@@ -8102,16 +8629,16 @@
         sum.innerHTML =
           box('মোট গেম সেশন', rows.length) +
           box('খেলোয়াড় সংখ্যা', players) +
-          box('মোট ঢোকার ব্যালেন্স', '৳ ' + gaMoney(totEntry)) +
-          box('মোট বের হওয়ার ব্যালেন্স', '৳ ' + gaMoney(totExit)) +
-          box('খেলোয়াড়দের নিট লাভ/ক্ষতি', (playerNet >= 0 ? '+' : '-') + '৳ ' + gaMoney(Math.abs(playerNet)), playerNet >= 0 ? '#10b981' : '#ef4444') +
-          box('প্ল্যাটফর্ম লাভ (House)', (houseNet >= 0 ? '+' : '-') + '৳ ' + gaMoney(Math.abs(houseNet)), houseNet >= 0 ? '#10b981' : '#ef4444');
+          box('মোট বেট সংখ্যা', totBets + ' বার') +
+          box('মোট বেট (−) / উইন (+)', `−৳${gaMoney(totBetAmt)} / +৳${gaMoney(totWinAmt)}`) +
+          box('প্লেয়ার নিট (+/−)', (playerNet >= 0 ? '+' : '−') + '৳ ' + gaMoney(Math.abs(playerNet)), playerNet >= 0 ? '#10b981' : '#ef4444') +
+          box('প্ল্যাটফর্ম লাভ (House)', (houseNet >= 0 ? '+' : '−') + '৳ ' + gaMoney(Math.abs(houseNet)), houseNet >= 0 ? '#10b981' : '#ef4444');
       }
       const badge = document.getElementById('ga-count-badge');
       if (badge) badge.innerText = rows.length + ' টি সেশন';
 
       if (rows.length === 0) {
-        body.innerHTML = '<tr><td colspan="10" style="text-align:center; padding:24px; opacity:.7;">এই সময়ে কোনো গেম অ্যাক্টিভিটি পাওয়া যায়নি</td></tr>';
+        body.innerHTML = '<tr><td colspan="12" style="text-align:center; padding:24px; opacity:.7;">এই সময়ে কোনো গেম অ্যাক্টিভিটি পাওয়া যায়নি</td></tr>';
         return;
       }
       const fmt = (t) => t ? new Date(t).toLocaleString('bn-BD', { day: 'numeric', month: 'short', hour: '2-digit', minute: '2-digit' }) : '—';
@@ -8126,9 +8653,11 @@
           <td style="font-size:0.85rem;">${fmt(r.start)}</td>
           <td style="font-size:0.85rem;">${r.end ? fmt(r.end) : '<span style="color:#f59e0b; font-weight:700;">🟡 এখনো খেলছে</span>'}</td>
           <td><span class="badge badge-upcoming">${escapeHtml(r.duration || '১ মিনিটের কম')}</span></td>
+          <td><b style="color:var(--primary);">${r.betCount || 0} বার</b></td>
+          <td><span style="color:#ef4444; font-weight:700;">−৳${gaMoney(r.betAmt || 0)}</span> / <span style="color:#10b981; font-weight:700;">+৳${gaMoney(r.winAmt || 0)}</span></td>
           <td><b style="color:var(--primary);">৳ ${gaMoney(r.entry)}</b></td>
           <td><b style="color:#F5EFE0;">৳ ${gaMoney(r.exit)}</b></td>
-          <td style="font-weight:800; color:${net >= 0 ? '#10b981' : '#ef4444'};">${net >= 0 ? '+' : '-'}৳ ${gaMoney(Math.abs(net))}</td>
+          <td style="font-weight:800; color:${net >= 0 ? '#10b981' : '#ef4444'};">${net >= 0 ? '+' : '−'}৳ ${gaMoney(Math.abs(net))}</td>
           <td>
             <div style="font-family:monospace; font-weight:700; color:#F5EFE0;">🌐 ${escapeHtml(r.ip || '—')}</div>
             <small style="color:var(--text-dim); max-width:130px; overflow:hidden; text-overflow:ellipsis; white-space:nowrap; display:block;" title="${escapeHtml(r.device || 'ওয়েব')}">📱 ${escapeHtml(r.device || 'ওয়েব')}</small>
@@ -8327,8 +8856,39 @@
       renderFinanceDashboard();
     });
   
-    // ===== MASTER-controlled feature switches (Firebase node: adminFeatures) =====
-    var FEATURE_MAP = {"users": {"view": "view-users"}, "wallet": {"view": "view-wallet"}, "promotions": {"view": "view-promotions"}, "finance": {"view": "view-finance"}, "notices": {"view": "view-notices"}, "notifications": {"view": "view-notifications"}, "settings": {"view": "view-settings"}, "audit": {"view": "view-audit"}, "u_ban": {"fns": ["toggleUserStatus", "toggleUserStatusFromSecModal"]}, "u_track": {"fns": ["openPlayerSecurityModal"]}, "u_report": {"fns": ["openPlayerFinancialReport", "exportSinglePlayerCSV"]}, "u_adjust": {"fns": ["adjustUserBalance", "adjustBalanceFromSecModal"]}, "u_bonus": {"fns": ["openTurnoverBonusModal", "submitManualBonusCredit", "saveDirectTurnoverValues", "markUserTurnoverCompleted", "resetUserBonusAndTurnover"]}, "dep": {"fns": ["approveDeposit", "rejectDeposit", "handleDepositActionDropdown"]}, "wd": {"fns": ["completeWithdrawal", "rejectWithdrawal", "setWithdrawalStatus", "handleWithdrawalActionDropdown"]}, "bal_req": {"fns": ["openAdminFundModal"]}, "dep_bonus": {"fns": ["handleSaveBonusTurnoverSettings", "handleSaveAdminDepositBonusSettings"]}, "notice_pub": {"fns": ["handlePublishNotice", "deleteNotice"]}, "notif_send": {"fns": ["handleSendNotification", "deleteNotification", "quickSendNotificationToUser", "quickNotifyFromSecModal"]}, "set_pay": {"fns": ["handleSavePaymentSettings", "handleSaveSocialSettings"]}, "banners": {"fns": ["handleAddBanner", "handleDeleteBanner"]}};
+    // ===== MASTER-controlled feature switches (Firebase node: adminFeatures + admins/{uid}/features) =====
+    var FEATURE_MAP = {
+      "dashboard":    { "view": "view-dashboard" },
+      "gameactivity": { "view": "view-gameactivity", "fns": ["loadGameActivity"] },
+      "users":        { "view": "view-users" },
+      "wallet":       { "view": "view-wallet" },
+      "agents":       { "view": "view-agents" },
+      "promotions":   { "view": "view-promotions" },
+      "finance":      { "view": "view-finance" },
+      "notices":      { "view": "view-notices" },
+      "notifications":{ "view": "view-notifications" },
+      "master_chat":  { "fns": ["openMasterChatModal"], "extraCss": "#btn-topbar-master-chat,#npc-overlay{display:none !important}" },
+      "settings":     { "view": "view-settings" },
+      "audit":        { "view": "view-audit" },
+      "u_ban":        { "fns": ["toggleUserStatus", "toggleUserStatusFromSecModal"] },
+      "u_track":      { "fns": ["openPlayerSecurityModal"] },
+      "u_report":     { "fns": ["openPlayerFinancialReport", "exportSinglePlayerCSV"] },
+      "u_adjust":     { "fns": ["adjustUserBalance", "adjustBalanceFromSecModal"] },
+      "u_bonus":      { "fns": ["openTurnoverBonusModal", "submitManualBonusCredit", "saveDirectTurnoverValues", "markUserTurnoverCompleted", "resetUserBonusAndTurnover"] },
+      "dep":          { "fns": ["approveDeposit", "rejectDeposit", "handleDepositActionDropdown"] },
+      "wd":           { "fns": ["completeWithdrawal", "rejectWithdrawal", "setWithdrawalStatus", "handleWithdrawalActionDropdown"] },
+      "bal_req":      { "fns": ["openAdminFundModal"] },
+      "agent_manage": { "fns": ["createUserAdminAgent", "sendAgentFundAdmin", "reclaimAgentFundAdmin", "toggleAgentActiveAdmin", "approveAgentReqAdmin", "rejectAgentReqAdmin", "assignRequestToAgent"] },
+      "dep_bonus":    { "fns": ["handleSaveBonusTurnoverSettings", "handleSaveAdminDepositBonusSettings"] },
+      "promo_manage": { "fns": ["npPromoToggle", "npPromoEdit", "npPromoSave"] },
+      "fin_export":   { "fns": ["exportFinanceCSV", "exportLedgerCSV", "exportUsersCSV", "exportAuditCSV"] },
+      "notice_pub":   { "fns": ["handlePublishNotice", "deleteNotice"] },
+      "notif_send":   { "fns": ["handleSendNotification", "deleteNotification", "quickSendNotificationToUser", "quickNotifyFromSecModal"] },
+      "set_pay":      { "fns": ["handleSavePaymentSettings", "handleSaveSocialSettings"] },
+      "banners":      { "fns": ["handleAddBanner", "handleDeleteBanner"] },
+      "ads_manage":   { "fns": ["handleSaveHtmlAd", "handleDeleteHtmlAd"] },
+      "ref_link":     { "fns": ["npCopyRefLink"], "extraCss": "#np-ref-card{display:none !important}" }
+    };
     var FEATURES = {}, MY_FEATURES = {};
     // A feature is ON only if it is on for everyone (adminFeatures) AND on for this admin (admins/{uid}/features)
     function featureOn(k) { return FEATURES[k] !== false && MY_FEATURES[k] !== false; }
@@ -8337,13 +8897,18 @@
       Object.entries(FEATURE_MAP).forEach(([k, d]) => {
         if (featureOn(k)) return;
         if (d.view) css += `.nav-item[data-view="${d.view}"],[onclick*="switchView('${d.view}')"],#${d.view}{display:none !important}`;
+        if (d.extraCss) css += d.extraCss;
         (d.fns || []).forEach(f => { css += `[onclick*="${f}("],[onchange*="${f}("],[onsubmit*="${f}("]{display:none !important}`; });
       });
       let st = document.getElementById('feature-flags-style');
       if (!st) { st = document.createElement('style'); st.id = 'feature-flags-style'; document.head.appendChild(st); }
       st.textContent = css;
       for (const [k, d] of Object.entries(FEATURE_MAP)) {
-        if (d.view && d.view === STATE.currentView && !featureOn(k)) { switchView('view-dashboard'); break; }
+        if (d.view && d.view === STATE.currentView && !featureOn(k)) {
+          const fallback = featureOn('dashboard') ? 'view-dashboard' : ((Object.values(FEATURE_MAP).find((x, i) => x.view && featureOn(Object.keys(FEATURE_MAP)[i])) || {}).view || '');
+          if (fallback && fallback !== STATE.currentView) switchView(fallback);
+          break;
+        }
       }
     }
     Object.entries(FEATURE_MAP).forEach(([k, d]) => (d.fns || []).forEach(fn => {
@@ -8870,6 +9435,27 @@
     var btn = document.getElementById('np-install-btn');
     if (btn) btn.click();
   };
+</script>
+<script>
+(function(){
+  function fitLogo(wrapId, tagId){
+    const w=document.getElementById(wrapId), t=document.getElementById(tagId);
+    if(!w||!t) return;
+    const lm=w.querySelector('.lm'); if(!lm) return;
+    const lw=lm.getBoundingClientRect().width;
+    if(!lw) return;
+    t.style.letterSpacing='0px';
+    const base=t.getBoundingClientRect().width;
+    const n=Math.max(1,t.textContent.trim().length-1);
+    const sp=Math.max(0,(lw-base)/n);
+    t.style.letterSpacing=sp.toFixed(2)+'px';
+  }
+  function fitAll(){fitLogo('uLoginLogoWrap','uLoginTag');fitLogo('uBrandLogoWrap','uBrandTag');}
+  window.addEventListener('load',()=>setTimeout(fitAll,60));
+  window.addEventListener('resize',fitAll);
+  if(document.fonts&&document.fonts.ready)document.fonts.ready.then(fitAll);
+  setTimeout(fitAll,250);
+})();
 </script>
 </body>
 </html>

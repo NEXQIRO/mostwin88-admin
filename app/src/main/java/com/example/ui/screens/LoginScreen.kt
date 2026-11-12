@@ -29,8 +29,8 @@ import com.example.ui.theme.*
 fun LoginScreen(
     onLoginSuccess: (email: String) -> Unit
 ) {
-    var emailOrUsername by remember { mutableStateOf("admin@mostwin88.com") }
-    var password by remember { mutableStateOf("admin12345") }
+    var emailOrUsername by remember { mutableStateOf("") }
+    var password by remember { mutableStateOf("") }
     var passwordVisible by remember { mutableStateOf(false) }
     var errorMessage by remember { mutableStateOf<String?>(null) }
     var isLoading by remember { mutableStateOf(false) }
@@ -85,6 +85,7 @@ fun LoginScreen(
                         errorMessage = null
                     },
                     label = { Text("Admin Email / Username") },
+                    placeholder = { Text("admin@domain.com / username", color = TextDim) },
                     leadingIcon = {
                         Icon(
                             imageVector = Icons.Default.Person,
@@ -116,6 +117,7 @@ fun LoginScreen(
                         errorMessage = null
                     },
                     label = { Text("Password") },
+                    placeholder = { Text("••••••••", color = TextDim) },
                     leadingIcon = {
                         Icon(
                             imageVector = Icons.Default.Lock,
@@ -164,16 +166,16 @@ fun LoginScreen(
 
                 Button(
                     onClick = {
-                        if (emailOrUsername.isBlank() || password.isBlank()) {
-                            errorMessage = "ইমেইল ও পাসওয়ার্ড প্রদান করুন"
+                        val trimmed = emailOrUsername.trim()
+                        if (trimmed.isBlank() || password.isBlank()) {
+                            errorMessage = "ইমেইল/ইউজারনেম ও পাসওয়ার্ড প্রদান করুন"
                             return@Button
                         }
-                        // Validate allowed admin credentials
-                        isLoading = true
-                        if (emailOrUsername.contains("admin") || emailOrUsername.contains("mostwin")) {
-                            onLoginSuccess(emailOrUsername)
+                        if (trimmed.contains("@") || trimmed.length >= 3) {
+                            isLoading = true
+                            onLoginSuccess(trimmed)
                         } else {
-                            errorMessage = "শুধুমাত্র MASTER_ADMIN কর্তৃক তৈরি ও অনুমোদিত ADMIN একাউন্ট লগইন করতে পারবে"
+                            errorMessage = "সঠিক এডমিন ইমেইল বা ইউজারনেম প্রদান করুন"
                             isLoading = false
                         }
                     },
