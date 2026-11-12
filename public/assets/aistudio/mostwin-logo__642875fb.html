@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>MOSTWIN88 Logo</title>
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+html,body{height:100%}
+body{background:#050B1A;display:grid;place-items:center;overflow:hidden;
+  font-family:Inter,system-ui,-apple-system,"Segoe UI",Roboto,Arial,sans-serif;
+  background-image:radial-gradient(circle at 50% 45%,#0e1c3f 0,#050B1A 62%)}
+.logo{--fs:clamp(36px,min(14vw,22vh),170px);display:block;width:max-content;text-align:left}
+.lm{display:block;width:max-content;white-space:nowrap;font-weight:900;letter-spacing:.5px;line-height:1;
+  font-size:var(--fs);color:#ffd23f}
+.w{color:#fff}
+.r{color:#fff}
+.lo{display:inline-block;position:relative;width:.76em;height:.76em;margin:0 .035em;vertical-align:baseline;overflow:visible;filter:drop-shadow(0 0 .04em #ffffff77)}
+.lo svg{position:absolute;left:0;top:0;width:100%;height:100%;display:block;overflow:visible;transform:scale(1.12);transform-origin:50% 50%}
+.lo-r{transform-box:view-box;transform-origin:50px 50px;animation:loSpin 6s cubic-bezier(.2,.7,.2,1) infinite}
+@keyframes loSpin{0%,25%{transform:rotate(0deg)}70%,100%{transform:rotate(1440deg)}}
+.tag{display:block;white-space:nowrap;font-weight:700;color:#ffd23f;font-size:calc(var(--fs)*.17);margin-top:.7em;overflow:visible}
+@media (prefers-reduced-motion:reduce){.lo-r{animation:none}}
+</style>
+</head>
+<body>
+<div class="logo" id="logo">
+  <span class="lm"><span class="w">M</span><span class="lo"><svg viewBox="0 0 100 100" aria-hidden="true"><g class="lo-r"><circle cx="50" cy="50" r="43" fill="none" stroke="rgba(255,255,255,.4)" stroke-width="14"/><circle cx="50" cy="50" r="43" fill="none" stroke="#fff" stroke-width="14" stroke-dasharray="7.4 3.86"/></g><circle cx="50" cy="50" r="18" fill="#ffd23f"/><circle cx="50" cy="50" r="18" fill="none" stroke="#fff2b3" stroke-width="3"/></svg></span><span class="w">ST</span>WIN<span class="r">88</span></span>
+  <span class="tag" id="tag">PLAY BIG, WIN BIGGER</span>
+</div>
+<script>
+/* tagline ta logo-r width er shoman kore deya */
+function fit(){
+  var m=document.querySelector('.lm'),t=document.getElementById('tag');
+  var fs=parseFloat(getComputedStyle(m).fontSize),b=fs*BEAR;
+  var W=m.getBoundingClientRect().width-2*b;if(W<=0)return;
+  t.style.letterSpacing='0px';t.style.width='auto';t.style.display='inline-block';t.style.marginRight='0';t.style.marginLeft=b+'px';
+  var w0=t.getBoundingClientRect().width,n=t.textContent.length,ls=(W-w0)/(n-1);
+  t.style.letterSpacing=ls+'px';t.style.marginRight=(-ls)+'px';t.style.display='block';t.style.width=W+'px';
+}
+var BEAR=.035;
+addEventListener('load',fit);addEventListener('resize',fit);
+if(document.fonts&&document.fonts.ready)document.fonts.ready.then(fit);
+</script>
+</body>
+</html>

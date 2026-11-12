@@ -1,0 +1,124 @@
+{
+  "rules": {
+    ".read": false,
+    ".write": false,
+
+    "admin": {
+      ".read": "auth != null && (auth.uid == 'hQvneUu3e0SJWgfOtIoqaDeltt92' || auth.uid == '2bu54ZYJYLdZyIRWASwMQrftruJ2')",
+      ".write": "auth != null && (auth.uid == 'hQvneUu3e0SJWgfOtIoqaDeltt92' || auth.uid == '2bu54ZYJYLdZyIRWASwMQrftruJ2')",
+
+      "$uid": {
+        ".validate": "newData.hasChildren(['role', 'status']) && (newData.child('role').val() == 'USER_ADMIN' || (($uid == 'hQvneUu3e0SJWgfOtIoqaDeltt92' || $uid == '2bu54ZYJYLdZyIRWASwMQrftruJ2') && newData.child('role').val() == 'SUPER_ADMIN'))",
+
+        "role": {
+          ".validate": "newData.isString() && (newData.val() == 'SUPER_ADMIN' || newData.val() == 'USER_ADMIN')"
+        },
+
+        "status": {
+          ".validate": "newData.isString() && (newData.val() == 'active' || newData.val() == 'inactive' || newData.val() == 'suspended')"
+        }
+      }
+    },
+
+    "super_admins": {
+      ".read": "auth != null && (auth.uid == 'hQvneUu3e0SJWgfOtIoqaDeltt92' || auth.uid == '2bu54ZYJYLdZyIRWASwMQrftruJ2')",
+      ".write": false
+    },
+
+    "sites": {
+      ".read": "auth != null && (auth.uid == 'hQvneUu3e0SJWgfOtIoqaDeltt92' || auth.uid == '2bu54ZYJYLdZyIRWASwMQrftruJ2')",
+      ".write": "auth != null && (auth.uid == 'hQvneUu3e0SJWgfOtIoqaDeltt92' || auth.uid == '2bu54ZYJYLdZyIRWASwMQrftruJ2')"
+    },
+
+    "permissions": {
+      ".read": "auth != null && (auth.uid == 'hQvneUu3e0SJWgfOtIoqaDeltt92' || auth.uid == '2bu54ZYJYLdZyIRWASwMQrftruJ2')",
+      ".write": "auth != null && (auth.uid == 'hQvneUu3e0SJWgfOtIoqaDeltt92' || auth.uid == '2bu54ZYJYLdZyIRWASwMQrftruJ2')"
+    },
+
+    "audit_logs": {
+      ".read": "auth != null && (auth.uid == 'hQvneUu3e0SJWgfOtIoqaDeltt92' || auth.uid == '2bu54ZYJYLdZyIRWASwMQrftruJ2')",
+      ".write": false
+    },
+
+    "master_wallet": {
+      ".read": "auth != null && (auth.uid == 'hQvneUu3e0SJWgfOtIoqaDeltt92' || auth.uid == '2bu54ZYJYLdZyIRWASwMQrftruJ2' || root.child('admin').child(auth.uid).child('role').val() == 'SUPER_ADMIN')",
+      ".write": "auth != null && (auth.uid == 'hQvneUu3e0SJWgfOtIoqaDeltt92' || auth.uid == '2bu54ZYJYLdZyIRWASwMQrftruJ2' || root.child('admin').child(auth.uid).child('role').val() == 'SUPER_ADMIN')"
+    },
+
+    "master_wallet_ledger": {
+      ".read": "auth != null && (auth.uid == 'hQvneUu3e0SJWgfOtIoqaDeltt92' || auth.uid == '2bu54ZYJYLdZyIRWASwMQrftruJ2' || root.child('admin').child(auth.uid).child('role').val() == 'SUPER_ADMIN')",
+      ".write": "auth != null && (auth.uid == 'hQvneUu3e0SJWgfOtIoqaDeltt92' || auth.uid == '2bu54ZYJYLdZyIRWASwMQrftruJ2' || root.child('admin').child(auth.uid).child('role').val() == 'SUPER_ADMIN')"
+    },
+
+    "admin_wallets": {
+      "$uid": {
+        ".read": "auth != null && (auth.uid == 'hQvneUu3e0SJWgfOtIoqaDeltt92' || auth.uid == '2bu54ZYJYLdZyIRWASwMQrftruJ2' || auth.uid == $uid || root.child('admin').child(auth.uid).child('role').val() == 'SUPER_ADMIN')",
+        ".write": "auth != null && (auth.uid == 'hQvneUu3e0SJWgfOtIoqaDeltt92' || auth.uid == '2bu54ZYJYLdZyIRWASwMQrftruJ2' || root.child('admin').child(auth.uid).child('role').val() == 'SUPER_ADMIN')"
+      }
+    },
+
+    "admin_wallet_ledger": {
+      ".read": "auth != null",
+      ".write": "auth != null"
+    },
+
+    "admin_fund_requests": {
+      ".read": "auth != null",
+      ".write": "auth != null"
+    },
+
+    "admins": {
+      ".read": "auth != null",
+      ".write": "auth != null && (auth.uid == 'hQvneUu3e0SJWgfOtIoqaDeltt92' || auth.uid == '2bu54ZYJYLdZyIRWASwMQrftruJ2' || root.child('admin').child(auth.uid).child('role').val() == 'SUPER_ADMIN')"
+    },
+
+    "tenants": {
+      ".read": "auth != null",
+      ".write": "auth != null && (auth.uid == 'hQvneUu3e0SJWgfOtIoqaDeltt92' || auth.uid == '2bu54ZYJYLdZyIRWASwMQrftruJ2' || root.child('admin').child(auth.uid).child('role').val() == 'SUPER_ADMIN')"
+    },
+
+    "tenant_users": {
+      "$tenantId": {
+        ".read": "auth != null",
+        ".write": "auth != null"
+      }
+    },
+
+    "internal_balance_transfers": {
+      ".read": "auth != null && (auth.uid == 'hQvneUu3e0SJWgfOtIoqaDeltt92' || auth.uid == '2bu54ZYJYLdZyIRWASwMQrftruJ2' || root.child('admin').child(auth.uid).child('role').val() == 'SUPER_ADMIN')",
+      ".write": "auth != null && (auth.uid == 'hQvneUu3e0SJWgfOtIoqaDeltt92' || auth.uid == '2bu54ZYJYLdZyIRWASwMQrftruJ2' || root.child('admin').child(auth.uid).child('role').val() == 'SUPER_ADMIN')"
+    },
+
+    "games": {
+      ".read": "auth != null",
+      ".write": "auth != null && (auth.uid == 'hQvneUu3e0SJWgfOtIoqaDeltt92' || auth.uid == '2bu54ZYJYLdZyIRWASwMQrftruJ2' || root.child('admin').child(auth.uid).child('role').val() == 'SUPER_ADMIN')"
+    },
+
+    "game_assignments": {
+      ".read": "auth != null",
+      ".write": "auth != null && (auth.uid == 'hQvneUu3e0SJWgfOtIoqaDeltt92' || auth.uid == '2bu54ZYJYLdZyIRWASwMQrftruJ2' || root.child('admin').child(auth.uid).child('role').val() == 'SUPER_ADMIN')"
+    },
+
+    "tournaments": {
+      ".read": "auth != null",
+      ".write": "auth != null"
+    },
+
+    "turnover_records": {
+      ".read": "auth != null",
+      ".write": "auth != null && (auth.uid == 'hQvneUu3e0SJWgfOtIoqaDeltt92' || auth.uid == '2bu54ZYJYLdZyIRWASwMQrftruJ2' || root.child('admin').child(auth.uid).child('role').val() == 'SUPER_ADMIN')"
+    },
+
+    "admin_permissions": {
+      "$adminUid": {
+        ".read": "auth != null && (auth.uid == 'hQvneUu3e0SJWgfOtIoqaDeltt92' || auth.uid == '2bu54ZYJYLdZyIRWASwMQrftruJ2' || auth.uid == $adminUid || root.child('admin').child(auth.uid).child('role').val() == 'SUPER_ADMIN')",
+        ".write": "auth != null && (auth.uid == 'hQvneUu3e0SJWgfOtIoqaDeltt92' || auth.uid == '2bu54ZYJYLdZyIRWASwMQrftruJ2' || root.child('admin').child(auth.uid).child('role').val() == 'SUPER_ADMIN')"
+      }
+    },
+
+    "adminAuditLogs": {
+      ".read": "auth != null",
+      ".write": "auth != null"
+    }
+  }
+}
