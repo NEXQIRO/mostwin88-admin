@@ -67,7 +67,7 @@ enum class AdminNavDestination(val labelEn: String, val labelBn: String, val ico
     DEPOSITS("Deposits Monitor", "ডিপোজিট মনিটর", Icons.Default.Paid),
     AFFILIATES("Affiliates", "অ্যাফিলিয়েট", Icons.Default.Share),
     PLAYERS("Players", "প্লেয়ার বৃন্দ", Icons.Default.People),
-    TOURNAMENTS("Tournaments", "টুর্নামেন্ট", Icons.Default.EmojiEvents),
+    CASINO_GAMES("Casino Games", "ক্যাসিনো গেমস", Icons.Default.Casino),
     MESSAGES("Chat & Notices", "মেসেজ ও নোটিশ", Icons.Default.Notifications),
     REPORTS("Reports", "রিপোর্ট", Icons.Default.Assessment),
     SETTINGS("Settings", "সেটিংস", Icons.Default.Settings)
@@ -97,7 +97,7 @@ fun AdminApp(
     val deposits by repository.deposits.collectAsStateWithLifecycle()
     val withdrawals by repository.withdrawals.collectAsStateWithLifecycle()
     val ledger by repository.fundLedger.collectAsStateWithLifecycle()
-    val tournaments by repository.tournaments.collectAsStateWithLifecycle()
+    val casinoGames by repository.casinoGames.collectAsStateWithLifecycle()
     val notifications by repository.notifications.collectAsStateWithLifecycle()
     val chatMessages by repository.agentChatMessages.collectAsStateWithLifecycle()
 
@@ -506,16 +506,8 @@ fun AdminApp(
                             Toast.makeText(context, result.getOrNull() ?: result.exceptionOrNull()?.message, Toast.LENGTH_SHORT).show()
                         }
                     )
-                    AdminNavDestination.TOURNAMENTS -> TournamentsScreen(
-                        tournaments = tournaments,
-                        onCreateTournament = { title, fee, prize, time ->
-                            val result = repository.createTournament(title, fee, prize, time)
-                            Toast.makeText(context, result.getOrNull() ?: result.exceptionOrNull()?.message, Toast.LENGTH_SHORT).show()
-                        },
-                        onUpdateRoom = { id, roomId, roomPass ->
-                            val result = repository.updateTournamentRoom(id, roomId, roomPass)
-                            Toast.makeText(context, result.getOrNull() ?: result.exceptionOrNull()?.message, Toast.LENGTH_SHORT).show()
-                        }
+                    AdminNavDestination.CASINO_GAMES -> CasinoGamesScreen(
+                        casinoGames = casinoGames
                     )
                     AdminNavDestination.MESSAGES -> NotificationsAndChatScreen(
                         notifications = notifications,

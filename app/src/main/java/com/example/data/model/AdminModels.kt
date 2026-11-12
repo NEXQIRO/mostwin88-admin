@@ -114,20 +114,14 @@ data class WithdrawalRequest(
     val processedAt: Long? = null
 )
 
-data class Tournament(
+data class CasinoGame(
     val id: String = "",
-    val title: String = "",
-    val game: String = "Free Fire",
-    val type: String = "Solo",
-    val map: String = "Bermuda",
-    val entryFee: Double = 30.0,
-    val prizePool: Double = 1000.0,
-    val status: String = "Upcoming", // Upcoming, Live, Completed, Cancelled
-    val roomId: String = "",
-    val roomPass: String = "",
-    val scheduleTime: String = "Tonight 9:00 PM",
-    val joinedCount: Int = 0,
-    val maxSlots: Int = 48
+    val name: String = "",
+    val category: String = "Crash Games",
+    val status: String = "Active",
+    val activePlayers: Int = 0,
+    val totalBetsToday: Double = 0.0,
+    val rtpPercent: Double = 96.5
 )
 
 data class Promotion(

@@ -1,6 +1,6 @@
 {
   "name": "Mostwin88 Admin",
-  "description": "MOSTWIN88 Admin Panel - Professional management console for funds, agents, affiliates, players, deposits, withdrawals, tournaments, and reports.",
+  "description": "MOSTWIN88 Admin Panel - Professional Pro Casino management console for funds, agents, affiliates, players, deposits, withdrawals, casino games, and reports.",
   "requestFramePermissions": [],
   "majorCapabilities": [
     "MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"

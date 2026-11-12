@@ -53,8 +53,8 @@ class MostwinAdminRepository {
     private val _withdrawals = MutableStateFlow<List<WithdrawalRequest>>(emptyList())
     val withdrawals: StateFlow<List<WithdrawalRequest>> = _withdrawals.asStateFlow()
 
-    private val _tournaments = MutableStateFlow<List<Tournament>>(emptyList())
-    val tournaments: StateFlow<List<Tournament>> = _tournaments.asStateFlow()
+    private val _casinoGames = MutableStateFlow<List<CasinoGame>>(emptyList())
+    val casinoGames: StateFlow<List<CasinoGame>> = _casinoGames.asStateFlow()
 
     private val _promotions = MutableStateFlow<List<Promotion>>(emptyList())
     val promotions: StateFlow<List<Promotion>> = _promotions.asStateFlow()
@@ -262,37 +262,52 @@ class MostwinAdminRepository {
             )
         )
 
-        // Tournaments
-        _tournaments.value = listOf(
-            Tournament(
-                id = "TRN_MW_101",
-                title = "🔥 MOSTWIN88 Free Fire Grand Solo",
-                game = "Free Fire",
-                type = "Solo",
-                map = "Bermuda",
-                entryFee = 50.0,
-                prizePool = 2000.0,
-                status = "Live",
-                roomId = "5544889",
-                roomPass = "8899",
-                scheduleTime = "Today 8:30 PM",
-                joinedCount = 42,
-                maxSlots = 48
+        // Pro Casino Live Games (Managed by Master Admin; Read-only monitor here)
+        _casinoGames.value = listOf(
+            CasinoGame(
+                id = "GAME_AVIATOR",
+                name = "Aviator Crash",
+                category = "Crash Games",
+                status = "Active",
+                activePlayers = 148,
+                totalBetsToday = 245000.0,
+                rtpPercent = 97.0
             ),
-            Tournament(
-                id = "TRN_MW_102",
-                title = "⚡ Clash Squad High Rollers 4v4",
-                game = "Free Fire",
-                type = "Squad",
-                map = "Kalahari",
-                entryFee = 200.0,
-                prizePool = 5000.0,
-                status = "Upcoming",
-                roomId = "",
-                roomPass = "",
-                scheduleTime = "Tonight 10:00 PM",
-                joinedCount = 8,
-                maxSlots = 12
+            CasinoGame(
+                id = "GAME_JETX",
+                name = "JetX Rocket",
+                category = "Crash Games",
+                status = "Active",
+                activePlayers = 92,
+                totalBetsToday = 162000.0,
+                rtpPercent = 96.8
+            ),
+            CasinoGame(
+                id = "GAME_MINES",
+                name = "Mines Gold",
+                category = "Slot Games",
+                status = "Active",
+                activePlayers = 115,
+                totalBetsToday = 184500.0,
+                rtpPercent = 97.5
+            ),
+            CasinoGame(
+                id = "GAME_PLINKO",
+                name = "Plinko Luck",
+                category = "Popular Games",
+                status = "Active",
+                activePlayers = 76,
+                totalBetsToday = 98000.0,
+                rtpPercent = 96.5
+            ),
+            CasinoGame(
+                id = "GAME_CRAZYTIME",
+                name = "Crazy Time Live",
+                category = "Live Casino",
+                status = "Active",
+                activePlayers = 204,
+                totalBetsToday = 412000.0,
+                rtpPercent = 96.1
             )
         )
 
@@ -551,27 +566,6 @@ class MostwinAdminRepository {
             } else it
         }
         return Result.success("Player status updated")
-    }
-
-    // --- Tournaments ---
-    fun createTournament(title: String, fee: Double, prize: Double, time: String): Result<String> {
-        val newT = Tournament(
-            id = "TRN_MW_${UUID.randomUUID().toString().take(6)}",
-            title = title,
-            entryFee = fee,
-            prizePool = prize,
-            scheduleTime = time,
-            status = "Upcoming"
-        )
-        _tournaments.value = listOf(newT) + _tournaments.value
-        return Result.success("Tournament created")
-    }
-
-    fun updateTournamentRoom(id: String, roomId: String, roomPass: String): Result<String> {
-        _tournaments.value = _tournaments.value.map {
-            if (it.id == id) it.copy(roomId = roomId, roomPass = roomPass) else it
-        }
-        return Result.success("Room credentials updated")
     }
 
     // --- Notifications ---

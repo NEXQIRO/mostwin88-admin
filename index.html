@@ -4,8 +4,6 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>MOSTWIN88 ADMIN PANEL</title>
-
-  </script>
   <link rel="manifest" href="admin-manifest.json">
   <meta name="theme-color" content="#0A0A0A">
   <meta name="mobile-web-app-capable" content="yes">
@@ -1619,13 +1617,7 @@
             <span class="nav-label">ড্যাশবোর্ড</span>
           </button>
         </li>
-        <li class="nav-item" data-view="view-tournaments">
-          <button onclick="switchView('view-tournaments')">
-            <svg viewBox="0 0 24 24"><path d="M19 5h-2V3H7v2H5c-1.1 0-2 .9-2 2v1c0 2.55 1.92 4.63 4.39 4.94.63 1.5 1.98 2.63 3.61 2.96V19H7v2h10v-2h-4v-3.1c1.63-.33 2.98-1.46 3.61-2.96C19.08 12.63 21 10.55 21 8V7c0-1.1-.9-2-2-2zM5 8V7h2v3.82C5.84 10.4 5 9.3 5 8zm14 0c0 1.3-.84 2.4-2 2.82V7h2v1z"/></svg>
-            <span class="nav-label">টুর্নামেন্টসমূহ</span>
-          </button>
-        </li>
-                <li class="nav-item" data-view="view-users">
+        <li class="nav-item" data-view="view-users">
           <button onclick="switchView('view-users')">
             <svg viewBox="0 0 24 24"><path d="M16 11c1.66 0 2.99-1.34 2.99-3S17.66 5 16 5c-1.66 0-3 1.34-3 3s1.34 3 3 3zm-8 0c1.66 0 2.99-1.34 2.99-3S9.66 5 8 5C6.34 5 5 6.34 5 8s1.34 3 3 3zm0 2c-2.33 0-7 1.17-7 3.5V19h14v-2.5c0-2.33-4.67-3.5-7-3.5zm8 0c-.29 0-.62.02-.97.05 1.16.84 1.97 1.97 1.97 3.45V19h6v-2.5c0-2.33-4.67-3.5-7-3.5z"/></svg>
             <span class="nav-label">প্লেয়ার / ইউজার</span>
@@ -1760,15 +1752,15 @@
           <div class="card accent-border" style="margin-bottom: 20px; background: linear-gradient(90deg, #141c30, #1b2642);">
             <div style="display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 12px;">
               <div style="display: flex; align-items: center; gap: 12px;">
-                <span class="badge badge-live">লাইভ অ্যাপ কন্ট্রোল</span>
+                <span class="badge badge-live">PRO CASINO লাইভ কন্ট্রোল</span>
                 <span style="font-size: 0.95rem; font-weight: 600;" id="app-status-summary">
-                  🟢 ইউজার অ্যাপ সক্রিয় • ফ্রি ফায়ার টুর্নামেন্ট সার্ভার রানিং
+                  🟢 ইউজার অ্যাপ সক্রিয় • Pro Casino সার্ভার ও সকল গেমস রানিং
                 </span>
               </div>
               <div style="display: flex; gap: 8px;">
-                <button class="btn btn-primary btn-sm" onclick="openCreateTournamentModal()">
-                  <svg viewBox="0 0 24 24"><path d="M19 13h-6v6h-2v-6H5v-2h6V5h2v6h6v2z"/></svg>
-                  নতুন টুর্নামেন্ট
+                <button class="btn btn-primary btn-sm" onclick="switchView('view-finance')">
+                  <svg viewBox="0 0 24 24"><path d="M19 3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zM9 17H7v-7h2v7zm4 0h-2V7h2v10zm4 0h-2v-4h2v4z"/></svg>
+                  আর্থিক রিপোর্ট
                 </button>
                 <button class="btn btn-outline btn-sm" onclick="switchView('view-notices')">
                   <svg viewBox="0 0 24 24"><path d="M18 16v-5c0-3.07-1.63-5.64-4.5-6.32V4c0-.83-.67-1.5-1.5-1.5s-1.5.67-1.5 1.5v.68C7.64 5.36 6 7.92 6 11v5l-2 2v1h16v-1l-2-2z"/></svg>
@@ -1804,11 +1796,11 @@
 
             <div class="stat-card">
               <div class="stat-icon stat-gold">
-                <svg viewBox="0 0 24 24"><path d="M19 5h-2V3H7v2H5c-1.1 0-2 .9-2 2v1c0 2.55 1.92 4.63 4.39 4.94.63 1.5 1.98 2.63 3.61 2.96V19H7v2h10v-2h-4v-3.1c1.63-.33 2.98-1.46 3.61-2.96C19.08 12.63 21 10.55 21 8V7c0-1.1-.9-2-2-2z"/></svg>
+                <svg viewBox="0 0 24 24"><path d="M21 6H3c-1.1 0-2 .9-2 2v8c0 1.1.9 2 2 2h18c1.1 0 2-.9 2-2V8c0-1.1-.9-2-2-2zm-10 7H8v3H6v-3H3v-2h3V8h2v3h3v2zm4.5 2c-.83 0-1.5-.67-1.5-1.5s.67-1.5 1.5-1.5 1.5.67 1.5 1.5-.67 1.5-1.5 1.5zm4-3c-.83 0-1.5-.67-1.5-1.5S18.67 9 19.5 9s1.5.67 1.5 1.5-.67 1.5-1.5 1.5z"/></svg>
               </div>
               <div class="stat-info">
-                <div class="stat-title">সক্রিয় / আসন্ন ম্যাচ</div>
-                <div class="stat-value" id="stat-active-tournaments">0</div>
+                <div class="stat-title">সক্রিয় ক্যাসিনো গেমস</div>
+                <div class="stat-value" id="stat-active-games">0</div>
               </div>
             </div>
 
@@ -1817,8 +1809,8 @@
                 <svg viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 14.5v-9l6 4.5-6 4.5z"/></svg>
               </div>
               <div class="stat-info">
-                <div class="stat-title">চলমান লাইভ ম্যাচ</div>
-                <div class="stat-value" id="stat-live-tournaments">0</div>
+                <div class="stat-title">চলমান লাইভ সেশন</div>
+                <div class="stat-value" id="stat-live-sessions">0</div>
               </div>
             </div>
 
@@ -1827,8 +1819,8 @@
                 <svg viewBox="0 0 24 24"><path d="M9 16.2L4.8 12l-1.4 1.4L9 19 21 7l-1.4-1.4L9 16.2z"/></svg>
               </div>
               <div class="stat-info">
-                <div class="stat-title">সম্পন্ন টুর্নামেন্ট</div>
-                <div class="stat-value" id="stat-completed-tournaments">0</div>
+                <div class="stat-title">মোট গেম সেশন</div>
+                <div class="stat-value" id="stat-total-sessions">0</div>
               </div>
             </div>
 
@@ -1857,8 +1849,8 @@
                 <svg viewBox="0 0 24 24"><path d="M16 6l2.29 2.29-4.88 4.88-4-4L2 16.59 3.41 18l6-6 4 4 6.3-6.29L22 12V6z"/></svg>
               </div>
               <div class="stat-info">
-                <div class="stat-title">মোট টুর্নামেন্ট জয়েনিং</div>
-                <div class="stat-value" id="stat-total-joins">0</div>
+                <div class="stat-title">ক্যাসিনো বেট / ইন (BDT)</div>
+                <div class="stat-value" id="stat-casino-bets">৳ 0</div>
               </div>
             </div>
 
@@ -1867,8 +1859,8 @@
                 <svg viewBox="0 0 24 24"><path d="M11.8 10.9c-2.27-.59-3-1.2-3-2.15 0-1.09 1.01-1.85 2.7-1.85 1.78 0 2.44.85 2.5 2.1h2.21c-.07-1.72-1.12-3.3-3.21-3.81V3h-3v2.16c-1.94.42-3.5 1.68-3.5 3.61 0 2.31 1.91 3.46 4.7 4.13 2.5.6 3 1.48 3 2.41 0 .69-.49 1.79-2.7 1.79-2.06 0-2.87-.92-2.98-2.1h-2.2c.12 2.19 1.76 3.42 3.68 3.83V21h3v-2.15c1.95-.37 3.5-1.5 3.5-3.55 0-2.84-2.43-3.81-4.7-4.4z"/></svg>
               </div>
               <div class="stat-info">
-                <div class="stat-title">পুরস্কার বিতরণ (BDT)</div>
-                <div class="stat-value" id="stat-prizes-paid">৳ 0</div>
+                <div class="stat-title">গেম পেআউট / উইন (BDT)</div>
+                <div class="stat-value" id="stat-casino-payouts">৳ 0</div>
               </div>
             </div>
           </div>
@@ -1969,67 +1961,14 @@
                   <input type="checkbox" id="quick-toggle-registration" checked onchange="toggleRegistration(this.checked)" style="transform: scale(1.3); cursor: pointer;">
                 </div>
 
-                <div style="display: flex; justify-content: space-between; align-items: center; padding: 10px; background: var(--bg-surface); border-radius: var(--radius-sm);">
-                  <div>
-                    <div style="font-weight: 600; font-size: 0.9rem;">ম্যাচে জয়েনিং অনুমোদন</div>
-                    <div style="font-size: 0.75rem; color: var(--text-dim);">প্লেয়ারদের স্লট বুকিং করা সক্রিয়</div>
-                  </div>
-                  <input type="checkbox" id="quick-toggle-joining" checked onchange="toggleJoining(this.checked)" style="transform: scale(1.3); cursor: pointer;">
-                </div>
-
-                <button class="btn btn-primary" onclick="openCreateTournamentModal()" style="margin-top: 8px;">
-                  + নতুন টুর্নামেন্ট যোগ করুন
+                <button class="btn btn-primary" onclick="switchView('view-wallet')" style="margin-top: 8px;">
+                  💳 ওয়ালেট ও রিকোয়েস্ট দেখুন
                 </button>
               </div>
             </div>
 
           </div>
 
-        </section>
-
-        <!-- ==================== 2. TOURNAMENTS VIEW ==================== -->
-        <section id="view-tournaments" class="view-section">
-          <div class="toolbar">
-            <div class="search-box">
-              <svg viewBox="0 0 24 24"><path d="M15.5 14h-.79l-.28-.27C15.41 12.59 16 11.11 16 9.5 16 5.91 13.09 3 9.5 3S3 5.91 3 9.5 5.91 16 9.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99L20.49 19l-4.99-5zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14z"/></svg>
-              <input type="text" id="tournament-search" placeholder="টুর্নামেন্ট নাম বা আইডি খুঁজুন..." oninput="filterTournaments()">
-            </div>
-
-            <div class="filter-group">
-              <select class="filter-select" id="filter-tournament-status" onchange="filterTournaments()">
-                <option value="ALL">সব স্ট্যাটাস (All)</option>
-                <option value="Upcoming">আসন্ন (Upcoming)</option>
-                <option value="Live">লাইভ (Live)</option>
-                <option value="Completed">সম্পন্ন (Completed)</option>
-                <option value="Cancelled">বাতিল (Cancelled)</option>
-              </select>
-
-              <select class="filter-select" id="filter-tournament-game" onchange="filterTournaments()">
-                <option value="ALL">সব গেম (All Games)</option>
-                <option value="Free Fire">🔥 Free Fire</option>
-                <option value="Ludo">🎲 Ludo (লুডু)</option>
-              </select>
-
-              <select class="filter-select" id="filter-tournament-type" onchange="filterTournaments()">
-                <option value="ALL">সব ম্যাচ টাইপ (Solo/Duo/Squad/2P/4P)</option>
-                <option value="Solo">Solo</option>
-                <option value="Duo">Duo</option>
-                <option value="Squad">Squad</option>
-                <option value="2 Player">2 Player (Ludo)</option>
-                <option value="4 Player">4 Player (Ludo)</option>
-              </select>
-
-              <button class="btn btn-primary" onclick="openCreateTournamentModal()">
-                <svg viewBox="0 0 24 24"><path d="M19 13h-6v6h-2v-6H5v-2h6V5h2v6h6v2z"/></svg>
-                + নতুন টুর্নামেন্ট
-              </button>
-            </div>
-          </div>
-
-          <!-- Tournament Cards Container -->
-          <div class="tournament-grid" id="tournament-grid-container">
-            <!-- Populated dynamically -->
-          </div>
         </section>
 
         <!-- ==================== GAME MANAGEMENT VIEW ==================== -->
@@ -2155,7 +2094,7 @@
                 <thead>
                   <tr>
                     <th>প্লেয়ার / নাম</th>
-                    <th>ফ্রি ফায়ার IGN / UID</th>
+                    <th>প্লেয়ার আইডি / UID</th>
                     <th>ইমেইল</th>
                     <th>ওয়ালেট ব্যালেন্স</th>
                     <th>মোট ডিপোজিট</th>
@@ -2396,15 +2335,15 @@
               </div>
             </div>
 
-            <!-- 4. Tournament Operations & Margin -->
+            <!-- 4. Pro Casino Operations & Margin -->
             <div class="stat-card" style="border-left: 4px solid var(--primary); background: linear-gradient(135deg, rgba(245, 158, 11, 0.08), rgba(14, 19, 31, 0.95));">
               <div class="stat-icon stat-gold">
-                <svg viewBox="0 0 24 24"><path d="M19 5h-2V3H7v2H5c-1.1 0-2 .9-2 2v1c0 2.55 1.92 4.63 4.39 4.94.63 1.5 1.98 2.63 3.61 2.96V19H7v2h10v-2h-4v-3.1c1.63-.33 2.98-1.46 3.61-2.96C19.08 12.63 21 10.55 21 8V7c0-1.1-.9-2-2-2z"/></svg>
+                <svg viewBox="0 0 24 24"><path d="M21 6H3c-1.1 0-2 .9-2 2v8c0 1.1.9 2 2 2h18c1.1 0 2-.9 2-2V8c0-1.1-.9-2-2-2zm-10 7H8v3H6v-3H3v-2h3V8h2v3h3v2z"/></svg>
               </div>
               <div class="stat-info">
-                <div class="stat-title">অপারেশনাল গ্রস ব্যালেন্স (Margin)</div>
+                <div class="stat-title">ক্যাসিনো অপারেশনাল মার্জিন (Margin)</div>
                 <div class="stat-value" id="finance-stat-operational-margin" style="color: var(--primary);">৳ 0</div>
-                <div style="font-size: 0.75rem; color: var(--text-muted); margin-top: 3px;" id="finance-stat-tournament-flow">এন্ট্রি ফি − প্রাইজ পেআউট</div>
+                <div style="font-size: 0.75rem; color: var(--text-muted); margin-top: 3px;" id="finance-stat-casino-flow">বেট ইন − গেম পেআউট</div>
               </div>
             </div>
           </div>
@@ -2465,24 +2404,24 @@
             <!-- Operational Activity Metrics -->
             <div class="card" style="border-top: 3px solid var(--primary);">
               <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px;">
-                <span style="font-weight: 700; color: #fff; font-size: 0.95rem;">🎮 টুর্নামেন্ট অপারেশনাল লেনদেন</span>
-                <span class="badge badge-upcoming" id="finance-badge-tourney-count">0 টি ম্যাচ হিসাব</span>
+                <span style="font-weight: 700; color: #fff; font-size: 0.95rem;">🎰 প্রো ক্যাসিনো অপারেশনাল লেনদেন</span>
+                <span class="badge badge-upcoming" id="finance-badge-casino-count">0 টি গেম সক্রিয়</span>
               </div>
               <div style="display: flex; flex-direction: column; gap: 10px;">
                 <div style="display: flex; justify-content: space-between; align-items: center; padding: 10px 12px; background: var(--bg-surface); border-radius: var(--radius-sm);">
                   <div>
-                    <div style="font-size: 0.85rem; font-weight: 600;">সংগৃহীত এন্ট্রি ফি (Entry Fees)</div>
-                    <div style="font-size: 0.75rem; color: var(--text-dim);">প্লেয়ারদের অংশগ্রহণের ফি</div>
+                    <div style="font-size: 0.85rem; font-weight: 600;">মোট ক্যাসিনো বেট / ইন (Game Bets)</div>
+                    <div style="font-size: 0.75rem; color: var(--text-dim);">ক্যাসিনো ও ক্র্যাশ গেমসে প্লেয়ারদের বেট</div>
                   </div>
-                  <div style="font-size: 1.15rem; font-weight: 700; color: var(--success); font-family: var(--font-display);" id="finance-entry-fees-amt">৳ 0</div>
+                  <div style="font-size: 1.15rem; font-weight: 700; color: var(--success); font-family: var(--font-display);" id="finance-casino-bets-amt">৳ 0</div>
                 </div>
 
                 <div style="display: flex; justify-content: space-between; align-items: center; padding: 10px 12px; background: var(--bg-surface); border-radius: var(--radius-sm);">
                   <div>
-                    <div style="font-size: 0.85rem; font-weight: 600;">বিতরণকৃত প্রাইজমানি (Prizes Paid)</div>
-                    <div style="font-size: 0.75rem; color: var(--text-dim);">বিজয়ীদের প্রদত্ত পুরস্কার</div>
+                    <div style="font-size: 0.85rem; font-weight: 600;">মোট গেম উইন / পেআউট (Game Payouts)</div>
+                    <div style="font-size: 0.75rem; color: var(--text-dim);">বিজয়ী প্লেয়ারদের প্রদত্ত গেম উইনিং</div>
                   </div>
-                  <div style="font-size: 1.15rem; font-weight: 700; color: var(--accent); font-family: var(--font-display);" id="finance-prizes-paid-amt">৳ 0</div>
+                  <div style="font-size: 1.15rem; font-weight: 700; color: var(--accent); font-family: var(--font-display);" id="finance-casino-payouts-amt">৳ 0</div>
                 </div>
               </div>
             </div>
@@ -2496,7 +2435,7 @@
               <div style="font-size: 0.85rem; color: var(--text-muted); line-height: 1.6;">
                 <b style="color: #fff; font-size: 0.92rem;">হিসাবের সঠিক সংজ্ঞা ও স্বচ্ছতা নীতিমালা (Financial Integrity Notice):</b><br>
                 ১. <b>ওয়ালেট ক্যাশ ফ্লো (Net Wallet Movement):</b> মোট অনুমোদিত ডিপোজিট − মোট পরিশোধিত উইথড্র। এটি প্ল্যাটফর্মে প্লেয়ারদের সংরক্ষিত আমানতের বৃদ্ধি বা হ্রাস নির্দেশ করে; এটি কোম্পানির প্রকৃত নীট মুনাফা (Profit) নয়।<br>
-                ২. <b>অপারেশনাল মার্জিন (Operational Margin):</b> টুর্নামেন্ট এন্ট্রি ফি বাবদ আয় − প্রাইজ পুল বাবদ ব্যয়। যদি প্ল্যাটফর্মের অন্যান্য প্রাতিষ্ঠানিক পরিচালনা খরচ (যেমন গেমিং সার্ভার, টেকনিক্যাল সাপোর্ট, পেমেন্ট চ্যানেল চার্জ) ট্রানজেকশনে নথিভুক্ত না থাকে, তবে কাল্পনিক মুনাফা অনুমান না করে শুধুমাত্র প্রমাণিত লেনদেনের হিসাব প্রদর্শন করা হয়েছে।
+                ২. <b>ক্যাসিনো অপারেশনাল মার্জিন (Operational Margin):</b> ক্যাসিনো ও ক্র্যাশ গেমসে মোট বেট ইন − মোট গেম পেআউট। যদি প্ল্যাটফর্মের অন্যান্য প্রাতিষ্ঠানিক পরিচালনা খরচ (যেমন গেমিং সার্ভার, টেকনিক্যাল সাপোর্ট, পেমেন্ট চ্যানেল চার্জ) ট্রানজেকশনে নথিভুক্ত না থাকে, তবে কাল্পনিক মুনাফা অনুমান না করে শুধুমাত্র প্রমাণিত লেনদেনের হিসাব প্রদর্শন করা হয়েছে।
               </div>
             </div>
           </div>
@@ -2563,7 +2502,7 @@
                     <th>পরিশোধিত উইথড্র</th>
                     <th>নেট ওয়ালেট ফ্লো</th>
                     <th>পেন্ডিং আবেদন</th>
-                    <th>টুর্নামেন্ট মার্জিন</th>
+                    <th>ক্যাসিনো মার্জিন</th>
                   </tr>
                 </thead>
                 <tbody id="finance-daily-tbody">
@@ -2600,8 +2539,8 @@
                     <th>বাৎসরিক ডিপোজিট</th>
                     <th>বাৎসরিক উইথড্র</th>
                     <th>নেট ওয়ালেট বৃদ্ধি</th>
-                    <th>টুর্নামেন্ট এন্ট্রি ফি</th>
-                    <th>প্রাইজ পেআউট</th>
+                    <th>ক্যাসিনো বেট ইন</th>
+                    <th>গেম পেআউট</th>
                   </tr>
                 </thead>
                 <tbody id="finance-yearly-tbody">
@@ -2632,13 +2571,13 @@
                     <option value="TICKER">চলন্ত নোটিশ (Ticker Marquee on User App)</option>
                     <option value="POPUP">পিন্ড অ্যালার্ট (Top Banner Notice)</option>
                     <option value="MAINTENANCE">রক্ষণাবেক্ষণ ব্যানার (Maintenance Mode)</option>
-                    <option value="TOURNAMENT">টুর্নামেন্ট সতর্কতা (Tournament Alert)</option>
+                    <option value="CASINO">ক্যাসিনো ও গেমস সতর্কতা (Casino Alert)</option>
                   </select>
                 </div>
 
                 <div class="form-group">
                   <label>নোটিশ শিরোনাম (Title - বাংলা)</label>
-                  <input type="text" id="notice-title" class="form-control" placeholder="জরুরি ফ্রি ফায়ার টুর্নামেন্ট নোটিশ..." required oninput="updateNoticePreview()">
+                  <input type="text" id="notice-title" class="form-control" placeholder="জরুরি Pro Casino ও ডিপোজিট বোনাস নোটিশ..." required oninput="updateNoticePreview()">
                 </div>
               </div>
 
@@ -2651,7 +2590,7 @@
                   </button>
                 </div>
                 <div style="position: relative;">
-                  <textarea id="notice-body" class="form-control" rows="3" placeholder="সকল প্লেয়ারদের জানানো যাচ্ছে যে আজকের টুর্নামেন্টের রুম আইডি ও পাসওয়ার্ড ৫ মিনিট পূর্বে দেওয়া হবে..." required oninput="updateNoticePreview()" style="padding-right: 48px;"></textarea>
+                  <textarea id="notice-body" class="form-control" rows="3" placeholder="সকল প্লেয়ারদের জানানো যাচ্ছে যে Aviator, Crazy Time, ও Live Casino গেমসে আজ বিশাল ক্যাশব্যাক অফার চলছে..." required oninput="updateNoticePreview()" style="padding-right: 48px;"></textarea>
                   <button type="button" id="btn-voice-notice" onclick="toggleVoiceNoticeInput()" title="ভয়েসের মাধ্যমে নোটিশ লিখুন (Click to Speak)" style="position: absolute; right: 10px; bottom: 10px; width: 34px; height: 34px; border-radius: 50%; background: rgba(245, 158, 11, 0.15); border: 1px solid var(--border-color); color: var(--primary); display: flex; align-items: center; justify-content: center; cursor: pointer; transition: all 0.2s;" aria-label="ভয়েসের মাধ্যমে নোটিশ লিখুন">
                     <svg id="mic-icon-svg" viewBox="0 0 24 24" style="width: 20px; height: 20px; fill: currentColor;"><path d="M12 14c1.66 0 3-1.34 3-3V5c0-1.66-1.34-3-3-3S9 3.34 9 5v6c0 1.66 1.34 3 3 3z"/><path d="M17 11c0 2.76-2.24 5-5 5s-5-2.24-5-5H5c0 3.53 2.61 6.43 6 6.92V21h2v-3.08c3.39-.49 6-3.39 6-6.92h-2z"/></svg>
                   </button>
@@ -2668,7 +2607,7 @@
                   <span id="preview-type-badge">📢 লাইভ প্রিভিউ • ইউজার অ্যাপে যেমন দেখাবে</span>
                   <span id="preview-date-time">এখন</span>
                 </div>
-                <h4 id="preview-title" style="color:var(--primary); font-size:1.05rem; margin-bottom: 4px;">টুর্নামেন্ট আপডেট</h4>
+                <h4 id="preview-title" style="color:var(--primary); font-size:1.05rem; margin-bottom: 4px;">ক্যাসিনো আপডেট</h4>
                 <div class="notice-preview-text" id="preview-body">নোটিশ প্রিভিউ দেখতে উপরে টাইপ করুন...</div>
               </div>
 
@@ -2741,7 +2680,7 @@
                   <label>নোটিফিকেশন ক্যাটাগরি (Type / Category)</label>
                   <select class="form-control" id="notif-category" onchange="updateNotifPreview()">
                     <option value="GENERAL">📢 সাধারণ নোটিশ (General Notice)</option>
-                    <option value="TOURNAMENT">🏆 টুর্নামেন্ট অ্যালার্ট (Tournament Alert)</option>
+                    <option value="CASINO">🎰 ক্যাসিনো অ্যালার্ট (Casino Alert)</option>
                     <option value="WALLET">💰 ওয়ালেট ও পেমেন্ট (Wallet & Payment)</option>
                     <option value="URGENT">⚠️ জরুরি সতর্কতা (Urgent Alert)</option>
                   </select>
@@ -2750,7 +2689,7 @@
 
               <div class="form-group" style="margin-top: 12px;">
                 <label>নোটিফিকেশন শিরোনাম (Title) *</label>
-                <input type="text" id="notif-title" class="form-control" placeholder="যেমন: আজকের রাত ৯টার টুর্নামেন্ট আপডেট..." required oninput="updateNotifPreview()">
+                <input type="text" id="notif-title" class="form-control" placeholder="যেমন: আজকের ক্যাসিনো ডিপোজিট বোনাস ও লাইভ আপডেট..." required oninput="updateNotifPreview()">
               </div>
 
               <div class="form-group" style="margin-top: 12px;">
@@ -2885,15 +2824,15 @@
                 </div>
                 <div class="form-group" style="margin-bottom: 12px;">
                   <label>Telegram সাপোর্ট গ্রুপ / চ্যানেল লিংক</label>
-                  <input type="text" id="setting-telegram" class="form-control" value="https://t.me/nptournamentbd">
+                  <input type="text" id="setting-telegram" class="form-control" value="https://t.me/mostwin88">
                 </div>
                 <div class="form-group" style="margin-bottom: 12px;">
                   <label>YouTube চ্যানেল লিংক</label>
-                  <input type="text" id="setting-youtube" class="form-control" value="https://youtube.com/@nptournamentbd">
+                  <input type="text" id="setting-youtube" class="form-control" value="https://youtube.com/@mostwin88">
                 </div>
                 <div class="form-group" style="margin-bottom: 16px;">
                   <label>Facebook পেজ / গ্রুপ লিংক</label>
-                  <input type="text" id="setting-facebook" class="form-control" value="https://facebook.com/nptournamentbd">
+                  <input type="text" id="setting-facebook" class="form-control" value="https://facebook.com/mostwin88">
                 </div>
                 <button type="submit" class="btn btn-primary" style="width: 100%;">
                   💾 সাপোর্ট তথ্য সেভ করুন
@@ -3021,11 +2960,11 @@
               <div class="form-row">
                 <div class="form-group">
                   <label>ব্যানার শিরোনাম</label>
-                  <input type="text" id="banner-title" class="form-control" placeholder="NP CHAMPIONSHIP SEASON 12">
+                  <input type="text" id="banner-title" class="form-control" placeholder="MOSTWIN88 PRO CASINO">
                 </div>
                 <div class="form-group">
                   <label>ব্যানার সাবটাইটেল / বিবরণ</label>
-                  <input type="text" id="banner-sub" class="form-control" placeholder="সেরা ফ্রি ফায়ার টুর্নামেন্ট">
+                  <input type="text" id="banner-sub" class="form-control" placeholder="সেরা প্রো ক্যাসিনো ও লাইভ গেমিং প্ল্যাটফর্ম">
                 </div>
               </div>
               <div class="form-group" style="margin-top: 10px;">
@@ -3143,9 +3082,9 @@
       <svg viewBox="0 0 24 24"><path d="M3 13h8V3H3v10zm0 8h8v-6H3v6zm10 0h8V11h-8v10zm0-18v6h8V3h-8z"/></svg>
       <span>ড্যাশবোর্ড</span>
     </button>
-    <button class="bottom-nav-btn" onclick="switchView('view-tournaments')">
-      <svg viewBox="0 0 24 24"><path d="M19 5h-2V3H7v2H5c-1.1 0-2 .9-2 2v1c0 2.55 1.92 4.63 4.39 4.94.63 1.5 1.98 2.63 3.61 2.96V19H7v2h10v-2h-4v-3.1c1.63-.33 2.98-1.46 3.61-2.96C19.08 12.63 21 10.55 21 8V7c0-1.1-.9-2-2-2z"/></svg>
-      <span>ম্যাচ</span>
+    <button class="bottom-nav-btn" onclick="switchView('view-finance')">
+      <svg viewBox="0 0 24 24"><path d="M19 3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zM9 17H7v-7h2v7zm4 0h-2V7h2v10zm4 0h-2v-4h2v4z"/></svg>
+      <span>রিপোর্ট</span>
     </button>
     <button class="bottom-nav-btn" onclick="switchView('view-wallet')">
       <svg viewBox="0 0 24 24"><path d="M21 18v1c0 1.1-.9 2-2 2H5c-1.11 0-2-.9-2-2V5c0-1.1.89-2 2-2h14c1.1 0 2 .9 2 2v1h-9c-1.11 0-2 .9-2 2v8c0 1.1.89 2 2 2h9zm-9-2h10V8H12v8zm4-2.5c-.83 0-1.5-.67-1.5-1.5s.67-1.5 1.5-1.5 1.5.67 1.5 1.5-.67 1.5-1.5 1.5z"/></svg>
@@ -3163,333 +3102,7 @@
 
   <!-- ==================== MODALS ==================== -->
 
-  <!-- 1. CREATE / EDIT TOURNAMENT MODAL -->
-  <div class="modal-backdrop" id="modal-tournament">
-    <div class="modal-card">
-      <div class="modal-header">
-        <h3 class="modal-title">
-          <svg viewBox="0 0 24 24"><path d="M19 5h-2V3H7v2H5c-1.1 0-2 .9-2 2v1c0 2.55 1.92 4.63 4.39 4.94.63 1.5 1.98 2.63 3.61 2.96V19H7v2h10v-2h-4v-3.1c1.63-.33 2.98-1.46 3.61-2.96C19.08 12.63 21 10.55 21 8V7c0-1.1-.9-2-2-2z"/></svg>
-          <span id="txt-modal-tournament-title">নতুন ফ্রি ফায়ার টুর্নামেন্ট</span>
-        </h3>
-        <button class="modal-close" onclick="closeModal('modal-tournament')">✕</button>
-      </div>
-
-      <form id="tournament-form" onsubmit="handleSaveTournament(event)">
-        <input type="hidden" id="form-tournament-id">
-        <div class="modal-body">
-          <div class="form-row">
-            <div class="form-group">
-              <label style="font-weight: 700; color: var(--primary);">গেম নির্বাচন (Game Type) *</label>
-              <select class="form-control" id="t-game-name" onchange="onAdminGameChange(this.value)" required style="border-color: var(--primary); font-weight: 600;">
-                <option value="Free Fire">🔥 Free Fire (ফ্রি ফায়ার)</option>
-                <option value="Ludo">🎲 Ludo (লুডু টুর্নামেন্ট)</option>
-              </select>
-            </div>
-            <div class="form-group">
-              <label id="lbl-t-game-mode">গেম মোড (Game Mode)</label>
-              <select class="form-control" id="t-game-mode">
-                <option value="Battle Royale">Battle Royale (ব্যাটল রয়্যাল)</option>
-                <option value="Clash Squad">Clash Squad (সিএস)</option>
-                <option value="Lone Wolf">Lone Wolf (১ বনাম ১)</option>
-              </select>
-            </div>
-          </div>
-
-          <div class="form-group">
-            <label>টুর্নামেন্টের নাম (Title)</label>
-            <input type="text" id="t-title" class="form-control" placeholder="যেমন: FF Battle Royale Season 12 বা Ludo King 1v1 Cash Match" required>
-          </div>
-
-          <div class="form-row-3">
-            <div class="form-group">
-              <label>ম্যাচ টাইপ / প্লেয়ার সংখ্যা</label>
-              <select class="form-control" id="t-type" required>
-                <option value="Solo">Solo (১ জন)</option>
-                <option value="Duo">Duo (২ জন)</option>
-                <option value="Squad">Squad (৪ জন)</option>
-                <option value="2 Player">2 Player (১ বনাম ১)</option>
-                <option value="4 Player">4 Player (৪ জন)</option>
-              </select>
-            </div>
-
-            <div class="form-group">
-              <label>ম্যাপ / বোর্ড (Map / Board)</label>
-              <select class="form-control" id="t-map" required>
-                <option value="Bermuda">Bermuda</option>
-                <option value="Purgatory">Purgatory</option>
-                <option value="Kalahari">Kalahari</option>
-                <option value="Alpine">Alpine</option>
-                <option value="Nexterra">Nexterra</option>
-                <option value="Classic Board">Classic Board (লুডু)</option>
-                <option value="Master Board">Master Board (লুডু)</option>
-                <option value="Quick Board">Quick Board (লুডু)</option>
-              </select>
-            </div>
-
-            <div class="form-group">
-              <label id="lbl-t-max-slots">ম্যাক্সিমাম স্লট (Max Slots)</label>
-              <input type="number" id="t-max-slots" class="form-control" value="48" min="2" max="100" required>
-            </div>
-          </div>
-
-          <div class="form-row">
-            <div class="form-group">
-              <label>এন্ট্রি ফি (Entry Fee ৳)</label>
-              <input type="number" id="t-entry-fee" class="form-control" value="30" min="0" required>
-            </div>
-
-            <div class="form-group">
-              <label>মোট প্রাইজপুল (Total Prize ৳)</label>
-              <input type="number" id="t-prize-pool" class="form-control" value="1000" min="0" required>
-            </div>
-          </div>
-
-          <div class="form-row-3">
-            <div class="form-group">
-              <label>১ম স্থান প্রাইজ (৳)</label>
-              <input type="number" id="t-prize-1st" class="form-control" value="500">
-            </div>
-            <div class="form-group">
-              <label>২য় স্থান প্রাইজ (৳)</label>
-              <input type="number" id="t-prize-2nd" class="form-control" value="300">
-            </div>
-            <div class="form-group">
-              <label>প্রতি কিল পুরস্কার (৳)</label>
-              <input type="number" id="t-prize-per-kill" class="form-control" value="10">
-            </div>
-          </div>
-
-          <div class="form-row">
-            <div class="form-group">
-              <label>ম্যাচ শুরুর তারিখ ও সময়</label>
-              <input type="text" id="t-schedule-time" class="form-control" placeholder="যেমন: আজ রাত ৯:০০ PM" required>
-            </div>
-
-            <div class="form-group">
-              <label>ম্যাচ স্ট্যাটাস</label>
-              <select class="form-control" id="t-status">
-                <option value="Upcoming">Upcoming (আসন্ন)</option>
-                <option value="Live">Live (চলমান)</option>
-                <option value="Completed">Completed (সম্পন্ন)</option>
-                <option value="Cancelled">Cancelled (বাতিল)</option>
-              </select>
-            </div>
-          </div>
-
-          <div class="form-row">
-            <div class="form-group">
-              <label>রুম আইডি (Room ID)</label>
-              <input type="text" id="t-room-id" class="form-control" placeholder="ম্যাচের পূর্বে লিখুন">
-            </div>
-
-            <div class="form-group">
-              <label>রুম পাসওয়ার্ড (Room Pass)</label>
-              <input type="text" id="t-room-pass" class="form-control" placeholder="পাসওয়ার্ড লিখুন">
-            </div>
-          </div>
-
-          <div style="background: rgba(245, 158, 11, 0.08); border: 1px solid rgba(245, 158, 11, 0.25); border-radius: var(--radius-sm); padding: 10px 12px; margin-bottom: 12px;">
-            <label style="display:flex; align-items:center; gap:8px; cursor:pointer; font-size:0.85rem; font-weight:600; color:var(--text-main);">
-              <input type="checkbox" id="t-room-published" style="transform:scale(1.2);">
-              <span>রুম আইডি ও পাসওয়ার্ড এখনই ইউজারদের জন্য প্রকাশ করুন (Publish to Joined Users)</span>
-            </label>
-          </div>
-
-          <div class="form-group">
-            <label>ব্যানার ইমেজ URL</label>
-            <input type="text" id="t-banner-url" class="form-control" placeholder="https://i.postimg.cc/fW9ht5RM/54f31449f5f91cf0cc223cc635cd5952jpg.jpg">
-          </div>
-
-          <div class="form-group">
-            <label>টুর্নামেন্টের নিয়মাবলী ও বিবরণ</label>
-            <textarea id="t-description" class="form-control" rows="2" placeholder="হ্যাকিং বা চিটিং সম্পূর্ণ নিষিদ্ধ, এমুলেটর এলাউড নয়..."></textarea>
-          </div>
-        </div>
-
-        <div class="modal-footer">
-          <button type="button" class="btn btn-secondary" onclick="closeModal('modal-tournament')">বাতিল</button>
-          <button type="submit" class="btn btn-primary" id="btn-save-tournament">💾 Save Match (ম্যাচ সেভ করুন)</button>
-        </div>
-      </form>
-    </div>
-  </div>
-
-  <!-- 2. PARTICIPANTS LIST MODAL -->
-  <div class="modal-backdrop" id="modal-participants">
-    <div class="modal-card" style="max-width: 720px;">
-      <div class="modal-header">
-        <h3 class="modal-title">
-          <svg viewBox="0 0 24 24"><path d="M16 11c1.66 0 2.99-1.34 2.99-3S17.66 5 16 5c-1.66 0-3 1.34-3 3s1.34 3 3 3zm-8 0c1.66 0 2.99-1.34 2.99-3S9.66 5 8 5C6.34 5 5 6.34 5 8s1.34 3 3 3zm0 2c-2.33 0-7 1.17-7 3.5V19h14v-2.5c0-2.33-4.67-3.5-7-3.5zm8 0c-.29 0-.62.02-.97.05 1.16.84 1.97 1.97 1.97 3.45V19h6v-2.5c0-2.33-4.67-3.5-7-3.5z"/></svg>
-          <span id="participants-modal-title">অংশগ্রহণকারী প্লেয়ার তালিকা</span>
-        </h3>
-        <button class="modal-close" onclick="closeModal('modal-participants')">✕</button>
-      </div>
-
-      <div class="modal-body">
-        <div style="display:flex; justify-content:space-between; align-items:center; background:var(--bg-card); padding:10px 14px; border-radius:var(--radius-sm); border:1px solid var(--border-subtle);">
-          <span id="participants-slot-count" style="font-weight:700; color:var(--primary);">স্লট বুকিং: 0 / 48</span>
-          <button class="btn btn-outline btn-sm" onclick="exportParticipantsCSV()">CSV এক্সপোর্ট</button>
-        </div>
-
-        <div class="table-container" style="max-height: 400px; overflow-y: auto;">
-          <table>
-            <thead>
-              <tr>
-                <th>স্লট #</th>
-                <th>প্লেয়ার নাম</th>
-                <th>গেম IGN</th>
-                <th>UID</th>
-                <th>জয়েনিং সময়</th>
-                <th style="text-align:right;">অ্যাকশন</th>
-              </tr>
-            </thead>
-            <tbody id="participants-table-tbody">
-              <!-- Populated dynamically -->
-            </tbody>
-          </table>
-        </div>
-      </div>
-
-      <div class="modal-footer">
-        <button type="button" class="btn btn-secondary" onclick="closeModal('modal-participants')">বন্ধ করুন</button>
-      </div>
-    </div>
-  </div>
-
-  <!-- 3. MATCH RESULTS & PRIZE MODAL -->
-  <div class="modal-backdrop" id="modal-results">
-    <div class="modal-card" style="max-width: 680px;">
-      <div class="modal-header">
-        <h3 class="modal-title">
-          <svg viewBox="0 0 24 24"><path d="M19 5h-2V3H7v2H5c-1.1 0-2 .9-2 2v1c0 2.55 1.92 4.63 4.39 4.94.63 1.5 1.98 2.63 3.61 2.96V19H7v2h10v-2h-4v-3.1c1.63-.33 2.98-1.46 3.61-2.96C19.08 12.63 21 10.55 21 8V7c0-1.1-.9-2-2-2z"/></svg>
-          <span>ফলাফল ও প্রাইজ প্রদান (Match Results & Prizes)</span>
-        </h3>
-        <button class="modal-close" onclick="closeModal('modal-results')">✕</button>
-      </div>
-
-      <form id="match-results-form" onsubmit="handleDistributePrizes(event)">
-        <input type="hidden" id="results-tournament-id">
-        <div class="modal-body">
-          <div style="background: rgba(239, 68, 68, 0.1); border: 1px solid rgba(239, 68, 68, 0.3); padding: 12px; border-radius: var(--radius-sm); color: #f87171; font-size: 0.85rem;">
-            ⚠️ <b>সতর্কতা:</b> প্রাইজ একবার কনফার্ম করা হলে এটি সরাসরি বিজয়ী প্লেয়ারদের ওয়ালেটে জমা হবে এবং লেজারে রেকর্ড হবে।
-          </div>
-
-          <div class="form-row">
-            <div class="form-group">
-              <label>১ম স্থান বিজয়ী (1st Winner)</label>
-              <select class="form-control" id="res-winner-1st" required>
-                <!-- Populated with joined participants -->
-              </select>
-            </div>
-            <div class="form-group">
-              <label>১ম স্থান প্রাইজ মানি (৳)</label>
-              <input type="number" id="res-prize-1st-val" class="form-control" value="500" required>
-            </div>
-          </div>
-
-          <div class="form-row">
-            <div class="form-group">
-              <label>২য় স্থান বিজয়ী (2nd Winner)</label>
-              <select class="form-control" id="res-winner-2nd">
-                <option value="">নির্বাচন করুন (ঐচ্ছিক)</option>
-              </select>
-            </div>
-            <div class="form-group">
-              <label>২য় স্থান প্রাইজ মানি (৳)</label>
-              <input type="number" id="res-prize-2nd-val" class="form-control" value="300">
-            </div>
-          </div>
-
-          <div class="form-row">
-            <div class="form-group">
-              <label>টপ কিলার প্লেয়ার (Top Killer)</label>
-              <select class="form-control" id="res-winner-topkill">
-                <option value="">নির্বাচন করুন (ঐচ্ছিক)</option>
-              </select>
-            </div>
-            <div class="form-group">
-              <label>কিল প্রাইজ বা মোট বোনাস (৳)</label>
-              <input type="number" id="res-prize-kill-val" class="form-control" value="200">
-            </div>
-          </div>
-        </div>
-
-        <div class="modal-footer">
-          <button type="button" class="btn btn-secondary" onclick="closeModal('modal-results')">বাতিল</button>
-          <button type="submit" class="btn btn-success">
-            🏆 প্রাইজ ওয়ালেটে যুক্ত ও ম্যাচ সম্পন্ন করুন
-          </button>
-        </div>
-      </form>
-    </div>
-  </div>
-
-  <!-- 4. MATCH ROOM ID & PASSWORD MODAL (Dedicated Room Setup) -->
-  <div class="modal-backdrop" id="modal-room-details">
-    <div class="modal-card" style="max-width: 580px;">
-      <div class="modal-header">
-        <h3 class="modal-title">
-          <svg viewBox="0 0 24 24"><path d="M18 8h-1V6c0-2.76-2.24-5-5-5S7 3.24 7 6v2H6c-1.1 0-2 .9-2 2v10c0 1.1.9 2 2 2h12c1.1 0 2-.9 2-2V10c0-1.1-.9-2-2-2zm-6 9c-1.1 0-2-.9-2-2s.9-2 2-2 2 .9 2 2-.9 2-2 2zm3.1-9H8.9V6c0-1.71 1.39-3.1 3.1-3.1 1.71 0 3.1 1.39 3.1 3.1v2z"/></svg>
-          <span id="room-modal-title">ম্যাচ রুম আইডি ও পাসওয়ার্ড সেটআপ</span>
-        </h3>
-        <button class="modal-close" onclick="closeModal('modal-room-details')">✕</button>
-      </div>
-
-      <form id="room-details-form" onsubmit="handleSaveRoomDetails(event)">
-        <input type="hidden" id="room-tournament-id">
-        <div class="modal-body">
-          <div style="background: rgba(56, 189, 248, 0.08); border: 1px solid rgba(56, 189, 248, 0.25); border-radius: var(--radius-sm); padding: 12px; margin-bottom: 14px;">
-            <div style="font-weight: 700; color: #38bdf8; font-size: 0.95rem;" id="room-modal-match-name">ম্যাচ নাম</div>
-            <div style="font-size: 0.78rem; color: var(--text-dim); margin-top: 2px;">ম্যাচ আইডি: <span id="room-modal-match-id" style="font-family: monospace;">-</span></div>
-          </div>
-
-          <div class="form-group">
-            <label style="display:flex; justify-content:space-between;">
-              <span>রুম আইডি (Room ID) *</span>
-              <span style="font-size:0.75rem; color:var(--text-dim);">গেম কাস্টম রুম নম্বর</span>
-            </label>
-            <input type="text" id="room-modal-id" class="form-control" placeholder="যেমন: 45892301" required autocomplete="off">
-          </div>
-
-          <div class="form-group">
-            <label style="display:flex; justify-content:space-between;">
-              <span>রুম পাসওয়ার্ড (Room Password) *</span>
-              <span style="font-size:0.75rem; color:var(--text-dim);">কাস্টম রুমের পাসওয়ার্ড</span>
-            </label>
-            <input type="text" id="room-modal-pass" class="form-control" placeholder="যেমন: 1234" required autocomplete="off">
-          </div>
-
-          <div style="background: rgba(245, 158, 11, 0.08); border: 1px solid rgba(245, 158, 11, 0.25); border-radius: var(--radius-sm); padding: 12px; margin-bottom: 14px;">
-            <label style="display:flex; align-items:flex-start; gap:10px; cursor:pointer;">
-              <input type="checkbox" id="room-modal-published" style="transform:scale(1.3); margin-top:3px;">
-              <div>
-                <span style="font-weight: 700; color: #fbbf24; font-size: 0.88rem;">রুম বিবরণী ইউজারদের জন্য প্রকাশ করুন (Publish Room Details)</span>
-                <p style="font-size: 0.75rem; color: var(--text-dim); margin-top: 4px; line-height: 1.4;">
-                  টিক চিহ্ন দিলে শুধুমাত্র এই ম্যাচে অংশ নেওয়া প্লেয়াররা তাদের অ্যাপের "আমার ম্যাচ" ট্যাবে Room ID ও Password দেখতে পাবেন। টিক না দেওয়া থাকলে ইউজারদের "Room details have not been published yet" বার্তা দেখানো হবে।
-                </p>
-              </div>
-            </label>
-          </div>
-
-          <div id="room-details-feedback" style="display:none; font-size:0.8rem; padding:8px 12px; border-radius:var(--radius-sm); margin-bottom:12px;"></div>
-        </div>
-
-        <div class="modal-footer" style="display:flex; justify-content:space-between; align-items:center;">
-          <button type="button" class="btn btn-outline btn-sm" id="btn-toggle-publish-modal" onclick="togglePublishFromModal()">
-            📢 তাৎক্ষণিক স্ট্যাটাস পরিবর্তন
-          </button>
-          <div style="display:flex; gap:8px;">
-            <button type="button" class="btn btn-secondary" onclick="closeModal('modal-room-details')">বাতিল</button>
-            <button type="submit" class="btn btn-primary" id="btn-save-room-details">
-              💾 সেভ ও আপডেট করুন
-            </button>
-          </div>
-        </div>
-      </form>
-    </div>
-  </div>
-
-  <!-- 5. CREATE / EDIT GAME MODAL -->
+  <!-- CREATE / EDIT GAME MODAL -->
   <div class="modal-backdrop" id="modal-game">
     <div class="modal-card" style="max-width: 580px;">
       <div class="modal-header">
@@ -3646,9 +3259,9 @@
 
           <div class="stat-card" style="padding: 12px 14px;">
             <div class="stat-info">
-              <div class="stat-title">টুর্নামেন্ট প্রাইজ জয় (Winnings)</div>
+              <div class="stat-title">ক্যাসিনো গেম জয় (Game Winnings)</div>
               <div class="stat-value" id="pfin-total-winnings" style="color: var(--primary); font-size: 1.35rem;">৳ 0</div>
-              <div style="font-size: 0.72rem; color: var(--text-dim);" id="pfin-winnings-count">0 টি প্রাইজ পেআউট</div>
+              <div style="font-size: 0.72rem; color: var(--text-dim);" id="pfin-winnings-count">0 টি গেম পেআউট</div>
             </div>
           </div>
         </div>
@@ -3984,7 +3597,7 @@
   <script>
     /**
      * MOSTWIN88 - ADMIN ENGINE
-     * Full Realtime Database integration for tournament control, user management, and finances.
+     * Full Realtime Database integration for Pro Casino control, user management, and finances.
      */
     const FIREBASE_CONFIG = window.NP_FIREBASE_CONFIG || {
       apiKey: "AIzaSyACoy90K8WHdxSU3_KtUiwWNPHGErT0P3w",
@@ -3993,7 +3606,7 @@
       projectId: "mostwin88-febbf",
       storageBucket: "mostwin88-febbf.firebasestorage.app",
       messagingSenderId: "1091271266801",
-      appId: "1:1091271266801:web:e2821653c6f4efc71a8fad",
+      appId: "1:1091271266801:web:0b4da03572189864077450",
       measurementId: "G-5Q07GB1YD6"
     };
 
@@ -4044,7 +3657,6 @@
         email: 'Mijanbabu2015@gmail.com',
         role: 'USER_ADMIN'
       },
-      tournaments: [],
       games: [],
       users: [],
       deposits: [],
@@ -4059,16 +3671,15 @@
       settings: {
         maintenance: false,
         allowRegistration: true,
-        allowJoining: true,
         bkashNumber: '01712-345678',
         nagadNumber: '01812-345678',
         rocketNumber: '01912-3456780',
         minDeposit: 50,
         minWithdraw: 100,
         whatsapp: '+8801712345678',
-        telegram: 'https://t.me/nptournamentbd',
-        youtube: 'https://youtube.com/@nptournamentbd',
-        facebook: 'https://facebook.com/nptournamentbd'
+        telegram: 'https://t.me/mostwin88',
+        youtube: 'https://youtube.com/@mostwin88',
+        facebook: 'https://facebook.com/mostwin88'
       },
       // Financial Dashboard & Player Reports State (Features 1 & 2)
       financePeriod: 'ALL',
@@ -4167,26 +3778,15 @@
         const connected = snap.val() === true;
         const ind = document.getElementById('system-status-indicator');
         const txt = document.getElementById('system-status-text');
-        if (connected) {
-          ind.className = 'status-indicator';
-          txt.innerText = '🟢 রিয়েলটাইম ফায়ারবেস কানেক্টেড (np-trunament-bd)';
-        } else {
-          ind.className = 'status-indicator demo';
-          txt.innerText = '⚡ ফায়ারবেস কানেক্টিং...';
+        if (ind && txt) {
+          if (connected) {
+            ind.className = 'status-indicator';
+            txt.innerText = '🟢 রিয়েলটাইম ফায়ারবেস কানেক্টেড (mostwin88-febbf)';
+          } else {
+            ind.className = 'status-indicator demo';
+            txt.innerText = '⚡ ফায়ারবেস কানেক্টিং...';
+          }
         }
-      });
-
-      // 1. Tournaments
-      db.ref('tournaments').on('value', (snap) => {
-        if (snap.exists()) {
-          const val = snap.val();
-          STATE.tournaments = Object.keys(val).map(k => ({ id: k, ...val[k] }));
-        } else {
-          STATE.tournaments = [];
-        }
-        renderTournaments();
-        renderDashboard();
-        renderFinanceDashboard();
       });
 
       // 2. Users (Fixed to handle real-time user list without permissions crash)
@@ -4292,6 +3892,7 @@
           NP_RAW.sessions = []; STATE.gameSessions = [];
         }
         renderGameActivity();
+        renderDashboard();
       }, (err) => {
         console.warn('Game sessions listener notice:', err);
       });
@@ -4362,6 +3963,8 @@
           STATE.games = [];
         }
         renderGames();
+        renderDashboard();
+        renderFinanceDashboard();
       });
 
       // 11. Notifications (Firebase Node: notifications)
@@ -4699,14 +4302,22 @@
     // --- Dashboard Renderer ---
     function renderDashboard() {
       const totalUsers = STATE.users.length;
-      const activeTourneys = STATE.tournaments.filter(t => (t.status || '').toLowerCase() === 'upcoming').length;
-      const liveTourneys = STATE.tournaments.filter(t => (t.status || '').toLowerCase() === 'live').length;
-      const completedTourneys = STATE.tournaments.filter(t => (t.status || '').toLowerCase() === 'completed').length;
+      const activeGames = STATE.games.filter(g => (g.status === 'Active' || g.active === true)).length;
+      const liveSessions = (STATE.gameSessions || []).filter(s => s.status === 'ACTIVE').length;
+      const totalSessions = (STATE.gameSessions || []).length;
       const pendingDeps = STATE.deposits.filter(d => d.status === 'Pending').length;
       const pendingWiths = STATE.withdrawals.filter(w => isWithdrawalOpen(w.status)).length;
-      const totalJoins = STATE.tournaments.reduce((acc, t) => acc + (t.joinedCount || 0), 0);
-      const totalPrizesPaid = STATE.ledger
-        .filter(l => l.type === 'PRIZE_PAYOUT')
+      const totalCasinoBets = STATE.ledger
+        .filter(l => {
+          const t = (l.type || '').toUpperCase();
+          return (t === 'GAME_BET' || t === 'BET' || t === 'CASINO_BET' || t === 'ENTRY_FEE' || t.includes('JOIN'));
+        })
+        .reduce((acc, l) => acc + (parseFloat(l.amount) || 0), 0);
+      const totalCasinoPayouts = STATE.ledger
+        .filter(l => {
+          const t = (l.type || '').toUpperCase();
+          return (t === 'GAME_WIN' || t === 'CASINO_WIN' || t === 'PRIZE_PAYOUT' || t === 'CASHOUT');
+        })
         .reduce((acc, l) => acc + (parseFloat(l.amount) || 0), 0);
 
       // Financial Summary: ONLY Approved Deposits & Completed Withdrawals (Pending/Rejected excluded!)
@@ -4718,39 +4329,37 @@
       const totalCompletedWithdrawAmount = completedWithdrawals.reduce((acc, w) => acc + (parseFloat(w.amount) || 0), 0);
       const totalCompletedWithdrawCount = completedWithdrawals.length;
 
-      document.getElementById('stat-total-users').innerText = totalUsers;
-      document.getElementById('stat-active-tournaments').innerText = activeTourneys;
-      document.getElementById('stat-live-tournaments').innerText = liveTourneys;
-      document.getElementById('stat-completed-tournaments').innerText = completedTourneys;
-      document.getElementById('stat-pending-deposits').innerText = pendingDeps;
-      document.getElementById('stat-pending-withdrawals').innerText = pendingWiths;
-      document.getElementById('stat-total-joins').innerText = totalJoins;
-      document.getElementById('stat-prizes-paid').innerText = '৳ ' + totalPrizesPaid;
+      const setTxt = (id, val) => { const el = document.getElementById(id); if (el) el.innerText = val; };
+      setTxt('stat-total-users', totalUsers);
+      setTxt('stat-active-games', activeGames);
+      setTxt('stat-live-sessions', liveSessions);
+      setTxt('stat-total-sessions', totalSessions);
+      setTxt('stat-pending-deposits', pendingDeps);
+      setTxt('stat-pending-withdrawals', pendingWiths);
+      setTxt('stat-casino-bets', '৳ ' + Math.round(totalCasinoBets).toLocaleString('en-US'));
+      setTxt('stat-casino-payouts', '৳ ' + Math.round(totalCasinoPayouts).toLocaleString('en-US'));
 
       // Update Financial Summary Cards
-      const elDepAmt = document.getElementById('stat-successful-deposits-amt');
-      const elDepCnt = document.getElementById('stat-successful-deposits-cnt');
-      const elWithAmt = document.getElementById('stat-successful-withdrawals-amt');
-      const elWithCnt = document.getElementById('stat-successful-withdrawals-cnt');
-
-      if (elDepAmt) elDepAmt.innerText = '৳ ' + totalApprovedDepositAmount.toLocaleString('en-US');
-      if (elDepCnt) elDepCnt.innerText = totalApprovedDepositCount + ' টি সফল লেনদেন';
-      if (elWithAmt) elWithAmt.innerText = '৳ ' + totalCompletedWithdrawAmount.toLocaleString('en-US');
-      if (elWithCnt) elWithCnt.innerText = totalCompletedWithdrawCount + ' টি সফল লেনদেন';
+      setTxt('stat-successful-deposits-amt', '৳ ' + totalApprovedDepositAmount.toLocaleString('en-US'));
+      setTxt('stat-successful-deposits-cnt', totalApprovedDepositCount + ' টি সফল লেনদেন');
+      setTxt('stat-successful-withdrawals-amt', '৳ ' + totalCompletedWithdrawAmount.toLocaleString('en-US'));
+      setTxt('stat-successful-withdrawals-cnt', totalCompletedWithdrawCount + ' টি সফল লেনদেন');
 
       // Badges
       const totalPending = pendingDeps + pendingWiths;
-      document.getElementById('sidebar-pending-badge').innerText = totalPending;
-      document.getElementById('count-pending-deposits').innerText = pendingDeps;
-      document.getElementById('count-pending-withdrawals').innerText = pendingWiths;
+      setTxt('sidebar-pending-badge', totalPending);
+      setTxt('count-pending-deposits', pendingDeps);
+      setTxt('count-pending-withdrawals', pendingWiths);
 
       // Quick Toggles
-      document.getElementById('quick-toggle-maintenance').checked = !!STATE.settings.maintenance;
-      document.getElementById('quick-toggle-registration').checked = STATE.settings.allowRegistration !== false;
-      document.getElementById('quick-toggle-joining').checked = STATE.settings.allowJoining !== false;
+      const elMaint = document.getElementById('quick-toggle-maintenance');
+      if (elMaint) elMaint.checked = !!STATE.settings.maintenance;
+      const elReg = document.getElementById('quick-toggle-registration');
+      if (elReg) elReg.checked = STATE.settings.allowRegistration !== false;
 
       // Live Feed
       const tbody = document.getElementById('dashboard-recent-tbody');
+      if (!tbody) return;
       tbody.innerHTML = '';
       const recentItems = [...STATE.deposits, ...STATE.withdrawals].slice(0, 5);
 
@@ -4771,621 +4380,6 @@
           </tr>
         `;
       });
-    }
-
-    // --- Tournaments View & Actions ---
-    function onAdminGameChange(game) {
-      const modeSelect = document.getElementById('t-game-mode');
-      const typeSelect = document.getElementById('t-type');
-      const mapSelect = document.getElementById('t-map');
-      const slotsInput = document.getElementById('t-max-slots');
-      const bannerInput = document.getElementById('t-banner-url');
-      const descInput = document.getElementById('t-description');
-      const titleModal = document.getElementById('txt-modal-tournament-title');
-
-      if (game === 'Ludo') {
-        if (titleModal && titleModal.innerText.includes('নতুন')) {
-          titleModal.innerText = 'নতুন লুডু টুর্নামেন্ট তৈরি (Ludo Match)';
-        }
-        if (modeSelect) {
-          modeSelect.innerHTML = `
-            <option value="Classic Ludo">Classic Ludo (ক্লাসিক লুডু)</option>
-            <option value="Quick Ludo">Quick Ludo (কুইক লুডু)</option>
-            <option value="Timer Ludo">Timer Ludo (টাইমার মোড)</option>
-          `;
-        }
-        if (typeSelect) {
-          typeSelect.innerHTML = `
-            <option value="2 Player">2 Player (১ বনাম ১)</option>
-            <option value="4 Player">4 Player (৪ জন)</option>
-          `;
-        }
-        if (mapSelect) {
-          mapSelect.innerHTML = `
-            <option value="Classic Board">Classic Board</option>
-            <option value="Master Board">Master Board</option>
-            <option value="Quick Board">Quick Board</option>
-          `;
-        }
-        if (slotsInput && (!slotsInput.value || slotsInput.value === '48')) {
-          slotsInput.value = '2';
-        }
-        if (bannerInput && (!bannerInput.value || bannerInput.value.includes('photo-1542751371') || bannerInput.value.includes('54f31449f5f91cf0cc223cc635cd5952jpg'))) {
-          bannerInput.value = 'https://images.unsplash.com/photo-1610890716171-6b1bb98ffd09?auto=format&fit=crop&w=700&q=80';
-        }
-        if (descInput && !descInput.value) {
-          descInput.value = 'লুডু কিং রুম কোড ম্যাচ শুরুর ৫ মিনিট পূর্বে দেওয়া হবে। খেলা শেষে বিজয়ী স্ক্রিনশট সংরক্ষণ করুন। চিটিং বা কয়েন হ্যাক সম্পূর্ণ নিষিদ্ধ।';
-        }
-      } else {
-        if (titleModal && titleModal.innerText.includes('নতুন')) {
-          titleModal.innerText = 'নতুন ফ্রি ফায়ার টুর্নামেন্ট তৈরি';
-        }
-        if (bannerInput && (!bannerInput.value || bannerInput.value.includes('photo-1610890716171') || bannerInput.value.includes('photo-1542751371'))) {
-          bannerInput.value = 'https://i.postimg.cc/fW9ht5RM/54f31449f5f91cf0cc223cc635cd5952jpg.jpg';
-        }
-        if (modeSelect) {
-          modeSelect.innerHTML = `
-            <option value="Battle Royale">Battle Royale (ব্যাটল রয়্যাল)</option>
-            <option value="Clash Squad">Clash Squad (সিএস)</option>
-            <option value="Lone Wolf">Lone Wolf (১ বনাম ১)</option>
-          `;
-        }
-        if (typeSelect) {
-          typeSelect.innerHTML = `
-            <option value="Solo">Solo (১ জন)</option>
-            <option value="Duo">Duo (২ জন)</option>
-            <option value="Squad">Squad (৪ জন)</option>
-          `;
-        }
-        if (mapSelect) {
-          mapSelect.innerHTML = `
-            <option value="Bermuda">Bermuda</option>
-            <option value="Purgatory">Purgatory</option>
-            <option value="Kalahari">Kalahari</option>
-            <option value="Alpine">Alpine</option>
-            <option value="Nexterra">Nexterra</option>
-          `;
-        }
-        if (slotsInput && (slotsInput.value === '2' || slotsInput.value === '4')) {
-          slotsInput.value = '48';
-        }
-      }
-    }
-
-    function renderTournaments() {
-      const container = document.getElementById('tournament-grid-container');
-      const search = (document.getElementById('tournament-search').value || '').toLowerCase();
-      const statusFilter = document.getElementById('filter-tournament-status').value;
-      const gameFilter = document.getElementById('filter-tournament-game') ? document.getElementById('filter-tournament-game').value : 'ALL';
-      const typeFilter = document.getElementById('filter-tournament-type').value;
-
-      const filtered = STATE.tournaments.filter(t => {
-        const matchSearch = (t.title || '').toLowerCase().includes(search) || (t.id || '').toLowerCase().includes(search);
-        const matchStatus = statusFilter === 'ALL' || (t.status || '').toLowerCase() === statusFilter.toLowerCase();
-        const matchGame = gameFilter === 'ALL' || (t.gameName || 'Free Fire').toLowerCase() === gameFilter.toLowerCase();
-        const matchType = typeFilter === 'ALL' || (t.type || '').toLowerCase() === typeFilter.toLowerCase();
-        return matchSearch && matchStatus && matchGame && matchType;
-      });
-
-      if (filtered.length === 0) {
-        container.innerHTML = `<div style="grid-column: 1/-1; text-align:center; padding: 40px; color:var(--text-dim);">কোনো টুর্নামেন্ট পাওয়া যায়নি</div>`;
-        return;
-      }
-
-      container.innerHTML = filtered.map(t => {
-        const maxSlots = t.maxSlots || 48;
-        const joinedCount = t.joinedCount || 0;
-        const pct = Math.min(100, Math.round((joinedCount / maxSlots) * 100));
-        const status = t.status || 'Upcoming';
-        const statusBadgeClass = status.toLowerCase() === 'live' ? 'badge-live' : status.toLowerCase() === 'completed' ? 'badge-completed' : status.toLowerCase() === 'cancelled' ? 'badge-cancelled' : 'badge-upcoming';
-
-        const defaultCardBanner = t.gameName === 'Ludo'
-          ? 'https://images.unsplash.com/photo-1610890716171-6b1bb98ffd09?auto=format&fit=crop&w=600&q=80'
-          : 'https://i.postimg.cc/fW9ht5RM/54f31449f5f91cf0cc223cc635cd5952jpg.jpg';
-        let cardBanner = t.bannerUrl || t.banner || defaultCardBanner;
-        if (t.gameName !== 'Ludo' && (!cardBanner || cardBanner.includes('photo-1542751371') || cardBanner.includes('photo-1511512578'))) {
-          cardBanner = 'https://i.postimg.cc/fW9ht5RM/54f31449f5f91cf0cc223cc635cd5952jpg.jpg';
-        }
-
-        return `
-          <div class="esports-card">
-            <div class="card-banner" style="background-image: url('${cardBanner}');">
-              <span class="banner-badge-top badge ${statusBadgeClass}">${status}</span>
-              <span class="banner-type-tag">${t.gameName === 'Ludo' ? '🎲 Ludo' : '🔥 FF'} • ${t.type || 'Solo'} • ${t.map || 'Bermuda'}</span>
-            </div>
-
-            <div class="card-body">
-              <h3 class="card-game-title">${escapeHtml(t.title)}</h3>
-              
-              <div class="card-meta-row">
-                <div class="meta-item">
-                  <span class="meta-label">এন্ট্রি ফি (Fee)</span>
-                  <span class="meta-val">৳ ${t.entryFee || 0}</span>
-                </div>
-                <div class="meta-item">
-                  <span class="meta-label">মোট প্রাইজপুল</span>
-                  <span class="meta-val">৳ ${t.prizePool || 0}</span>
-                </div>
-              </div>
-
-              <div class="slot-progress-wrap">
-                <div class="slot-text">
-                  <span>স্লট বুকিং</span>
-                  <span style="font-weight:700; color:#fff;">${joinedCount} / ${maxSlots}</span>
-                </div>
-                <div class="slot-bar-bg">
-                  <div class="slot-bar-fill" style="width: ${pct}%;"></div>
-                </div>
-              </div>
-
-              <div class="room-cred-box">
-                <div style="flex:1;">
-                  <div style="display:flex; align-items:center; gap:6px; margin-bottom:4px; flex-wrap:wrap;">
-                    <span style="color:var(--text-dim); font-size:0.75rem; font-weight:600;">রুম ক্রেডেনশিয়াল:</span>
-                    ${t.roomPublished === true || t.roomPublished === 'true'
-                      ? `<span class="badge badge-approved" style="font-size:0.68rem; padding:1px 6px;">🟢 প্রকাশিত (Live)</span>`
-                      : `<span class="badge badge-pending" style="font-size:0.68rem; padding:1px 6px;">⏸️ অপ্রকাশিত (Hidden)</span>`
-                    }
-                  </div>
-                  <span class="room-code">ID: ${escapeHtml(t.roomId || 'দেওয়া হয়নি')} | Pass: ${escapeHtml(t.roomPass || 'দেওয়া হয়নি')}</span>
-                </div>
-                <div style="display:flex; gap:6px; align-items:center;">
-                  <button class="btn btn-secondary btn-sm" onclick="openRoomModal('${t.id}')" title="রুম আইডি ও পাসওয়ার্ড সেটআপ">
-                    🔑 রুম সেটআপ
-                  </button>
-                  <button class="btn btn-outline btn-sm" onclick="togglePublishRoom('${t.id}')" title="${t.roomPublished ? 'ইউজারদের কাছ থেকে লুকান' : 'ইউজারদের নিকট প্রকাশ করুন'}">
-                    ${t.roomPublished === true || t.roomPublished === 'true' ? '🔒 হাইড' : '📢 পাবলিশ'}
-                  </button>
-                </div>
-              </div>
-
-              <div class="card-actions">
-                <button class="btn btn-outline btn-sm" onclick="openParticipantsModal('${t.id}')" style="flex:1;">
-                  👥 প্লেয়ার (${joinedCount})
-                </button>
-                <button class="btn btn-primary btn-sm" onclick="openResultsModal('${t.id}')" style="flex:1;">
-                  🏆 ফলাফল
-                </button>
-                <button class="btn-icon" onclick="openEditTournamentModal('${t.id}')" title="এডিট">
-                  <svg viewBox="0 0 24 24"><path d="M3 17.25V21h3.75L17.81 9.94l-3.75-3.75L3 17.25zM20.71 7.04c.39-.39.39-1.02 0-1.41l-2.34-2.34c-.39-.39-1.02-.39-1.41 0l-1.83 1.83 3.75 3.75 1.83-1.83z"/></svg>
-                </button>
-                <button class="btn-icon" onclick="deleteTournament('${t.id}')" title="ডিলিট" style="color:var(--accent);">
-                  <svg viewBox="0 0 24 24"><path d="M6 19c0 1.1.9 2 2 2h8c1.1 0 2-.9 2-2V7H6v12zM19 4h-3.5l-1-1h-5l-1 1H5v2h14V4z"/></svg>
-                </button>
-              </div>
-            </div>
-          </div>
-        `;
-      }).join('');
-    }
-
-    function filterTournaments() {
-      renderTournaments();
-    }
-
-    function openCreateTournamentModal() {
-      document.getElementById('tournament-form').reset();
-      document.getElementById('form-tournament-id').value = '';
-      document.getElementById('txt-modal-tournament-title').innerText = 'নতুন টুর্নামেন্ট তৈরি';
-      document.getElementById('t-game-name').value = 'Free Fire';
-      onAdminGameChange('Free Fire');
-      document.getElementById('t-game-mode').value = 'Battle Royale';
-      document.getElementById('t-schedule-time').value = 'আজ রাত ৯:০০ PM';
-      document.getElementById('t-banner-url').value = 'https://i.postimg.cc/fW9ht5RM/54f31449f5f91cf0cc223cc635cd5952jpg.jpg';
-      document.getElementById('btn-save-tournament').innerHTML = '💾 Save Match (ম্যাচ সেভ করুন)';
-      openModal('modal-tournament');
-    }
-
-    function openEditTournamentModal(id) {
-      const t = STATE.tournaments.find(item => item.id === id);
-      if (!t) return;
-
-      document.getElementById('form-tournament-id').value = t.id;
-      document.getElementById('txt-modal-tournament-title').innerText = 'টুর্নামেন্ট সম্পাদনা: ' + t.id;
-      const g = t.gameName || 'Free Fire';
-      document.getElementById('t-game-name').value = g;
-      onAdminGameChange(g);
-      document.getElementById('t-game-mode').value = t.gameMode || (g === 'Ludo' ? 'Classic Ludo' : 'Battle Royale');
-      document.getElementById('t-title').value = t.title || '';
-      document.getElementById('t-type').value = t.type || (g === 'Ludo' ? '2 Player' : 'Solo');
-      document.getElementById('t-map').value = t.map || (g === 'Ludo' ? 'Classic Board' : 'Bermuda');
-      document.getElementById('t-max-slots').value = t.maxSlots || (g === 'Ludo' ? 2 : 48);
-      document.getElementById('t-entry-fee').value = t.entryFee || 0;
-      document.getElementById('t-prize-pool').value = t.prizePool || 0;
-      document.getElementById('t-prize-1st').value = t.prize1st || 0;
-      document.getElementById('t-prize-2nd').value = t.prize2nd || 0;
-      document.getElementById('t-prize-per-kill').value = t.perKill || t.prizeKill || 0;
-      document.getElementById('t-schedule-time').value = t.scheduleTime || '';
-      document.getElementById('t-status').value = t.status || 'Upcoming';
-      document.getElementById('t-room-id').value = t.roomId || '';
-      document.getElementById('t-room-pass').value = t.roomPass || '';
-      document.getElementById('t-room-published').checked = (t.roomPublished === true || t.roomPublished === 'true');
-      const defaultEditBanner = g === 'Ludo' 
-        ? 'https://images.unsplash.com/photo-1610890716171-6b1bb98ffd09?auto=format&fit=crop&w=700&q=80' 
-        : 'https://i.postimg.cc/fW9ht5RM/54f31449f5f91cf0cc223cc635cd5952jpg.jpg';
-      let editBanner = t.bannerUrl || t.banner || '';
-      if (g !== 'Ludo' && (!editBanner || editBanner.includes('photo-1542751371') || editBanner.includes('photo-1511512578'))) {
-        editBanner = defaultEditBanner;
-      }
-      document.getElementById('t-banner-url').value = editBanner;
-      document.getElementById('t-description').value = t.description || '';
-      document.getElementById('btn-save-tournament').innerHTML = '💾 Update Match (ম্যাচ আপডেট করুন)';
-
-      openModal('modal-tournament');
-    }
-
-    async function handleSaveTournament(e) {
-      e.preventDefault();
-      const id = document.getElementById('form-tournament-id').value;
-      const gameName = document.getElementById('t-game-name').value.trim() || 'Free Fire';
-      const gameMode = document.getElementById('t-game-mode').value;
-      const title = document.getElementById('t-title').value.trim();
-      const type = document.getElementById('t-type').value;
-      const map = document.getElementById('t-map').value;
-      const maxSlots = parseInt(document.getElementById('t-max-slots').value, 10);
-      const entryFee = parseFloat(document.getElementById('t-entry-fee').value);
-      const prizePool = parseFloat(document.getElementById('t-prize-pool').value);
-      const prize1st = parseFloat(document.getElementById('t-prize-1st').value) || 0;
-      const prize2nd = parseFloat(document.getElementById('t-prize-2nd').value) || 0;
-      const perKill = parseFloat(document.getElementById('t-prize-per-kill').value) || 0;
-      const scheduleTime = document.getElementById('t-schedule-time').value.trim();
-      const status = document.getElementById('t-status').value;
-      const roomId = document.getElementById('t-room-id').value.trim();
-      const roomPass = document.getElementById('t-room-pass').value.trim();
-      const roomPublished = document.getElementById('t-room-published').checked;
-      let rawBanner = document.getElementById('t-banner-url').value.trim();
-      const defaultFFBanner = 'https://i.postimg.cc/fW9ht5RM/54f31449f5f91cf0cc223cc635cd5952jpg.jpg';
-      if (!rawBanner || (gameName === 'Free Fire' && (rawBanner.includes('photo-1542751371') || rawBanner.includes('photo-1511512578')))) {
-        rawBanner = gameName === 'Ludo' ? 'https://images.unsplash.com/photo-1610890716171-6b1bb98ffd09?auto=format&fit=crop&w=700&q=80' : defaultFFBanner;
-      }
-      const bannerUrl = rawBanner;
-      const description = document.getElementById('t-description').value.trim();
-
-      if (!title) {
-        showToast('টুর্নামেন্টের নাম লিখুন!', 'error');
-        return;
-      }
-
-      const btn = document.getElementById('btn-save-tournament');
-      if (btn.disabled) return;
-      btn.disabled = true;
-      const originalText = btn.innerHTML;
-      btn.innerHTML = `<span class="spinner-sm"></span> সেভ হচ্ছে...`;
-
-      const data = {
-        title,
-        gameName,
-        gameMode,
-        type,
-        map,
-        maxSlots,
-        entryFee,
-        prizePool,
-        prize1st,
-        prize2nd,
-        perKill,
-        prizeKill: perKill,
-        scheduleTime,
-        status,
-        roomId,
-        roomPass,
-        roomPublished,
-        bannerUrl,
-        banner: bannerUrl,
-        description,
-        updatedAt: firebase.database.ServerValue.TIMESTAMP
-      };
-
-      if (db) {
-        try {
-          if (id) {
-            await db.ref(`tournaments/${id}`).update(data);
-            recordAuditLog('TOURNAMENT_UPDATED', id, `Updated: ${title}`);
-            showToast('✅ ম্যাচ সফলভাবে আপডেট হয়েছে এবং ইউজার প্যানেলে সিঙ্ক হয়েছে!', 'success');
-          } else {
-            const newKey = db.ref('tournaments').push().key;
-            data.id = newKey;
-            data.joinedCount = 0;
-            data.createdAt = firebase.database.ServerValue.TIMESTAMP;
-            await db.ref(`tournaments/${newKey}`).set(data);
-            recordAuditLog('TOURNAMENT_CREATED', newKey, `Created: ${title}`);
-            showToast('🎉 নতুন টুর্নামেন্ট সফলভাবে Save হয়েছে এবং ইউজার প্যানেলে প্রদর্শিত হচ্ছে!', 'success');
-          }
-          closeModal('modal-tournament');
-        } catch (err) {
-          showToast('সেভ ব্যর্থ: ' + err.message, 'error');
-        } finally {
-          btn.disabled = false;
-          btn.innerHTML = originalText;
-        }
-      }
-    }
-
-    // --- Dedicated Room ID & Password Management ---
-    function openRoomModal(id) {
-      const t = STATE.tournaments.find(item => item.id === id);
-      if (!t) return;
-
-      document.getElementById('room-tournament-id').value = t.id;
-      document.getElementById('room-modal-title').innerText = `রুম সেটআপ: ${t.title}`;
-      document.getElementById('room-modal-match-name').innerText = t.title;
-      document.getElementById('room-modal-match-id').innerText = t.id;
-      document.getElementById('room-modal-id').value = t.roomId || '';
-      document.getElementById('room-modal-pass').value = t.roomPass || '';
-      const isPublished = (t.roomPublished === true || t.roomPublished === 'true');
-      document.getElementById('room-modal-published').checked = isPublished;
-
-      const btnToggle = document.getElementById('btn-toggle-publish-modal');
-      btnToggle.innerText = isPublished ? '🔒 তাৎক্ষণিক আনপাবলিশ (Hide)' : '📢 তাৎক্ষণিক পাবলিশ (Show)';
-      btnToggle.className = isPublished ? 'btn btn-outline btn-sm' : 'btn btn-success btn-sm';
-
-      const feedback = document.getElementById('room-details-feedback');
-      feedback.style.display = 'none';
-
-      openModal('modal-room-details');
-    }
-
-    async function handleSaveRoomDetails(e) {
-      e.preventDefault();
-      const id = document.getElementById('room-tournament-id').value;
-      if (!id) return;
-
-      const roomId = document.getElementById('room-modal-id').value.trim();
-      const roomPass = document.getElementById('room-modal-pass').value.trim();
-      const roomPublished = document.getElementById('room-modal-published').checked;
-      const btn = document.getElementById('btn-save-room-details');
-
-      if (btn.disabled) return;
-      btn.disabled = true;
-      const originalText = btn.innerHTML;
-      btn.innerHTML = `<span class="spinner-sm"></span> সেভ হচ্ছে...`;
-
-      if (db) {
-        try {
-          // Dedicated update path: modifies ONLY room details without touching joinedCount, participants, fees or prizes
-          await db.ref(`tournaments/${id}`).update({
-            roomId,
-            roomPass,
-            roomPublished,
-            roomUpdatedAt: firebase.database.ServerValue.TIMESTAMP
-          });
-
-          recordAuditLog('ROOM_DETAILS_SAVED', id, `Room ID: ${roomId}, Pass: ${roomPass}, Published: ${roomPublished}`);
-          showToast(`✅ ম্যাচ "${id}"-এর রুম আইডি ও পাসওয়ার্ড সফলভাবে সংরক্ষিত হয়েছে!`, 'success');
-          closeModal('modal-room-details');
-        } catch (err) {
-          console.error("Save Room Error:", err);
-          showToast('রুম সেভ ব্যর্থ: ' + err.message, 'error');
-        } finally {
-          btn.disabled = false;
-          btn.innerHTML = originalText;
-        }
-      }
-    }
-
-    async function togglePublishRoom(id) {
-      const t = STATE.tournaments.find(item => item.id === id);
-      if (!t) return;
-
-      const current = (t.roomPublished === true || t.roomPublished === 'true');
-      const next = !current;
-
-      if (next && (!t.roomId || !t.roomId.trim())) {
-        if (!confirm('সতর্কতা: এই ম্যাচে এখনো কোনো Room ID দেওয়া হয়নি। আপনি কি তবুও এটি পাবলিশ করতে চান?')) {
-          openRoomModal(id);
-          return;
-        }
-      }
-
-      if (db) {
-        try {
-          await db.ref(`tournaments/${id}`).update({
-            roomPublished: next,
-            roomUpdatedAt: firebase.database.ServerValue.TIMESTAMP
-          });
-
-          recordAuditLog('ROOM_PUBLISH_TOGGLED', id, `Published set to ${next}`);
-          showToast(next ? '📢 রুম ক্রেডেনশিয়াল ইউজারদের জন্য উন্মুক্ত করা হয়েছে!' : '🔒 রুম ক্রেডেনশিয়াল ইউজারদের কাছ থেকে লুকানো হয়েছে।', next ? 'success' : 'info');
-        } catch (err) {
-          showToast('স্ট্যাটাস পরিবর্তন ব্যর্থ: ' + err.message, 'error');
-        }
-      }
-    }
-
-    async function togglePublishFromModal() {
-      const id = document.getElementById('room-tournament-id').value;
-      if (!id) return;
-      const checkbox = document.getElementById('room-modal-published');
-      checkbox.checked = !checkbox.checked;
-      const btnToggle = document.getElementById('btn-toggle-publish-modal');
-      btnToggle.innerText = checkbox.checked ? '🔒 তাৎক্ষণিক আনপাবলিশ (Hide)' : '📢 তাৎক্ষণিক পাবলিশ (Show)';
-      btnToggle.className = checkbox.checked ? 'btn btn-outline btn-sm' : 'btn btn-success btn-sm';
-    }
-
-    // Alias for backward compatibility
-    function editRoomCreds(id) {
-      openRoomModal(id);
-    }
-
-    async function deleteTournament(id) {
-      if (confirm(`আপনি কি নিশ্চিত যে টুর্নামেন্ট "${id}" ডিলিট করতে চান?`)) {
-        if (db) {
-          try {
-            await db.ref(`tournaments/${id}`).remove();
-            recordAuditLog('TOURNAMENT_DELETED', id, 'Tournament removed');
-            showToast('টুর্নামেন্ট সফলভাবে মুছে ফেলা হয়েছে', 'info');
-          } catch (err) {
-            showToast('মুছতে ব্যর্থ: ' + err.message, 'error');
-          }
-        }
-      }
-    }
-
-    // --- Participants Management ---
-    function openParticipantsModal(tourneyId) {
-      const t = STATE.tournaments.find(item => item.id === tourneyId);
-      if (!t) return;
-
-      document.getElementById('participants-modal-title').innerText = `অংশগ্রহণকারী: ${t.title}`;
-      const joinedCount = t.joinedCount || 0;
-      const maxSlots = t.maxSlots || 48;
-      document.getElementById('participants-slot-count').innerText = `স্লট বুকিং: ${joinedCount} / ${maxSlots}`;
-
-      const tbody = document.getElementById('participants-table-tbody');
-      tbody.innerHTML = '';
-
-      const participantsObj = t.participants || {};
-      const participantKeys = Object.keys(participantsObj);
-
-      if (participantKeys.length === 0) {
-        tbody.innerHTML = `<tr><td colspan="6" style="text-align:center; padding:20px; color:var(--text-dim);">এখনও কোনো প্লেয়ার এই টুর্নামেন্টে জয়েন করেনি</td></tr>`;
-      } else {
-        participantKeys.forEach((uid, idx) => {
-          const p = participantsObj[uid];
-          tbody.innerHTML += `
-            <tr>
-              <td><b>#${idx + 1}</b></td>
-              <td><b>${escapeHtml(p.name || 'Player')}</b></td>
-              <td><span class="badge badge-upcoming">${escapeHtml(p.ign || 'IGN')}</span></td>
-              <td><small style="font-family:monospace;">${escapeHtml(p.gameUid || uid)}</small></td>
-              <td style="color:var(--text-dim); font-size:0.8rem;">${p.joinedAt ? new Date(p.joinedAt).toLocaleTimeString('bn-BD') : 'সম্প্রতি'}</td>
-              <td style="text-align:right;">
-                <button class="btn btn-secondary btn-sm" onclick="kickParticipant('${t.id}', '${uid}')" style="color:var(--accent);">
-                  বাতিল ও রিফান্ড
-                </button>
-              </td>
-            </tr>
-          `;
-        });
-      }
-
-      openModal('modal-participants');
-    }
-
-    async function kickParticipant(tourneyId, uid) {
-      const t = STATE.tournaments.find(item => item.id === tourneyId);
-      if (!t || !db) return;
-
-      if (!confirm(`এই প্লেয়ারকে টুর্নামেন্ট থেকে বাতিল করে ৳${t.entryFee} এন্ট্রি ফি রিফান্ড করতে চান?`)) return;
-
-      try {
-        const entryFee = parseFloat(t.entryFee) || 0;
-        const newCount = Math.max(0, (t.joinedCount || 1) - 1);
-
-        const updates = {};
-        updates[`tournaments/${tourneyId}/participants/${uid}`] = null;
-        if ((t.joinedCount || 0) > 0) updates[`tournaments/${tourneyId}/joinedCount`] = firebase.database.ServerValue.increment(-1);
-        updates[`users/${uid}/joinedMatches/${tourneyId}`] = null;
-
-        // Get user fresh balance
-        const uSnap = await db.ref(`users/${uid}/balance`).once('value');
-        const curBal = parseFloat(uSnap.val()) || 0;
-        const newBal = curBal + entryFee;
-        updates[`users/${uid}/balance`] = firebase.database.ServerValue.increment(entryFee);   // atomic refund
-
-        const trxKey = db.ref('transactions').push().key;
-        updates[`transactions/${trxKey}`] = {
-          trxId: trxKey,
-          uid,
-          type: 'REFUND',
-          amount: entryFee,
-          beforeBal: curBal,
-          afterBal: newBal,
-          date: new Date().toLocaleString('bn-BD'),
-          timestamp: firebase.database.ServerValue.TIMESTAMP,
-          note: `Refund for removal from ${t.title}`
-        };
-
-        await db.ref().update(updates);
-        recordAuditLog('PARTICIPANT_KICKED', tourneyId, `Kicked and refunded ৳${entryFee} to ${uid}`);
-        showToast('প্লেয়ার বাতিল ও রিফান্ড সম্পন্ন!', 'success');
-        openParticipantsModal(tourneyId);
-      } catch (err) {
-        showToast('রিফান্ড ব্যর্থ: ' + err.message, 'error');
-      }
-    }
-
-    // --- Results & Prize Distribution ---
-    function openResultsModal(tourneyId) {
-      const t = STATE.tournaments.find(item => item.id === tourneyId);
-      if (!t) return;
-
-      document.getElementById('results-tournament-id').value = t.id;
-      document.getElementById('res-prize-1st-val').value = t.prize1st || 500;
-      document.getElementById('res-prize-2nd-val').value = t.prize2nd || 300;
-      document.getElementById('res-prize-kill-val').value = t.perKill || t.prizeKill || 100;
-
-      const sel1 = document.getElementById('res-winner-1st');
-      const sel2 = document.getElementById('res-winner-2nd');
-      const sel3 = document.getElementById('res-winner-topkill');
-
-      const parts = t.participants ? Object.values(t.participants) : STATE.users;
-      const optionsHtml = parts.map(p => `<option value="${p.uid}">${p.name} (${p.ign || p.uid})</option>`).join('');
-
-      sel1.innerHTML = `<option value="">১ম স্থান বিজয়ী নির্বাচন করুন</option>` + optionsHtml;
-      sel2.innerHTML = `<option value="">২য় স্থান বিজয়ী নির্বাচন করুন</option>` + optionsHtml;
-      sel3.innerHTML = `<option value="">টপ কিলার নির্বাচন করুন</option>` + optionsHtml;
-
-      openModal('modal-results');
-    }
-
-    async function handleDistributePrizes(e) {
-      e.preventDefault();
-      const tourneyId = document.getElementById('results-tournament-id').value;
-      const t = STATE.tournaments.find(item => item.id === tourneyId);
-      if (!t || !db) return;
-
-      const u1st = document.getElementById('res-winner-1st').value;
-      const p1st = parseFloat(document.getElementById('res-prize-1st-val').value) || 0;
-      const u2nd = document.getElementById('res-winner-2nd').value;
-      const p2nd = parseFloat(document.getElementById('res-prize-2nd-val').value) || 0;
-      const uKill = document.getElementById('res-winner-topkill').value;
-      const pKill = parseFloat(document.getElementById('res-prize-kill-val').value) || 0;
-
-      if (!u1st) {
-        showToast('১ম স্থান বিজয়ী নির্বাচন করুন', 'error');
-        return;
-      }
-
-      if (!confirm('আপনি কি নিশ্চিত যে প্রাইজ বিতরণ করে ম্যাচটি সম্পন্ন করতে চান? বিজয়ীদের ওয়ালেটে তাৎক্ষণিক ব্যালেন্স জমা হবে।')) return;
-
-      try {
-        const updates = {};
-        updates[`tournaments/${tourneyId}/status`] = 'Completed';
-
-        // Helper to credit prize
-        const creditWinner = async (uid, amount, label) => {
-          if (!uid || amount <= 0) return;
-          const uSnap = await db.ref(`users/${uid}/balance`).once('value');
-          const curBal = parseFloat(uSnap.val()) || 0;
-          const newBal = curBal + amount;
-          updates[`users/${uid}/balance`] = firebase.database.ServerValue.increment(amount);   // atomic: game payouts landing at the same time are kept
-
-          const trxKey = db.ref('transactions').push().key;
-          updates[`transactions/${trxKey}`] = {
-            trxId: trxKey,
-            uid,
-            type: 'PRIZE_PAYOUT',
-            amount,
-            beforeBal: curBal,
-            afterBal: newBal,
-            date: new Date().toLocaleString('bn-BD'),
-            timestamp: firebase.database.ServerValue.TIMESTAMP,
-            note: `${label} for ${t.title}`
-          };
-        };
-
-        await creditWinner(u1st, p1st, '1st Place Prize');
-        if (u2nd && p2nd > 0) await creditWinner(u2nd, p2nd, '2nd Place Prize');
-        if (uKill && pKill > 0) await creditWinner(uKill, pKill, 'Top Killer Bonus');
-
-        await db.ref().update(updates);
-        recordAuditLog('PRIZES_DISTRIBUTED', tourneyId, `Prizes distributed for ${t.title}`);
-        showToast('🏆 প্রাইজ সফলভাবে বিতরণ করা হয়েছে এবং ম্যাচ সম্পন্ন হয়েছে!', 'success');
-        closeModal('modal-results');
-      } catch (err) {
-        showToast('প্রাইজ প্রদানে সমস্যা: ' + err.message, 'error');
-      }
     }
 
     // --- Popular & Crash Games Management (Firebase: games node) ---
@@ -6694,7 +5688,7 @@
     }
 
     function updateNoticePreview() {
-      const title = document.getElementById('notice-title').value.trim() || 'টুর্নামেন্ট আপডেট';
+      const title = document.getElementById('notice-title').value.trim() || 'ক্যাসিনো আপডেট';
       const body = document.getElementById('notice-body').value.trim() || 'নোটিশ প্রিভিউ দেখতে উপরে টাইপ করুন...';
       const type = document.getElementById('notice-type').value;
 
@@ -7000,7 +5994,7 @@
       }
 
       tbody.innerHTML = STATE.notifications.map(n => {
-        const catBadge = n.category === 'TOURNAMENT' ? 'badge-live' : n.category === 'WALLET' ? 'badge-approved' : n.category === 'URGENT' ? 'badge-rejected' : 'badge-upcoming';
+        const catBadge = (n.category === 'CASINO' || n.category === 'TOURNAMENT') ? 'badge-live' : n.category === 'WALLET' ? 'badge-approved' : n.category === 'URGENT' ? 'badge-rejected' : 'badge-upcoming';
         const isBroadcast = n.target === 'ALL' || !n.target || n.targetType === 'ALL';
         const recipientDisplay = isBroadcast
           ? `<span class="badge badge-upcoming">📢 সকল ইউজার (All)</span>`
@@ -7103,9 +6097,9 @@
       document.getElementById('setting-min-deposit').value = STATE.settings.minDeposit || 50;
       document.getElementById('setting-min-withdraw').value = STATE.settings.minWithdraw || 100;
       document.getElementById('setting-whatsapp').value = STATE.settings.whatsapp || '+8801712345678';
-      document.getElementById('setting-telegram').value = STATE.settings.telegram || 'https://t.me/nptournamentbd';
-      document.getElementById('setting-youtube').value = STATE.settings.youtube || 'https://youtube.com/@nptournamentbd';
-      document.getElementById('setting-facebook').value = STATE.settings.facebook || 'https://facebook.com/nptournamentbd';
+      document.getElementById('setting-telegram').value = STATE.settings.telegram || 'https://t.me/mostwin88';
+      document.getElementById('setting-youtube').value = STATE.settings.youtube || 'https://youtube.com/@mostwin88';
+      document.getElementById('setting-facebook').value = STATE.settings.facebook || 'https://facebook.com/mostwin88';
 
       // Load Bonus & Turnover Settings
       if (document.getElementById('setting-bonus-enabled')) {
@@ -7593,8 +6587,8 @@
       try {
         const key = db.ref('banners').push().key;
         await db.ref(`banners/${key}`).set({
-          title: title || 'MOSTWIN88',
-          sub: sub || 'সেরা ফ্রি ফায়ার টুর্নামেন্ট',
+          title: title || 'MOSTWIN88 PRO CASINO',
+          sub: sub || 'সেরা প্রো ক্যাসিনো ও লাইভ গেমিং প্ল্যাটফর্ম',
           img,
           createdAt: firebase.database.ServerValue.TIMESTAMP
         });
@@ -7616,7 +6610,7 @@
           statusText.innerHTML = '🔴 <b>রক্ষণাবেক্ষণ মোড চালু</b> • ইউজার অ্যাপ লক করা আছে';
           showToast('রক্ষণাবেক্ষণ মোড চালু হয়েছে', 'error');
         } else {
-          statusText.innerHTML = '🟢 ইউজার অ্যাপ সক্রিয় • ফ্রি ফায়ার টুর্নামেন্ট সার্ভার রানিং';
+          statusText.innerHTML = '🟢 ইউজার অ্যাপ সক্রিয় • Pro Casino সার্ভার ও সকল গেমস রানিং';
           showToast('ইউজার অ্যাপ পুনরায় সক্রিয় করা হয়েছে', 'success');
         }
         recordAuditLog('MAINTENANCE_TOGGLE', 'APP_SETTINGS', `Maintenance: ${checked}`);
@@ -7631,17 +6625,6 @@
         await db.ref('settings/allowRegistration').set(checked);
         recordAuditLog('REGISTRATION_TOGGLE', 'APP_SETTINGS', `Registration: ${checked}`);
         showToast(checked ? 'নতুন প্লেয়ার রেজিস্ট্রেশন উন্মুক্ত' : 'নতুন রেজিস্ট্রেশন বন্ধ করা হয়েছে', 'info');
-      } catch (err) {
-        showToast('টগল ব্যর্থ: ' + err.message, 'error');
-      }
-    }
-
-    async function toggleJoining(checked) {
-      if (!db) return;
-      try {
-        await db.ref('settings/allowJoining').set(checked);
-        recordAuditLog('JOINING_TOGGLE', 'APP_SETTINGS', `Tournament Joining: ${checked}`);
-        showToast(checked ? 'টুর্নামেন্ট জয়েনিং সক্রিয়' : 'টুর্নামেন্ট জয়েনিং সাময়িক স্থগিত', 'info');
       } catch (err) {
         showToast('টগল ব্যর্থ: ' + err.message, 'error');
       }
@@ -7681,129 +6664,78 @@
 
     // --- Database Seeder ---
     async function seedDatabaseWithDefaults() {
-      if (!confirm('আপনি কি নিশ্চিত যে আপনার লাইভ Firebase ডাটাবেসে ডিফল্ট টুর্নামেন্ট, বাংলা নোটিশ ও সেটিংস যুক্ত করতে চান?')) return;
+      if (!confirm('আপনি কি নিশ্চিত যে আপনার লাইভ Firebase ডাটাবেসে ডিফল্ট Pro Casino গেমস, বাংলা নোটিশ ও সেটিংস যুক্ত করতে চান?')) return;
       if (!db) {
         showToast('Firebase সংযোগ সক্রিয় নয়', 'error');
         return;
       }
 
       try {
-        showToast('ডাটাবেসে ডিফল্ট ডেটা সিড হচ্ছে...', 'info');
+        showToast('ডাটাবেসে Pro Casino ডিফল্ট ডেটা সিড হচ্ছে...', 'info');
 
         // Settings
         await db.ref('settings').set(STATE.settings);
-
-        // Tournaments
-        const defaultTourneys = [
-          {
-            id: 'T-101',
-            title: '🔥 FF Pro League Bermuda - Solo',
-            game: 'Free Fire',
-            type: 'Solo',
-            map: 'Bermuda',
-            entryFee: 30,
-            prizePool: 1200,
-            prize1st: 600,
-            prize2nd: 300,
-            perKill: 15,
-            prizeKill: 15,
-            maxSlots: 48,
-            joinedCount: 1,
-            scheduleTime: 'আজ রাত ৯:০০ PM',
-            status: 'Upcoming',
-            roomId: '4481029',
-            roomPass: '7788',
-            bannerUrl: 'https://i.postimg.cc/fW9ht5RM/54f31449f5f91cf0cc223cc635cd5952jpg.jpg',
-            description: 'হ্যাক বা স্ক্রিপ্ট ব্যবহারকারীদের আজীবনের জন্য ব্যান করা হবে।'
-          },
-          {
-            id: 'T-102',
-            title: '⚡ Squad Showdown Kalahari - 4v4',
-            game: 'Free Fire',
-            type: 'Squad',
-            map: 'Kalahari',
-            entryFee: 120,
-            prizePool: 3500,
-            prize1st: 2000,
-            prize2nd: 1000,
-            perKill: 25,
-            prizeKill: 25,
-            maxSlots: 12,
-            joinedCount: 0,
-            scheduleTime: 'আজ রাত ১০:১৫ PM',
-            status: 'Upcoming',
-            roomId: '',
-            roomPass: '',
-            bannerUrl: 'https://i.postimg.cc/fW9ht5RM/54f31449f5f91cf0cc223cc635cd5952jpg.jpg',
-            description: 'স্কোয়াড ম্যাচ ফুল হলে লাইভ স্ট্রিম ইউটিউব চ্যানেলে চলবে।'
-          }
-        ];
-
-        for (const t of defaultTourneys) {
-          await db.ref(`tournaments/${t.id}`).set(t);
-        }
 
         // Notices
         await db.ref('notices/not_1').set({
           id: 'not_1',
           type: 'TICKER',
-          title: 'টুর্নামেন্ট আপডেট',
-          body: '📢 স্বাগতম MOSTWIN88-তে! আজকের সকল ফ্রি ফায়ার ম্যাচের রুম আইডি শুরুর ১০ মিনিট আগে লাইভ অ্যাপে প্রদর্শিত হবে।',
+          title: 'Pro Casino আপডেট',
+          body: '🎰 স্বাগতম MOSTWIN88 Pro Casino-তে! Aviator, Crazy Time, Mines, Slots ও Live Casino গেমস খেলুন এবং তাৎক্ষণিক ডিপোজিট/উইথড্র সুবিধা উপভোগ করুন।',
           status: 'Active',
           createdAt: new Date().toLocaleString('bn-BD')
         });
 
-await db.ref('notices/not_2').set({
-  id: 'not_2',
-  type: 'SLIDER',
-  title: 'NP Tournament Updates',
-  status: 'Active',
-  slides: [
-    {
-      id: 'slide_1',
-      title: 'Welcome to NP Tournament',
-      body: 'আপনাকে স্বাগতম! আমাদের সঙ্গে আপনার গেমিং অভিজ্ঞতা উপভোগ করুন।',
-      image: '',
-      status: 'Active',
-      order: 1
-    },
-    {
-      id: 'slide_2',
-      title: 'New Tournaments',
-      body: 'নতুন টুর্নামেন্টের আপডেট পেতে নিয়মিত আমাদের প্ল্যাটফর্ম ভিজিট করুন।',
-      image: '',
-      status: 'Active',
-      order: 2
-    },
-    {
-      id: 'slide_3',
-      title: 'Important Notice',
-      body: 'সকল খেলোয়াড়কে সঠিক তথ্য দিয়ে অ্যাকাউন্ট পরিচালনা করার অনুরোধ করা হচ্ছে।',
-      image: '',
-      status: 'Active',
-      order: 3
-    },
-    {
-      id: 'slide_4',
-      title: 'Stay Connected',
-      body: 'NP Tournament-এর নতুন খবর ও আপডেটের সঙ্গে যুক্ত থাকুন।',
-      image: '',
-      status: 'Active',
-      order: 4
-    }
-  ],
-  createdAt: new Date().toLocaleString('bn-BD')
-});
+        await db.ref('notices/not_2').set({
+          id: 'not_2',
+          type: 'SLIDER',
+          title: 'MOSTWIN88 Pro Casino Updates',
+          status: 'Active',
+          slides: [
+            {
+              id: 'slide_1',
+              title: 'Welcome to MOSTWIN88 Pro Casino',
+              body: 'আপনাকে স্বাগতম! আমাদের সাথে প্রিমিয়াম লাইভ ক্যাসিনো ও ক্র্যাশ গেমিং অভিজ্ঞতা উপভোগ করুন।',
+              image: '',
+              status: 'Active',
+              order: 1
+            },
+            {
+              id: 'slide_2',
+              title: 'Live Casino & Crash Games',
+              body: 'Aviator, JetX, Crazy Time এবং জনপ্রিয় স্লট গেমস প্রতিদিন ২৪ ঘণ্টা লাইভ চলছে।',
+              image: '',
+              status: 'Active',
+              order: 2
+            },
+            {
+              id: 'slide_3',
+              title: 'Instant Deposit Bonus',
+              body: 'সকল খেলোয়াড়ের জন্য সহজ ও দ্রুত bKash, Nagad এবং Rocket ডিপোজিট বোনাস সুবিধা চালু রয়েছে।',
+              image: '',
+              status: 'Active',
+              order: 3
+            },
+            {
+              id: 'slide_4',
+              title: 'Stay Connected',
+              body: 'MOSTWIN88-এর নতুন অফার, VIP রিওয়ার্ড ও আপডেটের সঙ্গে যুক্ত থাকুন।',
+              image: '',
+              status: 'Active',
+              order: 4
+            }
+          ],
+          createdAt: new Date().toLocaleString('bn-BD')
+        });
 
         // Banners
         await db.ref('banners/ban_1').set({
-          title: "MOSTWIN88",
-          sub: "বাংলাদেশের সবচেয়ে বিশ্বস্ত ও প্রফেশনাল ফ্রি ফায়ার ইস্পোর্টস টুর্নামেন্ট প্ল্যাটফর্ম। খেলুন আর জিতে নিন আকর্ষণীয় প্রাইজপুল!",
-          img: "https://images.unsplash.com/photo-1542751371-adc38448a05e?auto=format&fit=crop&w=800&q=80"
+          title: "MOSTWIN88 PRO CASINO",
+          sub: "বাংলাদেশের সেরা প্রফেশনাল লাইভ ক্যাসিনো, ক্র্যাশ ও স্লট গেমিং প্ল্যাটফর্ম।",
+          img: "https://images.unsplash.com/photo-1511512578047-dfb367046420?auto=format&fit=crop&w=800&q=80"
         });
 
-
-        // Seed Popular & Crash Games
+        // Seed Pro Casino Games
         const defaultGames = [
           {
             id: 'game_aviator',
@@ -7856,6 +6788,19 @@ await db.ref('notices/not_2').set({
             active: true,
             isActive: true,
             createdAt: firebase.database.ServerValue.TIMESTAMP
+          },
+          {
+            id: 'game_crazytime',
+            name: 'Crazy Time Live',
+            category: 'Live Casino',
+            image: 'https://images.unsplash.com/photo-1596838132731-3301c3fd4317?auto=format&fit=crop&w=400&q=80',
+            imageUrl: 'https://images.unsplash.com/photo-1596838132731-3301c3fd4317?auto=format&fit=crop&w=400&q=80',
+            url: 'https://www.evolution.com/our-games/crazy-time/',
+            gameUrl: 'https://www.evolution.com/our-games/crazy-time/',
+            status: 'Active',
+            active: true,
+            isActive: true,
+            createdAt: firebase.database.ServerValue.TIMESTAMP
           }
         ];
 
@@ -7863,7 +6808,7 @@ await db.ref('notices/not_2').set({
           await db.ref(`games/${g.id}`).set(g);
         }
 
-        showToast('✅ আপনার Firebase ডাটাবেসে সফলভাবে ডিফল্ট টুর্নামেন্ট ও সেটিংস যুক্ত হয়েছে!', 'success');
+        showToast('✅ আপনার Firebase ডাটাবেসে সফলভাবে Pro Casino গেমস ও সেটিংস যুক্ত হয়েছে!', 'success');
       } catch (err) {
         showToast('সিড ব্যর্থ: ' + err.message, 'error');
       }
@@ -7897,13 +6842,6 @@ await db.ref('notices/not_2').set({
       const headers = ['Admin', 'Action', 'Target', 'Details', 'Time'];
       const rows = [headers, ...STATE.auditLogs.map(l => [l.admin, l.action, l.target, l.details, l.time])];
       exportToCSV('NP_AUDIT_LOGS.csv', rows);
-    }
-
-    function exportParticipantsCSV() {
-      const tourneyId = document.getElementById('results-tournament-id').value || 'TOURNAMENT';
-      const headers = ['Slot', 'Name', 'IGN', 'UID'];
-      const rows = [headers, ...STATE.users.map((u, i) => [i + 1, u.name, u.ffIgn, u.uid])];
-      exportToCSV(`PARTICIPANTS_${tourneyId}.csv`, rows);
     }
 
     // =========================================================================
@@ -8046,28 +6984,22 @@ await db.ref('notices/not_2').set({
       const rejectedWithAmt = filteredRejectedWiths.reduce((acc, w) => acc + (parseFloat(w.amount) || 0), 0);
       const rejectedWithCount = filteredRejectedWiths.length;
 
-      // 6. Tournament Operations P&L
-      const filteredEntryTransactions = STATE.ledger.filter(l => 
-        (l.type === 'ENTRY_FEE' || (l.type && l.type.includes('JOIN'))) &&
-        isDateInPeriod(l.timestamp, period, cStart, cEnd)
-      );
-      const entryFeesFromLedger = filteredEntryTransactions.reduce((acc, l) => acc + (parseFloat(l.amount) || 0), 0);
+      // 6. Pro Casino Operations P&L
+      const filteredBetTransactions = STATE.ledger.filter(l => {
+        const t = (l.type || '').toUpperCase();
+        return (t === 'GAME_BET' || t === 'BET' || t === 'CASINO_BET' || t === 'ENTRY_FEE' || t.includes('JOIN')) &&
+          isDateInPeriod(l.timestamp, period, cStart, cEnd);
+      });
+      const totalCasinoBets = filteredBetTransactions.reduce((acc, l) => acc + (parseFloat(l.amount) || 0), 0);
 
-      // Fallback: estimate from tournament participants if ledger is minimal
-      const entryFeesFromTournaments = STATE.tournaments.reduce((acc, t) => {
-        const fee = parseFloat(t.entryFee) || 0;
-        const joined = parseInt(t.joinedCount, 10) || 0;
-        return acc + (fee * joined);
-      }, 0);
-      const totalEntryFees = Math.max(entryFeesFromLedger, (period === 'ALL' ? entryFeesFromTournaments : entryFeesFromLedger));
+      const filteredPayoutTransactions = STATE.ledger.filter(l => {
+        const t = (l.type || '').toUpperCase();
+        return (t === 'GAME_WIN' || t === 'CASINO_WIN' || t === 'PRIZE_PAYOUT' || t === 'CASHOUT') &&
+          isDateInPeriod(l.timestamp, period, cStart, cEnd);
+      });
+      const totalCasinoPayouts = filteredPayoutTransactions.reduce((acc, l) => acc + (parseFloat(l.amount) || 0), 0);
 
-      const filteredPrizeTransactions = STATE.ledger.filter(l => 
-        (l.type === 'PRIZE_PAYOUT' || (l.note && l.note.toLowerCase().includes('prize'))) &&
-        isDateInPeriod(l.timestamp, period, cStart, cEnd)
-      );
-      const totalPrizesPaid = filteredPrizeTransactions.reduce((acc, l) => acc + (parseFloat(l.amount) || 0), 0);
-
-      const operationalMargin = totalEntryFees - totalPrizesPaid;
+      const operationalMargin = totalCasinoBets - totalCasinoPayouts;
 
       // Update Metric Card DOM
       const elDep = document.getElementById('finance-stat-deposits');
@@ -8076,7 +7008,7 @@ await db.ref('notices/not_2').set({
       const elWithCnt = document.getElementById('finance-count-withdrawals');
       const elNetCash = document.getElementById('finance-stat-net-cash');
       const elMargin = document.getElementById('finance-stat-operational-margin');
-      const elTourneyFlow = document.getElementById('finance-stat-tournament-flow');
+      const elCasinoFlow = document.getElementById('finance-stat-casino-flow');
 
       if (elDep) elDep.innerText = '৳ ' + totalApprovedDepAmt.toLocaleString('en-US');
       if (elDepCnt) elDepCnt.innerText = totalApprovedDepCount + ' টি অনুমোদিত লেনদেন';
@@ -8092,8 +7024,8 @@ await db.ref('notices/not_2').set({
         elMargin.innerText = (operationalMargin >= 0 ? '+৳ ' : '-৳ ') + Math.abs(operationalMargin).toLocaleString('en-US');
         elMargin.style.color = operationalMargin >= 0 ? 'var(--primary)' : 'var(--accent)';
       }
-      if (elTourneyFlow) {
-        elTourneyFlow.innerText = `এন্ট্রি ফি (৳${totalEntryFees.toLocaleString('en-US')}) − প্রাইজ (৳${totalPrizesPaid.toLocaleString('en-US')})`;
+      if (elCasinoFlow) {
+        elCasinoFlow.innerText = `বেট ইন (৳${totalCasinoBets.toLocaleString('en-US')}) − গেম পেআউট (৳${totalCasinoPayouts.toLocaleString('en-US')})`;
       }
 
       // Pending Card Elements
@@ -8122,14 +7054,14 @@ await db.ref('notices/not_2').set({
       if (elRWithCnt) elRWithCnt.innerText = rejectedWithCount + ' টি বাতিল উইথড্র';
       if (elBadgeTotRejected) elBadgeTotRejected.innerText = (rejectedDepCount + rejectedWithCount) + ' টি বাতিল';
 
-      // Tournament Operation Card
-      const elEntryAmt = document.getElementById('finance-entry-fees-amt');
-      const elPrizesAmt = document.getElementById('finance-prizes-paid-amt');
-      const elBadgeTourneyCnt = document.getElementById('finance-badge-tourney-count');
+      // Pro Casino Operation Card
+      const elBetsAmt = document.getElementById('finance-casino-bets-amt');
+      const elPayoutsAmt = document.getElementById('finance-casino-payouts-amt');
+      const elBadgeCasinoCnt = document.getElementById('finance-badge-casino-count');
 
-      if (elEntryAmt) elEntryAmt.innerText = '৳ ' + totalEntryFees.toLocaleString('en-US');
-      if (elPrizesAmt) elPrizesAmt.innerText = '৳ ' + totalPrizesPaid.toLocaleString('en-US');
-      if (elBadgeTourneyCnt) elBadgeTourneyCnt.innerText = STATE.tournaments.length + ' টি টুর্নামেন্ট ডাটা';
+      if (elBetsAmt) elBetsAmt.innerText = '৳ ' + totalCasinoBets.toLocaleString('en-US');
+      if (elPayoutsAmt) elPayoutsAmt.innerText = '৳ ' + totalCasinoPayouts.toLocaleString('en-US');
+      if (elBadgeCasinoCnt) elBadgeCasinoCnt.innerText = (STATE.games.length || 0) + ' টি ক্যাসিনো গেম';
 
       // 7. Periodic Breakdown Tables
       renderPeriodicBreakdowns();
@@ -8222,26 +7154,27 @@ await db.ref('notices/not_2').set({
         }
       });
 
-      // Ledger (Entry fees and Prizes)
+      // Ledger (Casino Bets and Payouts)
       STATE.ledger.forEach(l => {
         const dKey = formatDateKey(l.timestamp);
         const mKey = formatMonthKey(l.timestamp);
         const yKey = formatYearKey(l.timestamp);
         const amt = parseFloat(l.amount) || 0;
-        const isEntry = l.type === 'ENTRY_FEE' || (l.type && l.type.includes('JOIN'));
-        const isPrize = l.type === 'PRIZE_PAYOUT';
+        const t = (l.type || '').toUpperCase();
+        const isBet = t === 'GAME_BET' || t === 'BET' || t === 'CASINO_BET' || t === 'ENTRY_FEE' || t.includes('JOIN');
+        const isPayout = t === 'GAME_WIN' || t === 'CASINO_WIN' || t === 'PRIZE_PAYOUT' || t === 'CASHOUT';
 
         if (dKey && dailyMap[dKey]) {
-          if (isEntry) dailyMap[dKey].entryFee += amt;
-          if (isPrize) dailyMap[dKey].prizes += amt;
+          if (isBet) dailyMap[dKey].entryFee += amt;
+          if (isPayout) dailyMap[dKey].prizes += amt;
         }
         if (mKey && monthlyMap[mKey]) {
-          if (isEntry) monthlyMap[mKey].entryFee += amt;
-          if (isPrize) monthlyMap[mKey].prizes += amt;
+          if (isBet) monthlyMap[mKey].entryFee += amt;
+          if (isPayout) monthlyMap[mKey].prizes += amt;
         }
         if (yKey && yearlyMap[yKey]) {
-          if (isEntry) yearlyMap[yKey].entryFee += amt;
-          if (isPrize) yearlyMap[yKey].prizes += amt;
+          if (isBet) yearlyMap[yKey].entryFee += amt;
+          if (isPayout) yearlyMap[yKey].prizes += amt;
         }
       });
 
@@ -8333,9 +7266,9 @@ await db.ref('notices/not_2').set({
         ['Pending Requests', 'Pending Withdrawals', document.getElementById('finance-pending-with-amount')?.innerText || '0', document.getElementById('finance-pending-with-count')?.innerText || '0'],
         ['Rejected Requests', 'Rejected Deposits', document.getElementById('finance-rejected-dep-amount')?.innerText || '0', document.getElementById('finance-rejected-dep-count')?.innerText || '0'],
         ['Rejected Requests', 'Rejected Withdrawals', document.getElementById('finance-rejected-with-amount')?.innerText || '0', document.getElementById('finance-rejected-with-count')?.innerText || '0'],
-        ['Tournament Operations', 'Total Entry Fees Collected', document.getElementById('finance-entry-fees-amt')?.innerText || '0', 'BDT (৳)'],
-        ['Tournament Operations', 'Total Prizes Distributed', document.getElementById('finance-prizes-paid-amt')?.innerText || '0', 'BDT (৳)'],
-        ['Tournament Operations', 'Operational Margin', document.getElementById('finance-stat-operational-margin')?.innerText || '0', 'Tournament Gross Margin']
+        ['Pro Casino Operations', 'Total Game Bets Collected', document.getElementById('finance-casino-bets-amt')?.innerText || '0', 'BDT (৳)'],
+        ['Pro Casino Operations', 'Total Game Payouts Distributed', document.getElementById('finance-casino-payouts-amt')?.innerText || '0', 'BDT (৳)'],
+        ['Pro Casino Operations', 'Operational Margin', document.getElementById('finance-stat-operational-margin')?.innerText || '0', 'Casino Gross Margin']
       ];
       exportToCSV(`NP_FINANCIAL_REPORT_${new Date().toISOString().split('T')[0]}.csv`, rows);
     }
@@ -8485,9 +7418,15 @@ await db.ref('notices/not_2').set({
       const userLedger = STATE.ledger.filter(l => l.uid === uid && isDateInPeriod(l.timestamp, period));
       
       const userWinnings = userLedger
-        .filter(l => l.type === 'PRIZE_PAYOUT' || (l.note && l.note.toLowerCase().includes('prize')))
+        .filter(l => {
+          const t = (l.type || '').toUpperCase();
+          return (t === 'GAME_WIN' || t === 'CASINO_WIN' || t === 'PRIZE_PAYOUT' || t === 'CASHOUT');
+        })
         .reduce((acc, l) => acc + (parseFloat(l.amount) || 0), 0);
-      const winningsCount = userLedger.filter(l => l.type === 'PRIZE_PAYOUT').length;
+      const winningsCount = userLedger.filter(l => {
+        const t = (l.type || '').toUpperCase();
+        return (t === 'GAME_WIN' || t === 'CASINO_WIN' || t === 'PRIZE_PAYOUT' || t === 'CASHOUT');
+      }).length;
 
       // Update Card values
       document.getElementById('pfin-total-deposit').innerText = '৳ ' + totalUserDeposit.toLocaleString('en-US');
@@ -8500,7 +7439,7 @@ await db.ref('notices/not_2').set({
       elDiff.style.color = netUserDifference >= 0 ? 'var(--info)' : 'var(--accent)';
 
       document.getElementById('pfin-total-winnings').innerText = '৳ ' + userWinnings.toLocaleString('en-US');
-      document.getElementById('pfin-winnings-count').innerText = winningsCount + (isBn ? ' টি প্রাইজ পেআউট' : ' Prize Payouts');
+      document.getElementById('pfin-winnings-count').innerText = winningsCount + (isBn ? ' টি গেম পেআউট' : ' Game Payouts');
 
       // Game Win/Loss & Profit/Loss Status (Requirement 2: Data not yet available)
       const notAvailText = isBn ? 'ডেটা এখনো উপলভ্য নয়' : 'Data not yet available';
@@ -8796,7 +7735,6 @@ await db.ref('notices/not_2').set({
       // 1. Navigation items
       const navMap = {
         'view-dashboard': { bn: 'ড্যাশবোর্ড', en: 'Dashboard' },
-        'view-tournaments': { bn: 'টুর্নামেন্টসমূহ', en: 'Tournaments' },
         'view-gameactivity': { bn: 'গেম অ্যাক্টিভিটি', en: 'Game Activity' },
         'view-games': { bn: 'গেম ম্যানেজমেন্ট', en: 'Game Management' },
         'view-users': { bn: 'প্লেয়ার / ইউজার', en: 'Players / Users' },
@@ -9390,7 +8328,7 @@ await db.ref('notices/not_2').set({
     });
   
     // ===== MASTER-controlled feature switches (Firebase node: adminFeatures) =====
-    var FEATURE_MAP = {"tournaments": {"view": "view-tournaments"}, "users": {"view": "view-users"}, "wallet": {"view": "view-wallet"}, "promotions": {"view": "view-promotions"}, "finance": {"view": "view-finance"}, "notices": {"view": "view-notices"}, "notifications": {"view": "view-notifications"}, "settings": {"view": "view-settings"}, "audit": {"view": "view-audit"}, "t_create": {"fns": ["openCreateTournamentModal", "openEditTournamentModal", "handleSaveTournament"]}, "t_room": {"fns": ["openRoomModal", "handleSaveRoomDetails", "togglePublishRoom", "editRoomCreds"]}, "t_results": {"fns": ["openResultsModal", "handleDistributePrizes"]}, "t_delete": {"fns": ["deleteTournament"]}, "u_ban": {"fns": ["toggleUserStatus", "toggleUserStatusFromSecModal"]}, "u_track": {"fns": ["openPlayerSecurityModal"]}, "u_report": {"fns": ["openPlayerFinancialReport", "exportSinglePlayerCSV"]}, "u_adjust": {"fns": ["adjustUserBalance", "adjustBalanceFromSecModal"]}, "u_bonus": {"fns": ["openTurnoverBonusModal", "submitManualBonusCredit", "saveDirectTurnoverValues", "markUserTurnoverCompleted", "resetUserBonusAndTurnover"]}, "dep": {"fns": ["approveDeposit", "rejectDeposit", "handleDepositActionDropdown"]}, "wd": {"fns": ["completeWithdrawal", "rejectWithdrawal", "setWithdrawalStatus", "handleWithdrawalActionDropdown"]}, "bal_req": {"fns": ["openAdminFundModal"]}, "dep_bonus": {"fns": ["handleSaveBonusTurnoverSettings", "handleSaveAdminDepositBonusSettings"]}, "notice_pub": {"fns": ["handlePublishNotice", "deleteNotice"]}, "notif_send": {"fns": ["handleSendNotification", "deleteNotification", "quickSendNotificationToUser", "quickNotifyFromSecModal"]}, "set_pay": {"fns": ["handleSavePaymentSettings", "handleSaveSocialSettings"]}, "banners": {"fns": ["handleAddBanner", "handleDeleteBanner"]}};
+    var FEATURE_MAP = {"users": {"view": "view-users"}, "wallet": {"view": "view-wallet"}, "promotions": {"view": "view-promotions"}, "finance": {"view": "view-finance"}, "notices": {"view": "view-notices"}, "notifications": {"view": "view-notifications"}, "settings": {"view": "view-settings"}, "audit": {"view": "view-audit"}, "u_ban": {"fns": ["toggleUserStatus", "toggleUserStatusFromSecModal"]}, "u_track": {"fns": ["openPlayerSecurityModal"]}, "u_report": {"fns": ["openPlayerFinancialReport", "exportSinglePlayerCSV"]}, "u_adjust": {"fns": ["adjustUserBalance", "adjustBalanceFromSecModal"]}, "u_bonus": {"fns": ["openTurnoverBonusModal", "submitManualBonusCredit", "saveDirectTurnoverValues", "markUserTurnoverCompleted", "resetUserBonusAndTurnover"]}, "dep": {"fns": ["approveDeposit", "rejectDeposit", "handleDepositActionDropdown"]}, "wd": {"fns": ["completeWithdrawal", "rejectWithdrawal", "setWithdrawalStatus", "handleWithdrawalActionDropdown"]}, "bal_req": {"fns": ["openAdminFundModal"]}, "dep_bonus": {"fns": ["handleSaveBonusTurnoverSettings", "handleSaveAdminDepositBonusSettings"]}, "notice_pub": {"fns": ["handlePublishNotice", "deleteNotice"]}, "notif_send": {"fns": ["handleSendNotification", "deleteNotification", "quickSendNotificationToUser", "quickNotifyFromSecModal"]}, "set_pay": {"fns": ["handleSavePaymentSettings", "handleSaveSocialSettings"]}, "banners": {"fns": ["handleAddBanner", "handleDeleteBanner"]}};
     var FEATURES = {}, MY_FEATURES = {};
     // A feature is ON only if it is on for everyone (adminFeatures) AND on for this admin (admins/{uid}/features)
     function featureOn(k) { return FEATURES[k] !== false && MY_FEATURES[k] !== false; }
