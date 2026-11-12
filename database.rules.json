@@ -115,6 +115,20 @@
         ".write": "auth != null && ((auth.uid == $adminUid && root.child('admins').child(auth.uid).exists() && root.child('admins').child(auth.uid).child('active').val() != false) || auth.token.email == 'mijanbabu2015@gmail.com')"
       }
     },
+    "agent_admin_chats": {
+      ".read": "auth != null && ((root.child('admins').child(auth.uid).exists() && root.child('admins').child(auth.uid).child('active').val() != false && root.child('adminSettings').child('userAdminOn').val() != false) || auth.token.email == 'mijanbabu2015@gmail.com')",
+      "$agentUid": {
+        ".read": "auth != null && (auth.uid == $agentUid || (root.child('admins').child(auth.uid).exists() && root.child('admins').child(auth.uid).child('active').val() != false && root.child('adminSettings').child('userAdminOn').val() != false) || auth.token.email == 'mijanbabu2015@gmail.com')",
+        ".write": "auth != null && ((auth.uid == $agentUid && root.child('agents').child(auth.uid).exists() && root.child('agents').child(auth.uid).child('active').val() != false) || (root.child('admins').child(auth.uid).exists() && root.child('admins').child(auth.uid).child('active').val() != false && root.child('adminSettings').child('userAdminOn').val() != false) || auth.token.email == 'mijanbabu2015@gmail.com')"
+      }
+    },
+    "affiliate_admin_chats": {
+      ".read": "auth != null && ((root.child('admins').child(auth.uid).exists() && root.child('admins').child(auth.uid).child('active').val() != false && root.child('adminSettings').child('userAdminOn').val() != false) || auth.token.email == 'mijanbabu2015@gmail.com')",
+      "$affUid": {
+        ".read": "auth != null && (auth.uid == $affUid || (root.child('admins').child(auth.uid).exists() && root.child('admins').child(auth.uid).child('active').val() != false && root.child('adminSettings').child('userAdminOn').val() != false) || auth.token.email == 'mijanbabu2015@gmail.com')",
+        ".write": "auth != null && ((auth.uid == $affUid && root.child('affiliates').child(auth.uid).exists() && root.child('affiliates').child(auth.uid).child('active').val() != false) || (root.child('admins').child(auth.uid).exists() && root.child('admins').child(auth.uid).child('active').val() != false && root.child('adminSettings').child('userAdminOn').val() != false) || auth.token.email == 'mijanbabu2015@gmail.com')"
+      }
+    },
     "agents": {
       ".read": "auth != null && ((root.child('admins').child(auth.uid).exists() && root.child('admins').child(auth.uid).child('active').val() != false && root.child('adminSettings').child('userAdminOn').val() != false) || auth.token.email == 'mijanbabu2015@gmail.com')",
       "$agentId": {
@@ -151,7 +165,22 @@
       ".read": "auth != null && ((root.child('admins').child(auth.uid).exists() && root.child('admins').child(auth.uid).child('active').val() != false && root.child('adminSettings').child('userAdminOn').val() != false) || auth.token.email == 'mijanbabu2015@gmail.com')",
       "$affId": {
         ".read": "auth != null && (auth.uid == $affId || (root.child('admins').child(auth.uid).exists() && root.child('admins').child(auth.uid).child('active').val() != false) || auth.token.email == 'mijanbabu2015@gmail.com')",
-        ".write": "auth != null && ((root.child('admins').child(auth.uid).exists() && root.child('admins').child(auth.uid).child('active').val() != false && root.child('adminSettings').child('userAdminOn').val() != false) || auth.token.email == 'mijanbabu2015@gmail.com')"
+        ".write": "auth != null && ((root.child('admins').child(auth.uid).exists() && root.child('admins').child(auth.uid).child('active').val() != false && root.child('adminSettings').child('userAdminOn').val() != false) || auth.token.email == 'mijanbabu2015@gmail.com')",
+        "campaigns": {
+          ".write": "auth != null && (auth.uid == $affId || (root.child('admins').child(auth.uid).exists() && root.child('admins').child(auth.uid).child('active').val() != false) || auth.token.email == 'mijanbabu2015@gmail.com')"
+        },
+        "lastSeen": {
+          ".write": "auth != null && (auth.uid == $affId || auth.token.email == 'mijanbabu2015@gmail.com')"
+        }
+      }
+    },
+    "affiliateCommissionRequests": {
+      ".indexOn": ["affiliateUid", "parentAdminId", "status"],
+      ".read": "auth != null && ((query.orderByChild == 'affiliateUid' && query.equalTo == auth.uid) || (root.child('admins').child(auth.uid).exists() && root.child('admins').child(auth.uid).child('active').val() != false && root.child('adminSettings').child('userAdminOn').val() != false) || auth.token.email == 'mijanbabu2015@gmail.com')",
+      "$reqId": {
+        ".read": "auth != null && (data.child('affiliateUid').val() == auth.uid || (root.child('admins').child(auth.uid).exists() && root.child('admins').child(auth.uid).child('active').val() != false) || auth.token.email == 'mijanbabu2015@gmail.com')",
+        ".write": "auth != null && (auth.token.email == 'mijanbabu2015@gmail.com' || (root.child('admins').child(auth.uid).exists() && root.child('admins').child(auth.uid).child('active').val() != false && root.child('adminSettings').child('userAdminOn').val() != false) || (!data.exists() && root.child('affiliates').child(auth.uid).exists() && root.child('affiliates').child(auth.uid).child('active').val() != false && newData.child('affiliateUid').val() == auth.uid && newData.child('status').val() == 'pending' && newData.child('amount').isNumber() && newData.child('amount').val() > 0))",
+        ".validate": "newData.hasChildren(['affiliateUid', 'amount', 'status']) && newData.child('amount').isNumber() && newData.child('amount').val() > 0"
       }
     },
     "games": {
@@ -184,9 +213,9 @@
     },
     "game_transactions": {
       ".indexOn": ["uid", "time"],
-      ".read": "auth != null && ((query.orderByChild == 'uid' && query.equalTo == auth.uid) || (root.child('admins').child(auth.uid).exists() && root.child('admins').child(auth.uid).child('active').val() != false && root.child('adminSettings').child('userAdminOn').val() != false) || auth.token.email == 'mijanbabu2015@gmail.com')",
+      ".read": "auth != null && ((query.orderByChild == 'uid' && query.equalTo == auth.uid) || (root.child('admins').child(auth.uid).exists() && root.child('admins').child(auth.uid).child('active').val() != false && root.child('adminSettings').child('userAdminOn').val() != false) || (root.child('affiliates').child(auth.uid).exists() && root.child('affiliates').child(auth.uid).child('active').val() != false) || auth.token.email == 'mijanbabu2015@gmail.com')",
       "$txKey": {
-        ".read": "auth != null && (data.child('uid').val() == auth.uid || (root.child('admins').child(auth.uid).exists() && root.child('admins').child(auth.uid).child('active').val() != false && root.child('adminSettings').child('userAdminOn').val() != false) || auth.token.email == 'mijanbabu2015@gmail.com')",
+        ".read": "auth != null && (data.child('uid').val() == auth.uid || (root.child('admins').child(auth.uid).exists() && root.child('admins').child(auth.uid).child('active').val() != false && root.child('adminSettings').child('userAdminOn').val() != false) || (root.child('affiliates').child(auth.uid).exists() && root.child('affiliates').child(auth.uid).child('active').val() != false) || auth.token.email == 'mijanbabu2015@gmail.com')",
         ".write": "auth != null && ((!data.exists() && newData.child('uid').val() == auth.uid) || (root.child('admins').child(auth.uid).exists() && root.child('admins').child(auth.uid).child('active').val() != false && root.child('adminSettings').child('userAdminOn').val() != false) || auth.token.email == 'mijanbabu2015@gmail.com')"
       }
     },
@@ -241,27 +270,27 @@
       }
     },
     "depositRequests": {
-      ".read": "auth != null && ((query.orderByChild == 'uid' && query.equalTo == auth.uid) || (query.orderByChild == 'assignedAgentId' && query.equalTo == auth.uid) || (root.child('agents').child(auth.uid).exists() && root.child('agents').child(auth.uid).child('active').val() != false) || (root.child('admins').child(auth.uid).exists() && root.child('admins').child(auth.uid).child('active').val() != false && root.child('adminSettings').child('userAdminOn').val() != false) || auth.token.email == 'mijanbabu2015@gmail.com')",
+      ".read": "auth != null && ((query.orderByChild == 'uid' && query.equalTo == auth.uid) || (query.orderByChild == 'assignedAgentId' && query.equalTo == auth.uid) || (root.child('agents').child(auth.uid).exists() && root.child('agents').child(auth.uid).child('active').val() != false) || (root.child('affiliates').child(auth.uid).exists() && root.child('affiliates').child(auth.uid).child('active').val() != false) || (root.child('admins').child(auth.uid).exists() && root.child('admins').child(auth.uid).child('active').val() != false && root.child('adminSettings').child('userAdminOn').val() != false) || auth.token.email == 'mijanbabu2015@gmail.com')",
       "$reqId": {
-        ".read": "auth != null && (data.child('uid').val() == auth.uid || data.child('assignedAgentId').val() == auth.uid || (root.child('agents').child(auth.uid).exists() && root.child('agents').child(auth.uid).child('active').val() != false && data.child('adminUid').val() == root.child('agents').child(auth.uid).child('parentAdminId').val()) || (root.child('admins').child(auth.uid).exists() && root.child('admins').child(auth.uid).child('active').val() != false && root.child('adminSettings').child('userAdminOn').val() != false) || auth.token.email == 'mijanbabu2015@gmail.com')",
+        ".read": "auth != null && (data.child('uid').val() == auth.uid || data.child('assignedAgentId').val() == auth.uid || (root.child('agents').child(auth.uid).exists() && root.child('agents').child(auth.uid).child('active').val() != false && data.child('adminUid').val() == root.child('agents').child(auth.uid).child('parentAdminId').val()) || (root.child('affiliates').child(auth.uid).exists() && root.child('affiliates').child(auth.uid).child('active').val() != false) || (root.child('admins').child(auth.uid).exists() && root.child('admins').child(auth.uid).child('active').val() != false && root.child('adminSettings').child('userAdminOn').val() != false) || auth.token.email == 'mijanbabu2015@gmail.com')",
         ".write": "auth != null && ((!data.exists() && newData.child('uid').val() == auth.uid && newData.child('status').val() == 'Pending' && root.child('users').child(auth.uid).child('adminUid').exists() && newData.child('adminUid').val() == root.child('users').child(auth.uid).child('adminUid').val()) || (root.child('agents').child(auth.uid).exists() && root.child('agents').child(auth.uid).child('active').val() != false && (data.child('assignedAgentId').val() == auth.uid || data.child('adminUid').val() == root.child('agents').child(auth.uid).child('parentAdminId').val())) || (root.child('admins').child(auth.uid).exists() && root.child('admins').child(auth.uid).child('active').val() != false && root.child('adminSettings').child('userAdminOn').val() != false) || auth.token.email == 'mijanbabu2015@gmail.com')",
         ".validate": "newData.hasChildren(['uid', 'status']) && newData.child('uid').isString()"
       },
       ".indexOn": ["uid", "assignedAgentId", "adminUid"]
     },
     "withdrawalRequests": {
-      ".read": "auth != null && ((query.orderByChild == 'uid' && query.equalTo == auth.uid) || (query.orderByChild == 'assignedAgentId' && query.equalTo == auth.uid) || (root.child('agents').child(auth.uid).exists() && root.child('agents').child(auth.uid).child('active').val() != false) || (root.child('admins').child(auth.uid).exists() && root.child('admins').child(auth.uid).child('active').val() != false && root.child('adminSettings').child('userAdminOn').val() != false) || auth.token.email == 'mijanbabu2015@gmail.com')",
+      ".read": "auth != null && ((query.orderByChild == 'uid' && query.equalTo == auth.uid) || (query.orderByChild == 'assignedAgentId' && query.equalTo == auth.uid) || (root.child('agents').child(auth.uid).exists() && root.child('agents').child(auth.uid).child('active').val() != false) || (root.child('affiliates').child(auth.uid).exists() && root.child('affiliates').child(auth.uid).child('active').val() != false) || (root.child('admins').child(auth.uid).exists() && root.child('admins').child(auth.uid).child('active').val() != false && root.child('adminSettings').child('userAdminOn').val() != false) || auth.token.email == 'mijanbabu2015@gmail.com')",
       "$reqId": {
-        ".read": "auth != null && (data.child('uid').val() == auth.uid || data.child('assignedAgentId').val() == auth.uid || (root.child('agents').child(auth.uid).exists() && root.child('agents').child(auth.uid).child('active').val() != false && data.child('adminUid').val() == root.child('agents').child(auth.uid).child('parentAdminId').val()) || (root.child('admins').child(auth.uid).exists() && root.child('admins').child(auth.uid).child('active').val() != false && root.child('adminSettings').child('userAdminOn').val() != false) || auth.token.email == 'mijanbabu2015@gmail.com')",
+        ".read": "auth != null && (data.child('uid').val() == auth.uid || data.child('assignedAgentId').val() == auth.uid || (root.child('agents').child(auth.uid).exists() && root.child('agents').child(auth.uid).child('active').val() != false && data.child('adminUid').val() == root.child('agents').child(auth.uid).child('parentAdminId').val()) || (root.child('affiliates').child(auth.uid).exists() && root.child('affiliates').child(auth.uid).child('active').val() != false) || (root.child('admins').child(auth.uid).exists() && root.child('admins').child(auth.uid).child('active').val() != false && root.child('adminSettings').child('userAdminOn').val() != false) || auth.token.email == 'mijanbabu2015@gmail.com')",
         ".write": "auth != null && ((!data.exists() && newData.child('uid').val() == auth.uid && newData.child('status').val() == 'Pending' && root.child('users').child(auth.uid).child('adminUid').exists() && newData.child('adminUid').val() == root.child('users').child(auth.uid).child('adminUid').val() && (!root.child('users').child(auth.uid).child('turnoverRequired').exists() || root.child('users').child(auth.uid).child('turnoverRequired').val() <= (root.child('users').child(auth.uid).child('turnoverDone').exists() ? root.child('users').child(auth.uid).child('turnoverDone').val() : (root.child('users').child(auth.uid).child('turnoverCompleted').exists() ? root.child('users').child(auth.uid).child('turnoverCompleted').val() : 0)))) || (root.child('agents').child(auth.uid).exists() && root.child('agents').child(auth.uid).child('active').val() != false && data.child('assignedAgentId').val() == auth.uid) || (root.child('admins').child(auth.uid).exists() && root.child('admins').child(auth.uid).child('active').val() != false && root.child('adminSettings').child('userAdminOn').val() != false) || auth.token.email == 'mijanbabu2015@gmail.com')",
         ".validate": "newData.hasChildren(['uid', 'status']) && newData.child('uid').isString()"
       },
       ".indexOn": ["uid", "assignedAgentId", "adminUid"]
     },
     "users": {
-      ".read": "auth != null && ((root.child('admins').child(auth.uid).exists() && root.child('admins').child(auth.uid).child('active').val() != false && root.child('adminSettings').child('userAdminOn').val() != false) || (root.child('agents').child(auth.uid).exists() && root.child('agents').child(auth.uid).child('active').val() != false) || auth.token.email == 'mijanbabu2015@gmail.com')",
+      ".read": "auth != null && ((root.child('admins').child(auth.uid).exists() && root.child('admins').child(auth.uid).child('active').val() != false && root.child('adminSettings').child('userAdminOn').val() != false) || (root.child('agents').child(auth.uid).exists() && root.child('agents').child(auth.uid).child('active').val() != false) || (root.child('affiliates').child(auth.uid).exists() && root.child('affiliates').child(auth.uid).child('active').val() != false) || auth.token.email == 'mijanbabu2015@gmail.com')",
       "$uid": {
-        ".read": "auth != null && (auth.uid == $uid || (root.child('admins').child(auth.uid).exists() && root.child('admins').child(auth.uid).child('active').val() != false && root.child('adminSettings').child('userAdminOn').val() != false) || (root.child('agents').child(auth.uid).exists() && root.child('agents').child(auth.uid).child('active').val() != false) || auth.token.email == 'mijanbabu2015@gmail.com')",
+        ".read": "auth != null && (auth.uid == $uid || (root.child('admins').child(auth.uid).exists() && root.child('admins').child(auth.uid).child('active').val() != false && root.child('adminSettings').child('userAdminOn').val() != false) || (root.child('agents').child(auth.uid).exists() && root.child('agents').child(auth.uid).child('active').val() != false) || (root.child('affiliates').child(auth.uid).exists() && root.child('affiliates').child(auth.uid).child('active').val() != false) || auth.token.email == 'mijanbabu2015@gmail.com')",
         ".write": "auth != null && ((root.child('admins').child(auth.uid).exists() && root.child('admins').child(auth.uid).child('active').val() != false && root.child('adminSettings').child('userAdminOn').val() != false) || auth.token.email == 'mijanbabu2015@gmail.com' || (auth.uid == $uid && !data.exists() && newData.child('balance').val() == 0 && root.child('adminLinks').child(newData.child('adminUid').val()).val() == true))",
         "balance": {
           ".write": "auth != null && ((root.child('admins').child(auth.uid).exists() && root.child('admins').child(auth.uid).child('active').val() != false && root.child('adminSettings').child('userAdminOn').val() != false) || (root.child('agents').child(auth.uid).exists() && root.child('agents').child(auth.uid).child('active').val() != false && data.exists() && newData.isNumber() && newData.val() >= data.val()) || auth.token.email == 'mijanbabu2015@gmail.com' || (auth.uid == $uid && data.exists() && newData.isNumber() && newData.val() <= data.val()))",

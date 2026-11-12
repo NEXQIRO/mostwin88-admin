@@ -277,6 +277,27 @@ body.light .report-card{background:#fff;border-color:#d5deea}
 body.light .rseg,body.light .bars{background:#eef2f8;border-color:#d7dfeb}
 body.light .rdate button,body.light .rdate input,body.light .rrange input{background:#f7f9fc;color:#172033;border-color:#cbd5e1;color-scheme:light}
 body.light details.dayrow{border-color:#d7dfeb}
+/* LIVE CHAT FAB & DRAWER */
+.chat-fab{position:fixed;right:18px;bottom:82px;width:54px;height:54px;border-radius:50%;border:0;background:linear-gradient(135deg,#f04489,#8a1a52);color:#fff;font-size:22px;display:grid;place-items:center;box-shadow:0 10px 26px rgba(240,68,137,.5);z-index:88;cursor:pointer;transition:transform .2s}
+.chat-fab:hover{transform:scale(1.06)}
+.chat-fab-badge{position:absolute;top:-3px;right:-3px;min-width:20px;height:20px;padding:0 5px;border-radius:20px;background:#ef4444;color:#fff;font-size:10px;font-weight:800;display:none;place-items:center;border:2px solid #0b1424}
+.chat-drawer{position:fixed;right:16px;bottom:146px;width:360px;max-width:calc(100vw - 24px);height:460px;max-height:70dvh;background:#162236;border:1px solid rgba(255,255,255,.15);border-radius:18px;box-shadow:0 20px 60px rgba(0,0,0,.85);z-index:92;display:none;flex-direction:column;overflow:hidden}
+.chat-drawer.open{display:flex}
+.chat-head{padding:14px 16px;background:linear-gradient(135deg,#f04489,#8a1a52);color:#fff;display:flex;align-items:center;justify-content:space-between;gap:10px}
+.chat-head b{display:block;font-size:14px}
+.chat-head small{display:block;font-size:10.5px;opacity:.9}
+.chat-close{background:rgba(255,255,255,.2);border:0;color:#fff;width:30px;height:30px;border-radius:50%;font-size:15px}
+.chat-msgs{flex:1;overflow-y:auto;padding:12px;display:flex;flex-direction:column;gap:8px;background:#0b1424}
+.cmsg{max-width:82%;padding:9px 12px;border-radius:12px 12px 12px 4px;background:#1c2b43;border:1px solid rgba(255,255,255,.08);color:#fff;font-size:12.5px;line-height:1.45;word-wrap:break-word;align-self:flex-start}
+.cmsg.me{align-self:flex-end;background:linear-gradient(135deg,#f04489,#b82265);border-color:transparent;border-radius:12px 12px 4px 12px}
+.cmsg small{display:block;font-size:9.5px;opacity:.7;margin-top:4px;text-align:right}
+.chat-bar{display:flex;gap:8px;padding:10px 12px;border-top:1px solid rgba(255,255,255,.1);background:#162236}
+.chat-bar input{flex:1;background:#0b1424;border:1px solid #354764;color:#fff;border-radius:20px;padding:9px 14px;font-size:13px;outline:none}
+.chat-bar button{width:40px;height:40px;border-radius:50%;border:0;background:#f04489;color:#fff;font-size:16px}
+body.light .chat-drawer,body.light .chat-bar{background:#fff;border-color:#d7dfeb}
+body.light .chat-msgs{background:#f5f7fb}
+body.light .cmsg:not(.me){background:#e9eef5;color:#172033;border-color:#d7dfeb}
+body.light .chat-bar input{background:#fff;color:#172033;border-color:#cbd5e1}
 </style>
 </head>
 <body>
@@ -537,6 +558,26 @@ body.light details.dayrow{border-color:#d7dfeb}
  </div>
 </div>
 
+<!-- FLOATING LIVE CHAT FAB & DRAWER -->
+<button type="button" id="liveChatFab" class="chat-fab hidden" onclick="toggleAgentLiveChat()" aria-label="Live Chat with Admin" title="অ্যাডমিনের সাথে লাইভ চ্যাট">
+ 💬
+ <span id="liveChatFabBadge" class="chat-fab-badge">0</span>
+</button>
+<div id="liveChatDrawer" class="chat-drawer" role="dialog" aria-label="User Admin Live Chat">
+ <div class="chat-head">
+  <div>
+   <b>💬 Live Chat — User Admin</b>
+   <small id="agentChatSub">Direct support channel</small>
+  </div>
+  <button type="button" class="chat-close" onclick="toggleAgentLiveChat(false)" aria-label="Close">✕</button>
+ </div>
+ <div id="agentChatMsgs" class="chat-msgs"></div>
+ <form class="chat-bar" onsubmit="sendAgentLiveChat(event)">
+  <input id="agentChatInput" type="text" placeholder="অ্যাডমিনকে মেসেজ লিখুন..." autocomplete="off" maxlength="1000">
+  <button type="submit" aria-label="Send">➤</button>
+ </form>
+</div>
+
 <script>
 const FIREBASE_CONFIG = window.NP_FIREBASE_CONFIG || {
   apiKey: "AIzaSyACoy90K8WHdxSU3_KtUiwWNPHGErT0P3w",
@@ -676,6 +717,8 @@ auth.onAuthStateChanged(async user => {
     detachListeners();
     currentAgentUid = null;
     agentProfile = null;
+    const fab = document.getElementById('liveChatFab'); if (fab) fab.classList.add('hidden');
+    const dr = document.getElementById('liveChatDrawer'); if (dr) dr.classList.remove('open');
     document.getElementById('mainApp').classList.add('hidden');
     document.getElementById('login').classList.remove('hidden');
     setTimeout(fitAllLogos, 60);
@@ -692,6 +735,7 @@ auth.onAuthStateChanged(async user => {
     agentProfile = { id: user.uid, ...snap.val() };
     document.getElementById('login').classList.add('hidden');
     document.getElementById('mainApp').classList.remove('hidden');
+    const fab = document.getElementById('liveChatFab'); if (fab) fab.classList.remove('hidden');
     setTimeout(fitAllLogos, 60);
     startLiveAgentSync();
     go('home');
@@ -795,6 +839,18 @@ function startLiveAgentSync() {
 
   attachListener(db.ref('settings'), snap => {
     globalSettings = snap.val() || {};
+  });
+
+  // 8. Live Chat with Assigned User Admin (agent_admin_chats/{agentUid})
+  attachListener(db.ref('agent_admin_chats/' + currentAgentUid + '/messages').limitToLast(120), snap => {
+    const val = snap.val() || {};
+    agentChatMsgs = Object.entries(val).map(([k, m]) => ({ id: k, ...m })).sort((a, b) => (a.timestamp || 0) - (b.timestamp || 0));
+    let unread = 0;
+    agentChatMsgs.forEach(m => { if (m.sender !== 'AGENT' && m.read !== true) unread++; });
+    if (agentChatOpen && unread > 0) { markAgentChatRead(); unread = 0; }
+    const badge = document.getElementById('liveChatFabBadge');
+    if (badge) { badge.textContent = unread > 9 ? '9+' : String(unread); badge.style.display = unread > 0 ? 'grid' : 'none'; }
+    renderAgentChatMessages();
   });
 }
 
@@ -1422,14 +1478,79 @@ function openAccountModal() {
     `Status: ${escapeRequestText(String(a.status || 'active').toUpperCase())}`
   );
 }
+let agentChatMsgs = [];
+let agentChatOpen = false;
+function toggleAgentLiveChat(forceState) {
+  const dr = document.getElementById('liveChatDrawer');
+  if (!dr) return;
+  agentChatOpen = typeof forceState === 'boolean' ? forceState : !agentChatOpen;
+  dr.classList.toggle('open', agentChatOpen);
+  const sub = document.getElementById('agentChatSub');
+  if (sub && agentProfile) sub.textContent = 'Admin: ' + (agentProfile.parentAdminName || agentProfile.parentAdminId || 'User Admin');
+  if (agentChatOpen) {
+    markAgentChatRead();
+    setTimeout(() => {
+      const inp = document.getElementById('agentChatInput'); if (inp) inp.focus();
+      const box = document.getElementById('agentChatMsgs'); if (box) box.scrollTop = box.scrollHeight;
+    }, 80);
+  }
+}
+function renderAgentChatMessages() {
+  const box = document.getElementById('agentChatMsgs');
+  if (!box) return;
+  box.innerHTML = agentChatMsgs.length ? agentChatMsgs.map(m => {
+    const mine = m.sender === 'AGENT';
+    const time = m.timestamp ? new Date(m.timestamp).toLocaleTimeString('bn-BD', { hour: '2-digit', minute: '2-digit' }) : '';
+    return `<div class="cmsg ${mine ? 'me' : ''}">${!mine ? `<b style="font-size:10px;color:var(--gold2);display:block;margin-bottom:2px">${escapeRequestText(m.senderName || m.sender || 'Admin')}</b>` : ''}${escapeRequestText(m.text)}<small>${escapeRequestText(time)}</small></div>`;
+  }).join('') : `<div style="color:var(--muted);font-size:12px;text-align:center;margin:auto">আপনার User Admin-এর সাথে সরাসরি লাইভ চ্যাট শুরু করতে মেসেজ লিখুন...</div>`;
+  box.scrollTop = box.scrollHeight;
+}
+async function sendAgentLiveChat(e) {
+  if (e) e.preventDefault();
+  if (!currentAgentUid || !agentProfile) return;
+  const inp = document.getElementById('agentChatInput');
+  if (!inp) return;
+  const text = inp.value.trim();
+  if (!text) return;
+  inp.value = '';
+  try {
+    const base = 'agent_admin_chats/' + currentAgentUid;
+    await db.ref(base + '/messages').push({
+      sender: 'AGENT',
+      senderUid: currentAgentUid,
+      senderName: agentProfile.name || agentProfile.email || 'Agent',
+      text,
+      timestamp: TS,
+      read: false
+    });
+    await db.ref(base + '/meta').update({
+      agentUid: currentAgentUid,
+      agentName: agentProfile.name || agentProfile.email || 'Agent',
+      adminUid: agentProfile.parentAdminId || '',
+      lastMessage: text,
+      lastTimestamp: TS,
+      lastSender: 'AGENT',
+      unreadForAdmin: true,
+      unreadForAgent: false
+    });
+  } catch (err) {
+    toast('মেসেজ পাঠানো ব্যর্থ: ' + (err.message || err));
+  }
+}
+function markAgentChatRead() {
+  if (!currentAgentUid) return;
+  const badge = document.getElementById('liveChatFabBadge');
+  if (badge) badge.style.display = 'none';
+  const base = 'agent_admin_chats/' + currentAgentUid;
+  const u = {};
+  agentChatMsgs.forEach(m => { if (m.sender !== 'AGENT' && m.read !== true) u[m.id + '/read'] = true; });
+  if (Object.keys(u).length) {
+    db.ref(base + '/messages').update(u).catch(() => {});
+    db.ref(base + '/meta/unreadForAgent').set(false).catch(() => {});
+  }
+}
 function openSupportModal() {
-  const s = globalSettings || {};
-  modal('Admin Support',
-    `Parent Admin ID: ${escapeRequestText((agentProfile && agentProfile.parentAdminId) || 'Master Admin')}<br>` +
-    `Telegram: ${escapeRequestText(s.telegram || s.telegramSupport || '—')}<br>` +
-    `WhatsApp: ${escapeRequestText(s.whatsapp || s.whatsappSupport || '—')}<br>` +
-    `Support Email: ${escapeRequestText(s.supportEmail || '—')}`
-  );
+  toggleAgentLiveChat(true);
 }
 function openSettingsModal() {
   modal('App Settings',

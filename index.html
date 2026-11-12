@@ -1551,6 +1551,9 @@
     .stat-card, .card, .cd, .st, .modal-card { border-radius: 10px; }
     body[data-theme="light"] [style*="#141c30" i]:not(.modal-card *):not(.toast),
     body[data-theme="light"] .accent-border { background-image: none !important; background-color: #FFF7E6 !important; }
+    .ua-chat-fab { position: fixed; right: 20px; bottom: 20px; width: 56px; height: 56px; border-radius: 50%; background: var(--primary, #F59E0B); color: #0A0A0A; border: 2px solid rgba(255,255,255,0.22); font-size: 24px; display: none; align-items: center; justify-content: center; cursor: pointer; z-index: 1200; box-shadow: 0 8px 24px rgba(0,0,0,0.45) !important; }
+    .ua-fab-badge { position: absolute; top: -4px; right: -4px; min-width: 20px; height: 20px; padding: 0 5px; border-radius: 10px; background: #ef4444; color: #fff; font-size: 0.7rem; font-weight: 800; display: none; align-items: center; justify-content: center; border: 2px solid var(--c-base, #0A0A0A); }
+    @media (max-width: 768px) { .ua-chat-fab { right: 14px; bottom: 78px; width: 52px; height: 52px; font-size: 22px; } }
 </style>
 </head>
 <body data-theme="dark">
@@ -1637,6 +1640,13 @@
             <span class="nav-badge" id="sidebar-agent-req-badge" style="display:none;">0</span>
           </button>
         </li>
+        <li class="nav-item" data-view="view-affiliates">
+          <button onclick="switchView('view-affiliates')">
+            <svg viewBox="0 0 24 24"><path d="M16 11c1.66 0 2.99-1.34 2.99-3S17.66 5 16 5c-1.66 0-3 1.34-3 3s1.34 3 3 3zm-8 0c1.66 0 2.99-1.34 2.99-3S9.66 5 8 5C6.34 5 5 6.34 5 8s1.34 3 3 3zm0 2c-2.33 0-7 1.17-7 3.5V19h14v-2.5c0-2.33-4.67-3.5-7-3.5zm8 0c-.29 0-.62.02-.97.05 1.16.84 1.97 1.97 1.97 3.45V19h6v-2.5c0-2.33-4.67-3.5-7-3.5z"/></svg>
+            <span class="nav-label">অ্যাফিলিয়েট ও কমিশন</span>
+            <span class="nav-badge" id="sidebar-aff-req-badge" style="display:none;">0</span>
+          </button>
+        </li>
         <li class="nav-item" data-view="view-promotions">
           <button onclick="switchView('view-promotions')">
             <svg viewBox="0 0 24 24"><path d="M20 6h-2.18c.11-.31.18-.65.18-1 0-1.66-1.34-3-3-3-1.05 0-1.96.54-2.5 1.35l-.5.67-.5-.68C10.96 2.54 10.05 2 9 2 7.34 2 6 3.34 6 5c0 .35.07.69.18 1H4c-1.11 0-1.99.89-1.99 2L2 19c0 1.11.89 2 2 2h16c1.11 0 2-.89 2-2V8c0-1.11-.89-2-2-2zm-5-2c.55 0 1 .45 1 1s-.45 1-1 1-1-.45-1-1 .45-1 1-1zM9 4c.55 0 1 .45 1 1s-.45 1-1 1-1-.45-1-1 .45-1 1-1z"/></svg>
@@ -1664,7 +1674,7 @@
         <li class="nav-item">
             <button onclick="openMasterChatModal()" style="display:flex; align-items:center; gap:12px; width:100%; position:relative;">
               <svg viewBox="0 0 24 24"><path d="M20 2H4c-1.1 0-2 .9-2 2v18l4-4h14c1.1 0 2-.9 2-2V4c0-1.1-.9-2-2-2zm0 14H6l-2 2V4h16v12z"/></svg>
-              <span>মাস্টার অ্যাডমিন চ্যাট</span>
+              <span>লাইভ সাপোর্ট চ্যাট</span>
               <span id="sidebar-master-chat-badge" style="display:none; margin-left:auto; background:#ef4444; color:#fff; border-radius:10px; padding:1px 6px; font-size:0.68rem; font-weight:800;">0</span>
             </button>
           </li>
@@ -3128,6 +3138,126 @@
           </div>
         </section>
 
+        <!-- ==================== AFFILIATES & SMART COMMISSION ==================== -->
+        <section id="view-affiliates" class="view-section">
+          <div class="stats-grid" id="affiliates-summary-grid" style="margin-bottom:18px;"></div>
+
+          <!-- Pending Commission Requests -->
+          <div class="card" style="margin-bottom:20px; border-color:var(--border-color);">
+            <div class="card-header">
+              <div class="card-title">
+                <svg viewBox="0 0 24 24"><path d="M11.8 10.9c-2.27-.59-3-1.2-3-2.15 0-1.09 1.01-1.85 2.7-1.85 1.78 0 2.44.85 2.5 2.1h2.21c-.07-1.72-1.12-3.3-3.21-3.81V3h-3v2.16c-1.94.42-3.5 1.68-3.5 3.61 0 2.31 1.91 3.46 4.7 4.13 2.5.6 3 1.48 3 2.41 0 .69-.49 1.79-2.7 1.79-2.06 0-2.87-.92-2.98-2.1h-2.2c.12 2.19 1.76 3.42 3.68 3.83V21h3v-2.15c1.95-.37 3.5-1.5 3.5-3.55 0-2.84-2.43-3.81-4.7-4.4z"/></svg>
+                <span>অ্যাফিলিয়েট কমিশন উইথড্র রিকোয়েস্ট (Pending Commission Requests)</span>
+              </div>
+              <span class="badge badge-pending" id="aff-req-count-badge">0</span>
+            </div>
+            <div class="table-container">
+              <table>
+                <thead>
+                  <tr>
+                    <th>অ্যাফিলিয়েট</th>
+                    <th>পরিমাণ</th>
+                    <th>পেমেন্ট তথ্য</th>
+                    <th>সময়</th>
+                    <th>স্ট্যাটাস</th>
+                    <th style="text-align:right;">অ্যাকশন</th>
+                  </tr>
+                </thead>
+                <tbody id="aff-requests-tbody"></tbody>
+              </table>
+            </div>
+          </div>
+
+          <!-- Create Live Affiliate -->
+          <div class="card" style="margin-bottom:20px;">
+            <div class="card-header">
+              <div class="card-title">
+                <svg viewBox="0 0 24 24"><path d="M15 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm-9-2V7H4v3H1v2h3v3h2v-3h3v-2H6zm9 4c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z"/></svg>
+                <span>নতুন লাইভ অ্যাফিলিয়েট তৈরি ও স্মার্ট কমিশন সেট করুন (Connect affiliate.html)</span>
+              </div>
+            </div>
+            <form onsubmit="createUserAdminAffiliate(event)">
+              <div class="form-row-3">
+                <div class="form-group">
+                  <label>অ্যাফিলিয়েট নাম *</label>
+                  <input type="text" id="ua-af-name" class="form-control" placeholder="যেমন: Karim Aff" required>
+                </div>
+                <div class="form-group">
+                  <label>ইমেইল *</label>
+                  <input type="email" id="ua-af-email" class="form-control" placeholder="aff@mostwin88.com" required>
+                </div>
+                <div class="form-group">
+                  <label>পাসওয়ার্ড (৬+ অক্ষর) *</label>
+                  <input type="password" id="ua-af-pass" class="form-control" placeholder="কমপক্ষে ৬ অক্ষর" minlength="6" required>
+                </div>
+              </div>
+              <div class="form-row-3" style="margin-top:12px;">
+                <div class="form-group">
+                  <label>মোবাইল নম্বর</label>
+                  <input type="text" id="ua-af-phone" class="form-control" placeholder="017xxxxxxxx">
+                </div>
+                <div class="form-group">
+                  <label>রেফারেল কোড (ফাঁকা = অটো)</label>
+                  <input type="text" id="ua-af-code" class="form-control" placeholder="WIN101">
+                </div>
+                <div class="form-group">
+                  <label>স্মার্ট কমিশন (ON / OFF)</label>
+                  <select id="ua-af-comm-en" class="form-control">
+                    <option value="1">✅ কমিশন চালু (ON)</option>
+                    <option value="0">⛔ কমিশন বন্ধ (OFF)</option>
+                  </select>
+                </div>
+              </div>
+              <div class="form-row-3" style="margin-top:12px;">
+                <div class="form-group">
+                  <label>কমিশনের ধরন (Smart Mode)</label>
+                  <select id="ua-af-comm-type" class="form-control">
+                    <option value="deposit_percent">ডিপোজিট শতাংশ (Deposit %)</option>
+                    <option value="loss_share">প্লেয়ার নেট লস শেয়ার (Revenue Share %)</option>
+                    <option value="turnover_percent">বেট টার্নওভার শতাংশ (Turnover %)</option>
+                  </select>
+                </div>
+                <div class="form-group">
+                  <label>কমিশন রেট (%)</label>
+                  <input type="number" id="ua-af-comm-rate" class="form-control" step="0.1" min="0" max="100" value="10" required>
+                </div>
+                <div class="form-group">
+                  <label>ন্যূনতম পেআউট (৳)</label>
+                  <input type="number" id="ua-af-min-payout" class="form-control" min="0" value="500" required>
+                </div>
+              </div>
+              <div style="margin-top:14px; display:flex; justify-content:flex-end;">
+                <button type="submit" class="btn btn-primary" id="btn-create-ua-aff">+ অ্যাফিলিয়েট তৈরি করুন</button>
+              </div>
+            </form>
+          </div>
+
+          <!-- Affiliates List -->
+          <div class="card">
+            <div class="card-header">
+              <div class="card-title">
+                <svg viewBox="0 0 24 24"><path d="M16 11c1.66 0 2.99-1.34 2.99-3S17.66 5 16 5c-1.66 0-3 1.34-3 3s1.34 3 3 3zm-8 0c1.66 0 2.99-1.34 2.99-3S9.66 5 8 5C6.34 5 5 6.34 5 8s1.34 3 3 3zm0 2c-2.33 0-7 1.17-7 3.5V19h14v-2.5c0-2.33-4.67-3.5-7-3.5zm8 0c-.29 0-.62.02-.97.05 1.16.84 1.97 1.97 1.97 3.45V19h6v-2.5c0-2.33-4.67-3.5-7-3.5z"/></svg>
+                <span>আপনার সকল লাইভ অ্যাফিলিয়েট ও স্মার্ট কমিশন তালিকা</span>
+              </div>
+            </div>
+            <div class="table-container">
+              <table>
+                <thead>
+                  <tr>
+                    <th>অ্যাফিলিয়েট ও কোড</th>
+                    <th>রেফার্ড প্লেয়ার</th>
+                    <th>স্মার্ট কমিশন সেটিংস</th>
+                    <th>কমিশন ওয়ালেট</th>
+                    <th>স্ট্যাটাস</th>
+                    <th style="text-align:right;">কমিশন, চ্যাট ও নিয়ন্ত্রণ</th>
+                  </tr>
+                </thead>
+                <tbody id="ua-affiliates-tbody"></tbody>
+              </table>
+            </div>
+          </div>
+        </section>
+
         <!-- ==================== GAME ACTIVITY (who played, how long, bet count, +/-, IP & Device) ==================== -->
         <section id="view-gameactivity" class="view-section">
           <div class="toolbar">
@@ -3182,6 +3312,56 @@
 
       </main>
 
+    </div>
+  </div>
+
+  <!-- FLOATING LIVE CHAT FAB (Home & All Pages) -->
+  <button type="button" class="ua-chat-fab" id="uaLiveChatFab" onclick="openMasterChatModal()" title="সরাসরি লাইভ চ্যাট (Master · Agent · Affiliate)" aria-label="লাইভ চ্যাট">
+    <span>💬</span>
+    <span class="ua-fab-badge" id="ua-fab-chat-badge">0</span>
+  </button>
+
+  <!-- AFFILIATE SMART COMMISSION MODAL -->
+  <div class="modal-backdrop" id="modal-aff-commission">
+    <div class="modal-card" style="max-width:480px;">
+      <div class="modal-header">
+        <h3 class="modal-title" id="modal-aff-comm-title">⚙️ স্মার্ট কমিশন সেটআপ</h3>
+        <button type="button" class="modal-close" onclick="closeAdminAffCommModal()">✕</button>
+      </div>
+      <form onsubmit="saveAdminAffCommission(event)">
+        <div class="modal-body" style="padding:18px; display:flex; flex-direction:column; gap:12px;">
+          <input type="hidden" id="edit-af-uid">
+          <div class="form-group">
+            <label>কমিশন স্ট্যাটাস (ON / OFF)</label>
+            <select id="edit-af-en" class="form-control">
+              <option value="1">✅ কমিশন চালু (ON)</option>
+              <option value="0">⛔ কমিশন বন্ধ (OFF)</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label>স্মার্ট কমিশন ধরন (Mode)</label>
+            <select id="edit-af-type" class="form-control">
+              <option value="deposit_percent">ডিপোজিট শতাংশ (Deposit %)</option>
+              <option value="loss_share">প্লেয়ার নেট লস শেয়ার (Revenue Share %)</option>
+              <option value="turnover_percent">বেট টার্নওভার শতাংশ (Turnover %)</option>
+            </select>
+          </div>
+          <div class="form-row">
+            <div class="form-group">
+              <label>কমিশন রেট (%)</label>
+              <input type="number" id="edit-af-rate" class="form-control" step="0.1" min="0" max="100" required>
+            </div>
+            <div class="form-group">
+              <label>ন্যূনতম উত্তোলন (৳)</label>
+              <input type="number" id="edit-af-min" class="form-control" min="0" required>
+            </div>
+          </div>
+        </div>
+        <div class="modal-footer" style="padding:14px 18px; display:flex; gap:8px; justify-content:flex-end; border-top:1px solid var(--border-subtle);">
+          <button type="button" class="btn btn-secondary" onclick="closeAdminAffCommModal()">বাতিল</button>
+          <button type="submit" class="btn btn-primary">💾 সেভ করুন</button>
+        </div>
+      </form>
     </div>
   </div>
 
@@ -3831,6 +4011,8 @@
       gameTransactions: [],
       agents: [],
       agentBalanceRequests: [],
+      affiliates: [],
+      affiliateCommissionRequests: [],
       deviceRegistry: {},
       userSecurityFilter: 'ALL',
       notices: [],
@@ -4102,6 +4284,28 @@
         if (bEl) { bEl.textContent = pendCnt; bEl.style.display = pendCnt > 0 ? 'inline-block' : 'none'; }
         renderAgents();
       }, (err) => { console.warn('Agent balance requests listener notice:', err); });
+
+      // 6d. Affiliates & Commission Requests (Live Affiliate Panel Sync)
+      db.ref('affiliates').on('value', (snap) => {
+        const val = snap.val() || {};
+        const me = npMyUid();
+        STATE.affiliates = Object.keys(val).map(k => ({ id: k, ...val[k] }))
+          .filter(af => !me || !af.parentAdminId || af.parentAdminId === me);
+        renderAffiliates();
+        try { if (typeof renderNpcPeerBar === 'function') renderNpcPeerBar(); } catch (e) {}
+      }, (err) => { console.warn('Affiliates listener notice:', err); });
+
+      db.ref('affiliateCommissionRequests').on('value', (snap) => {
+        const val = snap.val() || {};
+        const me = npMyUid();
+        STATE.affiliateCommissionRequests = Object.keys(val).map(k => ({ id: k, ...val[k] }))
+          .filter(r => !me || !r.parentAdminId || r.parentAdminId === me)
+          .reverse();
+        const pendCnt = STATE.affiliateCommissionRequests.filter(r => String(r.status || '').toLowerCase() === 'pending').length;
+        const bEl = document.getElementById('sidebar-aff-req-badge');
+        if (bEl) { bEl.textContent = pendCnt; bEl.style.display = pendCnt > 0 ? 'inline-block' : 'none'; }
+        renderAffiliates();
+      }, (err) => { console.warn('Affiliate commission requests listener notice:', err); });
 
       // 7. Device Registry (For Multi-Account & Clone Device Signal)
       db.ref('device_registry').on('value', (snap) => {
@@ -4456,6 +4660,8 @@
       document.getElementById('sidebar-email').innerText = email;
       document.getElementById('sidebar-avatar').innerText = email.charAt(0).toUpperCase();
       document.getElementById('login-overlay').style.display = 'none';
+      const fab = document.getElementById('uaLiveChatFab');
+      if (fab) fab.style.display = 'flex';
 
       recordAuditLog('ADMIN_LOGIN', 'ADMIN_SESSION', `Signed in as ${email}`);
       showToast(`স্বাগতম, ${email}!`, 'success');
@@ -4475,6 +4681,8 @@
 
     function executeLogoutUI() {
       try { if (typeof stopMasterChatListener === 'function') stopMasterChatListener(); } catch (e) {}
+      const fab = document.getElementById('uaLiveChatFab');
+      if (fab) fab.style.display = 'none';
       document.getElementById('login-overlay').style.display = 'flex';
       document.getElementById('sidebar-email').innerText = '';
     }
@@ -8026,6 +8234,7 @@
         'view-users': { bn: 'প্লেয়ার / ইউজার', en: 'Players / Users' },
         'view-wallet': { bn: 'ওয়ালেট ও রিকোয়েস্ট', en: 'Wallet & Requests' },
         'view-agents': { bn: 'এজেন্ট ম্যানেজমেন্ট', en: 'Agent Management' },
+        'view-affiliates': { bn: 'অ্যাফিলিয়েট ও কমিশন', en: 'Affiliates & Commission' },
         'view-promotions': { bn: 'ডিপোজিট প্রোমোশন', en: 'Promotions' },
         'view-finance': { bn: 'আর্থিক রিপোর্ট (Finance)', en: 'Financial Reports' },
         'view-notices': { bn: 'নোটিশ ও ঘোষণা', en: 'Notices & Broadcasts' },
@@ -8296,6 +8505,7 @@
             </td>
             <td><span class="badge ${isAct ? 'badge-approved' : 'badge-rejected'}">${isAct ? 'সক্রিয়' : 'নিষ্ক্রিয়'}</span></td>
             <td style="text-align:right; white-space:nowrap;">
+              <button class="btn btn-sm btn-secondary" onclick="openChatThread('agent','${a.id}')">💬 চ্যাট</button>
               <button class="btn btn-sm btn-primary" onclick="sendAgentFundAdmin('${a.id}')">+ ফান্ড</button>
               <button class="btn btn-sm btn-outline" onclick="reclaimAgentFundAdmin('${a.id}')">↩ ফেরত</button>
               <button class="btn btn-sm ${isAct ? 'btn-accent' : 'btn-success'}" onclick="toggleAgentActiveAdmin('${a.id}')">${isAct ? 'স্থগিত' : 'চালু'}</button>
@@ -8433,6 +8643,225 @@
       try {
         await db.ref('agentBalanceRequests/' + reqId).update({ status: 'rejected', processedAt: firebase.database.ServerValue.TIMESTAMP });
         showToast('এজেন্ট রিকোয়েস্ট বাতিল করা হয়েছে', 'info');
+      } catch (err) { showToast('ব্যর্থ: ' + err.message, 'error'); }
+    }
+
+    // ---------- Affiliates & Smart Commission Management ----------
+    function renderAffiliates() {
+      const sumEl = document.getElementById('affiliates-summary-grid');
+      const reqBody = document.getElementById('aff-requests-tbody');
+      const reqBadge = document.getElementById('aff-req-count-badge');
+      const afBody = document.getElementById('ua-affiliates-tbody');
+      const affs = STATE.affiliates || [];
+      const reqs = STATE.affiliateCommissionRequests || [];
+      const pendReqs = reqs.filter(r => String(r.status || '').toLowerCase() === 'pending');
+      if (reqBadge) reqBadge.textContent = pendReqs.length;
+
+      const totWallet = affs.reduce((s, a) => s + (parseFloat(a.commissionBalance) || 0), 0);
+      const totPaid = affs.reduce((s, a) => s + (parseFloat(a.totalCommissionPaid) || 0), 0);
+      const usersList = STATE.users || [];
+
+      if (sumEl) {
+        sumEl.innerHTML = `
+          <div class="stat-card"><div class="stat-info"><div class="stat-title">মোট লাইভ অ্যাফিলিয়েট</div><div class="stat-value">${affs.length}</div></div></div>
+          <div class="stat-card"><div class="stat-info"><div class="stat-title">পেন্ডিং কমিশন রিকোয়েস্ট</div><div class="stat-value" style="color:var(--accent);">${pendReqs.length}</div></div></div>
+          <div class="stat-card"><div class="stat-info"><div class="stat-title">বকেয়া কমিশন ওয়ালেট</div><div class="stat-value" style="color:var(--primary);">৳ ${Math.round(totWallet).toLocaleString('en-US')}</div></div></div>
+          <div class="stat-card"><div class="stat-info"><div class="stat-title">মোট প্রদত্ত কমিশন</div><div class="stat-value" style="color:var(--success);">৳ ${Math.round(totPaid).toLocaleString('en-US')}</div></div></div>
+        `;
+      }
+
+      if (reqBody) {
+        reqBody.innerHTML = reqs.length ? reqs.map(r => {
+          const isPend = String(r.status || '').toLowerCase() === 'pending';
+          return `<tr>
+            <td><b>${escapeHtml(r.affiliateName || 'Affiliate')}</b><br><small style="color:var(--text-dim);">${escapeHtml(r.affiliateEmail || r.affiliateUid || '')}</small></td>
+            <td><b style="color:var(--primary);">৳ ${Math.round(r.amount || 0).toLocaleString('en-US')}</b></td>
+            <td><small>${escapeHtml(r.paymentInfo || '—')}</small></td>
+            <td style="font-size:0.8rem;">${r.createdAt ? new Date(r.createdAt).toLocaleString('bn-BD') : '—'}</td>
+            <td><span class="badge ${isPend ? 'badge-pending' : (String(r.status).toLowerCase() === 'approved' ? 'badge-approved' : 'badge-rejected')}">${escapeHtml(r.status || 'pending')}</span></td>
+            <td style="text-align:right; white-space:nowrap;">
+              ${isPend ? `
+                <button class="btn btn-sm btn-success" onclick="approveAffReqAdmin('${r.id}')">✓ পেআউট দিন</button>
+                <button class="btn btn-sm btn-accent" onclick="rejectAffReqAdmin('${r.id}')">✕ বাতিল</button>
+              ` : '—'}
+            </td>
+          </tr>`;
+        }).join('') : `<tr><td colspan="6" style="text-align:center; padding:18px; color:var(--text-dim);">কোনো কমিশন উইথড্র রিকোয়েস্ট নেই</td></tr>`;
+      }
+
+      const modeMap = { deposit_percent: 'ডিপোজিট %', loss_share: 'নেট লস শেয়ার %', turnover_percent: 'টার্নওভার %' };
+      if (afBody) {
+        afBody.innerHTML = affs.length ? affs.map(af => {
+          const isAct = af.active !== false && af.status !== 'suspended';
+          const cOn = af.commissionEnabled !== false;
+          const refCnt = usersList.filter(u => u && (u.referredBy === af.id || u.affiliateUid === af.id || (af.referralCode && String(u.affCode || '').toUpperCase() === String(af.referralCode).toUpperCase()))).length;
+          return `<tr>
+            <td><b>${escapeHtml(af.name || 'Affiliate')}</b> · <span class="badge badge-upcoming">${escapeHtml(af.referralCode || '—')}</span><br><small style="color:var(--text-dim);">${escapeHtml(af.email || af.id)} ${af.phone ? '· ' + escapeHtml(af.phone) : ''}</small></td>
+            <td><b>${refCnt} জন</b><br><small style="color:var(--text-dim);">ক্লিক: ${parseInt(af.clicks || 0)}</small></td>
+            <td>
+              <span class="badge ${cOn ? 'badge-approved' : 'badge-rejected'}">${cOn ? 'ON' : 'OFF'}</span>
+              <div style="font-size:0.78rem; margin-top:4px;">${escapeHtml(modeMap[af.commissionType || 'deposit_percent'] || 'ডিপোজিট %')} · <b>${Number(af.commissionRate || 0)}%</b> (মিন ৳${Math.round(af.minCommissionPayout || 500)})</div>
+            </td>
+            <td><b style="color:var(--primary);">৳ ${Math.round(af.commissionBalance || 0).toLocaleString('en-US')}</b><br><small style="color:var(--success);">পেইড: ৳ ${Math.round(af.totalCommissionPaid || 0).toLocaleString('en-US')}</small></td>
+            <td><span class="badge ${isAct ? 'badge-approved' : 'badge-rejected'}">${isAct ? 'সক্রিয়' : 'স্থগিত'}</span></td>
+            <td style="text-align:right; white-space:nowrap;">
+              <button class="btn btn-sm btn-secondary" onclick="openChatThread('affiliate','${af.id}')">💬 চ্যাট</button>
+              <button class="btn btn-sm btn-primary" onclick="openAdminAffCommModal('${af.id}')">⚙ কমিশন</button>
+              <button class="btn btn-sm btn-outline" onclick="creditAffCommissionAdmin('${af.id}')">💰 ক্রেডিট</button>
+              <button class="btn btn-sm ${isAct ? 'btn-accent' : 'btn-success'}" onclick="toggleAffActiveAdmin('${af.id}')">${isAct ? 'স্থগিত' : 'চালু'}</button>
+            </td>
+          </tr>`;
+        }).join('') : `<tr><td colspan="6" style="text-align:center; padding:20px; color:var(--text-dim);">কোনো অ্যাফিলিয়েট তৈরি করা হয়নি</td></tr>`;
+      }
+    }
+
+    async function createUserAdminAffiliate(e) {
+      if (e) e.preventDefault();
+      if (!db || !npMyUid()) return;
+      const name = document.getElementById('ua-af-name').value.trim();
+      const email = document.getElementById('ua-af-email').value.trim();
+      const pass = document.getElementById('ua-af-pass').value;
+      const phone = document.getElementById('ua-af-phone').value.trim();
+      const rawCode = (document.getElementById('ua-af-code').value.trim() || name.replace(/[^a-zA-Z0-9]/g, '')).toUpperCase().slice(0, 12);
+      const code = rawCode || ('AFF' + Math.floor(1000 + Math.random() * 9000));
+      const cOn = document.getElementById('ua-af-comm-en').value === '1';
+      const cType = document.getElementById('ua-af-comm-type').value || 'deposit_percent';
+      const cRate = Math.max(0, Math.min(100, parseFloat(document.getElementById('ua-af-comm-rate').value) || 0));
+      const minPay = Math.max(0, parseFloat(document.getElementById('ua-af-min-payout').value) || 500);
+      if (!name || !email || pass.length < 6) { showToast('নাম, ইমেইল ও ৬+ অক্ষরের পাসওয়ার্ড দিন', 'error'); return; }
+      const btn = document.getElementById('btn-create-ua-aff');
+      if (btn) btn.disabled = true;
+      try {
+        const cfg = firebaseApp.options;
+        const sec = firebase.apps.find(a => a.name === 'sec_uaff') || firebase.initializeApp(cfg, 'sec_uaff');
+        const cr = await sec.auth().createUserWithEmailAndPassword(email, pass);
+        const me = npMyUid();
+        await db.ref('affiliates/' + cr.user.uid).set({
+          id: cr.user.uid, name, email, phone, parentAdminId: me,
+          parentAdminName: (STATE.adminUser && (STATE.adminUser.name || STATE.adminUser.email)) || 'Admin',
+          referralCode: code, clicks: 0,
+          commissionEnabled: cOn, commissionType: cType, commissionRate: cRate, minCommissionPayout: minPay,
+          commissionBalance: 0, totalCommissionPaid: 0,
+          active: true, status: 'active',
+          createdAt: firebase.database.ServerValue.TIMESTAMP, updatedAt: firebase.database.ServerValue.TIMESTAMP
+        });
+        const clean = name.toLowerCase().replace(/[^a-z0-9_]/g, '');
+        if (clean) {
+          await db.ref('usernames/' + clean).set({ uid: cr.user.uid, email, role: 'AFFILIATE', updatedAt: firebase.database.ServerValue.TIMESTAMP }).catch(() => {});
+        }
+        await sec.auth().signOut();
+        recordAuditLog('AFFILIATE_CREATED', cr.user.uid, `Affiliate ${name} (${code}) created: ${cType} ${cRate}%`);
+        showToast(`✅ অ্যাফিলিয়েট ${name} তৈরি হয়েছে (কোড: ${code})`, 'success');
+        ['ua-af-name', 'ua-af-email', 'ua-af-pass', 'ua-af-phone', 'ua-af-code'].forEach(id => { const el = document.getElementById(id); if (el) el.value = ''; });
+      } catch (err) {
+        showToast('অ্যাফিলিয়েট তৈরি ব্যর্থ: ' + err.message, 'error');
+      } finally {
+        if (btn) btn.disabled = false;
+      }
+    }
+
+    function openAdminAffCommModal(affId) {
+      const af = (STATE.affiliates || []).find(x => x.id === affId);
+      if (!af) return;
+      document.getElementById('edit-af-uid').value = affId;
+      document.getElementById('modal-aff-comm-title').innerText = '⚙️ স্মার্ট কমিশন — ' + (af.name || af.email || affId);
+      document.getElementById('edit-af-en').value = af.commissionEnabled === false ? '0' : '1';
+      document.getElementById('edit-af-type').value = af.commissionType || 'deposit_percent';
+      document.getElementById('edit-af-rate').value = af.commissionRate ?? 10;
+      document.getElementById('edit-af-min').value = af.minCommissionPayout ?? 500;
+      const modal = document.getElementById('modal-aff-commission');
+      if (modal) modal.classList.add('active');
+    }
+
+    function closeAdminAffCommModal() {
+      const modal = document.getElementById('modal-aff-commission');
+      if (modal) modal.classList.remove('active');
+    }
+
+    async function saveAdminAffCommission(e) {
+      if (e) e.preventDefault();
+      if (!db) return;
+      const affId = document.getElementById('edit-af-uid').value;
+      if (!affId) return;
+      const cOn = document.getElementById('edit-af-en').value === '1';
+      const cType = document.getElementById('edit-af-type').value || 'deposit_percent';
+      const cRate = Math.max(0, Math.min(100, parseFloat(document.getElementById('edit-af-rate').value) || 0));
+      const minPay = Math.max(0, parseFloat(document.getElementById('edit-af-min').value) || 0);
+      try {
+        await db.ref('affiliates/' + affId).update({
+          commissionEnabled: cOn, commissionType: cType, commissionRate: cRate, minCommissionPayout: minPay,
+          updatedAt: firebase.database.ServerValue.TIMESTAMP
+        });
+        recordAuditLog('AFF_COMMISSION_UPDATED', affId, `enabled=${cOn}, type=${cType}, rate=${cRate}%, min=${minPay}`);
+        closeAdminAffCommModal();
+        showToast('✅ স্মার্ট কমিশন আপডেট করা হয়েছে', 'success');
+      } catch (err) {
+        showToast('আপডেট ব্যর্থ: ' + err.message, 'error');
+      }
+    }
+
+    async function creditAffCommissionAdmin(affId) {
+      const af = (STATE.affiliates || []).find(x => x.id === affId);
+      const me = npMyUid();
+      if (!af || !me || !db) return;
+      const amt = Math.floor(parseFloat(prompt(`${af.name || af.email}-কে কত ৳ কমিশন ক্রেডিট করবেন?\n(আপনার তহবিল থেকে সমন্বয় হবে · আপনার ব্যালেন্স: ৳${Math.round(STATE.adminBalance || 0)})`, '500')));
+      if (!amt || amt <= 0) return;
+      if ((STATE.adminBalance || 0) < amt) { showToast(`আপনার ব্যালেন্স পর্যাপ্ত নয় (৳${Math.round(STATE.adminBalance || 0)})`, 'error'); return; }
+      try {
+        const updates = {};
+        updates[`admins/${me}/balance`] = firebase.database.ServerValue.increment(-amt);
+        updates[`affiliates/${affId}/commissionBalance`] = firebase.database.ServerValue.increment(amt);
+        const trxKey = db.ref('transactions').push().key;
+        updates[`transactions/${trxKey}`] = {
+          trxId: trxKey, uid: affId, adminUid: me, type: 'AFF_COMMISSION_CREDIT', amount: amt,
+          beforeBal: af.commissionBalance || 0, afterBal: (af.commissionBalance || 0) + amt,
+          date: new Date().toLocaleString('bn-BD'), timestamp: firebase.database.ServerValue.TIMESTAMP,
+          note: `Affiliate commission credit to ${af.name || affId}`
+        };
+        await db.ref().update(updates);
+        recordAuditLog('AFF_COMMISSION_CREDIT', affId, `Credited ৳${amt} to ${af.name || affId}`);
+        showToast(`✅ ৳${amt} কমিশন ওয়ালেটে যোগ হয়েছে`, 'success');
+      } catch (err) { showToast('ক্রেডিট ব্যর্থ: ' + err.message, 'error'); }
+    }
+
+    async function toggleAffActiveAdmin(affId) {
+      const af = (STATE.affiliates || []).find(x => x.id === affId);
+      if (!af || !db) return;
+      const next = !(af.active !== false && af.status !== 'suspended');
+      try {
+        await db.ref('affiliates/' + affId).update({ active: next, status: next ? 'active' : 'suspended', updatedAt: firebase.database.ServerValue.TIMESTAMP });
+        recordAuditLog('AFFILIATE_STATUS', affId, next ? 'ACTIVATED' : 'SUSPENDED');
+        showToast(next ? 'অ্যাফিলিয়েট সক্রিয় করা হয়েছে ✅' : 'অ্যাফিলিয়েট স্থগিত করা হয়েছে ⛔', 'info');
+      } catch (err) { showToast('ব্যর্থ: ' + err.message, 'error'); }
+    }
+
+    async function approveAffReqAdmin(reqId) {
+      const r = (STATE.affiliateCommissionRequests || []).find(x => x.id === reqId);
+      const me = npMyUid();
+      if (!r || !me || !db) return;
+      const amt = parseFloat(r.amount) || 0;
+      const af = (STATE.affiliates || []).find(x => x.id === r.affiliateUid);
+      if (!confirm(`${r.affiliateName || r.affiliateUid}-এর ৳${amt} কমিশন পেআউট অনুমোদন করবেন?`)) return;
+      try {
+        const updates = {};
+        updates[`affiliateCommissionRequests/${reqId}/status`] = 'approved';
+        updates[`affiliateCommissionRequests/${reqId}/approvedBy`] = me;
+        updates[`affiliateCommissionRequests/${reqId}/processedAt`] = firebase.database.ServerValue.TIMESTAMP;
+        if (af && (parseFloat(af.commissionBalance) || 0) >= amt) {
+          updates[`affiliates/${r.affiliateUid}/commissionBalance`] = firebase.database.ServerValue.increment(-amt);
+        }
+        updates[`affiliates/${r.affiliateUid}/totalCommissionPaid`] = firebase.database.ServerValue.increment(amt);
+        await db.ref().update(updates);
+        recordAuditLog('AFF_COMM_PAYOUT_APPROVED', reqId, `Paid ৳${amt} to ${r.affiliateName || r.affiliateUid}`);
+        showToast(`✅ ৳${amt} কমিশন পেআউট সম্পন্ন হয়েছে`, 'success');
+      } catch (err) { showToast('অনুমোদন ব্যর্থ: ' + err.message, 'error'); }
+    }
+
+    async function rejectAffReqAdmin(reqId) {
+      if (!confirm('অ্যাফিলিয়েট কমিশন রিকোয়েস্টটি বাতিল করবেন?')) return;
+      try {
+        await db.ref('affiliateCommissionRequests/' + reqId).update({ status: 'rejected', processedAt: firebase.database.ServerValue.TIMESTAMP });
+        showToast('কমিশন রিকোয়েস্ট বাতিল করা হয়েছে', 'info');
       } catch (err) { showToast('ব্যর্থ: ' + err.message, 'error'); }
     }
 
@@ -8863,11 +9292,13 @@
       "users":        { "view": "view-users" },
       "wallet":       { "view": "view-wallet" },
       "agents":       { "view": "view-agents" },
+      "affiliates":   { "view": "view-affiliates" },
       "promotions":   { "view": "view-promotions" },
       "finance":      { "view": "view-finance" },
       "notices":      { "view": "view-notices" },
       "notifications":{ "view": "view-notifications" },
-      "master_chat":  { "fns": ["openMasterChatModal"], "extraCss": "#btn-topbar-master-chat,#npc-overlay{display:none !important}" },
+      "master_chat":  { "extraCss": ".npc-tab-master{display:none !important}" },
+      "support_chat": { "fns": ["openChatThread"], "extraCss": ".npc-tab-agent,.npc-tab-aff{display:none !important}" },
       "settings":     { "view": "view-settings" },
       "audit":        { "view": "view-audit" },
       "u_ban":        { "fns": ["toggleUserStatus", "toggleUserStatusFromSecModal"] },
@@ -8879,6 +9310,7 @@
       "wd":           { "fns": ["completeWithdrawal", "rejectWithdrawal", "setWithdrawalStatus", "handleWithdrawalActionDropdown"] },
       "bal_req":      { "fns": ["openAdminFundModal"] },
       "agent_manage": { "fns": ["createUserAdminAgent", "sendAgentFundAdmin", "reclaimAgentFundAdmin", "toggleAgentActiveAdmin", "approveAgentReqAdmin", "rejectAgentReqAdmin", "assignRequestToAgent"] },
+      "aff_commission":{ "fns": ["createUserAdminAffiliate", "openAdminAffCommModal", "creditAffCommissionAdmin", "toggleAffActiveAdmin", "approveAffReqAdmin", "rejectAffReqAdmin"] },
       "dep_bonus":    { "fns": ["handleSaveBonusTurnoverSettings", "handleSaveAdminDepositBonusSettings"] },
       "promo_manage": { "fns": ["npPromoToggle", "npPromoEdit", "npPromoSave"] },
       "fin_export":   { "fns": ["exportFinanceCSV", "exportLedgerCSV", "exportUsersCSV", "exportAuditCSV"] },
@@ -9158,30 +9590,39 @@
 })();
 </script>
 
-  <!-- ==================== MASTER ADMIN CHAT (Support Center theme) ==================== -->
+  <!-- ==================== LIVE CHAT HUB (Master Admin • Agents • Affiliates) ==================== -->
   <style>
     #npc-overlay { position: fixed; inset: 0; z-index: 2147483000; display: none; background: rgba(15, 10, 20, 0.55); font-family: "Noto Sans Bengali", "Hind Siliguri", "Segoe UI", Arial, sans-serif; color: #202436; }
     #npc-overlay.npc-open { display: block; }
     #npc-overlay, #npc-overlay * { box-sizing: border-box; min-width: 0; }
-    #npc-overlay .npc-app { width: 100%; max-width: 620px; height: 100vh; height: 100dvh; margin: 0 auto; background: #fff; display: flex; flex-direction: column; overflow: hidden; position: relative; }
+    #npc-overlay .npc-app { width: 100%; max-width: 660px; height: 100vh; height: 100dvh; margin: 0 auto; background: #fff; display: flex; flex-direction: column; overflow: hidden; position: relative; }
     @media (min-width: 700px) { #npc-overlay { padding: 18px 0; } #npc-overlay .npc-app { height: calc(100dvh - 36px); border-radius: 18px; box-shadow: 0 8px 28px rgba(25, 30, 55, 0.25); } }
-    #npc-overlay .npc-header { flex: 0 0 auto; min-height: 78px; padding: 12px 16px; padding-top: max(12px, env(safe-area-inset-top, 0px)); display: flex; align-items: center; gap: 12px; color: #fff; background: linear-gradient(135deg, #f06292, #c2185b); }
-    #npc-overlay .npc-logo { width: 44px; height: 44px; flex: 0 0 44px; display: grid; place-items: center; border-radius: 13px; background: rgba(255, 255, 255, 0.17); border: 1px solid rgba(255, 255, 255, 0.4); font-size: 13px; font-weight: 900; color: #fff; }
+    #npc-overlay .npc-header { flex: 0 0 auto; min-height: 70px; padding: 12px 16px; padding-top: max(12px, env(safe-area-inset-top, 0px)); display: flex; align-items: center; gap: 12px; color: #fff; background: linear-gradient(135deg, #f06292, #c2185b); }
+    #npc-overlay .npc-logo { width: 42px; height: 42px; flex: 0 0 42px; display: grid; place-items: center; border-radius: 13px; background: rgba(255, 255, 255, 0.17); border: 1px solid rgba(255, 255, 255, 0.4); font-size: 13px; font-weight: 900; color: #fff; }
     #npc-overlay .npc-hinfo { flex: 1; }
-    #npc-overlay .npc-hinfo h1 { margin: 0 0 5px; font-size: 15px; line-height: 1.5; font-weight: 850; color: #fff; font-family: inherit; letter-spacing: 0; text-transform: none; }
-    #npc-overlay .npc-hinfo p { margin: 0; font-size: 11px; line-height: 1.5; opacity: 0.92; color: #fff; }
+    #npc-overlay .npc-hinfo h1 { margin: 0 0 3px; font-size: 15px; line-height: 1.4; font-weight: 850; color: #fff; font-family: inherit; letter-spacing: 0; text-transform: none; }
+    #npc-overlay .npc-hinfo p { margin: 0; font-size: 11px; line-height: 1.4; opacity: 0.92; color: #fff; }
     #npc-overlay .npc-x { flex: 0 0 auto; width: 36px; height: 36px; display: grid; place-items: center; padding: 0; border: 1px solid rgba(255, 255, 255, 0.5); border-radius: 50%; background: rgba(255, 255, 255, 0.15); color: #fff; font-size: 16px; line-height: 1; cursor: pointer; }
-    #npc-overlay .npc-officer { flex: 0 0 auto; padding: 12px 16px; display: flex; align-items: center; gap: 11px; border-bottom: 1px solid #e8eaf1; background: #fff; }
-    #npc-overlay .npc-avwrap { position: relative; width: 49px; height: 49px; flex: 0 0 49px; }
-    #npc-overlay .npc-avatar { display: block; width: 49px; height: 49px; border-radius: 50%; object-fit: cover; border: 2px solid #f3b4cc; background: #fff0f6; }
-    #npc-overlay .npc-avfb { display: none; width: 49px; height: 49px; border-radius: 50%; place-items: center; border: 2px solid #f3b4cc; background: #fff0f6; font-size: 22px; }
-    #npc-overlay .npc-dot { position: absolute; right: 0; bottom: 0; width: 13px; height: 13px; background: #18a968; border: 2px solid #fff; border-radius: 50%; }
+    #npc-overlay .npc-tabs { flex: 0 0 auto; display: flex; gap: 6px; padding: 8px 12px; background: #f8f9fc; border-bottom: 1px solid #e8eaf1; }
+    #npc-overlay .npc-tab { flex: 1; display: inline-flex; align-items: center; justify-content: center; gap: 6px; padding: 8px 10px; border-radius: 10px; border: 1px solid #e2e5ef; background: #fff; color: #363c52; font-size: 12px; font-weight: 700; cursor: pointer; }
+    #npc-overlay .npc-tab.active { background: #e91e63; border-color: #e91e63; color: #fff; }
+    #npc-overlay .npc-tbadge { background: #ef4444; color: #fff; border-radius: 99px; padding: 1px 6px; font-size: 10px; font-weight: 800; display: none; }
+    #npc-overlay .npc-tab.active .npc-tbadge { background: #fff; color: #e91e63; }
+    #npc-overlay .npc-peers { flex: 0 0 auto; display: none; gap: 8px; padding: 8px 12px; background: #fff; border-bottom: 1px solid #e8eaf1; overflow-x: auto; white-space: nowrap; }
+    #npc-overlay .npc-peers.open { display: flex; }
+    #npc-overlay .npc-peer { flex: 0 0 auto; display: inline-flex; align-items: center; gap: 6px; padding: 6px 12px; border-radius: 999px; border: 1px solid #e2e5ef; background: #f8f9fc; color: #202436; font-size: 12px; font-weight: 600; cursor: pointer; }
+    #npc-overlay .npc-peer.sel { background: #fff0f6; border-color: #e91e63; color: #c2185b; font-weight: 800; }
+    #npc-overlay .npc-pdot { width: 8px; height: 8px; border-radius: 50%; background: #ef4444; display: inline-block; }
+    #npc-overlay .npc-officer { flex: 0 0 auto; padding: 10px 16px; display: flex; align-items: center; gap: 11px; border-bottom: 1px solid #e8eaf1; background: #fff; }
+    #npc-overlay .npc-avwrap { position: relative; width: 44px; height: 44px; flex: 0 0 44px; }
+    #npc-overlay .npc-avfb { display: grid; width: 44px; height: 44px; border-radius: 50%; place-items: center; border: 2px solid #f3b4cc; background: #fff0f6; font-size: 20px; }
+    #npc-overlay .npc-dot { position: absolute; right: 0; bottom: 0; width: 12px; height: 12px; background: #18a968; border: 2px solid #fff; border-radius: 50%; }
     #npc-overlay .npc-oinfo { flex: 1; }
-    #npc-overlay .npc-oinfo h2 { margin: 0 0 4px; font-size: 13px; color: #202436; font-family: inherit; letter-spacing: 0; text-transform: none; }
+    #npc-overlay .npc-oinfo h2 { margin: 0 0 3px; font-size: 13px; color: #202436; font-family: inherit; letter-spacing: 0; text-transform: none; }
     #npc-overlay .npc-ver { color: #168bd2; }
     #npc-overlay .npc-oinfo p { color: #18a968; margin: 0; font-size: 11px; }
-    #npc-overlay .npc-olabel { flex: 0 0 auto; font-size: 10px; line-height: 1.7; color: #7b8194; text-align: right; }
-    #npc-overlay .npc-olabel strong { display: block; font-size: 11px; color: #202436; margin-bottom: 3px; }
+    #npc-overlay .npc-olabel { flex: 0 0 auto; font-size: 10px; line-height: 1.6; color: #7b8194; text-align: right; }
+    #npc-overlay .npc-olabel strong { display: block; font-size: 11px; color: #202436; margin-bottom: 2px; }
     #npc-overlay .npc-chat { flex: 1 1 0; min-height: 0; overflow-x: hidden; overflow-y: auto; overscroll-behavior-y: contain; -webkit-overflow-scrolling: touch; padding: 0 12px 14px; background: radial-gradient(circle at 5% 5%, #fceaf1, transparent 32%), #fafbfe; }
     #npc-overlay .npc-div { text-align: center; margin: 16px 0 18px; }
     #npc-overlay .npc-div span { display: inline-block; max-width: 100%; padding: 5px 12px; font-size: 10px; color: #7b8194; border: 1px solid #e8eaf1; background: #fff; border-radius: 20px; }
@@ -9198,21 +9639,26 @@
     #npc-overlay .npc-bar button:active { background: #c2185b; }
     #npc-overlay .npc-bar button:disabled { opacity: 0.6; cursor: not-allowed; }
   </style>
-  <div id="npc-overlay" role="dialog" aria-modal="true" aria-label="Master Admin Chat">
+  <div id="npc-overlay" role="dialog" aria-modal="true" aria-label="MOSTWIN88 Live Chat Hub">
     <div class="npc-app">
       <header class="npc-header">
-        <div class="npc-logo">NP</div>
-        <div class="npc-hinfo"><h1>MOSTWIN88</h1><p>Master Admin Support</p></div>
+        <div class="npc-logo">M88</div>
+        <div class="npc-hinfo"><h1>MOSTWIN88</h1><p>লাইভ সাপোর্ট চ্যাট হাব</p></div>
         <button type="button" class="npc-x" onclick="closeMasterChatModal()" aria-label="বন্ধ করুন">✕</button>
       </header>
+      <div class="npc-tabs">
+        <button type="button" class="npc-tab npc-tab-master active" id="npc-tab-master" onclick="switchNpcChannel('master')">👑 Master <span class="npc-tbadge" id="npc-tbadge-master">0</span></button>
+        <button type="button" class="npc-tab npc-tab-agent" id="npc-tab-agent" onclick="switchNpcChannel('agent')">🧑‍💼 এজেন্ট <span class="npc-tbadge" id="npc-tbadge-agent">0</span></button>
+        <button type="button" class="npc-tab npc-tab-aff" id="npc-tab-aff" onclick="switchNpcChannel('affiliate')">🤝 অ্যাফিলিয়েট <span class="npc-tbadge" id="npc-tbadge-aff">0</span></button>
+      </div>
+      <div class="npc-peers" id="npc-peers"></div>
       <section class="npc-officer">
         <div class="npc-avwrap">
-          <img class="npc-avatar" alt="" width="49" height="49" decoding="async" src="https://i.postimg.cc/wMzTy1DT/portrait-of-a-woman-working-in-customer-service-at-a-call-center-white-backgroud-generative-ai-free.jpg" onerror="this.style.display='none';this.nextElementSibling.style.display='grid'">
-          <span class="npc-avfb">👑</span>
+          <span class="npc-avfb" id="npc-officer-av">👑</span>
           <span class="npc-dot"></span>
         </div>
-        <div class="npc-oinfo"><h2>Master Administrator <span class="npc-ver">✓</span></h2><p>● Online Support</p></div>
-        <div class="npc-olabel"><strong>Support Desk</strong>আমরা পাশে আছি</div>
+        <div class="npc-oinfo"><h2 id="npc-officer-name">Master Administrator <span class="npc-ver">✓</span></h2><p id="npc-officer-sub">● Online Support</p></div>
+        <div class="npc-olabel"><strong>Live Chat</strong>রিয়েলটাইম</div>
       </section>
       <main class="npc-chat" id="npc-msgs"></main>
       <form class="npc-bar" id="master-chat-form" onsubmit="handleSendMasterChatMessage(event)">
@@ -9223,16 +9669,24 @@
   </div>
 
 <script>
-  // ==================== MASTER ADMIN CHAT CLIENT LOGIC ====================
-  // পেজের আগের কোনো খোলা <div> (যেমন modal-game) এর ভেতরে আটকে থাকলে চ্যাট দেখা যেত না, তাই সরাসরি body-তে সরানো হলো
+  // ==================== 3-TIER LIVE CHAT HUB LOGIC (Master • Agent • Affiliate) ====================
   (function moveChatToBody() {
     var o = document.getElementById('npc-overlay');
     if (o && o.parentElement !== document.body) document.body.appendChild(o);
   })();
 
   var _masterChatRef = null;
+  var _agentChatsRef = null;
+  var _affChatsRef = null;
+  var _activePeerRef = null;
   var _masterChatModalOpen = false;
-  var _masterChatUnreadCount = 0;
+  var _npcChannel = 'master'; // 'master' | 'agent' | 'affiliate'
+  var _npcTargetUid = '';
+  var _npcMasterMsgs = [];
+  var _npcPeerMsgs = [];
+  var _agentChatMetas = {};
+  var _affChatMetas = {};
+  var _masterUnreadFlag = false;
 
   function npcEsc(s) {
     return String(s == null ? '' : s).replace(/[&<>"']/g, function (c) {
@@ -9246,14 +9700,175 @@
     } catch (e) { return ''; }
   }
 
-  function openMasterChatModal() {
+  function updateMasterChatBadges() {
+    var mCount = _masterUnreadFlag ? 1 : 0;
+    var aCount = 0;
+    var afCount = 0;
+    (STATE.agents || []).forEach(function (ag) {
+      var mt = _agentChatMetas[ag.id];
+      if (mt && mt.unreadForAdmin === true) aCount++;
+    });
+    (STATE.affiliates || []).forEach(function (af) {
+      var mt = _affChatMetas[af.id];
+      if (mt && mt.unreadForAdmin === true) afCount++;
+    });
+    var total = mCount + aCount + afCount;
+    var txt = total > 9 ? '9+' : String(total);
+    var dot = document.getElementById('master-chat-badge-dot');
+    var sBadge = document.getElementById('sidebar-master-chat-badge');
+    var fabBadge = document.getElementById('ua-fab-chat-badge');
+    if (dot) { dot.innerText = txt; dot.style.display = total > 0 ? 'inline-block' : 'none'; }
+    if (sBadge) { sBadge.innerText = txt; sBadge.style.display = total > 0 ? 'inline-block' : 'none'; }
+    if (fabBadge) { fabBadge.innerText = txt; fabBadge.style.display = total > 0 ? 'flex' : 'none'; }
+
+    var bm = document.getElementById('npc-tbadge-master');
+    var ba = document.getElementById('npc-tbadge-agent');
+    var baf = document.getElementById('npc-tbadge-aff');
+    if (bm) { bm.innerText = mCount; bm.style.display = mCount > 0 ? 'inline-block' : 'none'; }
+    if (ba) { ba.innerText = aCount; ba.style.display = aCount > 0 ? 'inline-block' : 'none'; }
+    if (baf) { baf.innerText = afCount; baf.style.display = afCount > 0 ? 'inline-block' : 'none'; }
+  }
+
+  function scrollMasterChatToBottom() {
+    var c = document.getElementById('npc-msgs');
+    if (c) c.scrollTop = c.scrollHeight;
+  }
+
+  function renderNpcPeerBar() {
+    var bar = document.getElementById('npc-peers');
+    if (!bar) return;
+    if (_npcChannel === 'master') {
+      bar.classList.remove('open');
+      bar.innerHTML = '';
+      return;
+    }
+    var list = _npcChannel === 'agent' ? (STATE.agents || []) : (STATE.affiliates || []);
+    var metas = _npcChannel === 'agent' ? _agentChatMetas : _affChatMetas;
+    if (!_npcTargetUid || !list.some(function (x) { return x.id === _npcTargetUid; })) {
+      _npcTargetUid = list.length ? list[0].id : '';
+    }
+    bar.classList.add('open');
+    bar.innerHTML = list.length ? list.map(function (p) {
+      var hasUnr = metas[p.id] && metas[p.id].unreadForAdmin === true;
+      return '<button type="button" class="npc-peer' + (p.id === _npcTargetUid ? ' sel' : '') + '" onclick="selectNpcPeer(\'' + npcEsc(p.id) + '\')">' +
+        npcEsc(p.name || p.email || p.id) + (hasUnr ? ' <span class="npc-pdot"></span>' : '') + '</button>';
+    }).join('') : '<span style="font-size:12px; color:#7b8194; padding:4px 8px;">কোনো ' + (_npcChannel === 'agent' ? 'এজেন্ট' : 'অ্যাফিলিয়েট') + ' পাওয়া যায়নি</span>';
+  }
+  window.renderNpcPeerBar = renderNpcPeerBar;
+
+  function renderNpcHeaderOfficer() {
+    var av = document.getElementById('npc-officer-av');
+    var nm = document.getElementById('npc-officer-name');
+    var sub = document.getElementById('npc-officer-sub');
+    if (!av || !nm || !sub) return;
+    if (_npcChannel === 'master') {
+      av.textContent = '👑';
+      nm.innerHTML = 'Master Administrator <span class="npc-ver">✓</span>';
+      sub.textContent = '● Direct Master Support';
+    } else if (_npcChannel === 'agent') {
+      var ag = (STATE.agents || []).find(function (x) { return x.id === _npcTargetUid; });
+      av.textContent = '🧑‍💼';
+      nm.innerHTML = npcEsc((ag && (ag.name || ag.email)) || 'এজেন্ট নির্বাচন করুন') + ' <span class="npc-ver">✓</span>';
+      sub.textContent = ag ? ('● Agent (' + npcEsc(ag.phone || ag.email || '') + ')') : 'কোনো এজেন্ট নেই';
+    } else {
+      var af = (STATE.affiliates || []).find(function (x) { return x.id === _npcTargetUid; });
+      av.textContent = '🤝';
+      nm.innerHTML = npcEsc((af && (af.name || af.email)) || 'অ্যাফিলিয়েট নির্বাচন করুন') + ' <span class="npc-ver">✓</span>';
+      sub.textContent = af ? ('● Affiliate (' + npcEsc(af.referralCode || af.email || '') + ')') : 'কোনো অ্যাফিলিয়েট নেই';
+    }
+  }
+
+  function renderCurrentChatMessages() {
+    var c = document.getElementById('npc-msgs');
+    if (!c) return;
+    var entries = _npcChannel === 'master' ? _npcMasterMsgs : _npcPeerMsgs;
+    var label = _npcChannel === 'master' ? 'MASTER ADMIN ↔ USER ADMIN' : (_npcChannel === 'agent' ? 'USER ADMIN ↔ AGENT' : 'USER ADMIN ↔ AFFILIATE');
+    var avChar = _npcChannel === 'master' ? '👑' : (_npcChannel === 'agent' ? '🧑‍💼' : '🤝');
+    var html = '<div class="npc-div"><span>MOSTWIN88 • ' + label + '</span></div>';
+    if (_npcChannel !== 'master' && !_npcTargetUid) {
+      html += '<div style="text-align:center; padding:32px 16px; color:#7b8194; font-size:13px;">উপর থেকে চ্যাট করার জন্য একটি আইডি বেছে নিন অথবা নতুন তৈরি করুন।</div>';
+    } else if (!entries.length) {
+      html += '<div style="text-align:center; padding:28px 16px; color:#7b8194; font-size:12px;">এখনও কোনো মেসেজ নেই — কথা শুরু করুন।</div>';
+    } else {
+      entries.forEach(function (it) {
+        var m = it[1] || {};
+        var mine = _npcChannel === 'master' ? (m.sender === 'USER_ADMIN' || m.sender === 'ADMIN') : (m.sender === 'USER_ADMIN' || m.sender === 'ADMIN');
+        var t = m.timestamp ? new Date(m.timestamp).toLocaleTimeString('bn-BD', { hour: '2-digit', minute: '2-digit' }) : '';
+        var bub = '<div class="npc-bub">' + npcEsc(m.text) + '<span class="npc-time">' + t + '</span></div>';
+        html += mine
+          ? '<div class="npc-msg npc-me">' + bub + '</div>'
+          : '<div class="npc-msg"><span class="npc-mav">' + avChar + '</span>' + bub + '</div>';
+      });
+    }
+    c.innerHTML = html;
+    scrollMasterChatToBottom();
+  }
+
+  function attachActivePeerChat() {
+    try { if (_activePeerRef) _activePeerRef.off(); } catch (e) {}
+    _activePeerRef = null;
+    _npcPeerMsgs = [];
+    if (!db || _npcChannel === 'master' || !_npcTargetUid) { renderCurrentChatMessages(); return; }
+    var base = (_npcChannel === 'agent' ? 'agent_admin_chats/' : 'affiliate_admin_chats/') + _npcTargetUid;
+    _activePeerRef = db.ref(base + '/messages').limitToLast(120);
+    _activePeerRef.on('value', function (snap) {
+      var val = snap.val() || {};
+      _npcPeerMsgs = Object.entries(val).sort(function (a, b) { return (a[1].timestamp || 0) - (b[1].timestamp || 0); });
+      renderCurrentChatMessages();
+      if (_masterChatModalOpen) {
+        db.ref(base + '/meta/unreadForAdmin').set(false).catch(function () {});
+      }
+    });
+  }
+
+  function switchNpcChannel(ch) {
+    if (ch === 'master' && typeof featureOn === 'function' && !featureOn('master_chat')) {
+      ch = 'agent';
+    }
+    if (ch !== 'master' && typeof featureOn === 'function' && !featureOn('support_chat')) {
+      showToast('এই লাইভ চ্যাট ফিচারটি MASTER ADMINISTRATOR বন্ধ রেখেছেন', 'error');
+      return;
+    }
+    _npcChannel = ch || 'master';
+    ['master', 'agent', 'affiliate'].forEach(function (k) {
+      var el = document.getElementById('npc-tab-' + (k === 'affiliate' ? 'aff' : k));
+      if (el) el.classList.toggle('active', k === _npcChannel);
+    });
+    renderNpcPeerBar();
+    renderNpcHeaderOfficer();
+    if (_npcChannel === 'master') {
+      try { if (_activePeerRef) _activePeerRef.off(); } catch (e) {}
+      _activePeerRef = null;
+      markMasterChatRead();
+      renderCurrentChatMessages();
+    } else {
+      attachActivePeerChat();
+    }
+  }
+
+  function selectNpcPeer(uid) {
+    _npcTargetUid = uid;
+    renderNpcPeerBar();
+    renderNpcHeaderOfficer();
+    attachActivePeerChat();
+  }
+
+  function openChatThread(ch, uid) {
+    if (typeof featureOn === 'function' && !featureOn('support_chat')) {
+      showToast('এই ফিচারটি MASTER ADMINISTRATOR বন্ধ করে রেখেছেন', 'error');
+      return;
+    }
+    _npcTargetUid = uid || '';
+    openMasterChatModal(ch || 'agent');
+  }
+
+  function openMasterChatModal(defaultCh) {
     _masterChatModalOpen = true;
-    _masterChatUnreadCount = 0;
-    updateMasterChatBadges();
     var m = document.getElementById('npc-overlay');
     if (m) { m.classList.add('npc-open'); m.style.display = 'block'; }
     try { initMasterChatListener(); } catch (e) { console.warn('chat listener', e); }
-    markMasterChatRead();
+    var targetCh = defaultCh || ((typeof featureOn === 'function' && !featureOn('master_chat')) ? 'agent' : 'master');
+    switchNpcChannel(targetCh);
     setTimeout(function () {
       var inp = document.getElementById('master-chat-input');
       if (inp) inp.focus();
@@ -9267,67 +9882,66 @@
     if (m) { m.classList.remove('npc-open'); m.style.display = 'none'; }
   }
 
-  function updateMasterChatBadges() {
-    var dot = document.getElementById('master-chat-badge-dot');
-    var sBadge = document.getElementById('sidebar-master-chat-badge');
-    var txt = _masterChatUnreadCount > 9 ? '9+' : String(_masterChatUnreadCount);
-    if (dot) { dot.innerText = txt; dot.style.display = _masterChatUnreadCount > 0 ? 'inline-block' : 'none'; }
-    if (sBadge) { sBadge.innerText = txt; sBadge.style.display = _masterChatUnreadCount > 0 ? 'inline-block' : 'none'; }
-  }
-
-  function scrollMasterChatToBottom() {
-    var c = document.getElementById('npc-msgs');
-    if (c) c.scrollTop = c.scrollHeight;
-  }
-
-  function npcRender(entries) {
-    var c = document.getElementById('npc-msgs');
-    if (!c) return;
-    var html = '<div class="npc-div"><span>MOSTWIN88 • SUPPORT</span></div>';
-    entries.forEach(function (it) {
-      var m = it[1] || {};
-      var mine = (m.sender === 'USER_ADMIN' || m.sender === 'ADMIN');
-      var t = m.timestamp ? new Date(m.timestamp).toLocaleTimeString('bn-BD', { hour: '2-digit', minute: '2-digit' }) : '';
-      var bub = '<div class="npc-bub">' + npcEsc(m.text) + '<span class="npc-time">' + t + '</span></div>';
-      html += mine
-        ? '<div class="npc-msg npc-me">' + bub + '</div>'
-        : '<div class="npc-msg"><span class="npc-mav">👑</span>' + bub + '</div>';
-    });
-    c.innerHTML = html;
-    scrollMasterChatToBottom();
-  }
-
   function initMasterChatListener() {
     if (!db) return;
     var uid = npcUid();
     if (!uid) return;
-    if (_masterChatRef) return; // already listening
+    if (!_masterChatRef) {
+      _masterChatRef = db.ref('master_admin_chats/' + uid + '/messages').limitToLast(120);
+      _masterChatRef.on('value', function (snapshot) {
+        var val = snapshot.val() || {};
+        _npcMasterMsgs = Object.entries(val).sort(function (a, b) { return (a[1].timestamp || 0) - (b[1].timestamp || 0); });
+        if (_npcChannel === 'master') renderCurrentChatMessages();
 
-    _masterChatRef = db.ref('master_admin_chats/' + uid + '/messages').limitToLast(120);
-    _masterChatRef.on('value', function (snapshot) {
-      var val = snapshot.val() || {};
-      var entries = Object.entries(val).sort(function (a, b) { return (a[1].timestamp || 0) - (b[1].timestamp || 0); });
-      npcRender(entries);
-
-      var newIncoming = false;
-      entries.forEach(function (item) {
-        var msg = item[1] || {};
-        var isMe = (msg.sender === 'USER_ADMIN' || msg.sender === 'ADMIN');
-        if (!isMe && msg.read !== true) newIncoming = true;
-      });
-
-      if (_masterChatModalOpen) {
-        if (newIncoming) markMasterChatRead();
-      } else if (newIncoming) {
-        _masterChatUnreadCount++;
+        var newIncoming = false;
+        _npcMasterMsgs.forEach(function (item) {
+          var msg = item[1] || {};
+          var isMe = (msg.sender === 'USER_ADMIN' || msg.sender === 'ADMIN');
+          if (!isMe && msg.read !== true) newIncoming = true;
+        });
+        _masterUnreadFlag = newIncoming;
+        if (_masterChatModalOpen && _npcChannel === 'master' && newIncoming) {
+          markMasterChatRead();
+          _masterUnreadFlag = false;
+        } else if (newIncoming && !_masterChatModalOpen) {
+          try { playNotificationSound(); } catch (e) {}
+          try { showToast('💬 মাস্টার অ্যাডমিন থেকে নতুন মেসেজ এসেছে!', 'info'); } catch (e) {}
+        }
         updateMasterChatBadges();
-        try { playNotificationSound(); } catch (e) {}
-        try { showToast('💬 মাস্টার অ্যাডমিন থেকে নতুন মেসেজ এসেছে!', 'info'); } catch (e) {}
-      }
-    }, function (err) {
-      try { showToast('চ্যাট লোড ব্যর্থ: ' + err.message, 'error'); } catch (e) {}
-      _masterChatRef = null;
-    });
+      }, function () { _masterChatRef = null; });
+    }
+    if (!_agentChatsRef) {
+      _agentChatsRef = db.ref('agent_admin_chats');
+      _agentChatsRef.on('value', function (snap) {
+        var val = snap.val() || {};
+        var prevUnr = Object.values(_agentChatMetas).filter(function (x) { return x && x.unreadForAdmin === true; }).length;
+        _agentChatMetas = {};
+        Object.keys(val).forEach(function (k) { _agentChatMetas[k] = (val[k] && val[k].meta) || {}; });
+        var curUnr = (STATE.agents || []).filter(function (ag) { return _agentChatMetas[ag.id] && _agentChatMetas[ag.id].unreadForAdmin === true; }).length;
+        if (curUnr > prevUnr && !_masterChatModalOpen) {
+          try { playNotificationSound(); } catch (e) {}
+          try { showToast('💬 এজেন্ট থেকে নতুন লাইভ চ্যাট মেসেজ এসেছে!', 'info'); } catch (e) {}
+        }
+        updateMasterChatBadges();
+        if (_npcChannel === 'agent') renderNpcPeerBar();
+      }, function () { _agentChatsRef = null; });
+    }
+    if (!_affChatsRef) {
+      _affChatsRef = db.ref('affiliate_admin_chats');
+      _affChatsRef.on('value', function (snap) {
+        var val = snap.val() || {};
+        var prevUnr = Object.values(_affChatMetas).filter(function (x) { return x && x.unreadForAdmin === true; }).length;
+        _affChatMetas = {};
+        Object.keys(val).forEach(function (k) { _affChatMetas[k] = (val[k] && val[k].meta) || {}; });
+        var curUnr = (STATE.affiliates || []).filter(function (af) { return _affChatMetas[af.id] && _affChatMetas[af.id].unreadForAdmin === true; }).length;
+        if (curUnr > prevUnr && !_masterChatModalOpen) {
+          try { playNotificationSound(); } catch (e) {}
+          try { showToast('💬 অ্যাফিলিয়েট থেকে নতুন লাইভ চ্যাট মেসেজ এসেছে!', 'info'); } catch (e) {}
+        }
+        updateMasterChatBadges();
+        if (_npcChannel === 'affiliate') renderNpcPeerBar();
+      }, function () { _affChatsRef = null; });
+    }
   }
 
   async function handleSendMasterChatMessage(e) {
@@ -9342,34 +9956,49 @@
     var email = (STATE.adminUser && STATE.adminUser.email) || (auth.currentUser && auth.currentUser.email) || 'User Admin';
     var name = (STATE.adminUser && STATE.adminUser.name) || email;
     if (!uid) { showToast('লগইন তথ্য পাওয়া যায়নি', 'error'); return; }
+    if (_npcChannel !== 'master' && !_npcTargetUid) { showToast('আগে তালিকা থেকে একজনকে সিলেক্ট করুন', 'error'); return; }
 
     var btn = document.getElementById('master-chat-send-btn');
     if (btn) btn.disabled = true;
 
     try {
-      await db.ref('master_admin_chats/' + uid + '/messages').push({
-        sender: 'USER_ADMIN',
-        senderName: name,
-        senderEmail: email,
-        text: text,
-        timestamp: firebase.database.ServerValue.TIMESTAMP,
-        read: false
-      });
-      await db.ref('master_admin_chats/' + uid + '/meta').update({
-        adminUid: uid,
-        adminName: name,
-        adminEmail: email,
-        lastMessage: text,
-        lastTimestamp: firebase.database.ServerValue.TIMESTAMP,
-        lastSender: 'USER_ADMIN',
-        unreadForMaster: true,
-        unreadForAdmin: false
-      });
+      if (_npcChannel === 'master') {
+        await db.ref('master_admin_chats/' + uid + '/messages').push({
+          sender: 'USER_ADMIN', senderName: name, senderEmail: email,
+          text: text, timestamp: firebase.database.ServerValue.TIMESTAMP, read: false
+        });
+        await db.ref('master_admin_chats/' + uid + '/meta').update({
+          adminUid: uid, adminName: name, adminEmail: email,
+          lastMessage: text, lastTimestamp: firebase.database.ServerValue.TIMESTAMP,
+          lastSender: 'USER_ADMIN', unreadForMaster: true, unreadForAdmin: false
+        });
+      } else {
+        var isAg = _npcChannel === 'agent';
+        var base = (isAg ? 'agent_admin_chats/' : 'affiliate_admin_chats/') + _npcTargetUid;
+        await db.ref(base + '/messages').push({
+          sender: 'USER_ADMIN', senderName: name, senderEmail: email,
+          text: text, timestamp: firebase.database.ServerValue.TIMESTAMP, read: false
+        });
+        var metaUp = {
+          adminUid: uid, adminName: name, lastMessage: text,
+          lastTimestamp: firebase.database.ServerValue.TIMESTAMP, lastSender: 'USER_ADMIN',
+          unreadForAdmin: false
+        };
+        if (isAg) {
+          var ag = (STATE.agents || []).find(function (x) { return x.id === _npcTargetUid; }) || {};
+          metaUp.agentUid = _npcTargetUid; metaUp.agentName = ag.name || ag.email || _npcTargetUid;
+          metaUp.unreadForAgent = true;
+        } else {
+          var af = (STATE.affiliates || []).find(function (x) { return x.id === _npcTargetUid; }) || {};
+          metaUp.affiliateUid = _npcTargetUid; metaUp.affiliateName = af.name || af.email || _npcTargetUid;
+          metaUp.unreadForAffiliate = true;
+        }
+        await db.ref(base + '/meta').update(metaUp);
+      }
       inp.value = '';
       inp.style.height = '';
       inp.focus();
       scrollMasterChatToBottom();
-      try { initMasterChatListener(); } catch (e2) {}
     } catch (err) {
       showToast('মেসেজ পাঠানো ব্যর্থ: ' + err.message, 'error');
     } finally {
@@ -9389,14 +10018,19 @@
           db.ref(base + '/messages').update(u).catch(function () {});
           db.ref(base + '/meta/unreadForAdmin').set(false).catch(function () {});
         }
+        _masterUnreadFlag = false;
+        updateMasterChatBadges();
       }).catch(function () {});
     } catch (e) {}
   }
 
   function stopMasterChatListener() {
     try { if (_masterChatRef) _masterChatRef.off(); } catch (e) {}
-    _masterChatRef = null;
-    _masterChatUnreadCount = 0;
+    try { if (_agentChatsRef) _agentChatsRef.off(); } catch (e) {}
+    try { if (_affChatsRef) _affChatsRef.off(); } catch (e) {}
+    try { if (_activePeerRef) _activePeerRef.off(); } catch (e) {}
+    _masterChatRef = null; _agentChatsRef = null; _affChatsRef = null; _activePeerRef = null;
+    _masterUnreadFlag = false; _agentChatMetas = {}; _affChatMetas = {};
     closeMasterChatModal();
     updateMasterChatBadges();
   }
@@ -9407,7 +10041,6 @@
     };
   }
 
-  // লগইন হলে চ্যাট লিসেনার চালু (নতুন মেসেজ এলে ব্যাজ/সাউন্ড)
   (function waitChatLogin() {
     var tries = 0;
     var t = setInterval(function () {
@@ -9417,7 +10050,6 @@
     }, 1000);
   })();
 
-  // Enter = পাঠান, Shift+Enter = নতুন লাইন; বক্স নিজে বড় হবে
   (function bindChatInput() {
     var inp = document.getElementById('master-chat-input');
     if (!inp) return;

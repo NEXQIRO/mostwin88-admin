@@ -1,0 +1,1406 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="theme-color" content="#0b0d10">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="MOSTWIN88 Affiliate">
+<title>MOSTWIN88 — Live Affiliate Workspace</title>
+<script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-auth-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-database-compat.js"></script>
+<script src="./firebase-config.js"></script>
+<style>
+:root{--bg:#0b0d10;--panel:#13171c;--panel2:#191e24;--line:#272e36;--text:#f3f5f7;--muted:#929ba6;--orange:#ff7a1a;--gold:#e7b85b;--green:#35c98a;--red:#ff6b6b;--shadow:0 18px 50px #0005}
+*{box-sizing:border-box}
+body{margin:0;background:radial-gradient(ellipse at 80% -10%,#39200f 0,transparent 34%),var(--bg);color:var(--text);font:14px/1.5 Inter,ui-sans-serif,system-ui,-apple-system,Segoe UI,sans-serif}
+button,input,select,textarea{font:inherit}
+button{cursor:pointer}
+.hidden{display:none!important}
+.app{display:flex;min-height:100vh}
+.sidebar{width:250px;background:#0d1014;border-right:1px solid var(--line);padding:24px 16px;position:fixed;inset:0 auto 0 0;z-index:5;display:flex;flex-direction:column}
+.brand{display:flex;align-items:center;gap:11px;padding:0 10px 28px}
+.brand-mark{display:block;min-width:0;line-height:1;max-width:100%}
+.brand-mark .word{display:flex;align-items:center;white-space:nowrap;font-size:clamp(15px,1.35vw,19px);font-weight:950;letter-spacing:.15px;line-height:1;color:#ffd23f}
+.brand-mark .word .white{color:#fff}.brand-mark .word .gold{color:#ffd23f}
+.brand-mark .tagline{display:block;margin-top:6px;color:#ffd23f;font-size:clamp(6px,.52vw,8px);font-weight:800;letter-spacing:clamp(1px,.16vw,2.1px);white-space:nowrap}
+.brand-mark .logo-o{display:inline-block;position:relative;width:1em;height:1em;margin:0 .035em;vertical-align:middle;flex:none;overflow:visible;filter:drop-shadow(0 0 .04em #ffffff77)}
+.brand-mark .logo-o svg{position:absolute;inset:0;width:100%;height:100%;display:block;overflow:visible;transform:scale(1.12);transform-origin:50% 50%}
+.brand-mark .orbit{transform-box:view-box;transform-origin:50px 50px;animation:logoSpin 6s cubic-bezier(.2,.7,.2,1) infinite}
+@keyframes logoSpin{0%,25%{transform:rotate(0deg)}70%,100%{transform:rotate(1440deg)}}
+.nav-label{font-size:10px;color:#68727d;letter-spacing:1.6px;padding:12px 12px 8px}
+.nav{display:grid;gap:5px}
+.nav button{border:0;background:transparent;color:#aeb6bf;text-align:left;padding:11px 12px;border-radius:10px;display:flex;align-items:center;gap:12px;transition:.2s}
+.nav button:hover,.nav button.active{background:linear-gradient(90deg,#ff7a1a22,#ff7a1a08);color:#fff}
+.nav button.active{box-shadow:inset 3px 0 var(--orange)}
+.nav .ico{width:18px;text-align:center;color:var(--gold)}
+.nav .nbadge{margin-left:auto;background:var(--red);color:#fff;font-size:10px;font-weight:800;padding:1px 6px;border-radius:10px;display:none}
+.side-bottom{margin-top:auto}
+.profile-mini{border-top:1px solid var(--line);padding:17px 8px 0;display:flex;gap:10px;align-items:center}
+.avatar{width:34px;height:34px;border-radius:50%;background:linear-gradient(135deg,#f5c36c,#a95119);display:grid;place-items:center;color:#241507;font-weight:800;flex:none}
+.profile-mini small{display:block;color:var(--muted);font-size:11px}
+.main{margin-left:250px;width:calc(100% - 250px);padding:25px 32px 70px;max-width:1700px}
+.topbar{display:flex;justify-content:space-between;align-items:center;margin-bottom:24px;gap:15px}
+.crumb{color:var(--muted);font-size:12px;display:flex;align-items:center;gap:10px}
+.live-pill{display:inline-flex;align-items:center;gap:6px;font-size:11px;padding:4px 10px;border-radius:20px;background:#35c98a18;color:var(--green);border:1px solid #35c98a33}
+.live-pill.offline{background:#ff6b6b18;color:var(--red);border-color:#ff6b6b33}
+.top-actions{display:flex;align-items:center;gap:10px}
+.icon-btn,.select,.btn{border:1px solid var(--line);background:var(--panel);color:var(--text);border-radius:10px;padding:9px 12px}
+.icon-btn{width:39px;height:39px;position:relative;display:inline-grid;place-items:center}
+.dot{position:absolute;width:7px;height:7px;background:var(--orange);border-radius:50%;right:8px;top:7px}
+.btn-primary{background:linear-gradient(135deg,#ff8b2b,#d95b0b);border:0;color:white;font-weight:700;box-shadow:0 7px 20px #ff7a1a2c}
+.heading{display:flex;justify-content:space-between;align-items:flex-end;margin-bottom:22px;gap:15px}
+.heading h1{font-size:27px;letter-spacing:-.7px;margin:0 0 4px}
+.heading p{margin:0;color:var(--muted)}
+.date-tools{display:flex;gap:8px}
+.grid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:14px}
+.card{background:linear-gradient(145deg,#171c22,#111519);border:1px solid var(--line);border-radius:15px;padding:18px;box-shadow:var(--shadow)}
+.stat-top{display:flex;justify-content:space-between;align-items:center;color:var(--muted);font-size:12px}
+.stat-icon{width:34px;height:34px;border-radius:10px;background:#ff7a1a18;color:var(--orange);display:grid;place-items:center;font-size:16px}
+.stat-value{font-size:27px;font-weight:750;letter-spacing:-.7px;margin:12px 0 4px}
+.stat-foot{font-size:11px;color:var(--muted)}
+.up{color:var(--green);font-weight:700}
+.down{color:var(--red);font-weight:700}
+.content-grid{display:grid;grid-template-columns:1.65fr 1fr;gap:14px;margin-top:15px}
+.card-head{display:flex;justify-content:space-between;align-items:center;margin-bottom:17px;gap:10px}
+.card-head h3{font-size:14px;margin:0}
+.card-head small{color:var(--muted)}
+.chart{height:220px;position:relative;border-bottom:1px solid var(--line);background:repeating-linear-gradient(to bottom,transparent 0,transparent 53px,#ffffff0a 54px)}
+.chart svg{width:100%;height:100%;overflow:visible}
+.legend{display:flex;gap:16px;color:var(--muted);font-size:11px;margin-top:13px}
+.legend span:before{content:"";display:inline-block;width:7px;height:7px;border-radius:50%;background:var(--orange);margin-right:6px}
+.legend span+span:before{background:var(--gold)}
+.ring-wrap{display:flex;align-items:center;gap:24px;min-height:220px}
+.ring{width:150px;height:150px;border-radius:50%;background:conic-gradient(var(--orange) 0 68%,var(--gold) 68% 84%,#343b44 84%);display:grid;place-items:center;flex:none;position:relative}
+.ring:after{content:"";position:absolute;inset:13px;background:#151a1f;border-radius:50%}
+.ring-center{z-index:1;text-align:center}
+.ring-center strong{font-size:25px;display:block}
+.ring-center small{color:var(--muted);font-size:10px}
+.key{display:grid;gap:13px;flex:1}
+.key-row{display:flex;justify-content:space-between;gap:10px;font-size:12px;color:var(--muted)}
+.key-row b{color:var(--text)}
+.bullet{display:inline-block;width:7px;height:7px;border-radius:50%;margin-right:7px;background:var(--orange)}
+.bullet.gold{background:var(--gold)}
+.bullet.grey{background:#59616b}
+.lower-grid{display:grid;grid-template-columns:1.4fr 1fr;gap:14px;margin-top:15px}
+.table-wrap{overflow:auto}
+table{width:100%;border-collapse:collapse;white-space:nowrap}
+th{text-align:left;color:#78838f;font-size:10px;text-transform:uppercase;letter-spacing:.8px;font-weight:600;padding:10px 9px;border-bottom:1px solid var(--line)}
+td{padding:13px 9px;border-bottom:1px solid #ffffff0a;font-size:12px}
+td:first-child{font-weight:650}
+.status{padding:4px 8px;border-radius:20px;font-size:10px;background:#35c98a18;color:var(--green);display:inline-block}
+.status.pending{background:#e7b85b18;color:var(--gold)}
+.status.inactive{background:#ff6b6b18;color:var(--red)}
+.activity{display:grid;gap:17px}
+.activity-item{display:flex;gap:11px;align-items:flex-start}
+.activity-icon{width:30px;height:30px;border-radius:9px;background:#ff7a1a18;color:var(--orange);display:grid;place-items:center;flex:none}
+.activity-item b{display:block;font-size:12px}
+.activity-item small{color:var(--muted);font-size:11px}
+.ref-card{margin-top:15px;display:flex;align-items:center;justify-content:space-between;gap:20px;background:linear-gradient(110deg,#27180f,#17191d 70%);border-color:#65401f}
+.ref-card h3{margin:0 0 5px;font-size:14px}
+.ref-card p{margin:0;color:var(--muted);font-size:11px}
+.ref-link{margin-top:12px;display:flex;gap:8px;align-items:center;flex-wrap:wrap}
+.ref-link code{background:#0c0e11;border:1px solid #3b3025;border-radius:8px;padding:9px 12px;color:#f5c36c;font-size:12px;word-break:break-all}
+.ref-link button{padding:9px 13px}
+.page{display:none}.page.active{display:block}
+.simple-card{padding:22px}.simple-card h2{font-size:18px;margin:0 0 8px}.simple-card p{color:var(--muted)}
+.toolbar{display:flex;gap:9px;flex-wrap:wrap;margin:15px 0}
+.toolbar input,.toolbar select{background:#0d1115;border:1px solid var(--line);color:var(--text);border-radius:9px;padding:10px 12px}
+.mobile-menu{display:none}
+.toast{position:fixed;bottom:25px;left:25px;background:#202830;border:1px solid #3b4651;padding:12px 16px;border-radius:10px;box-shadow:var(--shadow);opacity:0;transform:translateY(10px);transition:.25s;z-index:99999}
+.toast.show{opacity:1;transform:none}
+
+/* Login Screen */
+.login-gate{min-height:100dvh;display:flex;align-items:center;justify-content:center;padding:24px;background:radial-gradient(circle at 50% 0%,#ff7a1a22,transparent 48%),var(--bg)}
+.login-card{width:100%;max-width:410px;background:linear-gradient(145deg,#171c22,#101419);border:1px solid var(--line);border-radius:18px;padding:28px;box-shadow:var(--shadow)}
+.login-card h2{margin:14px 0 6px;font-size:18px;text-align:center}
+.login-card p{margin:0 0 20px;color:var(--muted);font-size:12px;text-align:center}
+.fgrp{margin-bottom:14px}
+.fgrp label{display:block;font-size:11px;color:var(--muted);margin-bottom:6px;font-weight:600}
+.fgrp input{width:100%;background:#0c0f13;border:1px solid var(--line);color:var(--text);border-radius:10px;padding:11px 13px;outline:none}
+.fgrp input:focus{border-color:var(--orange)}
+.lerr{color:var(--red);font-size:12px;margin-bottom:10px;text-align:center;min-height:16px}
+
+/* Floating Live Chat FAB & Drawer */
+.chat-fab{position:fixed;right:22px;bottom:24px;width:56px;height:56px;border-radius:50%;border:0;background:linear-gradient(135deg,#ff8b2b,#d95b0b);color:#fff;font-size:24px;display:grid;place-items:center;box-shadow:0 10px 28px #ff7a1a66;z-index:9990;transition:transform .2s}
+.chat-fab:hover{transform:scale(1.06)}
+.chat-fab-badge{position:absolute;top:-3px;right:-3px;background:var(--red);color:#fff;font-size:11px;font-weight:800;min-width:20px;height:20px;padding:0 5px;border-radius:20px;display:none;place-items:center;border:2px solid #0b0d10}
+.chat-drawer{position:fixed;right:20px;bottom:92px;width:360px;max-width:calc(100vw - 24px);height:480px;max-height:74dvh;background:var(--panel);border:1px solid var(--line);border-radius:16px;box-shadow:0 20px 55px #000a;z-index:9995;display:none;flex-direction:column;overflow:hidden}
+.chat-drawer.open{display:flex}
+.chat-head{padding:14px 16px;background:linear-gradient(135deg,#ff7a1a,#b84805);color:#fff;display:flex;align-items:center;justify-content:space-between;gap:10px}
+.chat-head b{display:block;font-size:14px}
+.chat-head small{display:block;font-size:11px;opacity:.9}
+.chat-close{background:#ffffff24;border:0;color:#fff;width:32px;height:32px;border-radius:50%;font-size:16px}
+.chat-msgs{flex:1;overflow-y:auto;padding:14px;display:flex;flex-direction:column;gap:9px;background:#0d1014}
+.cmsg{max-width:82%;padding:9px 12px;border-radius:12px 12px 12px 4px;background:#1a2027;border:1px solid var(--line);font-size:13px;line-height:1.45;word-wrap:break-word;align-self:flex-start}
+.cmsg.me{align-self:flex-end;background:linear-gradient(135deg,#ff7a1a,#d95b0b);border-color:transparent;color:#fff;border-radius:12px 12px 4px 12px}
+.cmsg small{display:block;font-size:10px;opacity:.7;margin-top:4px;text-align:right}
+.chat-bar{display:flex;gap:8px;padding:10px 12px;border-top:1px solid var(--line);background:var(--panel)}
+.chat-bar input{flex:1;background:#0b0e12;border:1px solid var(--line);color:var(--text);border-radius:20px;padding:9px 14px;outline:none}
+.chat-bar button{width:40px;height:40px;border-radius:50%;border:0;background:var(--orange);color:#fff;font-size:16px}
+
+/* Support inline live chat card */
+.inline-chat-box{height:300px;overflow-y:auto;padding:12px;border:1px solid var(--line);border-radius:12px;background:#0d1014;display:flex;flex-direction:column;gap:8px;margin-top:14px}
+
+.light{--bg:#f2f4f6;--panel:#fff;--panel2:#f8f9fa;--line:#dfe4e8;--text:#20262d;--muted:#66717c;--shadow:0 12px 30px #18202a0c}
+@media(max-width:1100px){.grid{grid-template-columns:repeat(2,1fr)}.content-grid,.lower-grid{grid-template-columns:1fr}.main{padding:22px}}
+@media(max-width:700px){
+ .sidebar{transform:translateX(-100%);transition:.25s;width:270px}
+ .sidebar.open{transform:none;box-shadow:20px 0 60px #0008}
+ .main{margin:0;width:100%;padding:17px 14px 96px}
+ .mobile-menu{display:inline-grid}
+ .topbar{margin-bottom:20px}
+ .heading{align-items:flex-start;flex-direction:column}
+ .heading h1{font-size:23px}
+ .date-tools{width:100%}.date-tools select{flex:1}
+ .grid{gap:9px;grid-template-columns:repeat(2,minmax(0,1fr))}
+ .card{padding:14px}.stat-value{font-size:23px}.stat-top{font-size:11px}
+ .ring-wrap{gap:14px}.ring{width:120px;height:120px}
+ .ref-card{align-items:flex-start;flex-direction:column}
+ .top-actions .language{display:none}
+ .top-actions .icon-btn{width:36px;height:36px}
+ .lower-grid{margin-bottom:20px}
+ .bottom-nav{position:fixed;bottom:0;left:0;right:0;background:#101419;border-top:1px solid var(--line);display:flex;justify-content:space-around;padding:9px 5px calc(9px + env(safe-area-inset-bottom));z-index:4}
+ .bottom-nav button{border:0;background:none;color:var(--muted);font-size:10px;display:grid;gap:3px;justify-items:center}
+ .bottom-nav button.active{color:var(--orange)}
+ .bottom-nav span{font-size:17px}
+ .crumb{display:none}
+ .chat-fab{bottom:78px;right:14px;width:52px;height:52px}
+ .chat-drawer{bottom:138px;right:12px}
+}
+@media(min-width:701px){.bottom-nav{display:none}}
+.mobile-brand{display:none}
+@media(max-width:700px){
+ .mobile-brand{display:block;flex:0 1 auto;min-width:0;margin-right:auto;overflow:visible}
+ .mobile-brand .word{font-size:clamp(14px,3.6vw,17px);letter-spacing:0}
+ .mobile-brand .tagline{font-size:6px;letter-spacing:1.05px;margin-top:4px}
+ .topbar-left{flex:1;min-width:0;gap:10px!important}
+}
+
+/* Strict white theme */
+body.light{background:#fff!important;background-image:none!important;color:#000!important}
+body.light *:not(.chat-fab):not(.chat-fab-badge):not(.cmsg.me):not(.btn-primary){color:#000!important;box-shadow:none!important;text-shadow:none!important}
+body.light .sidebar,body.light .main,body.light .topbar,body.light .bottom-nav,
+body.light .card,body.light .simple-card,body.light .toast,body.light .ref-card,
+body.light .chat-drawer,body.light .chat-msgs,body.light .chat-bar,body.light .inline-chat-box,
+body.light .login-gate,body.light .login-card{background:#fff!important;background-image:none!important}
+body.light .brand-mark .word .white{color:#111!important}
+body.light .brand-mark .word .gold,body.light .brand-mark .tagline{color:#b45309!important}
+body.light .brand-mark .logo-o svg circle[stroke="#fff"]{stroke:#111!important}
+body.light .icon-btn,body.light .select,body.light .btn,body.light input,
+body.light select,body.light textarea,body.light .toolbar input,body.light .toolbar select,
+body.light .ref-link code{background:#fff!important;color:#000!important;border-color:#d6d6d6!important}
+body.light .nav button,body.light .bottom-nav button{background:#fff!important;color:#000!important}
+body.light .nav button:hover,body.light .nav button.active{background:#f2f2f2!important;color:#000!important}
+body.light th,body.light td{color:#000!important;border-color:#e5e5e5!important}
+body.light .chart{background:#fff!important;border-color:#ddd!important}
+body.light .ring:after{background:#fff!important}
+body.light .cmsg:not(.me){background:#f3f4f6!important;border-color:#d6d6d6!important}
+</style>
+</head>
+<body>
+
+<!-- LOGIN GATE -->
+<section id="loginGate" class="login-gate">
+ <form class="login-card" onsubmit="affiliateLogin(event)">
+  <div style="display:flex;justify-content:center;">
+   <div class="brand-mark" aria-label="MOSTWIN88 — PLAY BIG, WIN BIGGER">
+    <div class="word" style="font-size:24px"><span class="gold">M</span><span class="logo-o" aria-hidden="true"><svg viewBox="0 0 100 100"><g class="orbit"><circle cx="50" cy="50" r="43" fill="none" stroke="rgba(255,255,255,.4)" stroke-width="14"/><circle cx="50" cy="50" r="43" fill="none" stroke="#fff" stroke-width="14" stroke-dasharray="7.4 3.86"/></g><circle cx="50" cy="50" r="18" fill="#ffd23f"/><circle cx="50" cy="50" r="18" fill="none" stroke="#fff2b3" stroke-width="3"/></svg></span><span class="white">ST</span><span class="gold">WIN</span><span class="white">88</span></div>
+    <span class="tagline" style="text-align:center">PLAY BIG, WIN BIGGER</span>
+   </div>
+  </div>
+  <h2>Affiliate Partner Login</h2>
+  <p>Master Admin অথবা User Admin কর্তৃক অনুমোদিত Affiliate অ্যাকাউন্ট দিয়ে লগইন করুন</p>
+  <div class="fgrp">
+   <label for="affLoginUser">ইমেইল অথবা ইউজারনেম</label>
+   <input id="affLoginUser" type="text" autocomplete="username" placeholder="affiliate@domain.com / username" required>
+  </div>
+  <div class="fgrp">
+   <label for="affLoginPass">পাসওয়ার্ড</label>
+   <input id="affLoginPass" type="password" autocomplete="current-password" placeholder="••••••••" required>
+  </div>
+  <div id="affLoginErr" class="lerr"></div>
+  <button id="affLoginBtn" type="submit" class="btn btn-primary" style="width:100%;padding:12px">SECURE AFFILIATE LOGIN</button>
+ </form>
+</section>
+
+<!-- MAIN LIVE WORKSPACE -->
+<div class="app hidden" id="appShell">
+<aside class="sidebar" id="sidebar">
+ <div class="brand">
+  <div class="brand-mark" aria-label="MOSTWIN88 — PLAY BIG, WIN BIGGER">
+   <div class="word"><span class="gold">M</span><span class="logo-o" aria-hidden="true"><svg viewBox="0 0 100 100"><g class="orbit"><circle cx="50" cy="50" r="43" fill="none" stroke="rgba(255,255,255,.4)" stroke-width="14"/><circle cx="50" cy="50" r="43" fill="none" stroke="#fff" stroke-width="14" stroke-dasharray="7.4 3.86"/></g><circle cx="50" cy="50" r="18" fill="#ffd23f"/><circle cx="50" cy="50" r="18" fill="none" stroke="#fff2b3" stroke-width="3"/></svg></span><span class="white">ST</span><span class="gold">WIN</span><span class="white">88</span></div>
+   <span class="tagline">PLAY BIG, WIN BIGGER</span>
+  </div>
+ </div>
+ <div class="nav-label">WORKSPACE</div>
+ <nav class="nav" id="nav">
+  <button class="active" data-page="dashboard"><span class="ico">▦</span>Dashboard</button>
+  <button data-page="link"><span class="ico">↗</span>My Referral Link</button>
+  <button data-page="referrals"><span class="ico">♙</span>My Referrals</button>
+  <button data-page="analytics"><span class="ico">◫</span>Referral Analytics</button>
+  <button data-page="commission"><span class="ico">◇</span>Commission</button>
+  <div class="nav-label">ACCOUNT</div>
+  <button data-page="notifications"><span class="ico">♧</span>Notifications <span id="navNotifBadge" class="nbadge">0</span></button>
+  <button data-page="support"><span class="ico">✉</span>Admin Support <span id="navChatBadge" class="nbadge">0</span></button>
+  <button data-page="profile"><span class="ico">◉</span>My Profile</button>
+  <button data-page="settings"><span class="ico">⚙</span>Settings</button>
+ </nav>
+ <div class="side-bottom">
+  <div class="profile-mini">
+   <div class="avatar" id="sideAvatar">AF</div>
+   <div><b id="sideName">Affiliate</b><small id="sideCode">Affiliate · —</small></div>
+  </div>
+ </div>
+</aside>
+
+<main class="main">
+ <header class="topbar">
+  <div class="topbar-left" style="display:flex;align-items:center;gap:12px">
+   <button class="icon-btn mobile-menu" id="menu">☰</button>
+   <div class="mobile-brand brand-mark" aria-label="MOSTWIN88 — PLAY BIG, WIN BIGGER">
+    <div class="word"><span class="gold">M</span><span class="logo-o" aria-hidden="true"><svg viewBox="0 0 100 100"><g class="orbit"><circle cx="50" cy="50" r="43" fill="none" stroke="rgba(255,255,255,.4)" stroke-width="14"/><circle cx="50" cy="50" r="43" fill="none" stroke="#fff" stroke-width="14" stroke-dasharray="7.4 3.86"/></g><circle cx="50" cy="50" r="18" fill="#ffd23f"/><circle cx="50" cy="50" r="18" fill="none" stroke="#fff2b3" stroke-width="3"/></svg></span><span class="white">ST</span><span class="gold">WIN</span><span class="white">88</span></div>
+    <span class="tagline">PLAY BIG, WIN BIGGER</span>
+   </div>
+   <div class="crumb">MOSTWIN88 <span style="color:#59616b">/</span> Affiliate Workspace <span id="liveConnPill" class="live-pill">● Live</span></div>
+  </div>
+  <div class="top-actions">
+   <select class="select language" id="language"><option value="English">English</option><option value="বাংলা">বাংলা</option></select>
+   <button class="btn" id="installApp" style="display:none">＋ Install App</button>
+   <button class="icon-btn" id="theme" title="Toggle theme">☼</button>
+   <button class="icon-btn" title="Live Chat" onclick="toggleLiveChat(true)">💬<i class="dot hidden" id="topChatDot"></i></button>
+   <button class="icon-btn" title="Notifications" onclick="showPage('notifications')">♧<i class="dot hidden" id="topNotifDot"></i></button>
+   <div class="avatar" id="topAvatar">AF</div>
+  </div>
+ </header>
+
+ <!-- DASHBOARD / HOME PAGE -->
+ <section class="page active" id="dashboard">
+  <div class="heading">
+   <div><h1 id="welcomeHeading">Welcome back 👋</h1><p id="welcomeSub">Live affiliate performance synced directly with MOSTWIN88 Firebase.</p></div>
+   <div class="date-tools">
+    <select class="select" id="dateRange" onchange="renderAll()"><option value="30">Last 30 days</option><option value="7">Last 7 days</option><option value="month">This month</option></select>
+    <button class="btn" onclick="exportCsv()">⇩ Export CSV</button>
+   </div>
+  </div>
+  <div class="grid">
+   <div class="card"><div class="stat-top">Total Referral Clicks <span class="stat-icon">↗</span></div><div class="stat-value" id="statClicks">0</div><div class="stat-foot" id="statClicksSub"><span class="up">Live</span> link visits</div></div>
+   <div class="card"><div class="stat-top">Registered Players <span class="stat-icon">♙</span></div><div class="stat-value" id="statRegistered">0</div><div class="stat-foot" id="statRegisteredSub">Under your code</div></div>
+   <div class="card"><div class="stat-top">Active Players <span class="stat-icon">◎</span></div><div class="stat-value" id="statActive">0</div><div class="stat-foot" id="statActiveSub">0% of total players</div></div>
+   <div class="card"><div class="stat-top">Conversion Rate <span class="stat-icon">⌁</span></div><div class="stat-value" id="statConv">0%</div><div class="stat-foot" id="statConvSub">Click-to-player ratio</div></div>
+  </div>
+
+  <div class="content-grid">
+   <div class="card">
+    <div class="card-head"><div><h3>Registration Overview</h3><small>Live referral registrations over time</small></div>
+     <select class="select" id="chartDays" onchange="renderChart()"><option value="7">7 days</option><option value="30">30 days</option></select>
+    </div>
+    <div class="chart" id="regChartBox"></div>
+    <div class="legend"><span>Registrations</span><span>Deposited / Confirmed referrals</span></div>
+   </div>
+   <div class="card">
+    <div class="card-head"><div><h3>Referral Conversion</h3><small>Deposited vs Pending players</small></div><span class="status" id="convHealthBadge">Live</span></div>
+    <div class="ring-wrap">
+     <div class="ring" id="convRing"><div class="ring-center"><strong id="ringConvPct">0%</strong><small>CONFIRMED</small></div></div>
+     <div class="key">
+      <div class="key-row"><span><i class="bullet"></i>Confirmed</span><b id="keyConfirmed">0%</b></div>
+      <div class="key-row"><span><i class="bullet gold"></i>Pending</span><b id="keyPending">0%</b></div>
+      <div class="key-row"><span><i class="bullet grey"></i>Inactive</span><b id="keyInactive">0%</b></div>
+     </div>
+    </div>
+   </div>
+  </div>
+
+  <div class="lower-grid">
+   <div class="card">
+    <div class="card-head"><h3>Latest Registered Players</h3><button class="btn" onclick="showPage('referrals')">View all →</button></div>
+    <div class="table-wrap"><table><thead><tr><th>Player</th><th>Registered</th><th>Status</th><th>Referral</th></tr></thead><tbody id="latestPlayersBody"></tbody></table></div>
+   </div>
+   <div class="card">
+    <div class="card-head"><h3>Recent Activity</h3><small>Real-time updates</small></div>
+    <div class="activity" id="recentActivityFeed"></div>
+   </div>
+  </div>
+
+  <div class="card ref-card">
+   <div>
+    <h3>Your unique referral link</h3>
+    <p>Share your personal link to track new player registrations &amp; earn smart commission.</p>
+    <div class="ref-link">
+     <code id="refurl">Loading...</code>
+     <button class="btn btn-primary" onclick="copyLink()">▣ Copy link</button>
+     <button class="btn" onclick="shareLink()">↗ Share</button>
+     <button class="btn" onclick="toggleLiveChat(true)">💬 Live Chat Admin</button>
+    </div>
+   </div>
+   <div style="font-size:42px;color:#e7b85b">⌗</div>
+  </div>
+ </section>
+
+ <!-- MY REFERRAL LINK -->
+ <section class="page" id="link">
+  <div class="heading"><div><h1>My Referral Link</h1><p>Your unique live affiliate tracking details.</p></div></div>
+  <div class="card simple-card">
+   <h2>Permanent referral URL</h2>
+   <p>Your assigned referral code is locked to your Firebase Affiliate profile. Create extra campaign links stored live in your account.</p>
+   <div class="ref-link">
+    <code id="refurlPage">Loading...</code>
+    <button class="btn btn-primary" onclick="copyLink()">Copy link</button>
+    <button class="btn" onclick="shareLink()">Share link</button>
+   </div>
+   <hr style="border:0;border-top:1px solid var(--line);margin:24px 0">
+   <h2>Create a campaign link</h2>
+   <p>Give each promotion a name, then generate a trackable URL using your existing referral code.</p>
+   <div class="toolbar">
+    <input id="campaignName" placeholder="Campaign name (e.g. Facebook Page)" maxlength="40" style="flex:1;min-width:190px">
+    <button class="btn btn-primary" onclick="createCampaignLink()">＋ Create new link</button>
+   </div>
+   <div class="table-wrap"><table><thead><tr><th>Campaign</th><th>Tracking link</th><th>Action</th></tr></thead><tbody id="campaignLinks"></tbody></table></div>
+   <hr style="border:0;border-top:1px solid var(--line);margin:24px 0">
+   <div class="grid">
+    <div><small style="color:var(--muted)">Referral code</small><h2 id="linkStatCode">—</h2></div>
+    <div><small style="color:var(--muted)">Total clicks</small><h2 id="linkStatClicks">0</h2></div>
+    <div><small style="color:var(--muted)">Registrations</small><h2 id="linkStatRegs">0</h2></div>
+    <div><small style="color:var(--muted)">Link status</small><h2 id="linkStatStatus" style="color:var(--green)">Active</h2></div>
+   </div>
+  </div>
+ </section>
+
+ <!-- MY REFERRALS + DEPOSIT/WITHDRAWAL ACTIVITY + IP SECURITY -->
+ <section class="page" id="referrals">
+  <div class="heading"><div><h1>My Referrals</h1><p>Live players attributed to your affiliate account.</p></div></div>
+  <div class="card">
+   <div class="toolbar">
+    <input id="searchPlayer" placeholder="Search player ID or name…" oninput="filterPlayers()">
+    <select id="accountFilter" onchange="filterPlayers()"><option value="all">All account status</option><option value="Active">Active</option><option value="Inactive">Inactive</option></select>
+    <select id="referralFilter" onchange="filterPlayers()"><option value="all">All referrals</option><option value="Confirmed">Confirmed</option><option value="Pending">Pending</option></select>
+   </div>
+   <p style="color:var(--muted);font-size:11px;margin:0 0 10px">Live player activity, games played, wallet balance and bet P&amp;L synced from MOSTWIN88 Firebase.</p>
+   <div class="table-wrap">
+    <table id="players">
+     <thead><tr><th>Player ID / Name</th><th>Registration date</th><th>Last game played</th><th>Account balance</th><th>Bet P&amp;L (− / +)</th><th>Account status</th><th>Referral status</th></tr></thead>
+     <tbody id="playersTbody"></tbody>
+    </table>
+   </div>
+  </div>
+
+  <div class="card" style="margin-top:15px" id="moneyActivity">
+   <div class="card-head"><div><h3>Deposit &amp; Withdrawal Activity</h3><small>Daily / weekly live totals from referred players</small></div><span class="status">Live RTDB</span></div>
+   <div class="toolbar" style="margin-top:8px">
+    <select id="moneyPeriod" aria-label="Report period" onchange="renderMoneyActivity()"><option value="daily">Daily (24h)</option><option value="weekly" selected>Weekly (7d)</option></select>
+    <select id="moneyScope" aria-label="User scope" onchange="renderMoneyActivity()"><option value="all">All referred users</option><option value="individual">Individual user</option></select>
+    <select id="moneyUser" aria-label="Select player" onchange="renderMoneyActivity()" disabled></select>
+   </div>
+   <div class="grid" style="grid-template-columns:repeat(2,minmax(0,1fr))">
+    <div class="card"><div class="stat-top">Total Deposits</div><div class="stat-value up" id="depositTotal">৳ 0.00</div></div>
+    <div class="card"><div class="stat-top">Total Withdrawals</div><div class="stat-value down" id="withdrawTotal">৳ 0.00</div></div>
+   </div>
+   <div class="table-wrap" style="margin-top:14px"><table><thead><tr><th>Player</th><th>Deposits</th><th>Withdrawals</th><th>Net</th></tr></thead><tbody id="moneyRows"></tbody></table></div>
+  </div>
+
+  <div class="card" style="margin-top:15px" id="ipSecurity">
+   <div class="card-head"><div><h3>Player IP History &amp; Risk Signals</h3><small>Up to 7 recent IP addresses per referred player (Live)</small></div><span class="status">Security Live</span></div>
+   <div class="toolbar"><select id="ipUser" aria-label="Choose player" onchange="renderIpHistory()"></select></div>
+   <div id="ipRiskBanner" class="status" style="display:inline-block;margin:0 0 12px">Loading player IP activity…</div>
+   <div class="table-wrap"><table><thead><tr><th>IP Address</th><th>Last Seen</th><th>Device / Network</th></tr></thead><tbody id="ipRows"></tbody></table></div>
+   <p style="font-size:11px;color:var(--muted);margin:10px 0 0">Multiple IPs trigger a review signal, not a final decision. Shared Wi-Fi, mobile data, and changing IPs can be legitimate.</p>
+  </div>
+ </section>
+
+ <!-- REFERRAL ANALYTICS -->
+ <section class="page" id="analytics">
+  <div class="heading"><div><h1>Referral Analytics</h1><p>Real-time click, deposit, wager &amp; conversion breakdown.</p></div></div>
+  <div class="grid">
+   <div class="card"><div class="stat-top">Total clicks</div><div class="stat-value" id="anaClicks">0</div></div>
+   <div class="card"><div class="stat-top">Confirmed Deposits</div><div class="stat-value up" id="anaDepTotal">৳ 0</div></div>
+   <div class="card"><div class="stat-top">Total Bet Turnover</div><div class="stat-value" id="anaTurnover">৳ 0</div></div>
+   <div class="card"><div class="stat-top">Conversion</div><div class="stat-value" id="anaConv">0%</div></div>
+  </div>
+  <div class="card" style="margin-top:15px">
+   <h3>Performance summary</h3>
+   <p id="anaSummary" style="color:var(--muted)">Loading live analytics...</p>
+  </div>
+ </section>
+
+ <!-- SMART COMMISSION -->
+ <section class="page" id="commission">
+  <div class="heading"><div><h1>Smart Commission</h1><p>Controlled dynamically by Master Admin and your assigned User Admin.</p></div></div>
+  <div class="card simple-card" id="commissionBox"></div>
+  <div class="card" style="margin-top:15px">
+   <div class="card-head"><div><h3>Commission Payout Requests</h3><small>History of your commission payout requests</small></div></div>
+   <div class="table-wrap"><table><thead><tr><th>Date</th><th>Amount</th><th>Method / Account</th><th>Status</th></tr></thead><tbody id="commReqBody"></tbody></table></div>
+  </div>
+ </section>
+
+ <!-- NOTIFICATIONS -->
+ <section class="page" id="notifications">
+  <div class="heading"><div><h1>Notifications</h1><p>Latest broadcasts from Master Admin &amp; User Admin.</p></div></div>
+  <div class="card activity" id="notificationList"></div>
+ </section>
+
+ <!-- ADMIN SUPPORT (LIVE SYNCED WITH FLOATING LIVE CHAT) -->
+ <section class="page" id="support">
+  <div class="heading"><div><h1>Admin Support — Live Chat</h1><p>Real-time direct chat with your assigned User Admin &amp; Master Admin.</p></div></div>
+  <div class="card simple-card">
+   <div style="display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:10px">
+    <div><h2 id="supportAdminTitle" style="margin:0">Assigned Admin Support Desk</h2><small id="supportAdminSub" style="color:var(--muted)">Live encrypted RTDB channel</small></div>
+    <button class="btn btn-primary" onclick="toggleLiveChat(true)">💬 Open Floating Live Chat</button>
+   </div>
+   <div id="inlineChatMsgs" class="inline-chat-box"></div>
+   <form class="toolbar" onsubmit="sendSupportChat(event,'inlineChatInput')">
+    <input id="inlineChatInput" style="flex:1;min-width:220px" placeholder="অ্যাডমিনকে সরাসরি লাইভ মেসেজ লিখুন..." autocomplete="off">
+    <button type="submit" class="btn btn-primary">Send Live Message</button>
+   </form>
+  </div>
+ </section>
+
+ <!-- PROFILE -->
+ <section class="page" id="profile">
+  <div class="heading"><div><h1>My Profile</h1><p>Your live MOSTWIN88 affiliate account details.</p></div></div>
+  <div class="card simple-card">
+   <div style="display:flex;align-items:center;gap:15px">
+    <div class="avatar" id="profAvatar" style="width:58px;height:58px;font-size:20px">AF</div>
+    <div><h2 id="profName" style="margin:0">Affiliate</h2><p id="profIdSub" style="margin:3px 0">Affiliate ID: —</p></div>
+   </div>
+   <hr style="border:0;border-top:1px solid var(--line);margin:22px 0">
+   <div class="grid">
+    <div><small style="color:var(--muted)">Email</small><h3 id="profEmail">—</h3></div>
+    <div><small style="color:var(--muted)">Phone</small><h3 id="profPhone">—</h3></div>
+    <div><small style="color:var(--muted)">Account status</small><h3 id="profStatus" style="color:var(--green)">Active</h3></div>
+    <div><small style="color:var(--muted)">Parent Admin</small><h3 id="profParentAdmin">—</h3></div>
+   </div>
+  </div>
+ </section>
+
+ <!-- SETTINGS -->
+ <section class="page" id="settings">
+  <div class="heading"><div><h1>Settings</h1><p>Personalize your live affiliate workspace.</p></div></div>
+  <div class="card simple-card">
+   <h2>Appearance</h2>
+   <p>Switch between Dark Mode and Strict White Light Mode using the ☼ icon in the top bar.</p>
+   <h2 style="margin-top:25px">Language</h2>
+   <p>Choose English or বাংলা from the top language selector.</p>
+   <h2 style="margin-top:25px">Security</h2>
+   <p>Reset your password via Firebase Email Verification or sign out safely.</p>
+   <div style="display:flex;gap:10px;flex-wrap:wrap;margin-top:12px">
+    <button class="btn" onclick="sendAffPasswordReset()">🔑 Send Password Reset Email</button>
+    <button class="btn btn-primary" onclick="affiliateLogout()">↪ Secure Log out</button>
+   </div>
+  </div>
+ </section>
+
+ <div class="bottom-nav">
+  <button class="active" data-page="dashboard"><span>▦</span>Home</button>
+  <button data-page="link"><span>↗</span>Link</button>
+  <button data-page="referrals"><span>♙</span>Referrals</button>
+  <button data-page="commission"><span>◇</span>Commission</button>
+  <button data-page="profile"><span>◉</span>Profile</button>
+ </div>
+</main>
+</div>
+
+<!-- FLOATING HOME/ALL-PAGE LIVE CHAT ICON + DRAWER -->
+<button type="button" id="liveChatFab" class="chat-fab hidden" onclick="toggleLiveChat()" aria-label="Live Chat with Admin" title="অ্যাডমিনের সাথে লাইভ চ্যাট">
+ 💬
+ <span id="liveChatFabBadge" class="chat-fab-badge">0</span>
+</button>
+
+<div id="liveChatDrawer" class="chat-drawer" role="dialog" aria-label="Admin Live Chat">
+ <div class="chat-head">
+  <div>
+   <b>💬 Live Chat — Admin Support</b>
+   <small id="chatDrawerSub">Connected to User Admin</small>
+  </div>
+  <button type="button" class="chat-close" onclick="toggleLiveChat(false)" aria-label="Close">✕</button>
+ </div>
+ <div id="drawerChatMsgs" class="chat-msgs"></div>
+ <form class="chat-bar" onsubmit="sendSupportChat(event,'drawerChatInput')">
+  <input id="drawerChatInput" type="text" placeholder="মেসেজ লিখুন..." autocomplete="off" maxlength="1000">
+  <button type="submit" aria-label="Send">➤</button>
+ </form>
+</div>
+
+<div class="toast" id="toast"></div>
+
+<script>
+'use strict';
+const CFG = window.NP_FIREBASE_CONFIG || {
+  apiKey: "AIzaSyACoy90K8WHdxSU3_KtUiwWNPHGErT0P3w",
+  authDomain: "mostwin88-febbf.firebaseapp.com",
+  databaseURL: "https://mostwin88-febbf-default-rtdb.asia-southeast1.firebasedatabase.app",
+  projectId: "mostwin88-febbf",
+  storageBucket: "mostwin88-febbf.firebasestorage.app",
+  messagingSenderId: "1091271266801",
+  appId: "1:1091271266801:web:0b4da03572189864077450",
+  measurementId: "G-5Q07GB1YD6"
+};
+const affApp = firebase.apps.find(a => a.name === 'mwAffApp') || firebase.initializeApp(CFG, 'mwAffApp');
+const auth = affApp.auth();
+const db = affApp.database();
+const TS = firebase.database.ServerValue.TIMESTAMP;
+try { auth.setPersistence(firebase.auth.Auth.Persistence.LOCAL).catch(() => {}); } catch (e) {}
+
+let MY_UID = '';
+let MY_PROF = null;
+let ALL_USERS = {};
+let ALL_DEPS = {};
+let ALL_WDS = {};
+let ALL_GTX = {};
+let NOTIFS = [];
+let COMM_REQS = [];
+let CAMPAIGNS = [];
+let CHAT_MSGS = [];
+let LIVE_LISTENERS = [];
+let LIVE_CHAT_OPEN = false;
+let UNREAD_CHAT = 0;
+
+const pages = [...document.querySelectorAll('.page')];
+const storage = {
+  get(k, fb) { try { return JSON.parse(localStorage.getItem('mw88_aff_' + k)) ?? fb; } catch { return fb; } },
+  set(k, v) { try { localStorage.setItem('mw88_aff_' + k, JSON.stringify(v)); return true; } catch { return false; } }
+};
+const esc = s => String(s ?? '').replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
+const money = n => '৳ ' + Number(n || 0).toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+const moneyShort = n => '৳ ' + Math.round(Number(n || 0)).toLocaleString('en-US');
+
+function toast(msg) {
+  const t = document.getElementById('toast');
+  if (!t) return;
+  t.textContent = msg;
+  t.classList.add('show');
+  clearTimeout(toast.timer);
+  toast.timer = setTimeout(() => t.classList.remove('show'), 2600);
+}
+
+function showPage(id) {
+  const target = document.getElementById(id);
+  if (!target) return;
+  pages.forEach(p => p.classList.toggle('active', p.id === id));
+  document.querySelectorAll('[data-page]').forEach(b => b.classList.toggle('active', b.dataset.page === id));
+  const sb = document.getElementById('sidebar');
+  if (sb) sb.classList.remove('open');
+  if (id === 'support') markChatRead();
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+}
+document.querySelectorAll('[data-page]').forEach(b => b.addEventListener('click', () => showPage(b.dataset.page)));
+document.getElementById('menu').addEventListener('click', () => document.getElementById('sidebar').classList.toggle('open'));
+
+function applyTheme(theme) {
+  document.body.classList.toggle('light', theme === 'light');
+  storage.set('theme', theme);
+}
+document.getElementById('theme').addEventListener('click', () => applyTheme(document.body.classList.contains('light') ? 'dark' : 'light'));
+applyTheme(storage.get('theme', 'dark'));
+
+function detachListeners() {
+  LIVE_LISTENERS.forEach(r => { try { r.off(); } catch (e) {} });
+  LIVE_LISTENERS = [];
+}
+function attach(ref, cb) {
+  ref.on('value', cb, err => console.warn('RTDB listener:', err && err.message));
+  LIVE_LISTENERS.push(ref);
+}
+
+/* ==================== AUTH ==================== */
+async function affiliateLogin(e) {
+  if (e) e.preventDefault();
+  const raw = (document.getElementById('affLoginUser').value || '').trim();
+  const pass = document.getElementById('affLoginPass').value || '';
+  const errEl = document.getElementById('affLoginErr');
+  const btn = document.getElementById('affLoginBtn');
+  errEl.textContent = '';
+  if (!raw || !pass) { errEl.textContent = 'ইমেইল/ইউজারনেম এবং পাসওয়ার্ড দিন'; return; }
+  btn.disabled = true;
+  try {
+    let email = raw;
+    if (!email.includes('@')) {
+      const clean = raw.toLowerCase().replace(/[^a-z0-9_]/g, '');
+      const us = await db.ref('usernames/' + clean).once('value');
+      if (!us.exists() || !us.val().email) throw new Error('ইউজারনেম খুঁজে পাওয়া যায়নি');
+      email = us.val().email;
+    }
+    await auth.signInWithEmailAndPassword(email, pass);
+  } catch (err) {
+    errEl.textContent = err.message || 'লগইন ব্যর্থ হয়েছে';
+  } finally {
+    btn.disabled = false;
+  }
+}
+
+async function affiliateLogout() {
+  detachListeners();
+  LIVE_CHAT_OPEN = false;
+  document.getElementById('liveChatDrawer').classList.remove('open');
+  await auth.signOut();
+  toast('সফলভাবে লগআউট হয়েছে');
+}
+
+async function sendAffPasswordReset() {
+  const email = (MY_PROF && MY_PROF.email) || (auth.currentUser && auth.currentUser.email);
+  if (!email) return;
+  try {
+    await auth.sendPasswordResetEmail(email);
+    toast('পাসওয়ার্ড রিসেট ইমেইল পাঠানো হয়েছে: ' + email);
+  } catch (e) {
+    toast('ব্যর্থ: ' + e.message);
+  }
+}
+
+auth.onAuthStateChanged(async user => {
+  if (!user) {
+    detachListeners();
+    MY_UID = '';
+    MY_PROF = null;
+    document.getElementById('appShell').classList.add('hidden');
+    document.getElementById('liveChatFab').classList.add('hidden');
+    document.getElementById('loginGate').classList.remove('hidden');
+    return;
+  }
+  try {
+    const snap = await db.ref('affiliates/' + user.uid).once('value');
+    if (!snap.exists() || snap.val().active === false || snap.val().status === 'suspended') {
+      await auth.signOut();
+      document.getElementById('affLoginErr').textContent = 'এই অ্যাকাউন্টটি Affiliate হিসেবে অনুমোদিত বা সক্রিয় নয়।';
+      return;
+    }
+    MY_UID = user.uid;
+    MY_PROF = { id: user.uid, ...snap.val() };
+    document.getElementById('loginGate').classList.add('hidden');
+    document.getElementById('appShell').classList.remove('hidden');
+    document.getElementById('liveChatFab').classList.remove('hidden');
+    startLiveSync();
+  } catch (err) {
+    document.getElementById('affLoginErr').textContent = 'সংযোগ ত্রুটি: ' + err.message;
+  }
+});
+
+/* ==================== LIVE SYNC ==================== */
+function startLiveSync() {
+  detachListeners();
+  if (!MY_UID) return;
+
+  attach(db.ref('.info/connected'), snap => {
+    const p = document.getElementById('liveConnPill');
+    if (!p) return;
+    if (snap.val() === true) { p.textContent = '● Live RTDB'; p.classList.remove('offline'); }
+    else { p.textContent = '⚡ Reconnecting...'; p.classList.add('offline'); }
+  });
+
+  attach(db.ref('affiliates/' + MY_UID), snap => {
+    if (!snap.exists() || snap.val().active === false || snap.val().status === 'suspended') {
+      toast('আপনার Affiliate অ্যাক্সেস বন্ধ করা হয়েছে।');
+      affiliateLogout();
+      return;
+    }
+    const v = snap.val() || {};
+    MY_PROF = { id: MY_UID, ...v };
+    CAMPAIGNS = v.campaigns ? Object.entries(v.campaigns).map(([k, c]) => ({ id: k, ...c })).sort((a, b) => (b.createdAt || 0) - (a.createdAt || 0)) : [];
+    renderProfile();
+    renderCampaigns();
+    renderAll();
+  });
+
+  db.ref('affiliates/' + MY_UID + '/lastSeen').set(Date.now()).catch(() => {});
+
+  attach(db.ref('users'), snap => { ALL_USERS = snap.val() || {}; renderAll(); });
+  attach(db.ref('depositRequests'), snap => { ALL_DEPS = snap.val() || {}; renderAll(); });
+  attach(db.ref('withdrawalRequests'), snap => { ALL_WDS = snap.val() || {}; renderAll(); });
+  attach(db.ref('game_transactions').limitToLast(1500), snap => { ALL_GTX = snap.val() || {}; renderAll(); });
+
+  attach(db.ref('notifications'), snap => {
+    const val = snap.val() || {};
+    NOTIFS = Object.entries(val).map(([k, n]) => ({ id: k, ...n }))
+      .filter(n => !n.target || n.target === 'ALL' || n.target === 'AFFILIATES' || n.target === MY_UID || n.targetUid === MY_UID)
+      .sort((a, b) => (b.timestamp || 0) - (a.timestamp || 0));
+    renderNotifications();
+  });
+
+  attach(db.ref('affiliateCommissionRequests').orderByChild('affiliateUid').equalTo(MY_UID), snap => {
+    const val = snap.val() || {};
+    COMM_REQS = Object.entries(val).map(([k, r]) => ({ id: k, ...r })).sort((a, b) => (b.createdAt || 0) - (a.createdAt || 0));
+    renderCommissionRequests();
+  });
+
+  attach(db.ref('affiliate_admin_chats/' + MY_UID + '/messages').limitToLast(120), snap => {
+    const val = snap.val() || {};
+    CHAT_MSGS = Object.entries(val).map(([k, m]) => ({ id: k, ...m })).sort((a, b) => (a.timestamp || 0) - (b.timestamp || 0));
+    let unread = 0;
+    CHAT_MSGS.forEach(m => { if (m.sender !== 'AFFILIATE' && m.read !== true) unread++; });
+    UNREAD_CHAT = (LIVE_CHAT_OPEN || document.getElementById('support').classList.contains('active')) ? 0 : unread;
+    if (!UNREAD_CHAT && unread > 0) markChatRead();
+    updateChatBadges();
+    renderChatMessages();
+  });
+}
+
+/* ==================== DATA AGGREGATION ==================== */
+function getRefUrl() {
+  const code = (MY_PROF && MY_PROF.referralCode) || MY_UID.slice(0, 8).toUpperCase();
+  const base = (MY_PROF && MY_PROF.baseUrl) || 'https://mostwin88.com/register';
+  return `${base}?ref=${encodeURIComponent(code)}`;
+}
+
+function getReferredPlayers() {
+  const code = String((MY_PROF && MY_PROF.referralCode) || '').toLowerCase();
+  const out = [];
+  Object.entries(ALL_USERS).forEach(([uid, u]) => {
+    if (!u || typeof u !== 'object') return;
+    const match = (u.affiliateId && u.affiliateId === MY_UID) ||
+      (u.referredBy && u.referredBy === MY_UID) ||
+      (code && String(u.referralCode || u.promoCode || u.referredByCode || '').toLowerCase() === code);
+    if (match) out.push({ uid, ...u });
+  });
+  out.sort((a, b) => (b.createdAt || 0) - (a.createdAt || 0));
+  return out;
+}
+
+function getPlayerBetStats(uid) {
+  let betAmt = 0, winAmt = 0, betCount = 0, lastGame = '';
+  Object.values(ALL_GTX).forEach(tx => {
+    if (!tx || tx.uid !== uid) return;
+    const tp = String(tx.type || '').toUpperCase();
+    const amt = Math.abs(parseFloat(tx.amount) || 0);
+    if (tp === 'BET') { betAmt += amt; betCount++; }
+    else if (tp === 'WIN') { winAmt += amt; }
+    if (tx.gameName || tx.game) lastGame = tx.gameName || tx.game;
+  });
+  return { betAmt, winAmt, netPl: winAmt - betAmt, betCount, lastGame };
+}
+
+function getReferredSet(players) {
+  return new Set(players.map(p => p.uid));
+}
+
+function getRangeCutoffMs() {
+  const v = document.getElementById('dateRange')?.value || '30';
+  const now = Date.now();
+  if (v === '7') return now - 7 * 86400000;
+  if (v === 'month') {
+    const d = new Date();
+    return new Date(d.getFullYear(), d.getMonth(), 1).getTime();
+  }
+  return now - 30 * 86400000;
+}
+
+function renderProfile() {
+  if (!MY_PROF) return;
+  const name = MY_PROF.name || MY_PROF.email || 'Affiliate';
+  const code = MY_PROF.referralCode || MY_UID.slice(0, 8).toUpperCase();
+  const initials = name.split(/\s+/).map(x => x[0]).join('').slice(0, 2).toUpperCase() || 'AF';
+  document.getElementById('sideAvatar').textContent = initials;
+  document.getElementById('topAvatar').textContent = initials;
+  document.getElementById('profAvatar').textContent = initials;
+  document.getElementById('sideName').textContent = name;
+  document.getElementById('sideCode').textContent = `Affiliate · ${code}`;
+  document.getElementById('welcomeHeading').textContent = `Welcome back, ${name} 👋`;
+  document.getElementById('welcomeSub').textContent = `Code: ${code} · Parent Admin: ${MY_PROF.parentAdminName || MY_PROF.parentAdminId || 'Master Admin'}`;
+  document.getElementById('refurl').textContent = getRefUrl();
+  document.getElementById('refurlPage').textContent = getRefUrl();
+  document.getElementById('linkStatCode').textContent = code;
+  document.getElementById('linkStatStatus').textContent = MY_PROF.active === false ? 'Suspended' : 'Active';
+  document.getElementById('linkStatStatus').style.color = MY_PROF.active === false ? 'var(--red)' : 'var(--green)';
+  document.getElementById('profName').textContent = name;
+  document.getElementById('profIdSub').textContent = `Affiliate ID: ${MY_UID} · Code: ${code}`;
+  document.getElementById('profEmail').textContent = MY_PROF.email || '—';
+  document.getElementById('profPhone').textContent = MY_PROF.phone || '—';
+  document.getElementById('profStatus').textContent = MY_PROF.active === false ? 'Suspended' : 'Active';
+  document.getElementById('profParentAdmin').textContent = MY_PROF.parentAdminName || MY_PROF.parentAdminId || 'Master Admin';
+  document.getElementById('supportAdminSub').textContent = `Assigned Admin: ${MY_PROF.parentAdminName || MY_PROF.parentAdminId || 'Admin Desk'}`;
+  document.getElementById('chatDrawerSub').textContent = `Chatting with ${MY_PROF.parentAdminName || 'Assigned Admin'}`;
+}
+
+function renderAll() {
+  if (!MY_PROF) return;
+  const players = getReferredPlayers();
+  const pSet = getReferredSet(players);
+  const cutoff = getRangeCutoffMs();
+
+  // Confirmed deposits map per uid
+  const depByUid = {};
+  let totalDepAll = 0;
+  Object.values(ALL_DEPS).forEach(d => {
+    if (!d || !pSet.has(d.uid)) return;
+    if (String(d.status || '').toLowerCase() === 'approved') {
+      const a = parseFloat(d.amount) || 0;
+      totalDepAll += a;
+      depByUid[d.uid] = (depByUid[d.uid] || 0) + a;
+    }
+  });
+
+  let totalBetAll = 0, totalWinAll = 0;
+  const statsByUid = {};
+  players.forEach(p => {
+    const s = getPlayerBetStats(p.uid);
+    statsByUid[p.uid] = s;
+    totalBetAll += s.betAmt;
+    totalWinAll += s.winAmt;
+  });
+
+  const clicks = parseInt(MY_PROF.clicks || 0, 10) || players.length;
+  const regCount = players.length;
+  const activePlayers = players.filter(p => (p.status || 'ACTIVE').toUpperCase() === 'ACTIVE');
+  const confirmedCount = players.filter(p => (depByUid[p.uid] || 0) > 0 || (parseFloat(p.totalDeposited) || 0) > 0).length;
+  const pendingCount = Math.max(0, activePlayers.length - confirmedCount);
+  const inactiveCount = Math.max(0, regCount - activePlayers.length);
+  const convPct = clicks > 0 ? ((regCount / clicks) * 100).toFixed(2) : '0.00';
+
+  document.getElementById('statClicks').textContent = clicks.toLocaleString('en-US');
+  document.getElementById('statRegistered').textContent = regCount.toLocaleString('en-US');
+  document.getElementById('statRegisteredSub').textContent = `${players.filter(p => (p.createdAt || 0) >= cutoff).length} in selected period`;
+  document.getElementById('statActive').textContent = activePlayers.length.toLocaleString('en-US');
+  document.getElementById('statActiveSub').textContent = `${regCount ? Math.round((activePlayers.length / regCount) * 100) : 0}% of total players`;
+  document.getElementById('statConv').textContent = convPct + '%';
+
+  document.getElementById('linkStatClicks').textContent = clicks.toLocaleString('en-US');
+  document.getElementById('linkStatRegs').textContent = regCount.toLocaleString('en-US');
+
+  // Conversion ring
+  const cPct = regCount ? Math.round((confirmedCount / regCount) * 100) : 0;
+  const pPct = regCount ? Math.round((pendingCount / regCount) * 100) : 0;
+  const iPct = Math.max(0, 100 - cPct - pPct);
+  document.getElementById('ringConvPct').textContent = cPct + '%';
+  document.getElementById('keyConfirmed').textContent = cPct + '%';
+  document.getElementById('keyPending').textContent = pPct + '%';
+  document.getElementById('keyInactive').textContent = iPct + '%';
+  document.getElementById('convRing').style.background = `conic-gradient(var(--orange) 0 ${cPct}%, var(--gold) ${cPct}% ${cPct + pPct}%, #343b44 ${cPct + pPct}% 100%)`;
+
+  // Latest Registered Players (top 5)
+  const lpBody = document.getElementById('latestPlayersBody');
+  lpBody.innerHTML = players.slice(0, 5).map(p => {
+    const isAct = (p.status || 'ACTIVE').toUpperCase() === 'ACTIVE';
+    const isConf = (depByUid[p.uid] || 0) > 0 || (parseFloat(p.totalDeposited) || 0) > 0;
+    const dt = p.createdAt ? new Date(p.createdAt).toLocaleDateString() : 'Recent';
+    return `<tr>
+      <td>${esc(p.name || p.username || p.uid)}</td>
+      <td>${esc(dt)}</td>
+      <td><span class="status ${isAct ? '' : 'inactive'}">${isAct ? 'Active' : 'Inactive'}</span></td>
+      <td><span class="status ${isConf ? '' : 'pending'}">${isConf ? 'Confirmed' : 'Pending'}</span></td>
+    </tr>`;
+  }).join('') || `<tr><td colspan="4" style="color:var(--muted);text-align:center">এখনও কোনো রেফার্ড প্লেয়ার রেজিস্টার করেনি</td></tr>`;
+
+  // Recent Activity feed
+  const actFeed = document.getElementById('recentActivityFeed');
+  const feedItems = [];
+  players.slice(0, 3).forEach(p => {
+    feedItems.push(`<div class="activity-item"><div class="activity-icon">♙</div><div><b>New player registered</b><small>${esc(p.name || p.username || p.uid)} · ${p.createdAt ? new Date(p.createdAt).toLocaleString() : 'Live'}</small></div></div>`);
+  });
+  if (CHAT_MSGS.length) {
+    const lastM = CHAT_MSGS[CHAT_MSGS.length - 1];
+    feedItems.push(`<div class="activity-item"><div class="activity-icon">✉</div><div><b>${lastM.sender === 'AFFILIATE' ? 'Sent support message' : 'Admin sent a message'}</b><small>${esc((lastM.text || '').slice(0, 48))}</small></div></div>`);
+  }
+  actFeed.innerHTML = feedItems.join('') || `<div style="color:var(--muted);font-size:12px">লাইভ অ্যাক্টিভিটি এখানে দেখা যাবে।</div>`;
+
+  // Full My Referrals table
+  const pBody = document.getElementById('playersTbody');
+  pBody.innerHTML = players.map(p => {
+    const isAct = (p.status || 'ACTIVE').toUpperCase() === 'ACTIVE';
+    const isConf = (depByUid[p.uid] || 0) > 0 || (parseFloat(p.totalDeposited) || 0) > 0;
+    const bs = statsByUid[p.uid] || { netPl: 0, lastGame: '' };
+    const dt = p.createdAt ? new Date(p.createdAt).toLocaleDateString() : '—';
+    const plCls = bs.netPl > 0 ? 'up' : bs.netPl < 0 ? 'down' : '';
+    const plTxt = bs.netPl > 0 ? '+ ' + money(bs.netPl) : bs.netPl < 0 ? '− ' + money(Math.abs(bs.netPl)) : money(0);
+    return `<tr>
+      <td>${esc(p.name || p.username || p.uid)}<br><small style="color:var(--muted)">${esc(p.uid)}</small></td>
+      <td>${esc(dt)}</td>
+      <td>${esc(bs.lastGame || p.lastGame || 'Casino')}</td>
+      <td><strong>${money(p.balance)}</strong></td>
+      <td><span class="${plCls}">${plTxt}</span></td>
+      <td><span class="status ${isAct ? '' : 'inactive'}">${isAct ? 'Active' : 'Inactive'}</span></td>
+      <td><span class="status ${isConf ? '' : 'pending'}">${isConf ? 'Confirmed' : 'Pending'}</span></td>
+    </tr>`;
+  }).join('') || `<tr><td colspan="7" style="text-align:center;color:var(--muted)">আপনার রেফারেল লিংক থেকে কোনো প্লেয়ার যুক্ত হলে এখানে লাইভ দেখাবে।</td></tr>`;
+
+  // Populate user dropdowns for Money Activity & IP Security
+  const prevMoneyUser = document.getElementById('moneyUser').value;
+  const prevIpUser = document.getElementById('ipUser').value;
+  const optsHtml = players.length
+    ? players.map(p => `<option value="${esc(p.uid)}">${esc(p.name || p.username || p.uid)}</option>`).join('')
+    : '<option value="">No players yet</option>';
+  document.getElementById('moneyUser').innerHTML = optsHtml;
+  document.getElementById('ipUser').innerHTML = optsHtml;
+  if (prevMoneyUser && pSet.has(prevMoneyUser)) document.getElementById('moneyUser').value = prevMoneyUser;
+  if (prevIpUser && pSet.has(prevIpUser)) document.getElementById('ipUser').value = prevIpUser;
+
+  // Analytics page
+  document.getElementById('anaClicks').textContent = clicks.toLocaleString('en-US');
+  document.getElementById('anaDepTotal').textContent = moneyShort(totalDepAll);
+  document.getElementById('anaTurnover').textContent = moneyShort(totalBetAll);
+  document.getElementById('anaConv').textContent = convPct + '%';
+  const netHouse = totalBetAll - totalWinAll;
+  document.getElementById('anaSummary').textContent =
+    `মোট রেফার্ড প্লেয়ার: ${regCount} জন (${confirmedCount} জন কনফার্মড ডিপোজিটর)। মোট ডিপোজিট: ${moneyShort(totalDepAll)}, মোট বেট টার্নওভার: ${moneyShort(totalBetAll)}, নিট প্লেয়ার লস/হাউস প্রফিট: ${moneyShort(netHouse)}।`;
+
+  renderChart();
+  filterPlayers();
+  renderMoneyActivity();
+  renderIpHistory();
+  renderSmartCommission(totalDepAll, totalBetAll, totalWinAll);
+}
+
+function renderChart() {
+  const box = document.getElementById('regChartBox');
+  if (!box) return;
+  const days = parseInt(document.getElementById('chartDays')?.value || '7', 10) || 7;
+  const players = getReferredPlayers();
+  const buckets = Array(days).fill(0);
+  const confBuckets = Array(days).fill(0);
+  const now = new Date();
+  const todayMid = new Date(now.getFullYear(), now.getMonth(), now.getDate()).getTime();
+  players.forEach(p => {
+    const ts = Number(p.createdAt || 0);
+    if (!ts) return;
+    const diffDays = Math.floor((todayMid + 86400000 - ts) / 86400000);
+    const idx = days - 1 - diffDays;
+    if (idx >= 0 && idx < days) {
+      buckets[idx]++;
+      if ((parseFloat(p.totalDeposited) || 0) > 0) confBuckets[idx]++;
+    }
+  });
+  const maxVal = Math.max(1, ...buckets, ...confBuckets);
+  const stepX = 700 / Math.max(1, days - 1);
+  const pts = buckets.map((v, i) => [Math.round(i * stepX), Math.round(200 - (v / maxVal) * 165)]);
+  const cpts = confBuckets.map((v, i) => [Math.round(i * stepX), Math.round(200 - (v / maxVal) * 165)]);
+  const dMain = pts.map((p, i) => (i === 0 ? `M${p[0]} ${p[1]}` : `L${p[0]} ${p[1]}`)).join(' ');
+  const dFill = `${dMain} L700 220 L0 220 Z`;
+  const dConf = cpts.map((p, i) => (i === 0 ? `M${p[0]} ${p[1]}` : `L${p[0]} ${p[1]}`)).join(' ');
+  box.innerHTML = `<svg viewBox="0 0 700 220" preserveAspectRatio="none">
+    <defs><linearGradient id="fill" x1="0" x2="0" y1="0" y2="1"><stop offset="0" stop-color="#ff7a1a" stop-opacity=".35"/><stop offset="1" stop-color="#ff7a1a" stop-opacity="0"/></linearGradient></defs>
+    <path d="${dFill}" fill="url(#fill)"/>
+    <path d="${dMain}" fill="none" stroke="#ff8730" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>
+    <path d="${dConf}" fill="none" stroke="#e7b85b" stroke-width="2" stroke-dasharray="5 5"/>
+  </svg>`;
+}
+
+function renderMoneyActivity() {
+  const period = document.getElementById('moneyPeriod').value;
+  const individual = document.getElementById('moneyScope').value === 'individual';
+  const selUid = document.getElementById('moneyUser').value;
+  document.getElementById('moneyUser').disabled = !individual;
+  const cutoff = period === 'daily' ? Date.now() - 86400000 : Date.now() - 7 * 86400000;
+
+  const players = getReferredPlayers();
+  const targetPlayers = individual ? players.filter(p => p.uid === selUid) : players;
+  const tSet = new Set(targetPlayers.map(p => p.uid));
+
+  const perUser = {};
+  targetPlayers.forEach(p => { perUser[p.uid] = { name: p.name || p.username || p.uid, dep: 0, wd: 0 }; });
+
+  Object.values(ALL_DEPS).forEach(d => {
+    if (!d || !tSet.has(d.uid)) return;
+    if (String(d.status || '').toLowerCase() !== 'approved') return;
+    const ts = Number(d.approvedAt || d.timestamp || d.createdAt || 0);
+    if (ts && ts < cutoff) return;
+    perUser[d.uid].dep += parseFloat(d.amount) || 0;
+  });
+
+  Object.values(ALL_WDS).forEach(w => {
+    if (!w || !tSet.has(w.uid)) return;
+    const st = String(w.status || '').toLowerCase();
+    if (st !== 'completed' && st !== 'approved') return;
+    const ts = Number(w.processedAt || w.timestamp || w.createdAt || 0);
+    if (ts && ts < cutoff) return;
+    perUser[w.uid].wd += parseFloat(w.amount) || 0;
+  });
+
+  let totalDep = 0, totalWd = 0;
+  const body = document.getElementById('moneyRows');
+  const rows = Object.values(perUser);
+  body.innerHTML = rows.length ? rows.map(r => {
+    totalDep += r.dep;
+    totalWd += r.wd;
+    const net = r.dep - r.wd;
+    return `<tr><td>${esc(r.name)}</td><td class="up">${money(r.dep)}</td><td class="down">${money(r.wd)}</td><td>${money(net)}</td></tr>`;
+  }).join('') : `<tr><td colspan="4" style="color:var(--muted);text-align:center">নির্বাচিত সময়ে কোনো লেনদেন পাওয়া যায়নি</td></tr>`;
+
+  document.getElementById('depositTotal').textContent = money(totalDep);
+  document.getElementById('withdrawTotal').textContent = money(totalWd);
+}
+
+function renderIpHistory() {
+  const uid = document.getElementById('ipUser').value;
+  const u = ALL_USERS[uid] || null;
+  const body = document.getElementById('ipRows');
+  const banner = document.getElementById('ipRiskBanner');
+  if (!u) {
+    body.innerHTML = `<tr><td colspan="3" style="color:var(--muted);text-align:center">কোনো প্লেয়ার নির্বাচিত নেই</td></tr>`;
+    banner.textContent = 'No referred players yet';
+    banner.className = 'status pending';
+    return;
+  }
+
+  let list = [];
+  if (Array.isArray(u.ipHistory)) {
+    list = u.ipHistory;
+  } else if (u.ipHistory && typeof u.ipHistory === 'object') {
+    list = Object.values(u.ipHistory);
+  }
+  const normalized = [];
+  const seen = new Set();
+  list.slice().reverse().forEach(entry => {
+    if (typeof entry === 'string' && !seen.has(entry)) {
+      seen.add(entry);
+      normalized.push({ ip: entry, seen: u.lastSeen ? new Date(u.lastSeen).toLocaleString() : 'Recent', dev: u.lastDevice || 'Device' });
+    } else if (entry && entry.ip && !seen.has(entry.ip)) {
+      seen.add(entry.ip);
+      normalized.push({ ip: entry.ip, seen: entry.time ? new Date(entry.time).toLocaleString() : 'Recent', dev: entry.device || u.lastDevice || 'Device' });
+    }
+  });
+  if (u.lastIp && !seen.has(u.lastIp)) {
+    normalized.unshift({ ip: u.lastIp, seen: u.lastSeen ? new Date(u.lastSeen).toLocaleString() : 'Latest', dev: u.lastDevice || 'Unknown Device' });
+  }
+  const top7 = normalized.slice(0, 7);
+
+  body.innerHTML = top7.length ? top7.map(r => `<tr><td>${esc(r.ip)}</td><td>${esc(r.seen)}</td><td>${esc(r.dev)}</td></tr>`).join('')
+    : `<tr><td colspan="3" style="color:var(--muted);text-align:center">এই প্লেয়ারের IP লগ এখনও রেকর্ড হয়নি</td></tr>`;
+
+  if (top7.length > 1) {
+    banner.textContent = `⚠ Review recommended · ${top7.length} different IP addresses detected`;
+    banner.className = 'status inactive';
+  } else if (top7.length === 1) {
+    banner.textContent = '✓ Clean signal · Single IP detected';
+    banner.className = 'status';
+  } else {
+    banner.textContent = 'No IP logs recorded yet';
+    banner.className = 'status pending';
+  }
+}
+
+/* ==================== SMART COMMISSION (MASTER + USER ADMIN CONTROLLABLE) ==================== */
+function renderSmartCommission(totalDepAll, totalBetAll, totalWinAll) {
+  const box = document.getElementById('commissionBox');
+  if (!box || !MY_PROF) return;
+  const enabled = MY_PROF.commissionEnabled === true;
+  const cType = MY_PROF.commissionType || 'deposit_percent';
+  const rate = parseFloat(MY_PROF.commissionRate || 0);
+  const walletBal = parseFloat(MY_PROF.commissionBalance || 0);
+  const totalPaid = parseFloat(MY_PROF.totalCommissionPaid || 0);
+  const minPayout = parseFloat(MY_PROF.minCommissionPayout || 500);
+
+  let basisLabel = 'Confirmed Deposits';
+  let basisAmount = totalDepAll;
+  if (cType === 'loss_share') {
+    basisLabel = 'Net Player Loss (House GGR)';
+    basisAmount = Math.max(0, totalBetAll - totalWinAll);
+  } else if (cType === 'turnover_percent') {
+    basisLabel = 'Total Bet Turnover';
+    basisAmount = totalBetAll;
+  }
+  const estimatedEarned = enabled ? (basisAmount * rate) / 100 : 0;
+
+  if (!enabled) {
+    box.innerHTML = `
+      <span class="status pending">Currently disabled</span>
+      <h2 style="margin-top:16px">Commission is paused by Admin</h2>
+      <p>Master Admin অথবা আপনার Parent User Admin স্মার্ট কমিশন চালু করলে আপনার রিয়েলটাইম কমিশন ক্যালকুলেশন ও উত্তোলন চালু হয়ে যাবে।</p>
+      <div class="grid" style="margin-top:16px">
+       <div><small style="color:var(--muted)">Credited Wallet</small><h2>${money(walletBal)}</h2></div>
+       <div><small style="color:var(--muted)">Total Paid</small><h2>${money(totalPaid)}</h2></div>
+      </div>`;
+    return;
+  }
+
+  box.innerHTML = `
+    <span class="status">Smart Commission Active (${rate}%)</span>
+    <h2 style="margin-top:14px">${esc(basisLabel)} · ${rate}%</h2>
+    <p>Master Admin ও User Admin দ্বারা সেটকৃত অটোমেটিক স্মার্ট কমিশন। ন্যূনতম পেআউট: ${moneyShort(minPayout)}।</p>
+    <div class="grid" style="margin-top:16px">
+     <div><small style="color:var(--muted)">${esc(basisLabel)}</small><h2>${moneyShort(basisAmount)}</h2></div>
+     <div><small style="color:var(--muted)">Calculated Commission</small><h2 style="color:var(--gold)">${money(estimatedEarned)}</h2></div>
+     <div><small style="color:var(--muted)">Credited Commission Wallet</small><h2 style="color:var(--green)">${money(walletBal)}</h2></div>
+     <div><small style="color:var(--muted)">Total Paid</small><h2>${money(totalPaid)}</h2></div>
+    </div>
+    <hr style="border:0;border-top:1px solid var(--line);margin:20px 0">
+    <div class="toolbar">
+     <input id="commReqAmt" type="number" min="1" placeholder="উত্তোলনের পরিমাণ (৳)">
+     <input id="commReqMethod" placeholder="bKash / Nagad / Rocket নম্বর" style="flex:1;min-width:180px">
+     <button class="btn btn-primary" onclick="requestCommissionPayout()">💸 Request Commission Payout</button>
+    </div>`;
+}
+
+async function requestCommissionPayout() {
+  if (!MY_UID || !MY_PROF) return;
+  const amt = parseFloat(document.getElementById('commReqAmt')?.value || 0);
+  const method = (document.getElementById('commReqMethod')?.value || '').trim();
+  const minP = parseFloat(MY_PROF.minCommissionPayout || 500);
+  const avail = parseFloat(MY_PROF.commissionBalance || 0);
+  if (!Number.isFinite(amt) || amt < minP) { toast(`ন্যূনতম ৳${minP} রিকোয়েস্ট করতে হবে`); return; }
+  if (amt > avail) { toast(`আপনার ক্রেডিটকৃত কমিশন ব্যালেন্স: ৳${Math.round(avail)}`); return; }
+  if (!method) { toast('পেমেন্ট মেথড ও নম্বর লিখুন'); return; }
+  try {
+    const r = db.ref('affiliateCommissionRequests').push();
+    await r.set({
+      id: r.key,
+      affiliateUid: MY_UID,
+      affiliateName: MY_PROF.name || MY_PROF.email || 'Affiliate',
+      parentAdminId: MY_PROF.parentAdminId || '',
+      amount: amt,
+      paymentInfo: method,
+      status: 'pending',
+      createdAt: TS
+    });
+    toast('কমিশন পেআউট রিকোয়েস্ট পাঠানো হয়েছে ✅');
+  } catch (e) {
+    toast('ব্যর্থ: ' + e.message);
+  }
+}
+
+function renderCommissionRequests() {
+  const b = document.getElementById('commReqBody');
+  if (!b) return;
+  b.innerHTML = COMM_REQS.length ? COMM_REQS.map(r => {
+    const st = String(r.status || 'pending').toLowerCase();
+    return `<tr>
+      <td>${r.createdAt ? new Date(r.createdAt).toLocaleString() : '—'}</td>
+      <td><b>${money(r.amount)}</b></td>
+      <td>${esc(r.paymentInfo || '—')}</td>
+      <td><span class="status ${st === 'rejected' ? 'inactive' : st === 'pending' ? 'pending' : ''}">${esc(st.toUpperCase())}</span></td>
+    </tr>`;
+  }).join('') : `<tr><td colspan="4" style="color:var(--muted);text-align:center">কোনো কমিশন পেআউট রিকোয়েস্ট নেই</td></tr>`;
+}
+
+/* ==================== CAMPAIGN LINKS & FILTERS ==================== */
+function renderCampaigns() {
+  const tbody = document.getElementById('campaignLinks');
+  if (!tbody) return;
+  if (!CAMPAIGNS.length) {
+    tbody.innerHTML = '<tr><td colspan="3" style="color:var(--muted)">No campaign links created yet.</td></tr>';
+    return;
+  }
+  tbody.innerHTML = CAMPAIGNS.map(item => `<tr>
+    <td>${esc(item.name)}</td>
+    <td><code style="color:#f5c36c">${esc(item.url)}</code></td>
+    <td>
+      <button class="btn" onclick="copyText('${esc(item.url)}')">Copy</button>
+      <button class="btn" style="margin-left:6px" onclick="deleteCampaignLink('${esc(item.id)}')">Delete</button>
+    </td>
+  </tr>`).join('');
+}
+
+async function createCampaignLink() {
+  const field = document.getElementById('campaignName');
+  const name = field.value.trim();
+  if (!name) { toast('Enter a campaign name first'); field.focus(); return; }
+  const slug = name.toLowerCase().normalize('NFKD').replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '') || ('camp-' + Date.now());
+  const url = new URL(getRefUrl());
+  url.searchParams.set('campaign', slug);
+  try {
+    const ref = db.ref(`affiliates/${MY_UID}/campaigns`).push();
+    await ref.set({ name, slug, url: url.toString(), createdAt: TS });
+    field.value = '';
+    toast('ক্যাম্পেইন লিংক লাইভ সেভ হয়েছে ✅');
+  } catch (e) {
+    toast('ব্যর্থ: ' + e.message);
+  }
+}
+
+async function deleteCampaignLink(id) {
+  try {
+    await db.ref(`affiliates/${MY_UID}/campaigns/${id}`).remove();
+    toast('ক্যাম্পেইন লিংক মুছে ফেলা হয়েছে');
+  } catch (e) { toast('ব্যর্থ: ' + e.message); }
+}
+
+async function copyText(value) {
+  try {
+    if (navigator.clipboard && window.isSecureContext) await navigator.clipboard.writeText(value);
+    else {
+      const t = document.createElement('textarea'); t.value = value; t.style.position = 'fixed'; t.style.opacity = '0';
+      document.body.appendChild(t); t.select(); document.execCommand('copy'); t.remove();
+    }
+    toast('Copied to clipboard');
+  } catch { toast('Copy failed'); }
+}
+function copyLink() { copyText(getRefUrl()); }
+async function shareLink() {
+  if (navigator.share) { try { await navigator.share({ title: 'My MOSTWIN88 referral link', url: getRefUrl() }); } catch {} }
+  else copyLink();
+}
+
+function filterPlayers() {
+  const q = (document.getElementById('searchPlayer')?.value || '').toLowerCase();
+  const account = document.getElementById('accountFilter')?.value || 'all';
+  const referral = document.getElementById('referralFilter')?.value || 'all';
+  document.querySelectorAll('#players tbody tr').forEach(r => {
+    if (r.cells.length < 7) return;
+    const text = r.innerText.toLowerCase();
+    const status = r.cells[5]?.innerText.trim() || '';
+    const ref = r.cells[6]?.innerText.trim() || '';
+    r.style.display = text.includes(q) && (account === 'all' || status === account) && (referral === 'all' || ref === referral) ? '' : 'none';
+  });
+}
+
+function exportCsv() {
+  const table = document.querySelector('#players');
+  if (!table) return;
+  const rows = [...table.querySelectorAll('tr')].map(tr => [...tr.children].map(td => '"' + td.innerText.replace(/"/g, '""').trim() + '"').join(','));
+  const csv = '\uFEFF' + rows.join('\r\n');
+  const blob = new Blob([csv], { type: 'text/csv;charset=utf-8;' });
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement('a'); a.href = url; a.download = 'mostwin88-live-affiliate-referrals.csv'; a.click();
+  URL.revokeObjectURL(url);
+  toast('CSV রিপোর্ট ডাউনলোড সম্পন্ন');
+}
+
+/* ==================== NOTIFICATIONS ==================== */
+function renderNotifications() {
+  const box = document.getElementById('notificationList');
+  if (!box) return;
+  const readMap = storage.get('readNotifs', {});
+  let unread = 0;
+  const items = NOTIFS.map(n => {
+    const isRead = !!readMap[n.id];
+    if (!isRead) unread++;
+    const ts = n.timestamp ? new Date(n.timestamp).toLocaleString() : '';
+    return `<div class="activity-item" style="opacity:${isRead ? '.55' : '1'}">
+      <div class="activity-icon">🔔</div>
+      <div><b>${esc(n.title || 'Admin Notice')}</b><small>${esc(n.body || n.message || '')}${ts ? ' · ' + esc(ts) : ''}</small></div>
+    </div>`;
+  }).join('');
+  box.innerHTML = (items || '<p style="color:var(--muted)">কোনো নোটিফিকেশন নেই।</p>') +
+    (NOTIFS.length ? '<button class="btn" onclick="markNotificationsRead()">Mark all as read</button>' : '');
+  const b = document.getElementById('navNotifBadge');
+  const d = document.getElementById('topNotifDot');
+  if (b) { b.textContent = unread; b.style.display = unread > 0 ? 'inline-block' : 'none'; }
+  if (d) d.classList.toggle('hidden', unread === 0);
+}
+
+function markNotificationsRead() {
+  const readMap = storage.get('readNotifs', {});
+  NOTIFS.forEach(n => { readMap[n.id] = true; });
+  storage.set('readNotifs', readMap);
+  renderNotifications();
+  toast('সব নোটিফিকেশন পড়া হয়েছে');
+}
+
+/* ==================== FLOATING LIVE CHAT + INLINE SUPPORT ==================== */
+function toggleLiveChat(forceState) {
+  const drawer = document.getElementById('liveChatDrawer');
+  LIVE_CHAT_OPEN = typeof forceState === 'boolean' ? forceState : !LIVE_CHAT_OPEN;
+  drawer.classList.toggle('open', LIVE_CHAT_OPEN);
+  if (LIVE_CHAT_OPEN) {
+    markChatRead();
+    setTimeout(() => {
+      const inp = document.getElementById('drawerChatInput');
+      if (inp) inp.focus();
+      const box = document.getElementById('drawerChatMsgs');
+      if (box) box.scrollTop = box.scrollHeight;
+    }, 80);
+  }
+}
+
+function updateChatBadges() {
+  const fabBadge = document.getElementById('liveChatFabBadge');
+  const navBadge = document.getElementById('navChatBadge');
+  const topDot = document.getElementById('topChatDot');
+  const t = UNREAD_CHAT > 9 ? '9+' : String(UNREAD_CHAT);
+  if (fabBadge) { fabBadge.textContent = t; fabBadge.style.display = UNREAD_CHAT > 0 ? 'grid' : 'none'; }
+  if (navBadge) { navBadge.textContent = t; navBadge.style.display = UNREAD_CHAT > 0 ? 'inline-block' : 'none'; }
+  if (topDot) topDot.classList.toggle('hidden', UNREAD_CHAT === 0);
+}
+
+function renderChatMessages() {
+  const html = CHAT_MSGS.length ? CHAT_MSGS.map(m => {
+    const mine = m.sender === 'AFFILIATE';
+    const time = m.timestamp ? new Date(m.timestamp).toLocaleTimeString('bn-BD', { hour: '2-digit', minute: '2-digit' }) : '';
+    return `<div class="cmsg ${mine ? 'me' : ''}">${!mine ? `<b style="font-size:10px;color:var(--gold);display:block;margin-bottom:2px">${esc(m.senderName || m.sender || 'Admin')}</b>` : ''}${esc(m.text)}<small>${esc(time)}</small></div>`;
+  }).join('') : `<div style="color:var(--muted);font-size:12px;text-align:center;margin:auto">অ্যাডমিনের সাথে সরাসরি লাইভ চ্যাট শুরু করতে মেসেজ লিখুন...</div>`;
+
+  ['drawerChatMsgs', 'inlineChatMsgs'].forEach(id => {
+    const el = document.getElementById(id);
+    if (!el) return;
+    el.innerHTML = html;
+    el.scrollTop = el.scrollHeight;
+  });
+}
+
+async function sendSupportChat(e, inputId) {
+  if (e) e.preventDefault();
+  if (!MY_UID || !MY_PROF) return;
+  const inp = document.getElementById(inputId);
+  if (!inp) return;
+  const text = inp.value.trim();
+  if (!text) return;
+  inp.value = '';
+  try {
+    const base = `affiliate_admin_chats/${MY_UID}`;
+    await db.ref(base + '/messages').push({
+      sender: 'AFFILIATE',
+      senderUid: MY_UID,
+      senderName: MY_PROF.name || MY_PROF.email || 'Affiliate',
+      text,
+      timestamp: TS,
+      read: false
+    });
+    await db.ref(base + '/meta').update({
+      affiliateUid: MY_UID,
+      affiliateName: MY_PROF.name || MY_PROF.email || 'Affiliate',
+      adminUid: MY_PROF.parentAdminId || '',
+      lastMessage: text,
+      lastTimestamp: TS,
+      lastSender: 'AFFILIATE',
+      unreadForAdmin: true,
+      unreadForAffiliate: false
+    });
+  } catch (err) {
+    toast('মেসেজ পাঠানো ব্যর্থ: ' + err.message);
+  }
+}
+
+function markChatRead() {
+  if (!MY_UID) return;
+  UNREAD_CHAT = 0;
+  updateChatBadges();
+  const base = `affiliate_admin_chats/${MY_UID}`;
+  const updates = {};
+  CHAT_MSGS.forEach(m => { if (m.sender !== 'AFFILIATE' && m.read !== true) updates[m.id + '/read'] = true; });
+  if (Object.keys(updates).length) {
+    db.ref(base + '/messages').update(updates).catch(() => {});
+    db.ref(base + '/meta/unreadForAffiliate').set(false).catch(() => {});
+  }
+}
+
+/* ==================== LANGUAGE ==================== */
+const translations = {
+  'My Referrals': 'আমার রেফারেল',
+  'Referral Analytics': 'রেফারেল বিশ্লেষণ',
+  'Commission': 'কমিশন',
+  'Notifications': 'নোটিফিকেশন',
+  'Admin Support': 'অ্যাডমিন সাপোর্ট',
+  'My Profile': 'আমার প্রোফাইল',
+  'Settings': 'সেটিংস',
+  'Your unique referral link': 'আপনার ইউনিক রেফারেল লিংক',
+  'Copy link': 'লিংক কপি',
+  'Share': 'শেয়ার',
+  'Create a campaign link': 'ক্যাম্পেইন লিংক তৈরি করুন',
+  'Create new link': 'নতুন লিংক তৈরি',
+  'Search player ID or name…': 'প্লেয়ার আইডি বা নাম খুঁজুন…',
+  'Last 30 days': 'গত ৩০ দিন',
+  'Last 7 days': 'গত ৭ দিন',
+  'This month': 'এই মাস',
+  'Export CSV': 'CSV এক্সপোর্ট'
+};
+const originalText = new Map();
+function setLanguage(lang) {
+  document.documentElement.lang = lang === 'বাংলা' ? 'bn' : 'en';
+  document.querySelectorAll('.nav button,.bottom-nav button,.heading h1,.heading p,.card h3,.btn,th,select option,input[placeholder]').forEach(el => {
+    if (!originalText.has(el)) originalText.set(el, el.matches('input') ? el.placeholder : el.textContent);
+    const orig = originalText.get(el);
+    if (lang === 'বাংলা') {
+      if (el.matches('input')) el.placeholder = translations[orig] || orig;
+      else el.textContent = translations[orig] || orig;
+    } else {
+      if (el.matches('input')) el.placeholder = orig;
+      else el.textContent = orig;
+    }
+  });
+  storage.set('language', lang);
+}
+document.getElementById('language').addEventListener('change', e => setLanguage(e.target.value));
+const savedLanguage = storage.get('language', 'English');
+document.getElementById('language').value = savedLanguage;
+if (savedLanguage === 'বাংলা') setLanguage(savedLanguage);
+</script>
+</body>
+</html>

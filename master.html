@@ -222,6 +222,12 @@ apply();window.addEventListener('load',function(){setTimeout(apply,150)});window
     .stat-card, .cd { border-radius:10px; }
     .nav-item button.on { box-shadow:inset 3px 0 0 var(--primary) !important; }
     .login-box { box-shadow:0 20px 50px rgba(0,0,0,.85) !important; }
+    .m-chat-fab { position:fixed; right:20px; bottom:20px; width:56px; height:56px; border-radius:50%; background:var(--primary,#F59E0B); color:#000; border:2px solid rgba(255,255,255,.18); font-size:24px; display:flex; align-items:center; justify-content:center; cursor:pointer; z-index:1100; box-shadow:0 8px 24px rgba(0,0,0,.45) !important; transition:transform .15s; }
+    .m-chat-fab:hover { transform:scale(1.06) !important; }
+    .m-fab-badge { position:absolute; top:-4px; right:-4px; min-width:20px; height:20px; padding:0 5px; border-radius:10px; background:#EF4444; color:#fff; font-size:11px; font-weight:800; display:none; align-items:center; justify-content:center; border:2px solid var(--bg,#0A0A0A); }
+    .m-modal-bg { position:fixed; inset:0; background:rgba(0,0,0,.72); z-index:1600; display:none; align-items:center; justify-content:center; padding:16px; }
+    .m-modal-bg.open { display:flex; }
+    .m-modal-card { width:100%; max-width:480px; background:var(--c-surface); border:1px solid var(--border-subtle); border-radius:14px; padding:20px; }
 
 /* ===== Support Center theme: অ্যাডমিন চ্যাট ===== */
 .npm{display:grid;grid-template-columns:320px minmax(0,1fr);height:calc(100vh - 230px);height:calc(100dvh - 230px);min-height:480px;border-radius:16px;overflow:hidden;background:#fff;color:#202436;border:1px solid #e8eaf1;font-family:"Noto Sans Bengali","Hind Siliguri","Segoe UI",Arial,sans-serif}
@@ -347,6 +353,7 @@ body[data-theme="light"] .lo circle[stroke*="255,255,255"]{stroke:rgba(28,25,23,
     <ul class="nav-list">
         <li class="nav-item"><button id="t-admins" onclick="tab('admins')"><svg viewBox="0 0 24 24"><path d="M16 11c1.66 0 2.99-1.34 2.99-3S17.66 5 16 5c-1.66 0-3 1.34-3 3s1.34 3 3 3zm-8 0c1.66 0 2.99-1.34 2.99-3S9.66 5 8 5C6.34 5 5 6.34 5 8s1.34 3 3 3zm0 2c-2.33 0-7 1.17-7 3.5V19h14v-2.5c0-2.33-4.67-3.5-7-3.5zm8 0c-.29 0-.62.02-.97.05 1.16.84 1.97 1.97 1.97 3.45V19h6v-2.5c0-2.33-4.67-3.5-7-3.5z"/></svg><span class="nav-label">User Admins</span></button></li>
         <li class="nav-item"><button id="t-agents" onclick="tab('agents')"><svg viewBox="0 0 24 24"><path d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z"/></svg><span class="nav-label">এজেন্ট (Agents)</span><span class="nav-badge" id="nav-agent-pending">0</span></button></li>
+        <li class="nav-item"><button id="t-affiliates" onclick="tab('affiliates')"><svg viewBox="0 0 24 24"><path d="M16 11c1.66 0 2.99-1.34 2.99-3S17.66 5 16 5c-1.66 0-3 1.34-3 3s1.34 3 3 3zm-8 0c1.66 0 2.99-1.34 2.99-3S9.66 5 8 5C6.34 5 5 6.34 5 8s1.34 3 3 3zm0 2c-2.33 0-7 1.17-7 3.5V19h14v-2.5c0-2.33-4.67-3.5-7-3.5zm8 0c-.29 0-.62.02-.97.05 1.16.84 1.97 1.97 1.97 3.45V19h6v-2.5c0-2.33-4.67-3.5-7-3.5z"/></svg><span class="nav-label">অ্যাফিলিয়েট ও কমিশন</span><span class="nav-badge" id="nav-aff-pending">0</span></button></li>
         <li class="nav-item"><button id="t-reqs" onclick="tab('reqs')"><svg viewBox="0 0 24 24"><path d="M21 18v1c0 1.1-.9 2-2 2H5c-1.11 0-2-.9-2-2V5c0-1.1.89-2 2-2h14c1.1 0 2 .9 2 2v1h-9c-1.11 0-2 .9-2 2v8c0 1.1.89 2 2 2h9zm-9-2h10V8H12v8zm4-2.5c-.83 0-1.5-.67-1.5-1.5s.67-1.5 1.5-1.5 1.5.67 1.5 1.5-.67 1.5-1.5 1.5z"/></svg><span class="nav-label">ব্যালেন্স রিকোয়েস্ট</span><span class="nav-badge" id="nav-pending">0</span></button></li>
         <li class="nav-item"><button id="t-led" onclick="tab('led')"><svg viewBox="0 0 24 24"><path d="M14 2H6c-1.1 0-1.99.9-1.99 2L4 20c0 1.1.89 2 1.99 2H18c1.1 0 2-.9 2-2V8l-6-6zm2 16H8v-2h8v2zm0-4H8v-2h8v2zm-3-5V3.5L18.5 9H13z"/></svg><span class="nav-label">লেজার</span></button></li>
         <li class="nav-item"><button id="t-games" onclick="tab('games')"><svg viewBox="0 0 24 24"><path d="M3 13h8V3H3v10zm0 8h8v-6H3v6zm10 0h8V11h-8v10zm0-18v6h8V3h-8z"/></svg><span class="nav-label">গেম ম্যানেজমেন্ট</span></button></li>
@@ -391,6 +398,29 @@ body[data-theme="light"] .lo circle[stroke*="255,255,255"]{stroke:rgba(28,25,23,
       <div id="v"></div>
     </main>
   </div>
+  <button type="button" class="m-chat-fab" id="mLiveChatFab" onclick="tab('chat')" title="সরাসরি লাইভ চ্যাট (User Admin Support)" aria-label="লাইভ চ্যাট"><span>💬</span><span class="m-fab-badge" id="m-fab-chat-badge">0</span></button>
+</div>
+<div class="m-modal-bg" id="mAffCommModal">
+  <div class="m-modal-card">
+    <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:14px">
+      <b style="font-size:16px;color:var(--gold)" id="maf-title">⚙️ স্মার্ট কমিশন সেটআপ</b>
+      <button type="button" onclick="closeAffCommModal()" style="padding:4px 10px">✕</button>
+    </div>
+    <input type="hidden" id="maf-uid">
+    <div style="display:flex;flex-direction:column;gap:10px">
+      <div><label style="font-size:12px;color:var(--mu)">কমিশন চালু / বন্ধ (ON/OFF)</label><select id="maf-en" style="width:100%;margin-top:4px"><option value="1">✅ কমিশন চালু (ON)</option><option value="0">⛔ কমিশন বন্ধ (OFF)</option></select></div>
+      <div><label style="font-size:12px;color:var(--mu)">কমিশনের ধরন (Smart Mode)</label><select id="maf-type" style="width:100%;margin-top:4px"><option value="deposit_percent">ডিপোজিট শতাংশ (Deposit %)</option><option value="loss_share">প্লেয়ার নেট লস শেয়ার (Revenue Share %)</option><option value="turnover_percent">বেট টার্নওভার শতাংশ (Turnover %)</option></select></div>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px">
+        <div><label style="font-size:12px;color:var(--mu)">কমিশন রেট (%)</label><input id="maf-rate" type="number" step="0.1" min="0" max="100" style="width:100%;margin-top:4px"></div>
+        <div><label style="font-size:12px;color:var(--mu)">ন্যূনতম উত্তোলন (৳)</label><input id="maf-min" type="number" min="0" style="width:100%;margin-top:4px"></div>
+      </div>
+      <div><label style="font-size:12px;color:var(--mu)">অধীনস্থ User Admin</label><select id="maf-adm" style="width:100%;margin-top:4px"></select></div>
+    </div>
+    <div style="display:flex;gap:8px;justify-content:flex-end;margin-top:16px">
+      <button type="button" onclick="closeAffCommModal()">বাতিল</button>
+      <button type="button" class="p" onclick="saveAffCommissionMaster()">💾 সেভ করুন</button>
+    </div>
+  </div>
 </div>
 <div id="toast"></div>
 <div id="notif-drawer">
@@ -402,18 +432,20 @@ body[data-theme="light"] .lo circle[stroke*="255,255,255"]{stroke:rgba(28,25,23,
 const MAINCFG=window.NP_FIREBASE_CONFIG||{apiKey:"AIzaSyACoy90K8WHdxSU3_KtUiwWNPHGErT0P3w",authDomain:"mostwin88-febbf.firebaseapp.com",databaseURL:"https://mostwin88-febbf-default-rtdb.asia-southeast1.firebasedatabase.app",projectId:"mostwin88-febbf",storageBucket:"mostwin88-febbf.firebasestorage.app",messagingSenderId:"1091271266801",appId:"1:1091271266801:web:0b4da03572189864077450",measurementId:"G-5Q07GB1YD6"},MAINAPP=firebase.initializeApp(MAINCFG),TS=firebase.database.ServerValue.TIMESTAMP;
 let auth=MAINAPP.auth(),db=MAINAPP.database(),TID='main',TCFG=MAINCFG,TNAME='মূল প্রজেক্ট',LST=[],AUTHUNSUB=null;try{auth.setPersistence(firebase.auth.Auth.Persistence.LOCAL).catch(()=>{})}catch(e){}
 const $=i=>document.getElementById(i),fmt=n=>'৳ '+Math.round(n||0).toLocaleString('en-US'),esc=s=>String(s??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
-let ALK={},ADL=false,ALD=false,ADM={},REQ={},LED={},GAMES={},USERS={},ACT={},GTX={},DEVREG={},AGENTS={},AGREQ={},MB=0,cur='admins',started=false,Q='',AQ_AG='',FEAT={},SEL='',GV='',UAON=true,BON={};
+let ALK={},ADL=false,ALD=false,ADM={},REQ={},LED={},GAMES={},USERS={},ACT={},GTX={},DEVREG={},AGENTS={},AGREQ={},AFFS={},AFFREQ={},MB=0,cur='admins',started=false,Q='',AQ_AG='',AQ_AF='',FEAT={},SEL='',GV='',UAON=true,BON={};
 const FL=[
   ["dashboard", "পেজ", "ড্যাশবোর্ড ও সারাংশ (পেজ)"],
   ["gameactivity", "পেজ", "গেম ও বেট ট্র্যাকার / লাইভ অ্যাক্টিভিটি (পেজ)"],
   ["users", "পেজ", "প্লেয়ার / ইউজার (পেজ)"],
   ["wallet", "পেজ", "ওয়ালেট ও রিকোয়েস্ট (পেজ)"],
   ["agents", "পেজ", "এজেন্ট ম্যানেজমেন্ট (পেজ)"],
+  ["affiliates", "পেজ", "অ্যাফিলিয়েট ও স্মার্ট কমিশন (পেজ)"],
   ["promotions", "পেজ", "ডিপোজিট প্রোমোশন (পেজ)"],
   ["finance", "পেজ", "আর্থিক রিপোর্ট / Finance (পেজ)"],
   ["notices", "পেজ", "নোটিশ ও ঘোষণা (পেজ)"],
   ["notifications", "পেজ", "ইউজার নোটিফিকেশন (পেজ)"],
   ["master_chat", "পেজ", "মাস্টার অ্যাডমিন সাপোর্ট চ্যাট"],
+  ["support_chat", "পেজ", "এজেন্ট ও অ্যাফিলিয়েট লাইভ চ্যাট"],
   ["settings", "পেজ", "অ্যাপ সেটিংস (পেজ)"],
   ["audit", "পেজ", "রিপোর্ট ও অডিট লগ (পেজ)"],
   ["u_ban", "প্লেয়ার", "প্লেয়ার ব্যান / সক্রিয় করা"],
@@ -425,6 +457,7 @@ const FL=[
   ["wd", "ওয়ালেট ও এজেন্ট", "উইথড্র সম্পন্ন / বাতিল / এজেন্ট অ্যাসাইন"],
   ["bal_req", "ওয়ালেট ও এজেন্ট", "Master-এর কাছে ব্যালেন্স রিকোয়েস্ট"],
   ["agent_manage", "ওয়ালেট ও এজেন্ট", "এজেন্ট তৈরি, ব্যালেন্স পাঠানো ও রিকোয়েস্ট অ্যাপ্রুভাল"],
+  ["aff_commission", "ওয়ালেট ও এজেন্ট", "অ্যাফিলিয়েট তৈরি, স্মার্ট কমিশন সেট ও পেআউট"],
   ["dep_bonus", "ওয়ালেট ও এজেন্ট", "ডিপোজিটে বোনাস ও টার্নওভার সেট করা"],
   ["promo_manage", "অন্যান্য ফিচার", "ডিপোজিট প্রোমোশন অফার এডিট / টগল"],
   ["fin_export", "অন্যান্য ফিচার", "ফাইন্যান্স ও ইউজার রিপোর্ট CSV এক্সপোর্ট"],
@@ -529,9 +562,15 @@ function initMasterChatGlobalListener() {
       if (meta.unreadForMaster === true) totalUnread++;
     });
     const unreadEl = $('nav-chat-unread');
+    const unreadTxt = totalUnread > 9 ? '9+' : String(totalUnread);
     if (unreadEl) {
-      unreadEl.textContent = totalUnread > 9 ? '9+' : totalUnread;
+      unreadEl.textContent = unreadTxt;
       unreadEl.style.display = totalUnread > 0 ? 'inline-block' : 'none';
+    }
+    const fabBadge = $('m-fab-chat-badge');
+    if (fabBadge) {
+      fabBadge.textContent = unreadTxt;
+      fabBadge.style.display = totalUnread > 0 ? 'flex' : 'none';
     }
     if (cur === 'chat') draw();
   });
@@ -577,8 +616,10 @@ function attachAll(){
  on(db.ref('game_transactions').limitToLast(2500),s=>{GTX=s.val()||{};draw()});
  on(db.ref('agents'),s=>{AGENTS=s.val()||{};draw()});
  on(db.ref('agentBalanceRequests').limitToLast(200),s=>{AGREQ=s.val()||{};draw()});
+ on(db.ref('affiliates'),s=>{AFFS=s.val()||{};draw()});
+ on(db.ref('affiliateCommissionRequests').limitToLast(200),s=>{AFFREQ=s.val()||{};draw()});
  on(db.ref('balanceLedger').limitToLast(100),s=>{LED=s.val()||{};draw()})}
-function detachAll(){LST.forEach(r=>{try{r.off()}catch(e){}});LST=[];started=false;ALK={};ADL=false;ALD=false;ADM={};REQ={};LED={};GAMES={};USERS={};ACT={};GTX={};DEVREG={};AGENTS={};AGREQ={};MB=0;FEAT={};SEL='';UAON=true;BON={};AQ='';AFULL={};GTXFULL={};AQ_AG=''}
+function detachAll(){LST.forEach(r=>{try{r.off()}catch(e){}});LST=[];started=false;ALK={};ADL=false;ALD=false;ADM={};REQ={};LED={};GAMES={};USERS={};ACT={};GTX={};DEVREG={};AGENTS={};AGREQ={};AFFS={};AFFREQ={};MB=0;FEAT={};SEL='';UAON=true;BON={};AQ='';AFULL={};GTXFULL={};AQ_AG='';AQ_AF=''}
 function bindAuth(){if(AUTHUNSUB)AUTHUNSUB();const my=TID;
  AUTHUNSUB=auth.onAuthStateChanged(async u=>{if(my!==TID)return;
   if(!u){$('lt').textContent=TID==='main'?'MOSTWIN88':'লগইন: '+TNAME;$('lback').style.display=TID==='main'?'none':'block';$('login').style.display='flex';$('app').style.display='none';return}
@@ -885,6 +926,20 @@ const RULES_TXT=`{
         ".write": "auth != null && ((auth.uid == $adminUid && root.child('admins').child(auth.uid).exists() && root.child('admins').child(auth.uid).child('active').val() != false) || auth.token.email == 'mijanbabu2015@gmail.com')"
       }
     },
+    "agent_admin_chats": {
+      ".read": "auth != null && ((root.child('admins').child(auth.uid).exists() && root.child('admins').child(auth.uid).child('active').val() != false && root.child('adminSettings').child('userAdminOn').val() != false) || auth.token.email == 'mijanbabu2015@gmail.com')",
+      "$agentUid": {
+        ".read": "auth != null && (auth.uid == $agentUid || (root.child('admins').child(auth.uid).exists() && root.child('admins').child(auth.uid).child('active').val() != false && root.child('adminSettings').child('userAdminOn').val() != false) || auth.token.email == 'mijanbabu2015@gmail.com')",
+        ".write": "auth != null && ((auth.uid == $agentUid && root.child('agents').child(auth.uid).exists() && root.child('agents').child(auth.uid).child('active').val() != false) || (root.child('admins').child(auth.uid).exists() && root.child('admins').child(auth.uid).child('active').val() != false && root.child('adminSettings').child('userAdminOn').val() != false) || auth.token.email == 'mijanbabu2015@gmail.com')"
+      }
+    },
+    "affiliate_admin_chats": {
+      ".read": "auth != null && ((root.child('admins').child(auth.uid).exists() && root.child('admins').child(auth.uid).child('active').val() != false && root.child('adminSettings').child('userAdminOn').val() != false) || auth.token.email == 'mijanbabu2015@gmail.com')",
+      "$affUid": {
+        ".read": "auth != null && (auth.uid == $affUid || (root.child('admins').child(auth.uid).exists() && root.child('admins').child(auth.uid).child('active').val() != false && root.child('adminSettings').child('userAdminOn').val() != false) || auth.token.email == 'mijanbabu2015@gmail.com')",
+        ".write": "auth != null && ((auth.uid == $affUid && root.child('affiliates').child(auth.uid).exists() && root.child('affiliates').child(auth.uid).child('active').val() != false) || (root.child('admins').child(auth.uid).exists() && root.child('admins').child(auth.uid).child('active').val() != false && root.child('adminSettings').child('userAdminOn').val() != false) || auth.token.email == 'mijanbabu2015@gmail.com')"
+      }
+    },
     "agents": {
       ".read": "auth != null && ((root.child('admins').child(auth.uid).exists() && root.child('admins').child(auth.uid).child('active').val() != false && root.child('adminSettings').child('userAdminOn').val() != false) || auth.token.email == 'mijanbabu2015@gmail.com')",
       "$agentId": {
@@ -921,7 +976,22 @@ const RULES_TXT=`{
       ".read": "auth != null && ((root.child('admins').child(auth.uid).exists() && root.child('admins').child(auth.uid).child('active').val() != false && root.child('adminSettings').child('userAdminOn').val() != false) || auth.token.email == 'mijanbabu2015@gmail.com')",
       "$affId": {
         ".read": "auth != null && (auth.uid == $affId || (root.child('admins').child(auth.uid).exists() && root.child('admins').child(auth.uid).child('active').val() != false) || auth.token.email == 'mijanbabu2015@gmail.com')",
-        ".write": "auth != null && ((root.child('admins').child(auth.uid).exists() && root.child('admins').child(auth.uid).child('active').val() != false && root.child('adminSettings').child('userAdminOn').val() != false) || auth.token.email == 'mijanbabu2015@gmail.com')"
+        ".write": "auth != null && ((root.child('admins').child(auth.uid).exists() && root.child('admins').child(auth.uid).child('active').val() != false && root.child('adminSettings').child('userAdminOn').val() != false) || auth.token.email == 'mijanbabu2015@gmail.com')",
+        "campaigns": {
+          ".write": "auth != null && (auth.uid == $affId || (root.child('admins').child(auth.uid).exists() && root.child('admins').child(auth.uid).child('active').val() != false) || auth.token.email == 'mijanbabu2015@gmail.com')"
+        },
+        "lastSeen": {
+          ".write": "auth != null && (auth.uid == $affId || auth.token.email == 'mijanbabu2015@gmail.com')"
+        }
+      }
+    },
+    "affiliateCommissionRequests": {
+      ".indexOn": ["affiliateUid", "parentAdminId", "status"],
+      ".read": "auth != null && ((query.orderByChild == 'affiliateUid' && query.equalTo == auth.uid) || (root.child('admins').child(auth.uid).exists() && root.child('admins').child(auth.uid).child('active').val() != false && root.child('adminSettings').child('userAdminOn').val() != false) || auth.token.email == 'mijanbabu2015@gmail.com')",
+      "$reqId": {
+        ".read": "auth != null && (data.child('affiliateUid').val() == auth.uid || (root.child('admins').child(auth.uid).exists() && root.child('admins').child(auth.uid).child('active').val() != false) || auth.token.email == 'mijanbabu2015@gmail.com')",
+        ".write": "auth != null && (auth.token.email == 'mijanbabu2015@gmail.com' || (root.child('admins').child(auth.uid).exists() && root.child('admins').child(auth.uid).child('active').val() != false && root.child('adminSettings').child('userAdminOn').val() != false) || (!data.exists() && root.child('affiliates').child(auth.uid).exists() && root.child('affiliates').child(auth.uid).child('active').val() != false && newData.child('affiliateUid').val() == auth.uid && newData.child('status').val() == 'pending' && newData.child('amount').isNumber() && newData.child('amount').val() > 0))",
+        ".validate": "newData.hasChildren(['affiliateUid', 'amount', 'status']) && newData.child('amount').isNumber() && newData.child('amount').val() > 0"
       }
     },
     "games": {
@@ -954,9 +1024,9 @@ const RULES_TXT=`{
     },
     "game_transactions": {
       ".indexOn": ["uid", "time"],
-      ".read": "auth != null && ((query.orderByChild == 'uid' && query.equalTo == auth.uid) || (root.child('admins').child(auth.uid).exists() && root.child('admins').child(auth.uid).child('active').val() != false && root.child('adminSettings').child('userAdminOn').val() != false) || auth.token.email == 'mijanbabu2015@gmail.com')",
+      ".read": "auth != null && ((query.orderByChild == 'uid' && query.equalTo == auth.uid) || (root.child('admins').child(auth.uid).exists() && root.child('admins').child(auth.uid).child('active').val() != false && root.child('adminSettings').child('userAdminOn').val() != false) || (root.child('affiliates').child(auth.uid).exists() && root.child('affiliates').child(auth.uid).child('active').val() != false) || auth.token.email == 'mijanbabu2015@gmail.com')",
       "$txKey": {
-        ".read": "auth != null && (data.child('uid').val() == auth.uid || (root.child('admins').child(auth.uid).exists() && root.child('admins').child(auth.uid).child('active').val() != false && root.child('adminSettings').child('userAdminOn').val() != false) || auth.token.email == 'mijanbabu2015@gmail.com')",
+        ".read": "auth != null && (data.child('uid').val() == auth.uid || (root.child('admins').child(auth.uid).exists() && root.child('admins').child(auth.uid).child('active').val() != false && root.child('adminSettings').child('userAdminOn').val() != false) || (root.child('affiliates').child(auth.uid).exists() && root.child('affiliates').child(auth.uid).child('active').val() != false) || auth.token.email == 'mijanbabu2015@gmail.com')",
         ".write": "auth != null && ((!data.exists() && newData.child('uid').val() == auth.uid) || (root.child('admins').child(auth.uid).exists() && root.child('admins').child(auth.uid).child('active').val() != false && root.child('adminSettings').child('userAdminOn').val() != false) || auth.token.email == 'mijanbabu2015@gmail.com')"
       }
     },
@@ -1011,27 +1081,27 @@ const RULES_TXT=`{
       }
     },
     "depositRequests": {
-      ".read": "auth != null && ((query.orderByChild == 'uid' && query.equalTo == auth.uid) || (query.orderByChild == 'assignedAgentId' && query.equalTo == auth.uid) || (root.child('agents').child(auth.uid).exists() && root.child('agents').child(auth.uid).child('active').val() != false) || (root.child('admins').child(auth.uid).exists() && root.child('admins').child(auth.uid).child('active').val() != false && root.child('adminSettings').child('userAdminOn').val() != false) || auth.token.email == 'mijanbabu2015@gmail.com')",
+      ".read": "auth != null && ((query.orderByChild == 'uid' && query.equalTo == auth.uid) || (query.orderByChild == 'assignedAgentId' && query.equalTo == auth.uid) || (root.child('agents').child(auth.uid).exists() && root.child('agents').child(auth.uid).child('active').val() != false) || (root.child('affiliates').child(auth.uid).exists() && root.child('affiliates').child(auth.uid).child('active').val() != false) || (root.child('admins').child(auth.uid).exists() && root.child('admins').child(auth.uid).child('active').val() != false && root.child('adminSettings').child('userAdminOn').val() != false) || auth.token.email == 'mijanbabu2015@gmail.com')",
       "$reqId": {
-        ".read": "auth != null && (data.child('uid').val() == auth.uid || data.child('assignedAgentId').val() == auth.uid || (root.child('agents').child(auth.uid).exists() && root.child('agents').child(auth.uid).child('active').val() != false && data.child('adminUid').val() == root.child('agents').child(auth.uid).child('parentAdminId').val()) || (root.child('admins').child(auth.uid).exists() && root.child('admins').child(auth.uid).child('active').val() != false && root.child('adminSettings').child('userAdminOn').val() != false) || auth.token.email == 'mijanbabu2015@gmail.com')",
+        ".read": "auth != null && (data.child('uid').val() == auth.uid || data.child('assignedAgentId').val() == auth.uid || (root.child('agents').child(auth.uid).exists() && root.child('agents').child(auth.uid).child('active').val() != false && data.child('adminUid').val() == root.child('agents').child(auth.uid).child('parentAdminId').val()) || (root.child('affiliates').child(auth.uid).exists() && root.child('affiliates').child(auth.uid).child('active').val() != false) || (root.child('admins').child(auth.uid).exists() && root.child('admins').child(auth.uid).child('active').val() != false && root.child('adminSettings').child('userAdminOn').val() != false) || auth.token.email == 'mijanbabu2015@gmail.com')",
         ".write": "auth != null && ((!data.exists() && newData.child('uid').val() == auth.uid && newData.child('status').val() == 'Pending' && root.child('users').child(auth.uid).child('adminUid').exists() && newData.child('adminUid').val() == root.child('users').child(auth.uid).child('adminUid').val()) || (root.child('agents').child(auth.uid).exists() && root.child('agents').child(auth.uid).child('active').val() != false && (data.child('assignedAgentId').val() == auth.uid || data.child('adminUid').val() == root.child('agents').child(auth.uid).child('parentAdminId').val())) || (root.child('admins').child(auth.uid).exists() && root.child('admins').child(auth.uid).child('active').val() != false && root.child('adminSettings').child('userAdminOn').val() != false) || auth.token.email == 'mijanbabu2015@gmail.com')",
         ".validate": "newData.hasChildren(['uid', 'status']) && newData.child('uid').isString()"
       },
       ".indexOn": ["uid", "assignedAgentId", "adminUid"]
     },
     "withdrawalRequests": {
-      ".read": "auth != null && ((query.orderByChild == 'uid' && query.equalTo == auth.uid) || (query.orderByChild == 'assignedAgentId' && query.equalTo == auth.uid) || (root.child('agents').child(auth.uid).exists() && root.child('agents').child(auth.uid).child('active').val() != false) || (root.child('admins').child(auth.uid).exists() && root.child('admins').child(auth.uid).child('active').val() != false && root.child('adminSettings').child('userAdminOn').val() != false) || auth.token.email == 'mijanbabu2015@gmail.com')",
+      ".read": "auth != null && ((query.orderByChild == 'uid' && query.equalTo == auth.uid) || (query.orderByChild == 'assignedAgentId' && query.equalTo == auth.uid) || (root.child('agents').child(auth.uid).exists() && root.child('agents').child(auth.uid).child('active').val() != false) || (root.child('affiliates').child(auth.uid).exists() && root.child('affiliates').child(auth.uid).child('active').val() != false) || (root.child('admins').child(auth.uid).exists() && root.child('admins').child(auth.uid).child('active').val() != false && root.child('adminSettings').child('userAdminOn').val() != false) || auth.token.email == 'mijanbabu2015@gmail.com')",
       "$reqId": {
-        ".read": "auth != null && (data.child('uid').val() == auth.uid || data.child('assignedAgentId').val() == auth.uid || (root.child('agents').child(auth.uid).exists() && root.child('agents').child(auth.uid).child('active').val() != false && data.child('adminUid').val() == root.child('agents').child(auth.uid).child('parentAdminId').val()) || (root.child('admins').child(auth.uid).exists() && root.child('admins').child(auth.uid).child('active').val() != false && root.child('adminSettings').child('userAdminOn').val() != false) || auth.token.email == 'mijanbabu2015@gmail.com')",
+        ".read": "auth != null && (data.child('uid').val() == auth.uid || data.child('assignedAgentId').val() == auth.uid || (root.child('agents').child(auth.uid).exists() && root.child('agents').child(auth.uid).child('active').val() != false && data.child('adminUid').val() == root.child('agents').child(auth.uid).child('parentAdminId').val()) || (root.child('affiliates').child(auth.uid).exists() && root.child('affiliates').child(auth.uid).child('active').val() != false) || (root.child('admins').child(auth.uid).exists() && root.child('admins').child(auth.uid).child('active').val() != false && root.child('adminSettings').child('userAdminOn').val() != false) || auth.token.email == 'mijanbabu2015@gmail.com')",
         ".write": "auth != null && ((!data.exists() && newData.child('uid').val() == auth.uid && newData.child('status').val() == 'Pending' && root.child('users').child(auth.uid).child('adminUid').exists() && newData.child('adminUid').val() == root.child('users').child(auth.uid).child('adminUid').val() && (!root.child('users').child(auth.uid).child('turnoverRequired').exists() || root.child('users').child(auth.uid).child('turnoverRequired').val() <= (root.child('users').child(auth.uid).child('turnoverDone').exists() ? root.child('users').child(auth.uid).child('turnoverDone').val() : (root.child('users').child(auth.uid).child('turnoverCompleted').exists() ? root.child('users').child(auth.uid).child('turnoverCompleted').val() : 0)))) || (root.child('agents').child(auth.uid).exists() && root.child('agents').child(auth.uid).child('active').val() != false && data.child('assignedAgentId').val() == auth.uid) || (root.child('admins').child(auth.uid).exists() && root.child('admins').child(auth.uid).child('active').val() != false && root.child('adminSettings').child('userAdminOn').val() != false) || auth.token.email == 'mijanbabu2015@gmail.com')",
         ".validate": "newData.hasChildren(['uid', 'status']) && newData.child('uid').isString()"
       },
       ".indexOn": ["uid", "assignedAgentId", "adminUid"]
     },
     "users": {
-      ".read": "auth != null && ((root.child('admins').child(auth.uid).exists() && root.child('admins').child(auth.uid).child('active').val() != false && root.child('adminSettings').child('userAdminOn').val() != false) || (root.child('agents').child(auth.uid).exists() && root.child('agents').child(auth.uid).child('active').val() != false) || auth.token.email == 'mijanbabu2015@gmail.com')",
+      ".read": "auth != null && ((root.child('admins').child(auth.uid).exists() && root.child('admins').child(auth.uid).child('active').val() != false && root.child('adminSettings').child('userAdminOn').val() != false) || (root.child('agents').child(auth.uid).exists() && root.child('agents').child(auth.uid).child('active').val() != false) || (root.child('affiliates').child(auth.uid).exists() && root.child('affiliates').child(auth.uid).child('active').val() != false) || auth.token.email == 'mijanbabu2015@gmail.com')",
       "$uid": {
-        ".read": "auth != null && (auth.uid == $uid || (root.child('admins').child(auth.uid).exists() && root.child('admins').child(auth.uid).child('active').val() != false && root.child('adminSettings').child('userAdminOn').val() != false) || (root.child('agents').child(auth.uid).exists() && root.child('agents').child(auth.uid).child('active').val() != false) || auth.token.email == 'mijanbabu2015@gmail.com')",
+        ".read": "auth != null && (auth.uid == $uid || (root.child('admins').child(auth.uid).exists() && root.child('admins').child(auth.uid).child('active').val() != false && root.child('adminSettings').child('userAdminOn').val() != false) || (root.child('agents').child(auth.uid).exists() && root.child('agents').child(auth.uid).child('active').val() != false) || (root.child('affiliates').child(auth.uid).exists() && root.child('affiliates').child(auth.uid).child('active').val() != false) || auth.token.email == 'mijanbabu2015@gmail.com')",
         ".write": "auth != null && ((root.child('admins').child(auth.uid).exists() && root.child('admins').child(auth.uid).child('active').val() != false && root.child('adminSettings').child('userAdminOn').val() != false) || auth.token.email == 'mijanbabu2015@gmail.com' || (auth.uid == $uid && !data.exists() && newData.child('balance').val() == 0 && root.child('adminLinks').child(newData.child('adminUid').val()).val() == true))",
         "balance": {
           ".write": "auth != null && ((root.child('admins').child(auth.uid).exists() && root.child('admins').child(auth.uid).child('active').val() != false && root.child('adminSettings').child('userAdminOn').val() != false) || (root.child('agents').child(auth.uid).exists() && root.child('agents').child(auth.uid).child('active').val() != false && data.exists() && newData.isNumber() && newData.val() >= data.val()) || auth.token.email == 'mijanbabu2015@gmail.com' || (auth.uid == $uid && data.exists() && newData.isNumber() && newData.val() <= data.val()))",
@@ -1539,11 +1609,104 @@ async function rejectAgentReq(id){
  toast('বাতিল করা হয়েছে');
 }
 
+function affCommLabel(af){
+ const en=af.commissionEnabled!==false;
+ const tMap={deposit_percent:'ডিপোজিট %',loss_share:'নেট লস শেয়ার %',turnover_percent:'টার্নওভার %'};
+ return `${en?'ON':'OFF'} · ${tMap[af.commissionType||'deposit_percent']||'ডিপোজিট %'} (${Number(af.commissionRate||0)}%) · মিন ৳${Math.round(af.minCommissionPayout||500)}`;
+}
+async function createAffiliateMaster(){
+ const n=$('afn').value.trim(),e=$('afe').value.trim(),ph=$('afph').value.trim(),pa=$('afpa').value,p=$('afpw').value;
+ const codeRaw=($('afcd').value.trim()||n.replace(/[^a-zA-Z0-9]/g,'')).toUpperCase().slice(0,12);
+ const code=codeRaw||('AFF'+Math.floor(1000+Math.random()*9000));
+ const en=$('afen').value==='1',ct=$('afct').value||'deposit_percent',rt=Math.max(0,Math.min(100,parseFloat($('afrt').value)||0)),mn=Math.max(0,parseFloat($('afmn').value)||500);
+ if(!n||!e||p.length<6||!pa){toast('নাম, ইমেইল, ৬+ অক্ষরের পাসওয়ার্ড ও User Admin নির্বাচন করুন');return}
+ try{
+  const sec=firebase.apps.find(a=>a.name==='sec_af_'+TID)||firebase.initializeApp(TCFG,'sec_af_'+TID);
+  const cr=await sec.auth().createUserWithEmailAndPassword(e,p);
+  const adm=ADM[pa]||{};
+  await db.ref('affiliates/'+cr.user.uid).set({
+   id:cr.user.uid,name:n,email:e,phone:ph,parentAdminId:pa,parentAdminName:adm.name||adm.email||pa,
+   referralCode:code,clicks:0,commissionEnabled:en,commissionType:ct,commissionRate:rt,minCommissionPayout:mn,
+   commissionBalance:0,totalCommissionPaid:0,active:true,status:'active',createdAt:TS,updatedAt:TS
+  });
+  const clean=n.toLowerCase().replace(/[^a-z0-9_]/g,'');
+  if(clean){try{await db.ref('usernames/'+clean).set({uid:cr.user.uid,email:e,role:'AFFILIATE',updatedAt:TS})}catch(_u){}}
+  try{await db.ref('adminAuditLogs').push({admin:auth.currentUser.email,action:'AFFILIATE_CREATED',target:cr.user.uid,details:`Name=${n}, Code=${code}, Mode=${ct} ${rt}%`,timestamp:Date.now()})}catch(_l){}
+  await sec.auth().signOut();
+  toast('অ্যাফিলিয়েট তৈরি ও সক্রিয় হয়েছে ✅ ('+e+')');
+  ['afn','afe','afph','afpw','afcd'].forEach(i=>{if($(i))$(i).value=''});draw();
+ }catch(x){toast('অ্যাফিলিয়েট তৈরি ব্যর্থ: '+x.message)}
+}
+function editAffCommissionMaster(uid){
+ const af=AFFS[uid];if(!af)return;
+ $('maf-uid').value=uid;
+ $('maf-title').textContent='⚙️ স্মার্ট কমিশন — '+(af.name||af.email||uid);
+ $('maf-en').value=af.commissionEnabled===false?'0':'1';
+ $('maf-type').value=af.commissionType||'deposit_percent';
+ $('maf-rate').value=af.commissionRate??10;
+ $('maf-min').value=af.minCommissionPayout??500;
+ $('maf-adm').innerHTML=Object.entries(ADM).map(([u,a])=>`<option value="${esc(u)}"${u===af.parentAdminId?' selected':''}>${esc(a.name||a.email||u)}</option>`).join('');
+ $('mAffCommModal').classList.add('open');
+}
+function closeAffCommModal(){const m=$('mAffCommModal');if(m)m.classList.remove('open')}
+async function saveAffCommissionMaster(){
+ const uid=$('maf-uid').value;if(!uid)return;
+ const en=$('maf-en').value==='1',ct=$('maf-type').value||'deposit_percent';
+ const rt=Math.max(0,Math.min(100,parseFloat($('maf-rate').value)||0));
+ const mn=Math.max(0,parseFloat($('maf-min').value)||0);
+ const pa=$('maf-adm').value,adm=ADM[pa]||{};
+ try{
+  const up={commissionEnabled:en,commissionType:ct,commissionRate:rt,minCommissionPayout:mn,updatedAt:TS};
+  if(pa){up.parentAdminId=pa;up.parentAdminName=adm.name||adm.email||pa;}
+  await db.ref('affiliates/'+uid).update(up);
+  try{await db.ref('adminAuditLogs').push({admin:auth.currentUser.email,action:'AFF_COMMISSION_UPDATED',target:uid,details:`enabled=${en}, type=${ct}, rate=${rt}%, min=${mn}`,timestamp:Date.now()})}catch(_l){}
+  closeAffCommModal();
+  toast('স্মার্ট কমিশন সেভ হয়েছে ✅');
+ }catch(e){toast('ব্যর্থ: '+e.message)}
+}
+async function creditAffCommissionMaster(uid){
+ const af=AFFS[uid];if(!af)return;
+ const a=Math.floor(parseFloat(prompt(`"${af.name||af.email}"-এর কমিশন ওয়ালেটে কত টাকা যোগ করবেন?\n(বর্তমান ব্যালেন্স: ${fmt(af.commissionBalance)})`,'500')));
+ if(!a||a<=0)return;
+ try{
+  await tx(`affiliates/${uid}/commissionBalance`,inc(a));
+  await log({type:'AFF_COMMISSION_CREDIT',uid,email:af.email||'',amount:a,note:'Master Affiliate Commission Credit'});
+  toast('কমিশন ওয়ালেটে '+fmt(a)+' যোগ হয়েছে ✅');
+ }catch(e){toast('ব্যর্থ: '+e.message)}
+}
+async function toggleAffActiveMaster(uid){
+ const af=AFFS[uid];if(!af)return;
+ const nxt=af.active===false;
+ await db.ref('affiliates/'+uid).update({active:nxt,status:nxt?'active':'suspended',updatedAt:TS});
+ toast(nxt?'অ্যাফিলিয়েট চালু করা হয়েছে ✅':'অ্যাফিলিয়েট স্থগিত করা হয়েছে ⛔');
+}
+async function approveAffReqMaster(id){
+ const r=AFFREQ[id];if(!r||!r.affiliateUid)return;
+ const af=AFFS[r.affiliateUid];if(!af){toast('অ্যাফিলিয়েট পাওয়া যায়নি');return}
+ const a=parseFloat(r.amount)||0;if(a<=0)return;
+ if(!confirm(`"${af.name||af.email}"-এর ${fmt(a)} কমিশন উত্তোলন রিকোয়েস্ট অনুমোদন করবেন?`))return;
+ const c=await db.ref(`affiliateCommissionRequests/${id}/status`).transaction(s=>s==='pending'?'processing':undefined);
+ if(!c.committed)return;
+ if(+af.commissionBalance>=a){
+  await tx(`affiliates/${r.affiliateUid}/commissionBalance`,dec(a)).catch(()=>{});
+ }
+ await tx(`affiliates/${r.affiliateUid}/totalCommissionPaid`,inc(a));
+ await db.ref('affiliateCommissionRequests/'+id).update({status:'approved',approvedBy:'MASTER',processedAt:TS});
+ await log({type:'AFF_COMMISSION_PAID',uid:r.affiliateUid,email:af.email||'',amount:a,note:r.paymentInfo||'Commission Payout'});
+ toast('কমিশন পেআউট অনুমোদিত ✅');
+}
+async function rejectAffReqMaster(id){
+ if(!confirm('অ্যাফিলিয়েট কমিশন রিকোয়েস্ট বাতিল করবেন?'))return;
+ await db.ref('affiliateCommissionRequests/'+id).update({status:'rejected',processedAt:TS});
+ toast('বাতিল করা হয়েছে');
+}
+
 function draw(){if(!started)return;
- const A=Object.entries(ADM),P=Object.entries(REQ).filter(([k,r])=>r.status==='pending'),AG=Object.entries(AGENTS),AGP=Object.entries(AGREQ).filter(([k,r])=>r.status==='pending');
+ const A=Object.entries(ADM),P=Object.entries(REQ).filter(([k,r])=>r.status==='pending'),AG=Object.entries(AGENTS),AGP=Object.entries(AGREQ).filter(([k,r])=>r.status==='pending'),AFP=Object.entries(AFFREQ).filter(([k,r])=>r.status==='pending');
  $('mb').textContent=$('s1').textContent=fmt(MB);$('s2').textContent=fmt(A.reduce((s,[k,a])=>s+(+a.balance||0),0));$('s3').textContent=A.length;$('s4').textContent=P.length;
  if($('nav-agent-pending'))$('nav-agent-pending').textContent=AGP.length;
- drawTn();['admins','agents','reqs','led','games','players','act','feat','promo','chat','tenants','guide'].forEach(t=>{const el=$('t-'+t);if(el)el.className=(t===cur||(t==='admins'&&cur==='admin'))?'on':''});let h='';
+ if($('nav-aff-pending'))$('nav-aff-pending').textContent=AFP.length;
+ drawTn();['admins','agents','affiliates','reqs','led','games','players','act','feat','promo','chat','tenants','guide'].forEach(t=>{const el=$('t-'+t);if(el)el.className=(t===cur||(t==='admins'&&cur==='admin'))?'on':''});let h='';
  if(cur==='admins'){
   h=`<div class="cd" style="margin-bottom:12px;background:var(--in);border:1px solid var(--bg2)">
    <b style="font-size:16px;color:var(--gold);display:flex;align-items:center;gap:6px">👑 ১) সরাসরি নতুন ইউজার অ্যাডমিন তৈরি করুন</b>
@@ -1623,6 +1786,55 @@ function draw(){if(!started)return;
   <div class="cd" style="margin-bottom:10px"><b style="font-size:16px">📥 এজেন্টদের ব্যালেন্স রিকোয়েস্ট (${AGP.length} পেন্ডিং)</b></div>
   <div class="sc"><table><tr><th>এজেন্ট</th><th>পরিমাণ</th><th>পদ্ধতি / নোট</th><th>সময়</th><th>স্ট্যাটাস</th><th>অ্যাকশন</th></tr>`+
   (Object.entries(AGREQ).reverse().map(([k,r])=>`<tr><td><b>${esc(r.agentName||r.agentEmail||r.agentUid)}</b></td><td><b>${fmt(r.amount)}</b></td><td><small>${esc(r.paymentMethod||'—')} · ${esc(r.note||'')}</small></td><td>${r.createdAt?new Date(r.createdAt).toLocaleString('bn-BD'):''}</td><td><span class="pl ${r.status==='rejected'?'b':r.status==='pending'?'y':''}">${esc(r.status)}</span></td><td>${r.status==='pending'?`<button class="p" onclick="approveAgentReq('${k}')">অনুমোদন</button> <button class="d" onclick="rejectAgentReq('${k}')">বাতিল</button>`:''}</td></tr>`).join('')||`<tr><td colspan="6" style="text-align:center;color:var(--mu)">কোনো এজেন্ট রিকোয়েস্ট নেই</td></tr>`)+`</table></div>`}
+ if(cur==='affiliates'){
+  const qa=AQ_AF.toLowerCase();
+  const AF=Object.entries(AFFS);
+  const admOpts=A.map(([u,a])=>`<option value="${esc(u)}">${esc(a.name||a.email||u)}</option>`).join('');
+  const totPaid=AF.reduce((s,[,af])=>s+(+af.totalCommissionPaid||0),0);
+  const totRefs=Object.values(USERS).filter(u=>u.referredBy||u.affCode||u.affiliateUid).length;
+  h=`<div class="stats-grid" style="margin-bottom:12px">
+    <div class="cd"><span>মোট অ্যাফিলিয়েট</span><b>${AF.length} জন</b></div>
+    <div class="cd"><span>মোট রেফার্ড প্লেয়ার</span><b>${totRefs} জন</b></div>
+    <div class="cd"><span>পেন্ডিং কমিশন উইথড্র</span><b style="color:var(--gold)">${AFP.length} টি</b></div>
+    <div class="cd"><span>মোট প্রদত্ত কমিশন</span><b style="color:var(--ok)">${fmt(totPaid)}</b></div>
+  </div>
+  <div class="cd" style="margin-bottom:12px;background:var(--in);border:1px solid var(--bg2)">
+   <b style="font-size:16px;color:var(--gold)">🤝 নতুন লাইভ অ্যাফিলিয়েট তৈরি করুন (Smart Commission & affiliate.html)</b>
+   <span style="display:block;margin-top:4px">এখানে তৈরি অ্যাফিলিয়েটরা <code>affiliate.html</code> এ লগইন করে লাইভ রেফারেল, ডিপোজিট/উইথড্র, আইপি অডিট, স্মার্ট কমিশন ও সাপোর্ট চ্যাট ব্যবহার করতে পারবে:</span>
+   <div class="row" style="margin-top:10px">
+    <input id="afn" placeholder="অ্যাফিলিয়েট নাম (যেমন: Karim Aff)">
+    <input id="afe" type="email" placeholder="ইমেইল (যেমন: karim@aff.com)">
+    <input id="afph" placeholder="মোবাইল নম্বর">
+    <select id="afpa"><option value="">User Admin বেছে নিন *</option>${admOpts}</select>
+    <input id="afpw" type="password" placeholder="পাসওয়ার্ড (৬+ অক্ষর)">
+    <input id="afcd" placeholder="রেফার কোড (ফাঁকা = অটো)">
+   </div>
+   <div class="row" style="margin-top:8px">
+    <select id="afen"><option value="1">✅ স্মার্ট কমিশন: ON</option><option value="0">⛔ স্মার্ট কমিশন: OFF</option></select>
+    <select id="afct"><option value="deposit_percent">ডিপোজিট শতাংশ (Deposit %)</option><option value="loss_share">নেট লস শেয়ার (Revenue Share %)</option><option value="turnover_percent">বেট টার্নওভার শতাংশ (Turnover %)</option></select>
+    <input id="afrt" type="number" step="0.1" min="0" max="100" value="10" placeholder="কমিশন রেট (%)">
+    <input id="afmn" type="number" min="0" value="500" placeholder="ন্যূনতম উইথড্র (৳)">
+    <button class="p" onclick="createAffiliateMaster()">+ অ্যাফিলিয়েট তৈরি ও চালু করুন</button>
+   </div>
+  </div>
+  <div class="row"><input id="afq" placeholder="অ্যাফিলিয়েট নাম / ইমেইল / কোড দিয়ে খুঁজুন..." value="${esc(AQ_AF)}" oninput="AQ_AF=this.value;draw();const p=$('afq');if(p){p.focus();p.setSelectionRange(AQ_AF.length,AQ_AF.length)}"></div>
+  <div class="sc" style="margin-bottom:16px"><table><tr><th>অ্যাফিলিয়েট / কোড</th><th>Parent Admin</th><th>রেফার</th><th>স্মার্ট কমিশন (ON/OFF ও রেট)</th><th>কমিশন ওয়ালেট</th><th>স্ট্যাটাস</th><th>অ্যাকশন</th></tr>`+
+  (AF.filter(([k,af])=>!qa||[af.name,af.email,af.phone,af.referralCode,k].join(' ').toLowerCase().includes(qa)).map(([k,af])=>{
+   const pa=ADM[af.parentAdminId]||{};
+   const rc=Object.values(USERS).filter(u=>u&&(u.referredBy===k||u.affiliateUid===k||(af.referralCode&&String(u.affCode||'').toUpperCase()===String(af.referralCode||'').toUpperCase()))).length;
+   const cOn=af.commissionEnabled!==false;
+   return`<tr>
+    <td><b>${esc(af.name||'-')}</b> · <span class="pl y">${esc(af.referralCode||'—')}</span><br><small style="color:var(--mu)">${esc(af.email||'')} · ${esc(af.phone||'')}</small><br><span style="font-family:monospace;font-size:11px;cursor:pointer" onclick="copyTxt('${k}')">UID: ${esc(k)} 📋</span></td>
+    <td>${esc(pa.name||pa.email||af.parentAdminName||af.parentAdminId||'Direct')}</td>
+    <td><b>${rc} জন</b><br><small style="color:var(--mu)">ক্লিক: ${+af.clicks||0}</small></td>
+    <td><span class="pl ${cOn?'':'b'}">${cOn?'ON':'OFF'}</span><br><small>${esc(affCommLabel(af))}</small></td>
+    <td><b style="color:var(--gold)">${fmt(af.commissionBalance)}</b><br><small style="color:var(--ok)">পেইড: ${fmt(af.totalCommissionPaid)}</small></td>
+    <td><span class="pl ${af.active===false?'b':''}">${af.active===false?'স্থগিত':'সক্রিয়'}</span></td>
+    <td><button class="p" onclick="editAffCommissionMaster('${k}')">⚙ স্মার্ট কমিশন</button> <button onclick="creditAffCommissionMaster('${k}')">💰 ক্রেডিট</button> <button class="d" onclick="toggleAffActiveMaster('${k}')">${af.active===false?'চালু':'বন্ধ'}</button></td>
+   </tr>`}).join('')||`<tr><td colspan="7" style="text-align:center;color:var(--mu)">কোনো অ্যাফিলিয়েট পাওয়া যায়নি</td></tr>`)+`</table></div>
+  <div class="cd" style="margin-bottom:10px"><b style="font-size:16px">📥 অ্যাফিলিয়েট কমিশন উইথড্র রিকোয়েস্ট (${AFP.length} পেন্ডিং)</b></div>
+  <div class="sc"><table><tr><th>অ্যাফিলিয়েট</th><th>পরিমাণ</th><th>পেমেন্ট তথ্য</th><th>সময়</th><th>স্ট্যাটাস</th><th>অ্যাকশন</th></tr>`+
+  (Object.entries(AFFREQ).reverse().map(([k,r])=>`<tr><td><b>${esc(r.affiliateName||r.affiliateUid)}</b></td><td><b style="color:var(--gold)">${fmt(r.amount)}</b></td><td><small>${esc(r.paymentInfo||'—')}</small></td><td>${r.createdAt?new Date(r.createdAt).toLocaleString('bn-BD'):''}</td><td><span class="pl ${r.status==='rejected'?'b':r.status==='pending'?'y':''}">${esc(r.status)}</span></td><td>${r.status==='pending'?`<button class="p" onclick="approveAffReqMaster('${k}')">✓ অনুমোদন</button> <button class="d" onclick="rejectAffReqMaster('${k}')">✕ বাতিল</button>`:''}</td></tr>`).join('')||`<tr><td colspan="6" style="text-align:center;color:var(--mu)">কোনো কমিশন রিকোয়েস্ট নেই</td></tr>`)+`</table></div>`}
  if(cur==='reqs'){h=`<div class="sc"><table><tr><th>অ্যাডমিন</th><th>পরিমাণ</th><th>নোট</th><th>সময়</th><th>স্ট্যাটাস</th><th></th></tr>`+
   Object.entries(REQ).reverse().map(([k,r])=>`<tr><td>${esc(r.email)}</td><td>${fmt(r.amount)}</td><td>${esc(r.note)}</td><td>${r.createdAt?new Date(r.createdAt).toLocaleString('bn-BD'):''}</td><td><span class="pl ${r.status==='rejected'?'b':r.status==='pending'?'y':''}">${esc(r.status)}</span></td><td>${r.status==='pending'?`<button class="p" onclick="approve('${k}')">অনুমোদন</button> <button class="d" onclick="reject('${k}')">বাতিল</button>`:''}</td></tr>`).join('')+`</table></div>`}
  if(cur==='led'){h=`<div class="row"><button class="d" onclick="clearAdminTx()">🗑 সব লেনদেন মুছুন</button></div><div class="sc"><table><tr><th>সময়</th><th>ধরন</th><th>অ্যাডমিন</th><th>পরিমাণ</th><th>নোট</th></tr>`+
