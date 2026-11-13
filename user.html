@@ -136,12 +136,13 @@ header{padding-left:10px;padding-right:10px}.ib,.av{width:38px;height:38px;font-
 .nbt{flex:1;overflow:hidden;white-space:nowrap;-webkit-mask-image:linear-gradient(90deg,transparent,#000 4%,#000 96%,transparent);mask-image:linear-gradient(90deg,transparent,#000 4%,#000 96%,transparent)}
 .nbt span{display:inline-block;padding-left:100%;animation:mq 25s linear infinite;color:var(--gold);font-weight:600;font-size:13px}
 @keyframes mq{to{transform:translateX(-100%)}}
-@media(max-width:899px){header{display:flex;gap:10px}header .av{display:none}header .logo{text-align:left;white-space:nowrap;font-size:clamp(15px,4.8vw,21px)}header .logo small{letter-spacing:1px}.hr{margin-left:auto;gap:6px;align-items:center}.hbal{order:2;padding:3px 10px;min-height:38px;border-radius:12px}.hbal .em{display:none}.hbal b{font-size:13px}}
+@media(max-width:899px){header{display:flex;gap:8px;padding-left:10px;padding-right:10px}header .av{display:none}header .logo{min-width:0;flex:0 1 auto;text-align:left;white-space:nowrap;font-size:clamp(14px,4.3vw,20px)}header .logo small{letter-spacing:.6px}.hr{margin-left:auto;gap:6px;align-items:center;flex-shrink:0}.hbal{order:2;padding:3px 10px;min-height:38px;border-radius:12px}.hbal .em{display:none}.hbal b{font-size:13px}}
 @media(min-width:900px){header .av{display:grid}}
 @media(prefers-reduced-motion:reduce){.nbt span{padding-left:0}}
 .av img{width:100%;height:100%;border-radius:50%;object-fit:cover}
 .grid.gg{grid-template-columns:none;grid-template-rows:repeat(2,auto);grid-auto-flow:column;grid-auto-columns:94px;overflow-x:auto;scrollbar-width:none;padding-bottom:4px}.gg::-webkit-scrollbar{display:none}@media(min-width:900px){.grid.gg{grid-template-columns:repeat(10,1fr);grid-template-rows:none;grid-auto-flow:row;grid-auto-columns:auto;overflow:visible}}
-.pg{display:flex;gap:12px;overflow-x:auto;scroll-snap-type:x mandatory;scrollbar-width:none;margin-bottom:14px;padding:2px 0 8px}.pg::-webkit-scrollbar{display:none}
+.pg{display:flex;gap:12px;overflow-x:auto;scroll-snap-type:x mandatory;scrollbar-width:none;margin-bottom:14px;padding:4px 4px 10px}.pg::-webkit-scrollbar{display:none}
+.pg.bn{padding:4px 10% 10px;scroll-padding-inline:10%;gap:10px}
 .pc{flex:0 0 150px;scroll-snap-align:start;position:relative;min-height:170px;border-radius:18px;padding:12px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:6px;border:1px solid #ffd23f55;background:linear-gradient(155deg,hsl(var(--h) 65% 30%),#0a1230 75%);box-shadow:inset 0 1px 0 #ffffff33,0 8px 18px #0008,0 0 16px hsl(var(--h) 80% 50%/.25);transition:.2s}.pc:active{transform:scale(.97)}
 .pc i{font-style:normal;font-size:56px;filter:drop-shadow(0 6px 0 #0006) drop-shadow(0 0 14px #ffd23f66)}.pc b{font-size:14px}
 .pc u{text-decoration:none;font-size:11px;font-weight:700;padding:5px 12px;border-radius:10px;background:linear-gradient(135deg,#ffe27a,#e49a00);color:#2a1c00}
@@ -190,11 +191,11 @@ button:active:not(:disabled){transform:scale(.97);transition:transform .08s}
 #net{position:fixed;left:0;right:0;top:0;z-index:99;text-align:center;font-size:12px;font-weight:700;padding:calc(6px + env(safe-area-inset-top)) 8px 6px;background:#ff3b5c;transform:translateY(-110%);transition:transform .25s}
 #net.o{transform:none}
 .rg{margin:22px 0 6px;text-align:center;font-size:11px;color:var(--m)}
-.bs{flex:0 0 86%;scroll-snap-align:start;position:relative;overflow:hidden;min-height:128px;border-radius:18px;padding:16px;display:flex;align-items:center;gap:14px;text-align:left;border:1px solid #ffd23f66;background:linear-gradient(120deg,hsl(var(--h) 62% 20%),hsl(var(--h2) 60% 34%));box-shadow:inset 0 1px 0 #ffffff33,0 8px 18px #0008;color:#fff;transition:.2s}
+.bs{flex:0 0 100%;scroll-snap-align:center;position:relative;overflow:hidden;min-height:128px;border-radius:18px;padding:16px;display:flex;align-items:center;gap:14px;text-align:left;border:1px solid #ffd23f66;background:linear-gradient(120deg,hsl(var(--h) 62% 20%),hsl(var(--h2) 60% 34%));box-shadow:inset 0 1px 0 #ffffff33,0 8px 18px #0008;color:#fff;transition:.2s}
 .bs .ba{font-size:64px;flex:none;order:2;margin-left:auto;filter:drop-shadow(0 6px 0 #0006) drop-shadow(0 0 16px #ffd23f88)}
 .bs>div{flex:1;min-width:0;order:1}.bs b{display:block;font-size:clamp(16px,4.6vw,20px);line-height:1.2;text-shadow:0 2px 8px #0008}.bs small{display:block;color:#e6e6ff;font-size:12px;margin:4px 0 10px}
 .bs u{display:inline-block;text-decoration:none;font-size:12px;font-weight:700;padding:6px 14px;border-radius:10px;background:linear-gradient(135deg,#ffe27a,#e49a00);color:#2a1c00;box-shadow:0 3px 0 #0005}
-@media(min-width:900px){.bs{flex-basis:calc((100% - 12px)/2)}}
+@media(min-width:900px){.pg.bn{padding:2px 0 8px;scroll-padding-inline:0}.bs{flex-basis:calc((100% - 12px)/2);scroll-snap-align:start}}
 .hg{padding:0}.hg .sh{margin-top:6px}.hg .sb:last-child{padding-bottom:0}
 .pv em{width:auto;min-width:46px;padding:0 8px;border-radius:8px;font-size:11px;letter-spacing:.4px}
 .pt b{color:var(--t)}
@@ -289,37 +290,38 @@ html::-webkit-scrollbar,body::-webkit-scrollbar,aside::-webkit-scrollbar,main::-
 .mw .m1,.mw .m3{color:#fff;-webkit-text-fill-color:#fff}.mw .m2{color:#ffd23f;-webkit-text-fill-color:#ffd23f}
 
 /* ===== PV: Providers & Games ===== */
-.pv-sports,.pv-tabs{display:flex;gap:8px;overflow-x:auto;scrollbar-width:none;padding:2px 0 4px}
+.pv-sports,.pv-tabs{display:flex;gap:8px;overflow-x:auto;scrollbar-width:none;padding:6px 4px 10px}
 .pv-sports::-webkit-scrollbar,.pv-tabs::-webkit-scrollbar{display:none}
 .pv-sp{flex:1 0 76px;padding:10px 4px 8px;border-radius:16px;border:1px solid rgba(255,210,63,.4);background:var(--gl);text-align:center;cursor:pointer;color:var(--t);font:inherit}
 .pv-sp:active{transform:scale(.96)}
 .pv-sp b{display:block;font-size:26px;line-height:1.1;font-weight:400}.pv-sp span{display:block;font-size:11px;margin-top:4px}
-.pv-tabs{gap:10px;padding:4px 4px 10px;margin-top:0}
+.pv-tabs{gap:8px;padding:6px 6px 10px;margin-top:0}
 .pv-tab{flex:none;padding:8px 15px;border-radius:20px;border:1px solid var(--bd);background:var(--gl);color:var(--m);font:inherit;font-size:13px;cursor:pointer}
-.pv-tabs .pv-tab{flex:1 0 auto;justify-content:center;height:46px;padding:0 16px;border-radius:999px;border:1px solid #1f2c4a;background:#0e1830;color:#c9d3ea;font-size:16px;font-weight:500;display:inline-flex;align-items:center;white-space:nowrap;transition:.2s}
+.pv-tabs .pv-tab{flex:0 0 auto;justify-content:center;height:42px;padding:0 15px;border-radius:999px;border:1px solid #1f2c4a;background:#0e1830;color:#c9d3ea;font-size:14px;font-weight:600;display:inline-flex;align-items:center;white-space:nowrap;transition:.2s}
 .pv-tabs .pv-tab.on{background:#F7C04A;color:#10131c;font-weight:800;border-color:#F7C04A;box-shadow:0 0 0 2px #070d1c,0 0 0 3px #fff}
-.pv-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;margin-top:12px}
-.pv-grid.pv-games{grid-template-columns:repeat(3,1fr);gap:10px}
-.pv-grid.pv-sportlist{grid-template-columns:1fr;gap:10px}
+.pv-grid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:8px;margin-top:12px}
+.pv-grid.pv-games{grid-template-columns:repeat(3,minmax(0,1fr));gap:10px}
+.pv-grid.pv-sportlist{grid-template-columns:minmax(0,1fr);gap:10px}
+@media(max-width:360px){.pv-grid{grid-template-columns:repeat(3,minmax(0,1fr))}}
 @media(min-width:640px){.pv-grid{grid-template-columns:repeat(auto-fill,minmax(120px,1fr));gap:10px}.pv-grid.pv-games{grid-template-columns:repeat(auto-fill,minmax(130px,1fr))}.pv-grid.pv-sportlist{grid-template-columns:repeat(auto-fill,minmax(300px,1fr))}.pv-sp{padding:14px 6px 12px}.pv-sp b{font-size:32px}.pv-sp span{font-size:12px}}
 @media(min-width:900px){.pv-ban{height:280px}.pv-cap{font-size:24px}}
 .pv-spr{grid-column:1/-1;display:flex;gap:8px;min-width:0;overflow-x:auto;scrollbar-width:none}.pv-spr::-webkit-scrollbar{display:none}.pv-spr .pv-tab{flex:none}
-.pv-mc{background:var(--gl);border:1px solid var(--bd);border-radius:16px;padding:12px}
+.pv-mc{background:var(--gl);border:1px solid var(--bd);border-radius:16px;padding:12px;min-width:0}
 .pv-mh{display:flex;justify-content:space-between;font-size:12px;color:var(--m)}.pv-mh em{font-style:normal}.pv-mh .pv-lv{color:#ff3b52;font-weight:700}
 .pv-mt{display:flex;align-items:center;justify-content:space-between;gap:8px;margin:10px 0;font-size:14px}.pv-mt b{flex:1;font-weight:600}.pv-mt b:last-child{text-align:right}.pv-mt i{color:var(--gold);font-style:normal;font-size:11px}
 .pv-ms{font-size:12px;color:var(--gold);margin-bottom:8px;text-align:center}
 .pv-od{display:flex;gap:8px}.pv-odd{flex:1;padding:8px 4px;border-radius:10px;border:1px solid var(--bd);background:rgba(255,255,255,.04);color:var(--gold);font:inherit;font-weight:700;cursor:pointer}.pv-odd small{display:block;font-size:10px;color:var(--m);font-weight:400}
 .screen>.pv-grid,.screen>.pv-sports,.screen>.pv-tabs,.screen>.pv-head{max-width:none!important;margin-left:0!important;margin-right:0!important}
 .nbt .mw,.nbt .mw span{display:inline-block;padding:0!important;animation:none!important;color:inherit}.nbt .mw .m1,.nbt .mw .m3{color:#fff}.nbt .mw .m2{color:#ffd23f}
-.pv-card{position:relative;background:var(--gl);border:1px solid var(--bd);border-radius:18px;padding:0 0 10px;overflow:hidden;text-align:center;cursor:pointer;transition:.15s;color:var(--t)}
+.pv-card{position:relative;min-width:0;background:var(--gl);border:1px solid var(--bd);border-radius:18px;padding:0 0 10px;overflow:hidden;text-align:center;cursor:pointer;transition:.15s;color:var(--t)}
 .pv-card:active{transform:scale(.97)}
 .pv-lg{width:100%;aspect-ratio:1/1;overflow:hidden;margin:0 0 6px;display:grid;place-items:center;font-size:30px;font-weight:800;color:#fff}
 .pv-lg img{width:100%;height:100%;object-fit:cover;display:block}.pv-lg.pv-mini{width:42px;height:42px;border-radius:12px;margin:0;font-size:18px;flex:none;aspect-ratio:auto}
-.pv-nm{font-size:11px;font-weight:600;padding:0 4px;line-height:1.25}.pv-ct{font-size:9px;color:var(--m);margin-top:2px;padding:0 4px}
+.pv-nm{font-size:11px;font-weight:600;padding:0 4px;line-height:1.25;overflow-wrap:anywhere}.pv-ct{font-size:9px;color:var(--m);margin-top:2px;padding:0 4px}
 .pv-badge{position:absolute;top:4px;right:4px;z-index:1;background:#ff3b52;color:#fff;font-size:8px;padding:1px 5px;border-radius:8px}
 .pv-off{opacity:.45;cursor:not-allowed}
 .pv-more{grid-column:1/-1;width:100%;margin-top:12px;padding:12px;border-radius:14px;border:0;font:inherit;font-weight:700;font-size:14px;cursor:pointer;color:#1a1300;background:linear-gradient(135deg,#fff2b3,var(--gold) 55%,#e0a800)}
-.pv-gc{background:var(--gl);border:1px solid var(--bd);border-radius:14px;overflow:hidden;cursor:pointer;position:relative;color:var(--t)}
+.pv-gc{min-width:0;background:var(--gl);border:1px solid var(--bd);border-radius:14px;overflow:hidden;cursor:pointer;position:relative;color:var(--t)}
 .pv-th{aspect-ratio:1/1;display:grid;place-items:center;font-size:30px;font-weight:800;color:rgba(255,255,255,.92)}
 .pv-gn{padding:7px 6px 9px;font-size:12px;text-align:center;line-height:1.25}
 .pv-sk{height:130px;border-radius:18px;background:linear-gradient(90deg,var(--gl) 25%,rgba(255,255,255,.12) 50%,var(--gl) 75%);background-size:200% 100%;animation:pvsh 1.2s infinite}
@@ -336,28 +338,31 @@ html::-webkit-scrollbar,body::-webkit-scrollbar,aside::-webkit-scrollbar,main::-
 .pv-ban .pv-sl.pv-noc .pv-cap{display:none}
 
 /* ===== Login / Sign Up & Desktop bar ===== */
-.ah{display:none;gap:8px;align-items:center}
+.ah{display:none;gap:7px;align-items:center}
 body.guest .ah{display:flex}
 body.guest .hr .hbal,body.guest .hr .ib,body.guest header .av{display:none!important}
-.ah button{height:38px;padding:0 16px;border-radius:12px;font-weight:700;font-size:13px;white-space:nowrap}
+body.sd-open header .hr{opacity:0;pointer-events:none;transition:opacity .15s}
+.ov{background:rgba(3,7,18,.84);backdrop-filter:blur(4px);-webkit-backdrop-filter:blur(4px)}
+aside{padding:calc(16px + env(safe-area-inset-top)) 14px 24px}
+.ah button{height:36px;padding:0 13px;border-radius:11px;font-weight:700;font-size:13px;white-space:nowrap}
 .ahl{border:1px solid #ffd23f88;color:var(--gold);background:#ffd23f12}
 .ahs{background:linear-gradient(135deg,#ffe27a,var(--gold) 50%,#e49a00);color:#2a1c00;box-shadow:0 0 14px #ffd23f55}
-@media(max-width:380px){.ah{gap:6px}.ah button{padding:0 11px;font-size:12px}}
+@media(max-width:400px){.ah{gap:5px}.ah button{height:34px;padding:0 10px;font-size:12px}}
 #authM{position:fixed;inset:0;z-index:60;display:none;align-items:center;justify-content:center;padding:14px;background:rgba(3,7,18,.78);backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px)}
 #authM.o{display:flex;animation:amf .2s ease}
 @keyframes amf{from{opacity:0}to{opacity:1}}
-.am-p{position:relative;width:100%;max-width:420px;max-height:calc(100vh - 28px);max-height:calc(100dvh - 28px);overflow-y:auto;scrollbar-width:none;border-radius:22px;padding:22px 20px 18px;background:linear-gradient(160deg,#10224f,#08122b 55%,#14122e);border:1px solid #ffd23f66;box-shadow:0 0 40px #ffd23f22,0 24px 60px #000a;animation:amu .28s ease}
+.am-p{position:relative;width:100%;max-width:420px;max-height:calc(100vh - 28px);max-height:calc(100dvh - 28px);overflow-y:auto;scrollbar-width:none;border-radius:22px;padding:22px 20px 20px;background:linear-gradient(160deg,#10224f,#08122b 55%,#14122e);border:1px solid #ffd23f66;box-shadow:0 0 40px #ffd23f22,0 24px 60px #000a;animation:amu .28s ease}
 .am-p::-webkit-scrollbar{display:none}
 @keyframes amu{from{transform:translateY(16px) scale(.98);opacity:0}to{transform:none;opacity:1}}
 .am-x{position:absolute;top:12px;right:12px;width:34px;height:34px;border-radius:10px;background:var(--gl);border:1px solid var(--bd);color:var(--t);font-size:15px}
 .am-lg{text-align:center;font-size:24px;font-weight:900;letter-spacing:.5px;color:#fff}
 .am-sub{text-align:center;color:var(--m);font-size:13px;margin:4px 0 14px}
-.am-tabs{position:relative;display:grid;grid-template-columns:1fr 1fr;background:#ffffff0f;border:1px solid var(--bd);border-radius:14px;padding:4px;margin-bottom:6px}
+.am-tabs{position:relative;display:grid;grid-template-columns:1fr 1fr;background:#ffffff0f;border:1px solid var(--bd);border-radius:14px;padding:4px;margin-bottom:10px}
 .am-tabs i{position:absolute;top:4px;bottom:4px;left:4px;width:calc(50% - 4px);border-radius:10px;background:linear-gradient(135deg,#ffe27a,var(--gold) 50%,#e49a00);transition:transform .25s}
 .am-tabs.s i{transform:translateX(100%)}
 .am-tabs button{position:relative;z-index:1;min-height:40px;font-weight:700;color:var(--m);transition:.2s}
 .am-tabs button.on{color:#2a1c00}
-.af{margin-top:4px}.af input.bad{border-color:#ff6b84;box-shadow:0 0 0 3px #ff3b5c22}
+.af{margin-top:6px}.af input.bad{border-color:#ff6b84;box-shadow:0 0 0 3px #ff3b5c22}
 .ae{display:block;color:#ff6b84;font-size:12px;margin-top:4px}.ae.big{text-align:center;margin:10px 0 0;font-size:13px}
 .pw{position:relative}.pw input{padding-right:68px}.pws{position:absolute;right:6px;top:6px;height:36px;padding:0 12px;border-radius:9px;font-size:12px;font-weight:700;color:var(--gold)}
 .sm-bar{display:flex;gap:5px;margin-top:8px}.sm-bar i{flex:1;height:5px;border-radius:3px;background:#ffffff1f;transition:.25s}
@@ -369,8 +374,17 @@ body.guest .hr .hbal,body.guest .hr .ib,body.guest header .av{display:none!impor
 .am-alt{text-align:center;color:var(--m);font-size:13px;margin-top:14px}.am-alt a{font-size:13px}
 #amGo{margin-top:14px}#amGo[disabled]{opacity:.6}
 .am-note{text-align:center;color:var(--m);font-size:11px;margin-top:12px}.rfok{color:var(--g);font-size:12px;margin-top:4px}
+.su-steps{display:flex;align-items:center;justify-content:space-between;gap:8px;margin:8px 0 6px;font-size:12px;color:var(--m);font-weight:600}
+.su-steps b{color:var(--gold)}
+.su-bars{display:grid;grid-template-columns:1fr 1fr;gap:6px;margin-bottom:10px}
+.su-bars i{height:4px;border-radius:3px;background:#ffffff22;transition:.25s}
+.su-bars i.on{background:var(--gold);box-shadow:0 0 8px #ffd23f55}
+.su-summary{display:flex;flex-wrap:wrap;gap:6px;align-items:center;padding:9px 12px;border-radius:12px;background:#ffffff0b;border:1px solid var(--bd);font-size:12px;color:var(--t);margin-bottom:8px}
+.su-summary b{color:var(--gold)}
+.su-nav{display:grid;grid-template-columns:auto 1fr;gap:10px;margin-top:14px}
+.su-nav .btn{margin-top:0!important}
 .sdg{padding:10px 4px 14px}.sdg>div:first-child{font-weight:700;margin-bottom:8px}
-aside .sdg .two{display:grid;grid-template-columns:1fr 1fr;gap:8px}aside .sdg button{justify-content:center;text-align:center;min-height:42px;padding:0 8px;width:100%;min-width:0}
+aside .sdg .two{display:grid;grid-template-columns:1fr 1fr;gap:8px}aside .sdg button{justify-content:center;text-align:center;min-height:42px;padding:0 8px;width:100%;min-width:0;white-space:nowrap}
 body.am-lock{overflow:hidden}
 .hl{display:none}
 @media(min-width:900px){
@@ -388,7 +402,7 @@ body.am-lock{overflow:hidden}
 }
 @media(min-width:900px) and (max-width:1200px){.hp{display:none}}
 .gbtn{width:100%;min-height:46px;border-radius:14px;background:#fff;color:#1f1f1f;border:1px solid #dadce0;font-weight:700;display:flex;align-items:center;justify-content:center;gap:10px;margin-top:6px;transition:.15s}.gbtn:active{transform:scale(.98)}
-.or{display:flex;align-items:center;gap:10px;color:var(--m);font-size:12px;margin:14px 0 2px}.or:before,.or:after{content:"";flex:1;height:1px;background:var(--bd)}
+.or{display:flex;align-items:center;gap:10px;color:var(--m);font-size:12px;margin:16px 0 14px}.or:before,.or:after{content:"";flex:1;height:1px;background:var(--bd)}
 #maintOverlay{position:fixed;inset:0;z-index:9999;background:radial-gradient(circle at top,#1a2c60,#050B1A 65%);display:none;flex-direction:column;align-items:center;justify-content:center;text-align:center;padding:24px}
 #maintOverlay.o{display:flex}
 </style>
@@ -947,9 +961,22 @@ function bindUserListeners(uid) {
       toast('Account is ' + u.status + '. Please contact support.');
     }
     S.uid = uid;
+    S.username = u.username || '';
     S.name = u.name || u.username || 'Player';
     S.id = u.memberId || ('MW' + uid.slice(0, 6).toUpperCase());
     S.code = u.referralCode || ('MW' + uid.slice(0, 6).toUpperCase());
+    if (S.code && !u.referralCode) {
+      fbDb.ref('users/' + uid + '/referralCode').set(S.code).catch(() => {});
+    }
+    if (S.code) {
+      fbDb.ref('referralCodes/' + S.code).once('value').then(rcS => {
+        if (!rcS.exists()) {
+          fbDb.ref('referralCodes/' + S.code).set({
+            uid, role: 'USER', adminUid: u.adminUid || '', affiliateUid: u.affiliateUid || '', createdAt: Date.now()
+          }).catch(() => {});
+        }
+      }).catch(() => {});
+    }
     S.dep = Number(u.balance || 0);
     S.bon = Number(u.bonusBalance || 0);
     S.xp = Number(u.xp || 0);
@@ -1137,9 +1164,28 @@ function pgs(d, a) {
   e.scrollTo({left: d > 0 && end ? 0 : d < 0 && e.scrollLeft <= 4 ? e.scrollWidth : e.scrollLeft + d * w, behavior: 'smooth'});
 }
 let bnp = 0;
+function centerOfferIdx(idx) {
+  const e = $('#bn');
+  if (!e || !e.children.length) return;
+  const k = ((idx % e.children.length) + e.children.length) % e.children.length;
+  const card = e.children[k];
+  if (!card) return;
+  const left = Math.max(0, card.offsetLeft - Math.max(0, (e.clientWidth - card.offsetWidth) / 2));
+  e.scrollTo({ left, behavior: 'smooth' });
+}
 function bns(d, a) {
   const e = $('#bn');
-  if (!e || (a && bnp) || !e.firstElementChild) return;
+  if (!e || (a && bnp) || !e.children.length) return;
+  if (innerWidth < 900) {
+    const mid = e.scrollLeft + e.clientWidth / 2;
+    let curIdx = 0, bestDist = Infinity;
+    [...e.children].forEach((ch, idx) => {
+      const dist = Math.abs((ch.offsetLeft + ch.offsetWidth / 2) - mid);
+      if (dist < bestDist) { bestDist = dist; curIdx = idx; }
+    });
+    centerOfferIdx(curIdx + d);
+    return;
+  }
   const w = e.firstElementChild.offsetWidth + 12;
   const end = e.scrollLeft + e.clientWidth >= e.scrollWidth - 4;
   e.scrollTo({left: d > 0 && end ? 0 : d < 0 && e.scrollLeft <= 4 ? e.scrollWidth : e.scrollLeft + d * w, behavior: 'smooth'});
@@ -1172,6 +1218,7 @@ function drawer(o) {
   const sd = $('#sd'), ov = $('#ov');
   if (sd) sd.classList.toggle('o', !!o);
   if (ov) ov.classList.toggle('o', !!o);
+  document.body.classList.toggle('sd-open', !!o);
 }
 
 function go(s) {
@@ -1295,8 +1342,11 @@ const V = {
   },
 
   ref: () => {
-    const refUrl = location.href.replace(/[?#].*$/, '') + '?ref=' + encodeURIComponent(S.code || '');
-    return bk('Referral Program') + `<div class="card wallet" style="text-align:center"><div class="sub">Your referral code</div><div class="tot">${esc(S.code)}</div><div class="sub" style="margin-top:6px;word-break:break-all">${esc(refUrl)}</div><br><div class="two"><button class="btn bgold sm" style="width:100%" onclick="copyText('${esc(S.code)}','Code copied')">Copy Code</button><button class="btn bg sm" style="width:100%" onclick="shareRefLink('${esc(refUrl)}')">Share Link</button></div></div><div class="grid" style="grid-template-columns:repeat(3,1fr)"><div class="q" style="min-height:0;padding:12px 6px"><b style="display:block;font-size:17px;color:var(--gold);margin-bottom:2px">20%</b>Bonus</div><div class="q" style="min-height:0;padding:12px 6px"><b style="display:block;font-size:17px;color:var(--gold);margin-bottom:2px">${LIVE_DEPOSITS.filter(d=>d.status==='Approved').length}</b>Deposits</div><div class="q" style="min-height:0;padding:12px 6px"><b style="display:block;font-size:17px;color:var(--gold);margin-bottom:2px">${f(S.bon)}</b>Bonus</div></div><p class="sub" style="margin-top:12px">Invite friends using your referral link so they automatically link to your admin/network.</p>`;
+    const cleanBase = location.href.replace(/[?#].*$/, '');
+    const targetBase = /\/user(\.html)?$/i.test(cleanBase) ? cleanBase : (cleanBase.replace(/\/+$/, '') + '/user.html');
+    const myCode = S.code || (S.uid ? ('MW' + S.uid.slice(0, 6).toUpperCase()) : '');
+    const refUrl = targetBase + '?ref=' + encodeURIComponent(myCode);
+    return bk('Referral Program') + `<div class="card wallet" style="text-align:center"><div class="sub">Your referral code</div><div class="tot">${esc(myCode)}</div><div class="sub" style="margin-top:6px;word-break:break-all">${esc(refUrl)}</div><br><div class="two" style="margin-bottom:8px"><button class="btn bgold sm" style="width:100%" onclick="copyText('${esc(myCode)}','Code copied')">Copy Code</button><button class="btn out sm" style="width:100%" onclick="copyText('${esc(refUrl)}','Referral link copied')">Copy Link</button></div><button class="btn bg sm" style="width:100%" onclick="shareRefLink('${esc(refUrl)}')">↗ Share Referral Link</button></div><div class="grid" style="grid-template-columns:repeat(3,1fr)"><div class="q" style="min-height:0;padding:12px 6px"><b style="display:block;font-size:17px;color:var(--gold);margin-bottom:2px">20%</b>Bonus</div><div class="q" style="min-height:0;padding:12px 6px"><b style="display:block;font-size:17px;color:var(--gold);margin-bottom:2px">${LIVE_DEPOSITS.filter(d=>d.status==='Approved').length}</b>Deposits</div><div class="q" style="min-height:0;padding:12px 6px"><b style="display:block;font-size:17px;color:var(--gold);margin-bottom:2px">${f(S.bon)}</b>Bonus</div></div><p class="sub" style="margin-top:12px">Invite friends using your referral link so they automatically link to your admin/network.</p>`;
   },
 
   games: () => `<h2 style="font-size:20px">Casino Games</h2><div class="grid" style="grid-template-columns:repeat(2,1fr)">${gl().map(g=>`<div class="gm"><span>${g[0]}</span><b>${esc(g[1])}</b><button class="btn bgold sm" onclick="play('${esc(g[1])}')">Play Now</button></div>`).join('')}</div>`,
@@ -1331,15 +1381,38 @@ const V = {
     + `<p class="sub">Play for fun and within your means.</p>`
 };
 
+function fallbackCopy(txt) {
+  try {
+    const ta = document.createElement('textarea');
+    ta.value = txt;
+    ta.setAttribute('readonly', '');
+    ta.style.cssText = 'position:fixed;top:-9999px;left:-9999px;opacity:0';
+    document.body.appendChild(ta);
+    ta.select();
+    ta.setSelectionRange(0, txt.length);
+    const ok = document.execCommand('copy');
+    ta.remove();
+    return ok;
+  } catch (e) { return false; }
+}
+
 function copyText(txt, msg) {
   if (navigator.clipboard && navigator.clipboard.writeText) {
-    navigator.clipboard.writeText(txt).then(() => toast(msg || 'Copied')).catch(() => toast(msg || 'Copied'));
-  } else toast(msg || 'Copied');
+    navigator.clipboard.writeText(txt).then(() => toast(msg || 'Copied')).catch(() => {
+      fallbackCopy(txt);
+      toast(msg || 'Copied');
+    });
+  } else {
+    fallbackCopy(txt);
+    toast(msg || 'Copied');
+  }
 }
 
 function shareRefLink(url) {
   if (navigator.share) {
-    navigator.share({title: 'Join MOSTWIN88', text: 'Sign up with my referral link!', url}).catch(() => copyText(url, 'Referral link copied'));
+    navigator.share({title: 'Join MOSTWIN88', url}).catch(err => {
+      if (!err || err.name !== 'AbortError') copyText(url, 'Referral link copied');
+    });
   } else {
     copyText(url, 'Referral link copied');
   }
@@ -1453,11 +1526,20 @@ async function changeUserPassword() {
 
 function carousel() {
   const c = $('#car'), dots = $('#dots');
-  if (!c || !dots || !dots.children.length) return;
-  const d = [...dots.children]; let i = 0;
-  const up = () => { if (!c.clientWidth) return; i = Math.round(c.scrollLeft / c.clientWidth); d.forEach((e, k) => e.className = k === i ? 'a' : ''); };
-  c.onscroll = up;
-  timer = setInterval(() => { if (!c.clientWidth) return; i = (i + 1) % d.length; c.scrollTo({left: i * c.clientWidth, behavior: 'smooth'}); }, 5000);
+  const bn = $('#bn');
+  if (bn && bn.children.length >= 3 && innerWidth < 900) {
+    const midIdx = Math.min(2, Math.floor(bn.children.length / 2));
+    requestAnimationFrame(() => {
+      const card = bn.children[midIdx];
+      if (card) bn.scrollLeft = Math.max(0, card.offsetLeft - Math.max(0, (bn.clientWidth - card.offsetWidth) / 2));
+    });
+  }
+  if (c && dots && dots.children.length) {
+    const d = [...dots.children]; let i = 0;
+    const up = () => { if (!c.clientWidth) return; i = Math.round(c.scrollLeft / c.clientWidth); d.forEach((e, k) => e.className = k === i ? 'a' : ''); };
+    c.onscroll = up;
+    timer = setInterval(() => { if (!c.clientWidth) return; i = (i + 1) % d.length; c.scrollTo({left: i * c.clientWidth, behavior: 'smooth'}); }, 5000);
+  }
   tms = [setTimeout(() => { tms.push(setInterval(() => pgs(-1, 1), 3200)); }, 1200), setTimeout(() => { tms.push(setInterval(() => bns(1, 1), 6500)); }, 2400)];
 }
 
@@ -2285,7 +2367,7 @@ if (ibBtn) ibBtn.onclick = async () => { if (dp) { dp.prompt(); await dp.userCho
     return shown.map(card).join("") + (all.length > n0 ? `<button class="pv-more" onclick="pvMore()">${st.showAll?"কম দেখুন ▲":"আরও দেখুন ("+(all.length-n0)+" টি) ▼"}</button>` : "");
   }
   const tabs = () => CATS.map(c => `<button class="pv-tab ${c==st.cat?"on":""}" onclick="pvTab('${E(c)}')">${E(CAT_LABEL[c]||c)}</button>`).join("");
-  const spWrap = () => (st.cat === "All" || st.cat === "Sports") ? sportsRow() : "";
+  const spWrap = () => (st.cat === "Sports") ? sportsRow() : "";
   window.drawList = function() {
     const l = q$("#pvList"); if (l) { l.className = "pv-grid"; l.innerHTML = listHtml(); }
     const t = q$("#pvTabs"); if (t) t.innerHTML = tabs();
@@ -2472,18 +2554,33 @@ if (ibBtn) ibBtn.onclick = async () => { if (dp) { dp.prompt(); await dp.userCho
 </script>
 
 <script>
-/* ===== REAL FIREBASE AUTH (LOGIN / SIGN UP / GOOGLE / REFERRAL / DESKTOP BAR) ===== */
+/* ===== REAL FIREBASE AUTH (LOGIN / 2-STEP SIGN UP / GOOGLE / REFERRAL / DESKTOP BAR) ===== */
 (() => {
   const LS = (k, v) => { try { if (v === undefined) return localStorage.getItem(k); v === null ? localStorage.removeItem(k) : localStorage.setItem(k, v); } catch (e) { return null; } };
   const q = (s, r) => (r || document).querySelector(s);
-  let mode = 'login', pend = null, busy = false;
+  let mode = 'login', pend = null, busy = false, suStep = 1, refPrompted = false;
+  let suDraft = { username: '', mob: '', email: '' };
   const PROT = {wallet:1,dep:1,wd:1,tx:1,bets:1,bonus:1,profile:1,ref:1,notif:1,sec:1};
   const normMob = v => String(v || '').replace(/[\s\-()]/g, '').replace(/^\+?88(?=01)/, '');
+  const normUser = v => String(v || '').trim().replace(/^@+/, '');
+  const isUser = v => /^[A-Za-z0-9_]{3,20}$/.test(v);
   const isMob = v => /^01[3-9]\d{8}$/.test(v);
   const isMail = v => /^\S+@\S+\.\S+$/.test(v);
   const clean = v => String(v || '').replace(/[<>"'&`]/g, '').replace(/\s+/g, ' ').trim();
   const GSVG = '<svg width="20" height="20" viewBox="0 0 48 48" aria-hidden="true"><path fill="#EA4335" d="M24 9.5c3.54 0 6.71 1.22 9.21 3.6l6.85-6.85C35.9 2.38 30.47 0 24 0 14.62 0 6.51 5.38 2.56 13.22l7.98 6.19C12.43 13.72 17.74 9.5 24 9.5z"/><path fill="#4285F4" d="M46.98 24.55c0-1.57-.15-3.09-.38-4.55H24v9.02h12.94c-.58 2.96-2.26 5.48-4.78 7.18l7.73 6c4.51-4.18 7.09-10.36 7.09-17.65z"/><path fill="#FBBC05" d="M10.53 28.59c-.48-1.45-.76-2.99-.76-4.59s.27-3.14.76-4.59l-7.98-6.19C.92 16.46 0 20.12 0 24c0 3.88.92 7.54 2.56 10.78l7.97-6.19z"/><path fill="#34A853" d="M24 48c6.48 0 11.93-2.13 15.89-5.81l-7.73-6c-2.15 1.45-4.92 2.3-8.16 2.3-6.26 0-11.57-4.22-13.47-9.91l-7.98 6.19C6.51 42.62 14.62 48 24 48z"/></svg>';
   const gb = () => '<button type="button" class="gbtn" data-g="1">' + GSVG + '<span>Continue with Google</span></button><div class="or">or use mobile / email</div>';
+
+  function extractRefFromUrl() {
+    try {
+      const sp = new URLSearchParams(location.search || '');
+      let r = sp.get('ref') || sp.get('r') || sp.get('invite') || '';
+      if (!r && location.hash && location.hash.includes('ref=')) {
+        const hm = location.hash.match(/[?&#]ref=([^&#]+)/i);
+        if (hm && hm[1]) r = decodeURIComponent(hm[1]);
+      }
+      return clean(r).slice(0, 32);
+    } catch (e) { return ''; }
+  }
 
   async function resolveReferralAttribution(rawRef) {
     const code = String(rawRef || '').trim();
@@ -2519,19 +2616,21 @@ if (ibBtn) ibBtn.onclick = async () => { if (dp) { dp.prompt(); await dp.userCho
 
   async function provisionUserRecord(fbUser, details) {
     const uid = fbUser.uid;
-    const name = details.name || fbUser.displayName || 'Player';
+    const uname = normUser(details.username || '');
+    const name = details.name || uname || fbUser.displayName || 'Player';
     const mob = details.mob || '';
     const email = details.email || (fbUser.email && !fbUser.email.endsWith('@player.mostwin88.app') ? fbUser.email : '');
     const country = details.country || 'Bangladesh';
     const attr = await resolveReferralAttribution(details.ref || LS('mw_ref') || '');
     const memberId = 'MW' + Math.floor(100000 + Math.random() * 899999);
-    const letters = (name.replace(/[^A-Za-z]/g, '').toUpperCase().slice(0, 5) || 'MW');
+    const letters = ((uname || name).replace(/[^A-Za-z]/g, '').toUpperCase().slice(0, 5) || 'MW');
     const ownCode = letters + Math.floor(100 + Math.random() * 899);
     const dv = getDeviceInfo();
     const record = {
       uid,
       name,
-      username: name,
+      username: uname || name,
+      usernameLower: (uname || name).toLowerCase(),
       phone: mob,
       email,
       country,
@@ -2568,10 +2667,20 @@ if (ibBtn) ibBtn.onclick = async () => { if (dp) { dp.prompt(); await dp.userCho
       affiliateUid: attr.affiliateUid,
       createdAt: Date.now()
     }).catch(() => {});
+    const resolvedAuthEmail = fbUser.email || email || (mob ? (mob + '@player.mostwin88.app') : (uname.toLowerCase() + '@player.mostwin88.app'));
+    if (uname) {
+      await fbDb.ref('usernames/' + uname.toLowerCase()).set({
+        uid,
+        email: resolvedAuthEmail,
+        username: uname,
+        phone: mob
+      }).catch(() => {});
+    }
     if (mob) {
       await fbDb.ref('usernames/' + mob).set({
         uid,
-        email: fbUser.email || email || (mob + '@player.mostwin88.app'),
+        email: resolvedAuthEmail,
+        username: uname || name,
         phone: mob
       }).catch(() => {});
     }
@@ -2584,7 +2693,7 @@ if (ibBtn) ibBtn.onclick = async () => { if (dp) { dp.prompt(); await dp.userCho
   }
 
   function guestState() {
-    Object.assign(S, {uid:'',name:'',id:'',code:'',lvl:'Bronze',xp:0,next:2000,dep:0,bon:0,mob:'',email:'',photo:'',adminUid:'',affiliateUid:'',withdrawPin:'',betCount:0,turnoverRequired:0,turnoverDone:0});
+    Object.assign(S, {uid:'',name:'',username:'',id:'',code:'',lvl:'Bronze',xp:0,next:2000,dep:0,bon:0,mob:'',email:'',photo:'',adminUid:'',affiliateUid:'',withdrawPin:'',betCount:0,turnoverRequired:0,turnoverDone:0});
   }
 
   function ui() {
@@ -2607,7 +2716,7 @@ if (ibBtn) ibBtn.onclick = async () => { if (dp) { dp.prompt(); await dp.userCho
   async function google() {
     if (busy) return;
     const E = q('#amErr'); if (E) E.textContent = '';
-    if (mode === 'signup' && q('#as_tc') && !q('#as_tc').checked) {
+    if (mode === 'signup' && suStep === 2 && q('#as_tc') && !q('#as_tc').checked) {
       E.textContent = 'Please confirm you are 18+ and accept the Terms.'; return;
     }
     setBusy(true);
@@ -2637,11 +2746,12 @@ if (ibBtn) ibBtn.onclick = async () => { if (dp) { dp.prompt(); await dp.userCho
     document.body.appendChild(d);
     d.addEventListener('mousedown', e => { if (e.target === d) close(); });
     d.addEventListener('click', e => {
-      const t = e.target.closest('[data-m],[data-t],[data-a],[data-x],[data-g]');
+      const t = e.target.closest('[data-m],[data-t],[data-a],[data-x],[data-g],[data-step]');
       if (!t) return;
       if (t.dataset.g) return google();
       if (t.dataset.x) return close();
-      if (t.dataset.m) { mode = t.dataset.m; render(); return; }
+      if (t.dataset.step) { suStep = Number(t.dataset.step) || 1; render(); return; }
+      if (t.dataset.m) { mode = t.dataset.m; suStep = 1; render(); return; }
       if (t.dataset.a === 'forgot') { mode = 'forgot'; render(); return; }
       if (t.dataset.t) { const i = q('#' + t.dataset.t), h = i.type === 'password'; i.type = h ? 'text' : 'password'; t.textContent = h ? 'Hide' : 'Show'; }
     });
@@ -2651,7 +2761,9 @@ if (ibBtn) ibBtn.onclick = async () => { if (dp) { dp.prompt(); await dp.userCho
       const i = e.target; i.classList.remove('bad');
       const s = q('[data-e="' + i.id + '"]'); if (s) s.textContent = '';
       if (q('#amErr')) q('#amErr').textContent = '';
-      if (i.id === 'as_mob') i.value = i.value.replace(/\D/g, '').slice(0, 11);
+      if (i.id === 'as_user') { i.value = i.value.replace(/[^A-Za-z0-9_]/g, '').slice(0, 20); suDraft.username = i.value; }
+      if (i.id === 'as_mob') { i.value = i.value.replace(/\D/g, '').slice(0, 11); suDraft.mob = i.value; }
+      if (i.id === 'as_mail') { suDraft.email = i.value.trim(); }
       if (i.id === 'as_pw') meter(i.value);
       if (i.id === 'as_pw2' || i.id === 'as_pw') {
         const a = q('#as_pw') && q('#as_pw').value, b = q('#as_pw2') && q('#as_pw2').value, s2 = q('[data-e="as_pw2"]');
@@ -2673,27 +2785,42 @@ if (ibBtn) ibBtn.onclick = async () => { if (dp) { dp.prompt(); await dp.userCho
     q('.am-tabs').style.display = mode === 'forgot' ? 'none' : '';
     q('.am-tabs').classList.toggle('s', mode === 'signup');
     document.querySelectorAll('.am-tabs button').forEach(b => b.classList.toggle('on', b.dataset.m === mode));
-    q('#amS').textContent = mode === 'forgot' ? 'Reset your password' : pend ? 'Please login to continue' : mode === 'signup' ? 'Create your account in under a minute' : 'Welcome back! Login to play and manage your wallet.';
-    const fld = (id, lab, at, ph, ex) => '<div class="af"><label for="' + id + '">' + lab + '</label><input id="' + id + '" ' + at + ' placeholder="' + ph + '"><small class="ae" data-e="' + id + '"></small>' + (ex || '') + '</div>';
+    q('#amS').textContent = mode === 'forgot'
+      ? 'Reset your password'
+      : pend
+        ? 'Please login to continue'
+        : mode === 'signup'
+          ? (suStep === 1 ? 'Step 1 of 2 — Enter Username & Contact' : 'Step 2 of 2 — Complete Profile & Password')
+          : 'Welcome back! Login to play and manage your wallet.';
+    const fld = (id, lab, at, ph, ex, val) => '<div class="af"><label for="' + id + '">' + lab + '</label><input id="' + id + '" ' + at + ' placeholder="' + ph + '" value="' + esc(val || '') + '"><small class="ae" data-e="' + id + '"></small>' + (ex || '') + '</div>';
     const pwf = (id, lab, ac, ph, ex) => '<div class="af"><label for="' + id + '">' + lab + '</label><div class="pw"><input id="' + id + '" type="password" autocomplete="' + ac + '" placeholder="' + ph + '"><button type="button" class="pws" data-t="' + id + '">Show</button></div><small class="ae" data-e="' + id + '"></small>' + (ex || '') + '</div>';
     if (mode === 'login') {
-      F.innerHTML = gb() + fld('al_id','Mobile or Email','name="username" autocomplete="username" autocapitalize="none" spellcheck="false"','01XXXXXXXXX or email')
+      F.innerHTML = gb() + fld('al_id','Username, Mobile or Email','name="username" autocomplete="username" autocapitalize="none" spellcheck="false"','username, 01XXXXXXXXX or email')
         + pwf('al_pw','Password','current-password','Your password')
         + '<div class="ar2"><label class="ck"><input type="checkbox" id="al_rm" checked> Remember me</label><a class="al" data-a="forgot" style="margin-top:12px">Forgot password?</a></div>'
         + '<div class="ae big" id="amErr"></div><button class="btn bgold" id="amGo" type="submit">Login</button><div class="am-alt">New here? <a data-m="signup">Create an account</a></div>';
     } else if (mode === 'signup') {
-      const rf = LS('mw_ref') || '';
-      const cOpts = COUNTRIES.map(c => `<option value="${esc(c[0])}">${esc(c[0])} (${esc(c[1])})</option>`).join('');
-      F.innerHTML = gb() + fld('as_name','Full name','autocomplete="name" maxlength="40"','Your full name')
-        + '<div class="af"><label for="as_country">Country</label><select id="as_country">' + cOpts + '</select></div>'
-        + fld('as_mob','Mobile number','type="tel" inputmode="numeric" autocomplete="tel" maxlength="11"','01XXXXXXXXX')
-        + fld('as_mail','Email <span style="opacity:.6">(optional)</span>','type="email" autocomplete="email" autocapitalize="none"','you@example.com')
-        + pwf('as_pw','Password','new-password','Create a password','<div class="sm-bar" id="smB"><i></i><i></i><i></i><i></i></div><div class="sm-t" id="smT">8+ characters with letters and numbers</div>')
-        + pwf('as_pw2','Confirm password','new-password','Re-enter password')
-        + fld('as_ref','Referral code <span style="opacity:.6">(optional)</span>','autocomplete="off" maxlength="32"','Referral code', rf ? '<div class="rfok">✓ Referral code applied</div>' : '')
-        + '<label class="ck"><input type="checkbox" id="as_tc"> <span>I am 18 or older and I accept the Terms &amp; Conditions.</span></label>'
-        + '<div class="ae big" id="amErr"></div><button class="btn bgold" id="amGo" type="submit">Create Account</button><div class="am-alt">Already have an account? <a data-m="login">Login</a></div>';
-      q('#as_ref').value = rf;
+      const stepHead = `<div class="su-steps"><span>Step <b>${suStep}</b> of 2</span><span>${suStep === 1 ? 'Account Info' : 'Profile &amp; Password'}</span></div><div class="su-bars"><i class="on"></i><i class="${suStep === 2 ? 'on' : ''}"></i></div>`;
+      if (suStep === 1) {
+        F.innerHTML = stepHead + gb()
+          + fld('as_user','Username','autocomplete="username" autocapitalize="none" spellcheck="false" maxlength="20"','e.g. mijan88 (letters, numbers, _)', '', suDraft.username)
+          + fld('as_mob','Mobile number <span style="opacity:.6">(or use email below)</span>','type="tel" inputmode="numeric" autocomplete="tel" maxlength="11"','01XXXXXXXXX', '', suDraft.mob)
+          + fld('as_mail','Email <span style="opacity:.6">(optional if phone given)</span>','type="email" autocomplete="email" autocapitalize="none"','you@example.com', '', suDraft.email)
+          + '<div class="ae big" id="amErr"></div><button class="btn bgold" id="amGo" type="submit">Next →</button><div class="am-alt">Already have an account? <a data-m="login">Login</a></div>';
+      } else {
+        const rf = LS('mw_ref') || '';
+        const cOpts = COUNTRIES.map(c => `<option value="${esc(c[0])}">${esc(c[0])} (${esc(c[1])})</option>`).join('');
+        const contactTxt = [suDraft.mob, suDraft.email].filter(Boolean).join(' · ');
+        F.innerHTML = stepHead
+          + `<div class="su-summary"><span>👤 <b>@${esc(suDraft.username)}</b></span><span>· ${esc(contactTxt)}</span></div>`
+          + fld('as_name','Full name','autocomplete="name" maxlength="40"','Your full name')
+          + '<div class="af"><label for="as_country">Country</label><select id="as_country">' + cOpts + '</select></div>'
+          + pwf('as_pw','Password','new-password','Create a password','<div class="sm-bar" id="smB"><i></i><i></i><i></i><i></i></div><div class="sm-t" id="smT">8+ characters with letters and numbers</div>')
+          + pwf('as_pw2','Confirm password','new-password','Re-enter password')
+          + fld('as_ref','Referral code <span style="opacity:.6">(optional)</span>','autocomplete="off" maxlength="32"','Referral code', rf ? '<div class="rfok">✓ Referral code applied</div>' : '', rf)
+          + '<label class="ck"><input type="checkbox" id="as_tc"> <span>I am 18 or older and I accept the Terms &amp; Conditions.</span></label>'
+          + '<div class="ae big" id="amErr"></div><div class="su-nav"><button type="button" class="btn out" data-step="1">← Back</button><button class="btn bgold" id="amGo" type="submit">Create Account</button></div><div class="am-alt">Already have an account? <a data-m="login">Login</a></div>';
+      }
     } else {
       F.innerHTML = fld('af_id','Email Address','autocapitalize="none" spellcheck="false"','Enter your registered email')
         + '<div class="ae big" id="amErr"></div><button class="btn bgold" id="amGo" type="submit">Send reset email</button><div class="am-alt"><a data-m="login">Back to Login</a></div>';
@@ -2701,8 +2828,29 @@ if (ibBtn) ibBtn.onclick = async () => { if (dp) { dp.prompt(); await dp.userCho
   }
 
   function setErr(id, m) { const i = q('#' + id), s = q('[data-e="' + id + '"]'); if (i) i.classList.add('bad'); if (s) s.textContent = m; }
-  function setBusy(b) { busy = b; const g = q('#amGo'); if (!g) return; g.disabled = b; g.textContent = b ? 'Please wait…' : mode === 'login' ? 'Login' : mode === 'signup' ? 'Create Account' : 'Send reset email'; }
-  function openAuth(m, p) { build(); mode = m || 'login'; pend = p || null; render(); q('#authM').classList.add('o'); document.body.classList.add('am-lock'); setTimeout(() => { const i = q('#amF input'); if (i) i.focus(); }, 60); }
+  function setBusy(b) {
+    busy = b;
+    const g = q('#amGo'); if (!g) return;
+    g.disabled = b;
+    g.textContent = b
+      ? 'Please wait…'
+      : mode === 'login'
+        ? 'Login'
+        : mode === 'signup'
+          ? (suStep === 1 ? 'Next →' : 'Create Account')
+          : 'Send reset email';
+  }
+  function openAuth(m, p) {
+    build();
+    mode = m || 'login';
+    pend = p || null;
+    suStep = 1;
+    suDraft = { username: '', mob: '', email: '' };
+    render();
+    q('#authM').classList.add('o');
+    document.body.classList.add('am-lock');
+    setTimeout(() => { const i = q('#amF input'); if (i) i.focus(); }, 60);
+  }
   function close() { const m = q('#authM'); if (m) m.classList.remove('o'); document.body.classList.remove('am-lock'); pend = null; }
 
   async function submit() {
@@ -2719,17 +2867,24 @@ if (ibBtn) ibBtn.onclick = async () => { if (dp) { dp.prompt(); await dp.userCho
     }
     if (mode === 'login') {
       const rawId = q('#al_id').value.trim(), pw = q('#al_pw').value;
-      if (!rawId) { setErr('al_id', 'Enter your mobile number or email'); return; }
+      if (!rawId) { setErr('al_id', 'Enter your username, mobile or email'); return; }
       if (!pw) { setErr('al_pw', 'Enter your password'); return; }
       setBusy(true);
       try {
         await fbAuth.setPersistence(q('#al_rm').checked ? firebase.auth.Auth.Persistence.LOCAL : firebase.auth.Auth.Persistence.SESSION);
         let loginEmail = rawId;
         if (!rawId.includes('@')) {
+          const userKey = rawId.replace(/^@+/, '').toLowerCase();
           const mobClean = normMob(rawId);
-          const unSnap = await fbDb.ref('usernames/' + mobClean).once('value');
-          const un = unSnap.val();
-          loginEmail = (un && un.email) ? un.email : (mobClean + '@player.mostwin88.app');
+          let unSnap = await fbDb.ref('usernames/' + userKey).once('value');
+          let un = unSnap.val();
+          if ((!un || !un.email) && mobClean && mobClean !== userKey) {
+            unSnap = await fbDb.ref('usernames/' + mobClean).once('value');
+            un = unSnap.val();
+          }
+          if (un && un.email) loginEmail = un.email;
+          else if (isMob(mobClean)) loginEmail = mobClean + '@player.mostwin88.app';
+          else loginEmail = userKey + '@player.mostwin88.app';
         }
         await fbAuth.signInWithEmailAndPassword(loginEmail, pw);
         const target = pend;
@@ -2737,22 +2892,60 @@ if (ibBtn) ibBtn.onclick = async () => { if (dp) { dp.prompt(); await dp.userCho
         if (target) go(target);
       } catch (e) {
         setBusy(false);
-        q('#amErr').textContent = 'Incorrect mobile/email or password';
+        q('#amErr').textContent = 'Incorrect username/mobile/email or password';
       }
       return;
     }
 
+    if (mode === 'signup' && suStep === 1) {
+      const uname = normUser(q('#as_user').value);
+      const mob = normMob(q('#as_mob').value);
+      const email = q('#as_mail').value.trim();
+      const E = [];
+      if (!isUser(uname)) E.push(['as_user', 'Use 3–20 letters, numbers or _ (no spaces)']);
+      if (!mob && !email) {
+        E.push(['as_mob', 'Enter your mobile number or email']);
+      } else {
+        if (mob && !isMob(mob)) E.push(['as_mob', 'Enter a valid 11-digit mobile number (01XXXXXXXXX)']);
+        if (email && !isMail(email)) E.push(['as_mail', 'Enter a valid email address']);
+      }
+      E.forEach(x => setErr(x[0], x[1]));
+      if (E.length) { q('#' + E[0][0]).focus(); return; }
+
+      setBusy(true);
+      try {
+        if (fbDb) {
+          const uSnap = await fbDb.ref('usernames/' + uname.toLowerCase()).once('value');
+          if (uSnap.exists()) { setBusy(false); setErr('as_user', 'This username is already taken.'); return; }
+          if (mob) {
+            const mSnap = await fbDb.ref('usernames/' + mob).once('value');
+            if (mSnap.exists()) { setBusy(false); setErr('as_mob', 'This mobile number is already registered.'); return; }
+          }
+        }
+        suDraft = { username: uname, mob, email };
+        setBusy(false);
+        suStep = 2;
+        render();
+        setTimeout(() => { const n = q('#as_name'); if (n) n.focus(); }, 50);
+      } catch (e) {
+        setBusy(false);
+        suDraft = { username: uname, mob, email };
+        suStep = 2;
+        render();
+      }
+      return;
+    }
+
+    const uname = normUser(suDraft.username);
+    const mob = normMob(suDraft.mob);
+    const email = (suDraft.email || '').trim();
     const name = clean(q('#as_name').value);
     const country = q('#as_country') ? q('#as_country').value : 'Bangladesh';
-    const mob = normMob(q('#as_mob').value);
-    const email = q('#as_mail').value.trim();
     const pw = q('#as_pw').value;
     const pw2 = q('#as_pw2').value;
     const ref = clean(q('#as_ref').value).slice(0, 32);
     const E = [];
     if (name.length < 2) E.push(['as_name', 'Enter your full name']);
-    if (!isMob(mob)) E.push(['as_mob', 'Enter a valid 11-digit mobile number (01XXXXXXXXX)']);
-    if (email && !isMail(email)) E.push(['as_mail', 'Enter a valid email address']);
     if (pw.length < 8 || !/[A-Za-z]/.test(pw) || !/\d/.test(pw)) E.push(['as_pw', 'Use 8+ characters with letters and numbers']);
     else if (pw !== pw2) E.push(['as_pw2', 'Passwords do not match']);
     E.forEach(x => setErr(x[0], x[1]));
@@ -2761,12 +2954,10 @@ if (ibBtn) ibBtn.onclick = async () => { if (dp) { dp.prompt(); await dp.userCho
 
     setBusy(true);
     try {
-      const existingSnap = await fbDb.ref('usernames/' + mob).once('value');
-      if (existingSnap.exists()) { setBusy(false); setErr('as_mob', 'This mobile number is already registered.'); return; }
-      const authEmail = email || (mob + '@player.mostwin88.app');
+      const authEmail = email || (mob ? (mob + '@player.mostwin88.app') : (uname.toLowerCase() + '@player.mostwin88.app'));
       const cred = await fbAuth.createUserWithEmailAndPassword(authEmail, pw);
       try { await cred.user.updateProfile({ displayName: name }); } catch (e) {}
-      await provisionUserRecord(cred.user, { name, mob, email, country, ref });
+      await provisionUserRecord(cred.user, { name, username: uname, mob, email, country, ref });
       const target = pend;
       setBusy(false); close(); toast('Account created! Welcome, ' + name.split(' ')[0] + '.');
       if (target) go(target);
@@ -2845,14 +3036,12 @@ if (ibBtn) ibBtn.onclick = async () => { if (dp) { dp.prompt(); await dp.userCho
     }
   }
 
-  /* Capture ?ref=CODE or ?admin=UID from URL */
-  try {
-    const params = new URLSearchParams(location.search);
-    const rf = params.get('ref');
-    if (rf) {
-      const cleanedRef = clean(rf).slice(0, 32);
-      LS('mw_ref', cleanedRef);
-      fbDb.ref('referralCodes/' + cleanedRef.toUpperCase()).once('value').then(s => {
+  /* Capture ?ref=CODE or #ref=CODE from URL */
+  const urlRefCode = extractRefFromUrl();
+  if (urlRefCode) {
+    LS('mw_ref', urlRefCode);
+    if (fbDb) {
+      fbDb.ref('referralCodes/' + urlRefCode.toUpperCase()).once('value').then(s => {
         const rc = s.val();
         if (rc && (rc.adminUid || rc.parentAdminId || rc.role === 'ADMIN')) {
           const adm = rc.adminUid || rc.parentAdminId || rc.uid;
@@ -2860,14 +3049,14 @@ if (ibBtn) ibBtn.onclick = async () => { if (dp) { dp.prompt(); await dp.userCho
           if (!S.uid) bindAdminCmsListener(adm);
         }
       }).catch(() => {});
-      fbDb.ref('adminLinks/' + cleanedRef).once('value').then(s => {
+      fbDb.ref('adminLinks/' + urlRefCode).once('value').then(s => {
         if (s.val() === true) {
-          LS('mw_ref_admin', cleanedRef);
-          if (!S.uid) bindAdminCmsListener(cleanedRef);
+          LS('mw_ref_admin', urlRefCode);
+          if (!S.uid) bindAdminCmsListener(urlRefCode);
         }
       }).catch(() => {});
     }
-  } catch (e) {}
+  }
 
   /* Firebase Auth state listener */
   if (fbAuth) {
@@ -2885,22 +3074,30 @@ if (ibBtn) ibBtn.onclick = async () => { if (dp) { dp.prompt(); await dp.userCho
         bindUserListeners(fbUser.uid);
         ui();
         go(cur || 'home');
+        if (urlRefCode && !refPrompted) {
+          refPrompted = true;
+          toast('Referral code ' + urlRefCode + ' applied');
+        }
       } else {
         unbindUserListeners();
         guestState();
         ui();
         if (!document.querySelector('#m .screen')) go(cur || 'home');
         else { nav(); updBal(); hdr(); }
-        try {
-          const rf = new URLSearchParams(location.search).get('ref');
-          if (rf) setTimeout(() => openAuth('signup'), 600);
-        } catch (e) {}
+        if (urlRefCode && !refPrompted) {
+          refPrompted = true;
+          setTimeout(() => openAuth('signup'), 450);
+        }
       }
     });
   } else {
     guestState();
     ui();
     if (!document.querySelector('#m .screen')) go('home');
+    if (urlRefCode && !refPrompted) {
+      refPrompted = true;
+      setTimeout(() => openAuth('signup'), 450);
+    }
   }
 })();
 </script>
