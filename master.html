@@ -556,7 +556,8 @@ const FL=[
   ["ads_manage", "অন্যান্য ফিচার", "বিজ্ঞাপন / HTML Ads ম্যানেজমেন্ট"],
   ["ref_link", "অন্যান্য ফিচার", "ইউজার রেফারেল লিংক কার্ড ও কপি"]
 ];
-function toast(m){const t=$('toast');t.textContent=m;t.style.display='block';clearTimeout(t._t);t._t=setTimeout(()=>t.style.display='none',3500)}
+function sanitizeUiMsg(v){return String(v||'').replace(/Firebase:\s*/gi,'').replace(/\s*\(auth\/[^)]+\)\.?/gi,'').replace(/\b(firebase|github|render)\b/gi,'server').replace(/ফায়ারবেস|ফায়ারবেস|গিটহাব|রেন্ডার/g,'সার্ভার').trim()}
+function toast(m){const t=$('toast');t.textContent=sanitizeUiMsg(m);t.style.display='block';clearTimeout(t._t);t._t=setTimeout(()=>t.style.display='none',3500)}
 async function login(){try{await auth.signInWithEmailAndPassword($('em').value.trim(),$('pw').value)}catch(e){toast('লগইন ব্যর্থ: '+e.message)}}
 const on=(r,cb)=>{r.on('value',cb);LST.push(r)};
 
@@ -743,7 +744,7 @@ function addTenant(){const name=$('tnm').value.trim(),c=parseCfg($('tcf').value)
  if(!id||id==='main'||c.projectId===MAINCFG.projectId||L.some(x=>x.id===id)){toast('এই প্রজেক্ট আগে থেকেই যোগ করা আছে');return}
  L.push({id,name,config:c});try{localStorage.setItem('np_tenants',JSON.stringify(L))}catch(e){toast('সেভ করা যায়নি');return}
  $('tnm').value='';$('tcf').value='';toast('প্রজেক্ট যোগ হয়েছে ✅ এবার "খুলুন" চাপুন');drawTn();draw()}
-function delTenant(id){if(!confirm('এই প্রজেক্ট তালিকা থেকে সরাবেন? (Firebase-এর কোনো ডেটা মুছবে না)'))return;
+function delTenant(id){if(!confirm('এই প্রজেক্ট তালিকা থেকে সরাবেন? (সার্ভারের কোনো ডেটা মুছবে না)'))return;
  localStorage.setItem('np_tenants',JSON.stringify(getTenants().filter(x=>x.id!==id)));if(TID===id)switchTenant('main');drawTn();draw()}
 bindAuth();
 function tab(t){cur=t;if(t==='act')loadAct();draw()}
@@ -1493,7 +1494,7 @@ const RULES_TXT=`{
     }
   }
 }`;
-function copyRules(){const done=()=>toast('রুলস কপি হয়েছে ✅ এবার Firebase → Realtime Database → Rules এ পেস্ট করে Publish চাপুন'),fb=()=>{const t=$('rulesTxt');if(t&&t.select){t.select();try{document.execCommand('copy');done()}catch(e){toast('কপি হয়নি, বক্সে চেপে সব সিলেক্ট করে কপি করুন')}}};
+function copyRules(){const done=()=>toast('রুলস কপি হয়েছে ✅ এবার Database Rules সেকশনে পেস্ট করে Publish চাপুন'),fb=()=>{const t=$('rulesTxt');if(t&&t.select){t.select();try{document.execCommand('copy');done()}catch(e){toast('কপি হয়নি, বক্সে চেপে সব সিলেক্ট করে কপি করুন')}}};
  try{navigator.clipboard.writeText(RULES_TXT).then(done,fb)}catch(e){fb()}}
 function openAdmin(u){SEL=u;cur='admin';draw();window.scrollTo(0,0)}
 async function aSet(u,k,v){try{await db.ref(`admins/${u}/features/${k}`).set(v)}catch(e){toast('ব্যর্থ: '+e.message)}}
@@ -1927,7 +1928,7 @@ function draw(){if(!started)return;
  if(cur==='admins'){
   h=`<div class="cd" style="margin-bottom:12px;background:var(--in);border:1px solid var(--bg2)">
    <b style="font-size:16px;color:var(--gold);display:flex;align-items:center;gap:6px">👑 ১) সরাসরি নতুন ইউজার অ্যাডমিন তৈরি করুন</b>
-   <span style="display:block;margin-top:4px">এখানে নাম, ইমেইল, রোল ও পাসওয়ার্ড দিয়ে সেভ করলেই Firebase Auth একাউন্ট খুলে সরাসরি অ্যাক্টিভ ইউজার অ্যাডমিন পারমিশন সেট হয়ে যাবে:</span>
+   <span style="display:block;margin-top:4px">এখানে নাম, ইমেইল, রোল ও পাসওয়ার্ড দিয়ে সেভ করলেই একাউন্ট খুলে সরাসরি অ্যাক্টিভ ইউজার অ্যাডমিন পারমিশন সেট হয়ে যাবে:</span>
    <div class="row" style="margin-top:10px">
     <input id="an" placeholder="অ্যাডমিন নাম (যেমন: Rahim Admin)">
     <input id="ae" type="email" placeholder="ইমেইল (যেমন: rahim@admin.com)">
@@ -2062,7 +2063,7 @@ function draw(){if(!started)return;
   Object.entries(REQ).reverse().map(([k,r])=>`<tr><td>${esc(r.email)}</td><td>${fmt(r.amount)}</td><td>${esc(r.note)}</td><td>${r.createdAt?new Date(r.createdAt).toLocaleString('bn-BD'):''}</td><td><span class="pl ${r.status==='rejected'?'b':r.status==='pending'?'y':''}">${esc(r.status)}</span></td><td>${r.status==='pending'?`<button class="p" onclick="approve('${k}')">অনুমোদন</button> <button class="d" onclick="reject('${k}')">বাতিল</button>`:''}</td></tr>`).join('')+`</table></div>`}
  if(cur==='led'){h=`<div class="row"><button class="d" onclick="clearAdminTx()">🗑 সব লেনদেন মুছুন</button></div><div class="sc"><table><tr><th>সময়</th><th>ধরন</th><th>অ্যাডমিন</th><th>পরিমাণ</th><th>নোট</th></tr>`+
   Object.values(LED).reverse().map(l=>`<tr><td>${l.time?new Date(l.time).toLocaleString('bn-BD'):''}</td><td>${esc(l.type)}</td><td>${esc(l.email)}</td><td>${fmt(l.amount)}</td><td>${esc(l.note)}</td></tr>`).join('')+`</table></div>`}
- if(cur==='games'){h=`<div class="row"><input id="gn" placeholder="ক্যাসিনো গেমের নাম"><input id="gc" list="gcl" value="Popular Games" placeholder="ক্যাটাগরি" style="height:42px"><datalist id="gcl">${[...new Set(["Popular Games","Crash Games","Live Casino","Slot Games","Table Games",...Object.values(GAMES).map(x=>x.category).filter(Boolean)])].map(c=>`<option value="${esc(c)}">`).join('')}</datalist><input id="gi" placeholder="ছবির লিংক"><input id="gu" placeholder="গেমের লিংক"><input id="gh" placeholder="গেম সার্ভারের /health লিংক (ঐচ্ছিক, সার্ভার জাগাতে)"><label style="display:flex;align-items:center;gap:6px;font-size:.85rem"><input id="gint" type="checkbox" checked style="width:auto"> নিজস্ব গেম (টোকেন + প্রস্তুত সংকেত)</label><button class="p" onclick="saveGame()">+ নতুন গেম</button></div><div class="cd" style="margin-bottom:10px"><span>Pro Casino গেমস তালিকা — Popular, Crash, Live Casino, Slot & Table (Firebase Node: games) — ${Object.keys(GAMES).length} টি</span></div><div class="sc"><table><tr><th>নাম / গেম ID</th><th>ক্যাটাগরি</th><th>ধরন</th><th>স্ট্যাটাস</th><th>অ্যাকশন</th></tr>`+
+ if(cur==='games'){h=`<div class="row"><input id="gn" placeholder="ক্যাসিনো গেমের নাম"><input id="gc" list="gcl" value="Popular Games" placeholder="ক্যাটাগরি" style="height:42px"><datalist id="gcl">${[...new Set(["Popular Games","Crash Games","Live Casino","Slot Games","Table Games",...Object.values(GAMES).map(x=>x.category).filter(Boolean)])].map(c=>`<option value="${esc(c)}">`).join('')}</datalist><input id="gi" placeholder="ছবির লিংক"><input id="gu" placeholder="গেমের লিংক"><input id="gh" placeholder="গেম সার্ভারের /health লিংক (ঐচ্ছিক, সার্ভার জাগাতে)"><label style="display:flex;align-items:center;gap:6px;font-size:.85rem"><input id="gint" type="checkbox" checked style="width:auto"> নিজস্ব গেম (টোকেন + প্রস্তুত সংকেত)</label><button class="p" onclick="saveGame()">+ নতুন গেম</button></div><div class="cd" style="margin-bottom:10px"><span>Pro Casino গেমস তালিকা — Popular, Crash, Live Casino, Slot & Table — ${Object.keys(GAMES).length} টি</span></div><div class="sc"><table><tr><th>নাম / গেম ID</th><th>ক্যাটাগরি</th><th>ধরন</th><th>স্ট্যাটাস</th><th>অ্যাকশন</th></tr>`+
   Object.entries(GAMES).map(([k,g])=>`<tr><td>${esc(g.name)}<br><small style="opacity:.6">ID: ${esc(k)}</small></td><td>${esc(g.category)}</td><td>${g.integrated===true?'নিজস্ব':(g.integrated===false?'বাইরের':'পুরোনো (অটো)')}${g.healthUrl?' 🩺':''}</td><td><span class="pl ${(g.status||'Active')==='Active'?'':'b'}">${esc(g.status||'Active')}</span></td><td><button onclick="saveGame('${k}')">এডিট</button> <button onclick="gToggle('${k}')">চালু/বন্ধ</button> <button onclick="gInteg('${k}')">🔌 ধরন</button> <button onclick="gHealth('${k}')">🩺</button> <button class="d" onclick="gDel('${k}')">মুছুন</button></td></tr>`).join('')+`</table></div>`}
  if(cur==='players'){const q=Q.toLowerCase();const _orph=Object.keys(USERS).filter(k=>!ADM[k]&&!(USERS[k].adminUid&&ADM[USERS[k].adminUid])).length;h=(_orph?`<div class="cd" style="margin-bottom:10px;border:1px solid #ef4444"><b>⚠ ${_orph} জন ইউজারের কোনো অ্যাডমিন নেই</b><span>অ্যাডমিন না থাকলে সে ডিপোজিট/উইথড্র করতে পারবে না এবং কোনো অ্যাডমিন তাকে দেখবে না।</span><div class="row"><button class="p" onclick="assignAllOrphans()">সবাইকে একজন অ্যাডমিনের অধীনে দিন</button></div></div>`:'')+`<div class="row"><input id="pq" placeholder="নাম/ইমেইল/ফোন/UID/IP দিয়ে খুঁজুন" value="${esc(Q)}" oninput="Q=this.value;draw();const p=$('pq');p.focus();p.setSelectionRange(Q.length,Q.length)"></div><div class="sc"><table><tr><th>প্লেয়ার ও UID</th><th>ব্যালেন্স</th><th>বেট সংখ্যা ও (− / +)</th><th>IP ও ডিভাইস</th><th>রোল / স্ট্যাটাস</th><th>অ্যাকশন</th></tr>`+
   Object.entries(USERS).filter(([k,u])=>!q||[u.name,u.email,u.phone,u.username,u.lastIp,u.lastDevice,k].join(' ').toLowerCase().includes(q)).slice(0,200).map(([k,u])=>{
@@ -2116,12 +2117,12 @@ ${admBonRow(SEL)}
 <div class="sc"><table><tr><th>সময়</th><th>ধরন</th><th>পরিমাণ</th><th>নোট</th></tr>`+lg.map(l=>`<tr><td>${l.time?new Date(l.time).toLocaleString('bn-BD'):''}</td><td>${esc(l.type)}</td><td>${fmt(l.amount)}</td><td>${esc(l.note)}</td></tr>`).join('')+`</table></div>`}
 
  if(cur==='tenants'){const L=getTenants();
-  h=`<div class="cd" style="margin-bottom:10px"><b style="font-size:16px">নতুন Firebase প্রজেক্ট যোগ করুন</b><span>প্রতিটা ব্যবসার আলাদা Firebase হলে এখানে যোগ করুন। যোগের আগে ওই প্রজেক্টে: ১) Realtime Database ও Authentication (Email/Password) চালু করুন, ২) আপনার database_rules.json পাবলিশ করুন, ৩) Authentication → Users এ আপনার Master ইমেইল দিয়ে একটা ইউজার বানান। তারপর নিচে কনফিগ পেস্ট করে যোগ করুন, তালিকায় "খুলুন" চেপে ওই প্রজেক্টের Master লগইন দিন।</span></div>
+  h=`<div class="cd" style="margin-bottom:10px"><b style="font-size:16px">নতুন সার্ভার প্রজেক্ট যোগ করুন</b><span>প্রতিটা ব্যবসার আলাদা সার্ভার প্রজেক্ট হলে এখানে যোগ করুন। যোগের আগে ওই প্রজেক্টে: ১) Realtime Database ও Email/Password Authentication চালু করুন, ২) আপনার database_rules.json পাবলিশ করুন, ৩) Users এ আপনার Master ইমেইল দিয়ে একটা ইউজার বানান। তারপর নিচে কনফিগ পেস্ট করে যোগ করুন, তালিকায় "খুলুন" চেপে ওই প্রজেক্টের Master লগইন দিন।</span></div>
 <div class="row"><input id="tnm" placeholder="ব্যবসা / প্রজেক্টের নাম (যেমন: ABC Gaming)"></div>
-<div class="row"><textarea id="tcf" rows="8" placeholder='Firebase Console → Project settings → Your apps → Config থেকে কপি করে পেস্ট করুন। যেমন:
+<div class="row"><textarea id="tcf" rows="8" placeholder='Project settings → App Config থেকে কপি করে পেস্ট করুন। যেমন:
 apiKey: "AIza...",
-authDomain: "myproj.firebaseapp.com",
-databaseURL: "https://myproj-default-rtdb.firebaseio.com",
+authDomain: "myproj.web.app",
+databaseURL: "https://myproj-default-rtdb.app",
 projectId: "myproj",
 appId: "1:123:web:abc"'></textarea></div>
 <div class="row"><button class="p" onclick="addTenant()">+ প্রজেক্ট যোগ করুন</button></div>
@@ -2132,9 +2133,9 @@ appId: "1:123:web:abc"'></textarea></div>
 
  if(cur==='guide'){if(GV==='guide')return;
   const st='style="background:var(--card);border:1px solid var(--bd);border-radius:14px;padding:12px 14px;margin-bottom:10px"',sm='style="cursor:pointer;font-weight:700;color:var(--gold);font-size:15px"',ol='style="padding-left:20px;line-height:1.9;margin-top:8px"';
-  h=`<div class="cd" style="margin-bottom:10px"><b style="font-size:18px">📖 Master গাইড বই</b><span>নতুন User Admin যোগ করা, নতুন Firebase প্রজেক্ট যোগ করা আর রুলস পাবলিশ করার ধাপগুলো এখানে সাজানো আছে। যেটা দরকার সেটা খুলে ধাপে ধাপে করুন।</span></div>
+  h=`<div class="cd" style="margin-bottom:10px"><b style="font-size:18px">📖 Master গাইড বই</b><span>নতুন User Admin যোগ করা, নতুন সার্ভার প্রজেক্ট যোগ করা আর রুলস পাবলিশ করার ধাপগুলো এখানে সাজানো আছে। যেটা দরকার সেটা খুলে ধাপে ধাপে করুন।</span></div>
 
-<details ${st}><summary ${sm}>১) একই Firebase-এ নতুন User Admin যোগ করা</summary><ol ${ol}>
+<details ${st}><summary ${sm}>১) একই প্রজেক্টে নতুন User Admin যোগ করা</summary><ol ${ol}>
 <li>উপরে <b>User Admins</b> ট্যাবে যান।</li>
 <li>নাম, ইমেইল আর ৬+ অক্ষরের পাসওয়ার্ড লিখে <b>+ নতুন অ্যাডমিন</b> চাপুন।</li>
 <li>ওই ইমেইলে একটা ভেরিফিকেশন মেইল যাবে। admin লিংকে চাপ দিয়ে ইমেইল ভেরিফাই করবে।</li>
@@ -2142,8 +2143,8 @@ appId: "1:123:web:abc"'></textarea></div>
 <li>তালিকায় admin-এর পাশে <b>পাঠান</b> চেপে তাকে ব্যালেন্স দিন (তার ব্যালেন্স না থাকলে সে প্লেয়ারের ডিপোজিট অনুমোদন করতে পারবে না)।</li>
 <li>admin-এর <b>নামে ক্লিক</b> করলে তার সব ফিচার, প্লেয়ার, রিকোয়েস্ট ও লেনদেন কন্ট্রোল করতে পারবেন।</li></ol></details>
 
-<details ${st}><summary ${sm}>২) নতুন ব্যবসার জন্য আলাদা Firebase প্রজেক্ট যোগ করা (শুরু থেকে শেষ)</summary><ol ${ol}>
-<li><b>Firebase প্রজেক্ট বানান:</b> console.firebase.google.com → Add project।</li>
+<details ${st}><summary ${sm}>২) নতুন ব্যবসার জন্য আলাদা সার্ভার প্রজেক্ট যোগ করা (শুরু থেকে শেষ)</summary><ol ${ol}>
+<li><b>নতুন প্রজেক্ট বানান:</b> প্রজেক্ট কনসোল → Add project।</li>
 <li><b>Realtime Database:</b> Build → Realtime Database → Create database (Locked mode বেছে নিন)।</li>
 <li><b>Authentication:</b> Build → Authentication → Get started → Sign-in method → <b>Email/Password</b> চালু করুন।</li>
 <li><b>রুলস:</b> Realtime Database → Rules এ যান। নিচের ৩ নম্বর অংশ থেকে রুলস কপি করে পেস্ট করুন, তারপর <b>Publish</b> চাপুন।</li>
@@ -2151,22 +2152,21 @@ appId: "1:123:web:abc"'></textarea></div>
 <li><b>কনফিগ নিন:</b> Project settings → General → Your apps → Web (&lt;/&gt;) অ্যাপ রেজিস্টার করুন → Config কপি করুন।</li>
 <li><b>Master-এ যোগ:</b> <b>🔥 প্রজেক্টসমূহ</b> ট্যাবে নাম দিয়ে কনফিগ পেস্ট করে যোগ করুন → <b>খুলুন</b> চাপুন → ওই প্রজেক্টের Master ইমেইল-পাসওয়ার্ডে লগইন করুন।</li>
 <li><b>User Admin বানান:</b> ওই প্রজেক্ট খোলা অবস্থায় <b>User Admins</b> ট্যাবে নতুন admin যোগ করুন (১ নম্বরের ধাপ)।</li>
-<li><b>ওই ব্যবসার admin প্যানেল অনলাইনে দিন:</b> নতুন একটা GitHub রিপো বানিয়ে <code>index.html</code> আর <b>ওই প্রজেক্টের নিজস্ব</b> <code>firebase-config.js</code> আপলোড করুন, Settings → Pages চালু করুন। তারপর ওই Firebase-এর Authentication → Settings → Authorized domains এ <code>ইউজারনেম.github.io</code> যোগ করুন।</li>
-<li><b>সতর্কতা:</b> <code>firebase-config.js</code> আপলোড করতে ভুলে গেলে বা ভুল কনফিগ দিলে admin প্যানেল ভুল করে মূল প্রজেক্টে (<code>mostwin88-febbf</code>) যুক্ত হয়ে যাবে। আপলোডের পর লগইন করে নিশ্চিত হয়ে নিন।</li>
+<li><b>ওই ব্যবসার admin প্যানেল অনলাইনে দিন:</b> নতুন হোস্টিং রিপোতে <code>index.html</code> আর <b>ওই প্রজেক্টের নিজস্ব</b> কনফিগ ফাইল আপলোড করুন। তারপর Authentication → Settings → Authorized domains এ আপনার প্যানেলের ডোমেইন যোগ করুন।</li>
+<li><b>সতর্কতা:</b> কনফিগ ফাইল আপলোড করতে ভুলে গেলে বা ভুল কনফিগ দিলে admin প্যানেল ভুল করে মূল প্রজেক্টে যুক্ত হয়ে যাবে। আপলোডের পর লগইন করে নিশ্চিত হয়ে নিন।</li>
 <li>ওই ব্যবসার ইউজার অ্যাপেও একই কনফিগ বসাতে হবে।</li></ol>
-<div style="margin-top:8px;color:var(--mu)"><b>firebase-config.js</b> এর ফরম্যাট (বর্তমান প্রজেক্ট: <code>mostwin88-febbf</code>):</div>
+<div style="margin-top:8px;color:var(--mu)"><b>কনফিগ ফরম্যাট:</b></div>
 <textarea readonly rows="10" onclick="this.select()" style="margin-top:6px;font-family:monospace">window.NP_FIREBASE_CONFIG = {
-  apiKey: "AIzaSyACoy90K8WHdxSU3_KtUiwWNPHGErT0P3w",
-  authDomain: "mostwin88-febbf.firebaseapp.com",
-  databaseURL: "https://mostwin88-febbf-default-rtdb.asia-southeast1.firebasedatabase.app",
-  projectId: "mostwin88-febbf",
-  storageBucket: "mostwin88-febbf.firebasestorage.app",
-  messagingSenderId: "1091271266801",
-  appId: "1:1091271266801:web:0b4da03572189864077450",
-  measurementId: "G-5Q07GB1YD6"
+  apiKey: "YOUR_API_KEY",
+  authDomain: "YOUR_AUTH_DOMAIN",
+  databaseURL: "YOUR_DATABASE_URL",
+  projectId: "YOUR_PROJECT_ID",
+  storageBucket: "YOUR_STORAGE_BUCKET",
+  messagingSenderId: "YOUR_SENDER_ID",
+  appId: "YOUR_APP_ID"
 };</textarea></details>
 
-<details ${st} open><summary ${sm}>৩) Database Rules (প্রতিটা Firebase প্রজেক্টে একই রুলস)</summary>
+<details ${st} open><summary ${sm}>৩) Database Rules (প্রতিটা প্রজেক্টে একই রুলস)</summary>
 <div style="margin-top:8px;line-height:1.8">প্রতিটা নতুন প্রজেক্টে এই রুলসই পেস্ট করবেন, বদলানোর দরকার নেই। পেস্টের আগে ওই প্রজেক্টের পুরনো রুলস (থাকলে) কপি করে রেখে দিন। <b>Master চিনতে রুলসে শুধু একটা ইমেইল বসানো আছে:</b> mijanbabu2015@gmail.com। অন্য ইমেইলকে Master করতে চাইলে রুলসে ওই ইমেইল বদলাতে হবে।</div>
 <div class="row" style="margin-top:8px"><button class="p" onclick="copyRules()">📋 রুলস কপি করুন</button></div>
 <textarea id="rulesTxt" readonly rows="14" onclick="this.select()" style="font-family:monospace;font-size:12px">${esc(RULES_TXT)}</textarea></details>
@@ -2179,8 +2179,8 @@ appId: "1:123:web:abc"'></textarea></div>
 <li><b>উপরের ড্রপডাউন:</b> এক ব্যবসা থেকে অন্য ব্যবসার প্রজেক্টে যাওয়া।</li></ol></details>
 
 <details ${st}><summary ${sm}>৫) সমস্যা হলে</summary><ol ${ol}>
-<li><b>"unauthorized domain" এরর:</b> ওই প্রজেক্টের Authentication → Settings → Authorized domains এ প্যানেলের ডোমেইন (<code>ইউজারনেম.github.io</code>) যোগ করুন।</li>
-<li><b>লগইন হয় না, ঠিকানা file:// দিয়ে শুরু:</b> ফাইল সরাসরি না খুলে GitHub Pages বা অন্য https ঠিকানায় খুলুন।</li>
+<li><b>"unauthorized domain" এরর:</b> Authentication → Settings → Authorized domains এ প্যানেলের ডোমেইন যোগ করুন।</li>
+<li><b>লগইন হয় না, ঠিকানা file:// দিয়ে শুরু:</b> ফাইল সরাসরি না খুলে যেকোনো https ডোমেইনে খুলুন।</li>
 <li><b>"Master অ্যাক্সেস নেই":</b> ওই প্রজেক্টে রুলস পাবলিশ করা আছে কিনা এবং Authentication → Users এ Master ইমেইলের ইউজার আছে কিনা দেখুন।</li>
 <li><b>"permission denied":</b> ওই প্রজেক্টে রুলস পাবলিশ হয়নি বা ভুল ইমেইল দিয়ে লগইন করেছেন।</li>
 <li><b>admin লগইন করতে পারছে না:</b> সে ইমেইল ভেরিফাই করেছে কিনা আর User Admins তালিকায় তার অবস্থা "সক্রিয়" কিনা দেখুন।</li></ol></details>`}

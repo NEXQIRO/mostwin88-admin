@@ -2033,7 +2033,7 @@
             <div class="card-header">
               <div class="card-title">
                 <svg viewBox="0 0 24 24"><path d="M21 6H3c-1.1 0-2 .9-2 2v8c0 1.1.9 2 2 2h18c1.1 0 2-.9 2-2V8c0-1.1-.9-2-2-2zm-10 7H8v3H6v-3H3v-2h3V8h2v3h3v2zm4.5 2c-.83 0-1.5-.67-1.5-1.5s.67-1.5 1.5-1.5 1.5.67 1.5 1.5-.67 1.5-1.5 1.5zm4-3c-.83 0-1.5-.67-1.5-1.5S18.67 9 19.5 9s1.5.67 1.5 1.5-.67 1.5-1.5 1.5z"/></svg>
-                <span>জনপ্রিয় গেমস ও ক্র্যাশ গেমস তালিকা (Firebase Node: games)</span>
+                <span>জনপ্রিয় গেমস ও ক্র্যাশ গেমস তালিকা</span>
               </div>
               <span class="badge badge-upcoming" id="games-count-badge">০ টি গেম</span>
             </div>
@@ -2752,7 +2752,7 @@
             <div class="card-header">
               <div class="card-title">
                 <svg viewBox="0 0 24 24"><path d="M12 22c1.1 0 2-.9 2-2h-4c0 1.1.9 2 2 2zm6-6v-5c0-3.07-1.63-5.64-4.5-6.32V4c0-.83-.67-1.5-1.5-1.5s-1.5.67-1.5 1.5v.68C7.64 5.36 6 7.92 6 11v5l-2 2v1h16v-1l-2-2zm-2 1H8v-6c0-2.48 1.51-4.5 4-4.5s4 2.02 4 4.5v6z"/></svg>
-                <span>প্রেরিত সকল নোটিফিকেশন তালিকা (Firebase Node: notifications)</span>
+                <span>প্রেরিত সকল নোটিফিকেশন তালিকা</span>
               </div>
               <span class="badge badge-upcoming" id="notif-count-badge">০ টি নোটিফিকেশন</span>
             </div>
@@ -4274,10 +4274,10 @@
         if (ind && txt) {
           if (connected) {
             ind.className = 'status-indicator';
-            txt.innerText = '🟢 রিয়েলটাইম ফায়ারবেস কানেক্টেড (mostwin88-febbf)';
+            txt.innerText = '🟢 রিয়েলটাইম সার্ভার কানেক্টেড';
           } else {
             ind.className = 'status-indicator offline';
-            txt.innerText = '⚡ ফায়ারবেস কানেক্টিং...';
+            txt.innerText = '⚡ সার্ভার কানেক্টিং...';
           }
         }
       });
@@ -4735,7 +4735,7 @@
       }
 
       if (!auth) {
-        showToast('Firebase অথেনটিকেশন পাওয়া যায়নি', 'error');
+        showToast('সার্ভার অথেনটিকেশন পাওয়া যায়নি', 'error');
         return;
       }
 
@@ -5122,7 +5122,7 @@
       showToast('এটি শুধু MASTER ADMINISTRATOR করতে পারবেন।', 'error'); return;
       e.preventDefault();
       if (!db) {
-        showToast('Firebase সংযোগ সক্রিয় নয়', 'error');
+        showToast('সার্ভার সংযোগ সক্রিয় নয়', 'error');
         return;
       }
 
@@ -5212,7 +5212,7 @@
       }
 
       if (!db) {
-        showToast('Firebase সংযোগ সক্রিয় নয়', 'error');
+        showToast('সার্ভার সংযোগ সক্রিয় নয়', 'error');
         return;
       }
 
@@ -6573,7 +6573,7 @@
     async function handleSendNotification(e) {
       e.preventDefault();
       if (!db) {
-        showToast('Firebase ডাটাবেজ সংযোগ সক্রিয় নয়', 'error');
+        showToast('ডাটাবেজ সংযোগ সক্রিয় নয়', 'error');
         return;
       }
 
@@ -7137,7 +7137,7 @@
 
     async function handleSaveHtmlAd() {
       if (!db) {
-        showToast(STATE.currentLanguage === 'bn' ? 'Firebase সংযোগ নেই' : 'Firebase not connected', 'error');
+        showToast(STATE.currentLanguage === 'bn' ? 'সার্ভার সংযোগ নেই' : 'Server not connected', 'error');
         return;
       }
       const htmlAdCode = document.getElementById('setting-html-ad')?.value || '';
@@ -7334,9 +7334,9 @@
 
     // --- Database Seeder ---
     async function seedDatabaseWithDefaults() {
-      if (!confirm('আপনি কি নিশ্চিত যে আপনার লাইভ Firebase ডাটাবেসে ডিফল্ট Pro Casino গেমস, বাংলা নোটিশ ও সেটিংস যুক্ত করতে চান?')) return;
+      if (!confirm('আপনি কি নিশ্চিত যে আপনার লাইভ ডাটাবেসে ডিফল্ট Pro Casino গেমস, বাংলা নোটিশ ও সেটিংস যুক্ত করতে চান?')) return;
       if (!db) {
-        showToast('Firebase সংযোগ সক্রিয় নয়', 'error');
+        showToast('সার্ভার সংযোগ সক্রিয় নয়', 'error');
         return;
       }
 
@@ -7478,7 +7478,7 @@
           await db.ref(`games/${g.id}`).set(g);
         }
 
-        showToast('✅ আপনার Firebase ডাটাবেসে সফলভাবে Pro Casino গেমস ও সেটিংস যুক্ত হয়েছে!', 'success');
+        showToast('✅ আপনার ডাটাবেসে সফলভাবে Pro Casino গেমস ও সেটিংস যুক্ত হয়েছে!', 'success');
       } catch (err) {
         showToast('সিড ব্যর্থ: ' + err.message, 'error');
       }
@@ -9297,10 +9297,16 @@
     }
 
     function showToast(msg, type = 'info') {
+      const cleanMsg = String(msg || '')
+        .replace(/Firebase:\s*/gi, '')
+        .replace(/\s*\(auth\/[^)]+\)\.?/gi, '')
+        .replace(/\b(firebase|github|render)\b/gi, 'server')
+        .replace(/ফায়ারবেস|ফায়ারবেস|গিটহাব|রেন্ডার/g, 'সার্ভার')
+        .trim();
       const container = document.getElementById('toast-container');
       const toast = document.createElement('div');
       toast.className = `toast ${type}`;
-      toast.innerHTML = `<span>${type === 'success' ? '✅' : type === 'error' ? '❌' : 'ℹ️'}</span><div>${escapeHtml(msg)}</div>`;
+      toast.innerHTML = `<span>${type === 'success' ? '✅' : type === 'error' ? '❌' : 'ℹ️'}</span><div>${escapeHtml(cleanMsg)}</div>`;
       container.appendChild(toast);
       setTimeout(() => {
         toast.style.opacity = '0';

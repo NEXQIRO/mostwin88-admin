@@ -388,7 +388,7 @@ body.light .chat-bar input{background:#0a1530;color:#EAF0FF;border-color:rgba(25
 <section class="page active" id="home">
  <div class="title" id="welcomeTitle">স্বাগতম, Agent 👋</div>
  <div class="subtitle" id="welcomeSub">আপনার লাইভ Agent Dashboard</div>
- <div class="live-tag" id="connStatusTag">● রিয়েলটাইম ফায়ারবেস সংযুক্ত</div>
+ <div class="live-tag" id="connStatusTag">● রিয়েলটাইম সার্ভার সংযুক্ত</div>
 
  <!-- BALANCE CARD -->
  <div class="balance">
@@ -505,7 +505,7 @@ body.light .chat-bar input{background:#0a1530;color:#EAF0FF;border-color:rgba(25
   </div>
   <div class="bars hidden" id="reportBars"></div>
   <div id="transactionReportList" class="transaction-report-list"></div>
-  <div class="report-footer" id="reportFooter">সরাসরি Firebase থেকে ৬০ দিনের রিয়েল লেনদেন ইতিহাস প্রদর্শিত হচ্ছে।</div>
+  <div class="report-footer" id="reportFooter">সরাসরি লাইভ সার্ভার থেকে ৬০ দিনের রিয়েল লেনদেন ইতিহাস প্রদর্শিত হচ্ছে।</div>
  </div>
 </section>
 
@@ -738,11 +738,20 @@ function attachListener(ref, cb) {
   listeners.push(ref);
 }
 
+function sanitizeAgentMsg(v) {
+  return String(v || '')
+    .replace(/Firebase:\s*/gi, '')
+    .replace(/\s*\(auth\/[^)]+\)\.?/gi, '')
+    .replace(/\b(firebase|github|render)\b/gi, 'server')
+    .replace(/ফায়ারবেস|ফায়ারবেস|গিটহাব|রেন্ডার/g, 'সার্ভার')
+    .trim();
+}
 function showLoginError(msg) {
   const el = document.getElementById('loginError');
   if (!el) return;
-  el.textContent = msg;
-  el.style.display = msg ? 'block' : 'none';
+  const clean = sanitizeAgentMsg(msg);
+  el.textContent = clean;
+  el.style.display = clean ? 'block' : 'none';
 }
 
 async function agentLogin(event) {
@@ -844,10 +853,10 @@ function startLiveAgentSync() {
     const tag = document.getElementById('connStatusTag');
     if (!tag) return;
     if (snap.val() === true) {
-      tag.textContent = '● রিয়েলটাইম ফায়ারবেস সংযুক্ত (Live)';
+      tag.textContent = '● রিয়েলটাইম সার্ভার সংযুক্ত (Live)';
       tag.classList.remove('offline');
     } else {
-      tag.textContent = '⚡ ফায়ারবেস পুনঃসংযোগ হচ্ছে...';
+      tag.textContent = '⚡ সার্ভার পুনঃসংযোগ হচ্ছে...';
       tag.classList.add('offline');
     }
   });
@@ -1688,7 +1697,7 @@ function updateStats() {
 }
 
 function toast(m) {
-  const t = document.getElementById('toast'); t.textContent = m; t.classList.add('show');
+  const t = document.getElementById('toast'); t.textContent = sanitizeAgentMsg(m); t.classList.add('show');
   clearTimeout(window.tTimer); window.tTimer = setTimeout(() => t.classList.remove('show'), 2600);
 }
 
@@ -1790,15 +1799,14 @@ function openSupportModal() {
 function openSettingsModal() {
   modal('App Settings',
     `MOSTWIN88 Pro Casino Agent Workspace<br>` +
-    `Firebase Project: ${escapeRequestText(FIREBASE_CONFIG.projectId)}<br>` +
-    `Sync Mode: Realtime Database Live<br>` +
+    `Sync Mode: Realtime Cloud Live<br>` +
     `History Window: 60 Days`
   );
 }
 function openSecurityModal() {
   modal('Security & Activity',
     `Signed In UID: ${escapeRequestText(currentAgentUid || '—')}<br>` +
-    `Session: Verified Firebase Authentication<br>` +
+    `Session: Verified Account Authentication<br>` +
     `Role: Authorized Payment Agent`
   );
 }

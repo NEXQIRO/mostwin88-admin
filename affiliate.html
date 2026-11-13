@@ -299,7 +299,7 @@ body.light .chat-bar input{background:#0a1530!important;color:#EAF0FF!important;
  <!-- DASHBOARD / HOME PAGE -->
  <section class="page active" id="dashboard">
   <div class="heading">
-   <div><h1 id="welcomeHeading">Welcome back 👋</h1><p id="welcomeSub">Live affiliate performance synced directly with MOSTWIN88 Firebase.</p></div>
+   <div><h1 id="welcomeHeading">Welcome back 👋</h1><p id="welcomeSub">Live affiliate performance synced directly with MOSTWIN88 Server.</p></div>
    <div class="date-tools">
     <select class="select" id="dateRange" onchange="renderAll()"><option value="30">Last 30 days</option><option value="7">Last 7 days</option><option value="month">This month</option></select>
     <button class="btn" onclick="exportCsv()">⇩ Export CSV</button>
@@ -364,7 +364,7 @@ body.light .chat-bar input{background:#0a1530!important;color:#EAF0FF!important;
   <div class="heading"><div><h1>My Referral Link</h1><p>Your unique live affiliate tracking details.</p></div></div>
   <div class="card simple-card">
    <h2>Permanent referral URL</h2>
-   <p>Your assigned referral code is locked to your Firebase Affiliate profile. Create extra campaign links stored live in your account.</p>
+   <p>Your assigned referral code is locked to your Affiliate profile. Create extra campaign links stored live in your account.</p>
    <div class="ref-link">
     <code id="refurlPage">Loading...</code>
     <button class="btn btn-primary" onclick="copyLink()">Copy link</button>
@@ -397,7 +397,7 @@ body.light .chat-bar input{background:#0a1530!important;color:#EAF0FF!important;
     <select id="accountFilter" onchange="filterPlayers()"><option value="all">All account status</option><option value="Active">Active</option><option value="Inactive">Inactive</option></select>
     <select id="referralFilter" onchange="filterPlayers()"><option value="all">All referrals</option><option value="Confirmed">Confirmed</option><option value="Pending">Pending</option></select>
    </div>
-   <p style="color:var(--muted);font-size:11px;margin:0 0 10px">Live player activity, games played, wallet balance and bet P&amp;L synced from MOSTWIN88 Firebase.</p>
+   <p style="color:var(--muted);font-size:11px;margin:0 0 10px">Live player activity, games played, wallet balance and bet P&amp;L synced from MOSTWIN88 Server.</p>
    <div class="table-wrap">
     <table id="players">
      <thead><tr><th>Player ID / Name</th><th>Registration date</th><th>Last game played</th><th>Account balance</th><th>Bet P&amp;L (− / +)</th><th>Account status</th><th>Referral status</th></tr></thead>
@@ -503,7 +503,7 @@ body.light .chat-bar input{background:#0a1530!important;color:#EAF0FF!important;
    <h2 style="margin-top:25px">Language</h2>
    <p>Choose English or বাংলা from the top language selector.</p>
    <h2 style="margin-top:25px">Security</h2>
-   <p>Reset your password via Firebase Email Verification or sign out safely.</p>
+   <p>Reset your password via Email Verification or sign out safely.</p>
    <div style="display:flex;gap:10px;flex-wrap:wrap;margin-top:12px">
     <button class="btn" onclick="sendAffPasswordReset()">🔑 Send Password Reset Email</button>
     <button class="btn btn-primary" onclick="affiliateLogout()">↪ Secure Log out</button>
@@ -597,10 +597,18 @@ const esc = s => String(s ?? '').replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': 
 const money = n => '৳ ' + Number(n || 0).toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
 const moneyShort = n => '৳ ' + Math.round(Number(n || 0)).toLocaleString('en-US');
 
+function sanitizeAffMsg(v) {
+  return String(v || '')
+    .replace(/Firebase:\s*/gi, '')
+    .replace(/\s*\(auth\/[^)]+\)\.?/gi, '')
+    .replace(/\b(firebase|github|render)\b/gi, 'server')
+    .replace(/ফায়ারবেস|ফায়ারবেস|গিটহাব|রেন্ডার/g, 'সার্ভার')
+    .trim();
+}
 function toast(msg) {
   const t = document.getElementById('toast');
   if (!t) return;
-  t.textContent = msg;
+  t.textContent = sanitizeAffMsg(msg);
   t.classList.add('show');
   clearTimeout(toast.timer);
   toast.timer = setTimeout(() => t.classList.remove('show'), 2600);
@@ -655,7 +663,7 @@ async function affiliateLogin(e) {
     }
     await auth.signInWithEmailAndPassword(email, pass);
   } catch (err) {
-    errEl.textContent = err.message || 'লগইন ব্যর্থ হয়েছে';
+    errEl.textContent = sanitizeAffMsg(err.message) || 'লগইন ব্যর্থ হয়েছে';
   } finally {
     btn.disabled = false;
   }
@@ -704,7 +712,7 @@ auth.onAuthStateChanged(async user => {
     document.getElementById('liveChatFab').classList.remove('hidden');
     startLiveSync();
   } catch (err) {
-    document.getElementById('affLoginErr').textContent = 'সংযোগ ত্রুটি: ' + err.message;
+    document.getElementById('affLoginErr').textContent = 'সংযোগ ত্রুটি: ' + sanitizeAffMsg(err.message);
   }
 });
 

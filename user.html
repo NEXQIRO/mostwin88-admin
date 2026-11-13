@@ -1221,10 +1221,18 @@ const MENU = [
 
 const tot = () => Number(S.dep || 0) + Number(S.bon || 0);
 
+function sanitizeUiMsg(v) {
+  return String(v || '')
+    .replace(/Firebase:\s*/gi, '')
+    .replace(/\s*\(auth\/[^)]+\)\.?/gi, '')
+    .replace(/\b(firebase|github|render)\b/gi, 'server')
+    .replace(/ফায়ারবেস|ফায়ারবেস|গিটহাব|রেন্ডার/g, 'সার্ভার')
+    .trim();
+}
 function toast(t) {
   const e = $('#toast');
   if (!e) return;
-  e.textContent = t;
+  e.textContent = sanitizeUiMsg(t);
   e.classList.add('o');
   clearTimeout(toast.t);
   toast.t = setTimeout(() => e.classList.remove('o'), 2500);
@@ -2748,7 +2756,7 @@ if (ibBtn) ibBtn.onclick = async () => { if (dp) { dp.prompt(); await dp.userCho
     } catch (e) {
       setBusy(false);
       const c = (e && e.code) || '';
-      if (E) E.textContent = (c === 'auth/popup-closed-by-user' || c === 'auth/cancelled-popup-request') ? '' : (e.message || 'Google sign-in failed.');
+      if (E) E.textContent = (c === 'auth/popup-closed-by-user' || c === 'auth/cancelled-popup-request') ? '' : (sanitizeUiMsg(e.message) || 'Google sign-in failed.');
     }
   }
 
@@ -2876,7 +2884,7 @@ if (ibBtn) ibBtn.onclick = async () => { if (dp) { dp.prompt(); await dp.userCho
       if (!isMail(v)) return setErr('af_id', 'Enter your registered email address');
       setBusy(true);
       try { await fbAuth.sendPasswordResetEmail(v); setBusy(false); mode = 'login'; render(); toast('Password reset link sent to ' + v); }
-      catch (e) { setBusy(false); setErr('af_id', e.message || 'Reset failed'); }
+      catch (e) { setBusy(false); setErr('af_id', sanitizeUiMsg(e.message) || 'Reset failed'); }
       return;
     }
     if (mode === 'login') {
@@ -2977,7 +2985,7 @@ if (ibBtn) ibBtn.onclick = async () => { if (dp) { dp.prompt(); await dp.userCho
       if (target) go(target);
     } catch (e) {
       setBusy(false);
-      q('#amErr').textContent = (e && e.code === 'auth/email-already-in-use') ? 'This email or mobile is already registered.' : (e.message || 'Sign up failed.');
+      q('#amErr').textContent = (e && e.code === 'auth/email-already-in-use') ? 'This email or mobile is already registered.' : (sanitizeUiMsg(e.message) || 'Sign up failed.');
     }
   }
 
