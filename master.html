@@ -1652,7 +1652,7 @@ async function clearAdminTx(){
   try{await db.ref('adminAuditLogs').push({admin:auth.currentUser.email,action:'CLEAR_ADMIN_TRANSACTIONS',target:'all',details:n+' records deleted',timestamp:Date.now()})}catch(e){}
   toast('সব লেনদেন মুছে ফেলা হয়েছে ✅ ('+n+' টি)')}
  catch(e){toast('ব্যর্থ: '+e.message)}}
-async function toggle(uid){await db.ref(`admins/${uid}/active`).set(ADM[uid].active===false)}
+async function toggle(uid){const nxt=ADM[uid].active===false;await db.ref(`admins/${uid}/active`).set(nxt);await db.ref(`adminLinks/${uid}`).set(nxt).catch(()=>{});}
 async function reauth(){const p=prompt('নিশ্চিত করতে আপনার Master পাসওয়ার্ড দিন:');if(!p)return false;
  try{await auth.currentUser.reauthenticateWithCredential(firebase.auth.EmailAuthProvider.credential(auth.currentUser.email,p));return true}catch(e){toast('পাসওয়ার্ড ভুল');return false}}
 async function approve(id){const r=REQ[id],a=ADM[r.uid];
@@ -1680,6 +1680,7 @@ async function createAdmin(){
    createdAt:TS,
    updatedAt:TS
   });
+  await db.ref('adminLinks/'+cr.user.uid).set(true).catch(()=>{});
   const clean=n.toLowerCase().replace(/[^a-z0-9_]/g,'');
   if(clean){
    try{await db.ref('usernames/'+clean).set({uid:cr.user.uid,email:e,isAdmin:true,role:r,updatedAt:TS})}catch(_u){}
@@ -1708,6 +1709,7 @@ async function grantAdminByUid(){
    verifiedByMaster:true,
    updatedAt:TS
   });
+  await db.ref('adminLinks/'+u).set(true).catch(()=>{});
   await db.ref('users/'+u+'/role').set(r).catch(()=>{});
   try{await db.ref('adminAuditLogs').push({admin:auth.currentUser.email,action:'ADMIN_GRANTED_BY_UID',target:u,details:`Name=${finalName}, Role=${r}`,timestamp:Date.now()})}catch(_l){}
   toast('UID: '+u+' কে সফলভাবে ইউজার অ্যাডমিন পারমিশন দেওয়া হয়েছে ✅');
@@ -1733,6 +1735,7 @@ async function makeAdminFromPlayer(uid){
    createdAt:TS,
    updatedAt:TS
   });
+  await db.ref('adminLinks/'+uid).set(true).catch(()=>{});
   await db.ref('users/'+uid+'/role').set('USER_ADMIN').catch(()=>{});
   try{await db.ref('adminAuditLogs').push({admin:auth.currentUser.email,action:'PLAYER_PROMOTED_TO_ADMIN',target:uid,details:`Name=${n}`,timestamp:Date.now()})}catch(_l){}
   toast(n+' এখন User Admin! সে এডমিন প্যানেলে লগইন করতে পারবে ✅');
@@ -1789,6 +1792,7 @@ async function toggleAgentActive(uid){
  const ag=AGENTS[uid];if(!ag)return;
  const nxt=ag.active===false;
  await db.ref('agents/'+uid).update({active:nxt,status:nxt?'active':'inactive',updatedAt:TS});
+ await db.ref('agentWallets/'+uid).update({active:nxt,parentAdminId:ag.parentAdminId||'',adminUid:ag.parentAdminId||''}).catch(()=>{});
  toast(nxt?'এজেন্ট চালু করা হয়েছে ✅':'এজেন্ট বন্ধ করা হয়েছে ⛔');
 }
 async function approveAgentReq(id){
@@ -1870,6 +1874,8 @@ async function saveAffCommissionMaster(){
   const up={commissionEnabled:en,commissionType:ct,commissionRate:rt,winDeductionPercent:wd,minCommissionPayout:mn,updatedAt:TS};
   if(pa){up.parentAdminId=pa;up.parentAdminName=adm.name||adm.email||pa;}
   await db.ref('affiliates/'+uid).update(up);
+  const af=AFFS[uid]||{};const cd=(af.referralCode||'').trim().toUpperCase();
+  if(cd&&pa){await db.ref('referralCodes/'+cd).update({parentAdminId:pa,adminUid:pa,updatedAt:Date.now()}).catch(()=>{});}
   try{await db.ref('adminAuditLogs').push({admin:auth.currentUser.email,action:'AFF_COMMISSION_UPDATED',target:uid,details:`enabled=${en}, type=${ct}, rate=${rt}%, winDeduct=${wd}%, min=${mn}`,timestamp:Date.now()})}catch(_l){}
   closeAffCommModal();
   toast('স্মার্ট কমিশন সেভ হয়েছে ✅');

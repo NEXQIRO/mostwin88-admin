@@ -823,6 +823,19 @@ auth.onAuthStateChanged(async user => {
   }
 });
 
+let rawDeposits = [];
+let rawWithdrawals = [];
+
+function applyAgentScopeFilters() {
+  const myAdmin = (agentProfile && agentProfile.parentAdminId) || '';
+  deposits = rawDeposits
+    .filter(d => d.assignedAgentId === currentAgentUid || (!d.assignedAgentId && myAdmin && d.adminUid === myAdmin) || d.approvedByAgent === currentAgentUid || d.rejectedByAgent === currentAgentUid)
+    .sort((a, b) => (b.timestamp || b.createdAt || 0) - (a.timestamp || a.createdAt || 0));
+  withdrawals = rawWithdrawals
+    .filter(w => w.assignedAgentId === currentAgentUid || w.completedByAgent === currentAgentUid)
+    .sort((a, b) => (b.timestamp || b.createdAt || 0) - (a.timestamp || a.createdAt || 0));
+}
+
 function startLiveAgentSync() {
   detachListeners();
   if (!currentAgentUid) return;
@@ -855,16 +868,37 @@ function startLiveAgentSync() {
     document.getElementById('profileAvatar').textContent = (agentProfile.name || 'A').charAt(0).toUpperCase();
     document.getElementById('profileName').textContent = agentProfile.name || 'Agent';
     document.getElementById('profileMeta').textContent = (agentProfile.email || currentAgentUid) + ' · Active Agent';
+    // Ensure agentWallets stays synced with parentAdminId & active state
+    db.ref('agentWallets/' + currentAgentUid).once('value').then(ws => {
+      const wv = ws.val();
+      const adm = agentProfile.parentAdminId || '';
+      if (wv && (wv.parentAdminId !== adm || wv.adminUid !== adm || wv.active !== (agentProfile.active !== false))) {
+        db.ref('agentWallets/' + currentAgentUid).update({
+          parentAdminId: adm,
+          adminUid: adm,
+          active: agentProfile.active !== false
+        }).catch(() => {});
+      }
+    }).catch(() => {});
+    applyAgentScopeFilters();
+    renderDeposits();
     renderWallet();
     renderWithdrawals();
+    renderTransactionReport();
   });
 
   // Update lastSeen
   db.ref('agents/' + currentAgentUid + '/lastSeen').set(Date.now()).catch(() => {});
 
-  // 2. Users lookup map
+  // 2. Users lookup map (scoped to this agent's parentAdminId)
   attachListener(db.ref('users'), snap => {
-    usersMap = snap.val() || {};
+    const all = snap.val() || {};
+    const myAdmin = (agentProfile && agentProfile.parentAdminId) || '';
+    const scoped = {};
+    Object.entries(all).forEach(([k, u]) => {
+      if (u && (!myAdmin || !u.adminUid || u.adminUid === myAdmin)) scoped[k] = u;
+    });
+    usersMap = scoped;
     renderDeposits();
     renderWithdrawals();
   });
@@ -872,10 +906,8 @@ function startLiveAgentSync() {
   // 3. Deposit Requests (Assigned to this agent OR unassigned under same parentAdminId)
   attachListener(db.ref('depositRequests'), snap => {
     const val = snap.val() || {};
-    const myAdmin = (agentProfile && agentProfile.parentAdminId) || '';
-    deposits = Object.entries(val).map(([k, v]) => ({ id: k, ...v }))
-      .filter(d => d.assignedAgentId === currentAgentUid || (!d.assignedAgentId && myAdmin && d.adminUid === myAdmin) || d.approvedByAgent === currentAgentUid || d.rejectedByAgent === currentAgentUid)
-      .sort((a, b) => (b.timestamp || b.createdAt || 0) - (a.timestamp || a.createdAt || 0));
+    rawDeposits = Object.entries(val).map(([k, v]) => ({ id: k, ...v }));
+    applyAgentScopeFilters();
     renderDeposits();
     renderTransactionReport();
   });
@@ -883,9 +915,8 @@ function startLiveAgentSync() {
   // 4. Withdrawal Requests assigned to this agent
   attachListener(db.ref('withdrawalRequests'), snap => {
     const val = snap.val() || {};
-    withdrawals = Object.entries(val).map(([k, v]) => ({ id: k, ...v }))
-      .filter(w => w.assignedAgentId === currentAgentUid || w.completedByAgent === currentAgentUid)
-      .sort((a, b) => (b.timestamp || b.createdAt || 0) - (a.timestamp || a.createdAt || 0));
+    rawWithdrawals = Object.entries(val).map(([k, v]) => ({ id: k, ...v }));
+    applyAgentScopeFilters();
     renderWithdrawals();
     renderWallet();
     renderTransactionReport();
@@ -1141,7 +1172,7 @@ function renderWithdrawals() {
     const pl = usersMap[w.uid] || {};
     const pName = w.playerName || pl.name || pl.username || w.uid || '';
     const matchTab = wdFilter === 'All' || (wdFilter === 'Assigned' ? isWithdrawalAssigned(w) : (w.status === 'Completed' || w.status === 'Approved'));
-    const matchQ = !q || [w.id, pName, w.method, w.number || w.receiverNumber, w.uid].join(' ').toLowerCase().includes(q);
+    const matchQ = !q || [w.id, pName, w.method, w.receiverNumber, w.accountNumber, w.number, w.uid].join(' ').toLowerCase().includes(q);
     return matchTab && matchQ;
   });
 
@@ -1149,7 +1180,7 @@ function renderWithdrawals() {
     const st = w.status || 'Assigned';
     const pl = usersMap[w.uid] || {};
     const pName = w.playerName || pl.name || pl.username || w.uid || 'Player';
-    const accNum = w.receiverNumber || w.number || w.account || 'N/A';
+    const accNum = w.receiverNumber || w.accountNumber || w.number || w.account || 'N/A';
     const amt = Number(w.amount) || 0;
     return `
       <div class="card">
@@ -1350,7 +1381,7 @@ function completeWithdrawal(id) {
   openDialog({
     kind: 'ok',
     title: 'উইথড্র পেমেন্ট সম্পন্ন করবেন?',
-    info: [['Request ID', w.id], ['Player', pName], ['Method', w.method || 'bKash'], ['Number', w.receiverNumber || w.number || 'N/A'], ['Wallet থেকে কাটা হবে', formatTaka(amt)]],
+    info: [['Request ID', w.id], ['Player', pName], ['Method', w.method || 'bKash'], ['Number', w.receiverNumber || w.accountNumber || w.number || 'N/A'], ['Wallet থেকে কাটা হবে', formatTaka(amt)]],
     needsTrx: true,
     reasons: null,
     confirmText: '✓ পেমেন্ট সম্পন্ন করুন',
@@ -1523,6 +1554,7 @@ async function persistAgentWallet(enabled, nums, toggles, msg) {
         agentUid: currentAgentUid,
         agentName: agentProfile.name || 'Agent',
         parentAdminId: agentProfile.parentAdminId || '',
+        adminUid: agentProfile.parentAdminId || '',
         enabled: !!enabled,
         active: agentProfile.active !== false,
         numbers: nums,

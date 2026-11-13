@@ -783,15 +783,19 @@ function rebuildMergedConfig() {
 
   Object.assign(CFG, base);
 
-  /* Payment methods from settings / CMS (reset to defaults first so turned-off numbers never linger) */
+  /* Payment methods from User Admin CMS (strictly isolated per User Admin — never leak another admin's numbers) */
   Object.keys(DEFAULT_M).forEach(k => { M[k] = DEFAULT_M[k].slice(); });
   ACTIVE_AGENT_BY_METHOD = {};
 
-  const payLayer = (LIVE_ADMIN_CMS && LIVE_ADMIN_CMS.payments) || (LIVE_GLOBAL_CMS && LIVE_GLOBAL_CMS.payments) || {};
+  const playerAdminUid = (typeof getPlayerAdminUid === 'function') ? getPlayerAdminUid() : '';
+  const payLayer = playerAdminUid
+    ? ((LIVE_ADMIN_CMS && LIVE_ADMIN_CMS.payments) || {})
+    : ((LIVE_GLOBAL_CMS && LIVE_GLOBAL_CMS.payments) || {});
+  const logoLayer = (LIVE_ADMIN_CMS && LIVE_ADMIN_CMS.payments) || (LIVE_GLOBAL_CMS && LIVE_GLOBAL_CMS.payments) || {};
   const setNum = (k, field, logoField) => {
-    const n = payLayer[field] || LIVE_SETTINGS[field];
+    const n = String(payLayer[field] || '').trim();
     if (n) M[k][0] = n;
-    const lg = payLayer[logoField] || LIVE_SETTINGS[logoField];
+    const lg = logoLayer[logoField] || LIVE_SETTINGS[logoField];
     if (lg) M[k][2] = lg;
   };
   setNum('bKash', 'bkashNumber', 'bkashLogo');
@@ -801,18 +805,16 @@ function rebuildMergedConfig() {
   if (payLayer.bankDetails) M.Bank[0] = payLayer.bankDetails;
   if (payLayer.usdtAddress) M.USDT[0] = payLayer.usdtAddress;
 
-  /* Active Agent Self-Managed Wallets (show ONLY when Agent toggles wallet ON) */
-  const playerAdminUid = (typeof S !== 'undefined' && S.adminUid) ? S.adminUid : (typeof getSavedRefAdmin === 'function' ? getSavedRefAdmin() : '');
-  const activeAgentWallets = Object.entries(LIVE_AGENT_WALLETS || {})
-    .map(([uid, w]) => Object.assign({ agentUid: uid }, w || {}))
-    .filter(w => w.active !== false && w.enabled === true && w.numbers && typeof w.numbers === 'object')
-    .filter(w => !playerAdminUid || w.parentAdminId === playerAdminUid || !w.parentAdminId)
-    .sort((a, b) => {
-      const aMatch = playerAdminUid && a.parentAdminId === playerAdminUid ? 1 : 0;
-      const bMatch = playerAdminUid && b.parentAdminId === playerAdminUid ? 1 : 0;
-      if (bMatch !== aMatch) return bMatch - aMatch;
-      return Number(b.updatedAt || 0) - Number(a.updatedAt || 0);
-    });
+  /* Active Agent Self-Managed Wallets (STRICT User-Admin isolation: ONLY players under this User Admin see their Agent's numbers when Agent turns wallet ON) */
+  const activeAgentWallets = playerAdminUid
+    ? Object.entries(LIVE_AGENT_WALLETS || {})
+        .map(([uid, w]) => Object.assign({ agentUid: uid }, w || {}))
+        .filter(w => {
+          const wAdm = w.parentAdminId || w.adminUid || '';
+          return w.active !== false && w.enabled === true && w.numbers && typeof w.numbers === 'object' && !!wAdm && wAdm === playerAdminUid;
+        })
+        .sort((a, b) => Number(b.updatedAt || 0) - Number(a.updatedAt || 0))
+    : [];
 
   ['bKash', 'Nagad', 'Rocket', 'Upay'].forEach(method => {
     for (const w of activeAgentWallets) {
@@ -847,6 +849,13 @@ function rebuildMergedConfig() {
       if (m && m.querySelector('.car')) {
         const nbEl = m.querySelector('.nbt span');
         if (nbEl) nbEl.textContent = CFG.notice;
+      }
+    } else if (cur === 'dep') {
+      const pi = document.getElementById('pi');
+      if (pi && typeof pay !== 'undefined' && typeof pinfo === 'function') {
+        pi.innerHTML = pinfo(pay);
+      } else {
+        go(cur);
       }
     } else if (cur !== 'home') {
       go(cur);
@@ -970,9 +979,10 @@ function bindUserListeners(uid) {
     }
     if (S.code) {
       fbDb.ref('referralCodes/' + S.code).once('value').then(rcS => {
-        if (!rcS.exists()) {
-          fbDb.ref('referralCodes/' + S.code).set({
-            uid, role: 'USER', adminUid: u.adminUid || '', affiliateUid: u.affiliateUid || '', createdAt: Date.now()
+        const curRc = rcS.val();
+        if (!rcS.exists() || (u.adminUid && curRc && curRc.adminUid !== u.adminUid)) {
+          fbDb.ref('referralCodes/' + S.code).update({
+            uid, role: 'USER', adminUid: u.adminUid || '', affiliateUid: u.affiliateUid || '', createdAt: (curRc && curRc.createdAt) || Date.now(), updatedAt: Date.now()
           }).catch(() => {});
         }
       }).catch(() => {});
@@ -1003,12 +1013,13 @@ function bindUserListeners(uid) {
     S.claimedPromos = u.claimedPromos || {};
     S.securityPrefs = Object.assign({twoFactor:true,loginAlerts:true,biometric:false}, u.securityPrefs || {});
     S.responsibleGaming = Object.assign({dailyLimit:false,sessionReminder:true,selfExclusion:false}, u.responsibleGaming || {});
-    bindAdminCmsListener(S.adminUid || getSavedRefAdmin());
+    bindAdminCmsListener(getPlayerAdminUid());
     rebuildMergedConfig();
     updBal();
     if (window.mwUpdateHeaderUser) window.mwUpdateHeaderUser();
     if (['wallet', 'dep', 'wd', 'vip', 'bonus', 'promo', 'home'].includes(cur) && !pe && !vk) {
       if (cur === 'home') { const h = document.querySelector('#hbal b'); if (h) h.textContent = f(tot()); }
+      else if (cur === 'dep') { const pi = document.getElementById('pi'); if (pi && typeof pay !== 'undefined') pi.innerHTML = pinfo(pay); }
       else go(cur);
     }
   });
@@ -1111,10 +1122,14 @@ function updateNotifBadge() {
 function getSavedRefAdmin() {
   try { return localStorage.getItem('mw_ref_admin') || ''; } catch (e) { return ''; }
 }
+function getPlayerAdminUid() {
+  if (typeof S !== 'undefined' && S && S.uid) return S.adminUid || '';
+  return getSavedRefAdmin();
+}
 
 function getActiveDepositPromos() {
   const t = Date.now();
-  const adm = S.adminUid || getSavedRefAdmin();
+  const adm = getPlayerAdminUid();
   return Object.entries(LIVE_DEPOSIT_PROMOS || {}).map(([id, p]) => Object.assign({id}, p || {})).filter(p => {
     if (!p.active) return false;
     if (p.startAt && t < Number(p.startAt)) return false;
@@ -1549,7 +1564,8 @@ function pinfo(m) {
   const n = M[m][0], logoUrl = M[m][2] || '';
   const ag = ACTIVE_AGENT_BY_METHOD[m] || null;
   const hasCopyable = n && !n.startsWith('Contact Live Chat') && !n.startsWith('Ask Support');
-  return `<div class="pinfo"><div class="row sp"><div style="min-width:0"><div class="sub">${logoUrl?`<img src="${imgUrl(logoUrl)}" alt="" style="height:18px;vertical-align:middle;margin-right:6px">`:''}${m} ${mob(m)?'Agent Number':'Details'}${ag?` <span style="display:inline-block;margin-left:6px;padding:1px 7px;border-radius:99px;background:rgba(0,230,118,.15);color:#00E676;font-size:10px;font-weight:700">● Live Agent</span>`:''}</div><b style="word-break:break-all">${esc(n)}</b></div>${hasCopyable?`<button class="btn bgold sm" onclick="copyText('${esc(n)}','Copied')">Copy</button>`:''}</div><ol><li>Open your ${mob(m)?m+' app':'payment app'} and choose ${M[m][1]}.</li><li>Send the amount to the details above.</li><li>Copy the Transaction ID (TrxID).</li><li>Enter the details below and submit.</li></ol></div>`;
+  const displayNum = hasCopyable ? n : (mob(m) ? 'Agent wallet is currently OFF — Contact Live Chat' : n);
+  return `<div class="pinfo"><div class="row sp"><div style="min-width:0"><div class="sub">${logoUrl?`<img src="${imgUrl(logoUrl)}" alt="" style="height:18px;vertical-align:middle;margin-right:6px">`:''}${m} ${mob(m)?'Agent Number':'Details'}${ag?` <span style="display:inline-block;margin-left:6px;padding:1px 7px;border-radius:99px;background:rgba(0,230,118,.15);color:#00E676;font-size:10px;font-weight:700">● Live Agent</span>`:''}</div><b style="word-break:break-all;${hasCopyable?'':'color:#8E9BB8;font-size:12px'}">${esc(displayNum)}</b></div>${hasCopyable?`<button class="btn bgold sm" onclick="copyText('${esc(n)}','Copied')">Copy</button>`:''}</div><ol><li>Open your ${mob(m)?m+' app':'payment app'} and choose ${M[m][1]}.</li><li>Send the amount to the details above.</li><li>Copy the Transaction ID (TrxID).</li><li>Enter the details below and submit.</li></ol></div>`;
 }
 function selPay(m) { pay = m; document.querySelectorAll('#pm .chip').forEach(c => c.classList.toggle('s', c.textContent === m)); $('#pi').innerHTML = pinfo(m); $('#sl').textContent = mob(m) ? 'Your ' + m + ' number' : 'Sender account or wallet'; }
 function selWm(m) { wm = m; document.querySelectorAll('#wm .chip').forEach(c => c.classList.toggle('s', c.textContent === m)); $('#wf').innerHTML = wfields(m); }
@@ -1576,8 +1592,7 @@ async function dep() {
   const promoName = selBo ? (selBo.dataset.pname || '') : '';
   const btn = $('#depBtn'); if (btn) { btn.disabled = true; btn.textContent = 'Submitting...'; }
   try {
-    const adminUid = S.adminUid || getSavedRefAdmin() || '';
-    if (S.uid && S.adminUid === undefined) await fbDb.ref('users/' + S.uid + '/adminUid').set(adminUid);
+    const adminUid = getPlayerAdminUid();
     const activeAg = ACTIVE_AGENT_BY_METHOD[pay] || null;
     const reqRef = fbDb.ref('depositRequests').push();
     const payload = {
@@ -1636,7 +1651,7 @@ async function wd() {
       if (btn) { btn.disabled = false; btn.textContent = 'Request Withdrawal'; }
       return toast('Insufficient balance');
     }
-    const adminUid = S.adminUid || getSavedRefAdmin() || '';
+    const adminUid = getPlayerAdminUid();
     const reqRef = fbDb.ref('withdrawalRequests').push();
     const accountDetails = wm === 'Bank' ? ($('#wb').value.trim() + ' · ' + $('#wh').value.trim() + ' · ' + n) : n;
     await reqRef.set({
@@ -1646,7 +1661,9 @@ async function wd() {
       userPhone: S.mob || n,
       method: wm,
       amount: v,
+      receiverNumber: accountDetails,
       accountNumber: accountDetails,
+      currentBalance: Number(txRes.snapshot.val() || 0),
       status: 'Pending',
       adminUid: adminUid,
       affiliateUid: S.affiliateUid || '',
@@ -1928,7 +1945,7 @@ if (ibBtn) ibBtn.onclick = async () => { if (dp) { dp.prompt(); await dp.userCho
       userId: S.uid,
       userName: state.name || S.name || 'Player',
       phone: state.phone || S.mob || '',
-      adminUid: S.adminUid || getSavedRefAdmin() || '',
+      adminUid: getPlayerAdminUid(),
       lastMessage: lastMsg,
       lastSender: 'USER',
       unreadForAdmin: true,
@@ -2607,10 +2624,6 @@ if (ibBtn) ibBtn.onclick = async () => { if (dp) { dp.prompt(); await dp.userCho
       const savedAdm = LS('mw_ref_admin');
       if (savedAdm && LIVE_ADMIN_LINKS[savedAdm] === true) adminUid = savedAdm;
     }
-    if (!adminUid && LIVE_ADMIN_LINKS) {
-      const firstActive = Object.keys(LIVE_ADMIN_LINKS).find(k => LIVE_ADMIN_LINKS[k] === true);
-      if (firstActive) adminUid = firstActive;
-    }
     return { adminUid: adminUid || '', affiliateUid: affiliateUid || '', referredBy, referredByCode };
   }
 
@@ -2705,9 +2718,10 @@ if (ibBtn) ibBtn.onclick = async () => { if (dp) { dp.prompt(); await dp.userCho
   window.mwUpdateHeaderUser = ui;
 
   async function logout() {
+    guestState();
     unbindUserListeners();
     try { await fbAuth.signOut(); } catch (e) {}
-    guestState();
+    rebuildMergedConfig();
     ui();
     go('home');
     toast('Logged out');
@@ -3040,19 +3054,26 @@ if (ibBtn) ibBtn.onclick = async () => { if (dp) { dp.prompt(); await dp.userCho
   const urlRefCode = extractRefFromUrl();
   if (urlRefCode) {
     LS('mw_ref', urlRefCode);
+    LS('mw_ref_admin', null);
     if (fbDb) {
-      fbDb.ref('referralCodes/' + urlRefCode.toUpperCase()).once('value').then(s => {
-        const rc = s.val();
-        if (rc && (rc.adminUid || rc.parentAdminId || rc.role === 'ADMIN')) {
-          const adm = rc.adminUid || rc.parentAdminId || rc.uid;
-          LS('mw_ref_admin', adm);
-          if (!S.uid) bindAdminCmsListener(adm);
+      Promise.all([
+        fbDb.ref('referralCodes/' + urlRefCode.toUpperCase()).once('value').catch(() => null),
+        fbDb.ref('referralCodes/' + urlRefCode).once('value').catch(() => null),
+        fbDb.ref('adminLinks/' + urlRefCode).once('value').catch(() => null)
+      ]).then(([rcUp, rcExact, alSnap]) => {
+        const rc = (rcUp && rcUp.val()) || (rcExact && rcExact.val()) || null;
+        let adm = '';
+        if (rc) {
+          adm = rc.adminUid || rc.parentAdminId || (rc.role === 'ADMIN' ? rc.uid : '') || '';
+        } else if (alSnap && alSnap.val() === true) {
+          adm = urlRefCode;
         }
-      }).catch(() => {});
-      fbDb.ref('adminLinks/' + urlRefCode).once('value').then(s => {
-        if (s.val() === true) {
-          LS('mw_ref_admin', urlRefCode);
-          if (!S.uid) bindAdminCmsListener(urlRefCode);
+        if (adm) {
+          LS('mw_ref_admin', adm);
+          if (!S.uid) {
+            bindAdminCmsListener(adm);
+            rebuildMergedConfig();
+          }
         }
       }).catch(() => {});
     }
@@ -3079,8 +3100,9 @@ if (ibBtn) ibBtn.onclick = async () => { if (dp) { dp.prompt(); await dp.userCho
           toast('Referral code ' + urlRefCode + ' applied');
         }
       } else {
-        unbindUserListeners();
         guestState();
+        unbindUserListeners();
+        rebuildMergedConfig();
         ui();
         if (!document.querySelector('#m .screen')) go(cur || 'home');
         else { nav(); updBal(); hdr(); }

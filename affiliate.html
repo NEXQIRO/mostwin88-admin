@@ -729,6 +729,18 @@ function startLiveSync() {
     const v = snap.val() || {};
     MY_PROF = { id: MY_UID, ...v };
     CAMPAIGNS = v.campaigns ? Object.entries(v.campaigns).map(([k, c]) => ({ id: k, ...c })).sort((a, b) => (b.createdAt || 0) - (a.createdAt || 0)) : [];
+    const afCode = String(v.referralCode || '').trim().toUpperCase();
+    if (afCode) {
+      db.ref('referralCodes/' + afCode).once('value').then(rcS => {
+        const rc = rcS.val();
+        const pa = v.parentAdminId || '';
+        if (!rc || rc.uid !== MY_UID || rc.adminUid !== pa || rc.parentAdminId !== pa || rc.affiliateUid !== MY_UID) {
+          db.ref('referralCodes/' + afCode).set({
+            uid: MY_UID, role: 'AFFILIATE', affiliateUid: MY_UID, parentAdminId: pa, adminUid: pa, active: v.active !== false, updatedAt: Date.now()
+          }).catch(() => {});
+        }
+      }).catch(() => {});
+    }
     renderProfile();
     renderCampaigns();
     renderAll();
@@ -776,12 +788,15 @@ function getRefUrl() {
 
 function getReferredPlayers() {
   const code = String((MY_PROF && MY_PROF.referralCode) || '').toLowerCase();
+  const myAdmin = (MY_PROF && MY_PROF.parentAdminId) || '';
   const out = [];
   Object.entries(ALL_USERS).forEach(([uid, u]) => {
     if (!u || typeof u !== 'object') return;
+    if (myAdmin && u.adminUid && u.adminUid !== myAdmin) return;
     const match = (u.affiliateId && u.affiliateId === MY_UID) ||
+      (u.affiliateUid && u.affiliateUid === MY_UID) ||
       (u.referredBy && u.referredBy === MY_UID) ||
-      (code && String(u.referralCode || u.promoCode || u.referredByCode || '').toLowerCase() === code);
+      (code && String(u.affCode || u.referredByCode || u.promoCode || '').toLowerCase() === code);
     if (match) out.push({ uid, ...u });
   });
   out.sort((a, b) => (b.createdAt || 0) - (a.createdAt || 0));

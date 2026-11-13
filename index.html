@@ -4406,21 +4406,27 @@
         console.warn('Game transactions listener notice:', err);
       });
 
-      // 6c. Agents & Agent Balance Requests (Live Agent App Sync)
+      // 6c. Agents & Agent Balance Requests (Live Agent App Sync — Strictly scoped to this User Admin)
       db.ref('agents').on('value', (snap) => {
         const val = snap.val() || {};
         const me = npMyUid();
         STATE.agents = Object.keys(val).map(k => ({ id: k, ...val[k] }))
-          .filter(a => !me || !a.parentAdminId || a.parentAdminId === me);
+          .filter(a => !!me && a.parentAdminId === me);
         renderAgents();
         renderWallet();
+        try { if (typeof renderNpcPeerBar === 'function') renderNpcPeerBar(); } catch (e) {}
       }, (err) => { console.warn('Agents listener notice:', err); });
+
+      db.ref('agentWallets').on('value', (snap) => {
+        STATE.agentWallets = snap.val() || {};
+        renderAgents();
+      }, (err) => { console.warn('Agent wallets listener notice:', err); });
 
       db.ref('agentBalanceRequests').on('value', (snap) => {
         const val = snap.val() || {};
         const me = npMyUid();
         STATE.agentBalanceRequests = Object.keys(val).map(k => ({ id: k, ...val[k] }))
-          .filter(r => !me || !r.parentAdminId || r.parentAdminId === me)
+          .filter(r => !!me && r.parentAdminId === me)
           .reverse();
         const pendCnt = STATE.agentBalanceRequests.filter(r => String(r.status || '').toLowerCase() === 'pending').length;
         const bEl = document.getElementById('sidebar-agent-req-badge');
@@ -4428,12 +4434,12 @@
         renderAgents();
       }, (err) => { console.warn('Agent balance requests listener notice:', err); });
 
-      // 6d. Affiliates & Commission Requests (Live Affiliate Panel Sync)
+      // 6d. Affiliates & Commission Requests (Live Affiliate Panel Sync — Strictly scoped to this User Admin)
       db.ref('affiliates').on('value', (snap) => {
         const val = snap.val() || {};
         const me = npMyUid();
         STATE.affiliates = Object.keys(val).map(k => ({ id: k, ...val[k] }))
-          .filter(af => !me || !af.parentAdminId || af.parentAdminId === me);
+          .filter(af => !!me && af.parentAdminId === me);
         renderAffiliates();
         try { if (typeof renderNpcPeerBar === 'function') renderNpcPeerBar(); } catch (e) {}
       }, (err) => { console.warn('Affiliates listener notice:', err); });
@@ -4442,7 +4448,7 @@
         const val = snap.val() || {};
         const me = npMyUid();
         STATE.affiliateCommissionRequests = Object.keys(val).map(k => ({ id: k, ...val[k] }))
-          .filter(r => !me || !r.parentAdminId || r.parentAdminId === me)
+          .filter(r => !!me && r.parentAdminId === me)
           .reverse();
         const pendCnt = STATE.affiliateCommissionRequests.filter(r => String(r.status || '').toLowerCase() === 'pending').length;
         const bEl = document.getElementById('sidebar-aff-req-badge');
@@ -4810,6 +4816,7 @@
     }
     function completeLogin(email, uid) {
       STATE.adminUser = { uid, email, role: 'USER_ADMIN' };
+      if (db && uid) db.ref('adminLinks/' + uid).set(true).catch(() => {});
       attachMyBalance(uid);
       attachFeatureFlags();
       try { attachPromotions(); } catch (e) { console.warn('Promotions:', e); }
@@ -5889,7 +5896,7 @@
           <td><small style="font-family:monospace;">${w.id || 'WTH'}</small></td>
           <td><b>${escapeHtml(w.userName || 'Player')}</b><br><small style="color:var(--text-dim);">${w.uid}</small>${w.assignedAgentName ? `<div style="margin-top:2px;"><span class="badge badge-upcoming" style="font-size:0.68rem;">🤝 এজেন্ট: ${escapeHtml(w.assignedAgentName)}</span></div>` : ''}</td>
           <td><span class="badge badge-upcoming">${w.method}</span></td>
-          <td style="font-family:monospace;">${escapeHtml(w.receiverNumber)}</td>
+          <td style="font-family:monospace;">${escapeHtml(w.receiverNumber || w.accountNumber || w.number || '—')}</td>
           <td><b style="color:var(--accent); font-size:1.05rem; font-family:var(--font-display);">৳ ${w.amount}</b></td>
           <td>
             <div style="font-weight:600;">ব্যালেন্স: ৳ ${w.currentBalance || 0}</div>
@@ -6951,18 +6958,31 @@
       const minWithdraw = parseFloat(document.getElementById('setting-min-withdraw').value);
 
       try {
-        await db.ref('settings').update({
-          bkashNumber,
-          nagadNumber,
-          rocketNumber,
-          bkashLogo,
-          nagadLogo,
-          rocketLogo,
-          minDeposit,
-          minWithdraw
-        });
+        const me = npMyUid();
+        if (me) {
+          await db.ref('userPanelConfig/byAdmin/' + me + '/payments').update({
+            bkashNumber,
+            nagadNumber,
+            rocketNumber,
+            bkashLogo,
+            nagadLogo,
+            rocketLogo
+          });
+          await db.ref('settings').update({ minDeposit, minWithdraw }).catch(() => {});
+        } else {
+          await db.ref('settings').update({
+            bkashNumber,
+            nagadNumber,
+            rocketNumber,
+            bkashLogo,
+            nagadLogo,
+            rocketLogo,
+            minDeposit,
+            minWithdraw
+          });
+        }
         recordAuditLog('SETTINGS_PAYMENT_UPDATE', 'PAYMENT_CONFIG', 'Deposit numbers, logos & limits updated');
-        showToast('পেমেন্ট নাম্বার ও লোগো সেটিংস সফলভাবে সেভ হয়েছে!', 'success');
+        showToast('পেমেন্ট নাম্বার ও লোগো শুধু আপনার ইউজার প্যানেলের জন্য সেভ হয়েছে!', 'success');
       } catch (err) {
         showToast('সেভ ব্যর্থ: ' + err.message, 'error');
       }
@@ -8649,13 +8669,19 @@
       }
 
       if (agBody) {
+        const awMap = STATE.agentWallets || {};
         agBody.innerHTML = agents.length ? agents.map(a => {
           const isAct = a.active !== false && a.status !== 'suspended';
-          const pm = a.paymentNumbers || {};
-          const pmTxt = [pm.bKash ? 'bKash: ' + pm.bKash : '', pm.Nagad ? 'Nagad: ' + pm.Nagad : '', pm.Rocket ? 'Rocket: ' + pm.Rocket : ''].filter(Boolean).join(' | ') || (a.phone || '—');
+          const wEntry = awMap[a.id] || {};
+          const walletOn = (wEntry.enabled !== undefined ? wEntry.enabled === true : a.walletEnabled === true) && isAct;
+          const pm = wEntry.numbers || a.paymentNumbers || {};
+          const pmTxt = [pm.bKash ? 'bKash: ' + pm.bKash : '', pm.Nagad ? 'Nagad: ' + pm.Nagad : '', pm.Rocket ? 'Rocket: ' + pm.Rocket : '', pm.Upay ? 'Upay: ' + pm.Upay : ''].filter(Boolean).join(' | ') || (a.phone || '—');
           return `<tr>
             <td><b>${escapeHtml(a.name || 'Agent')}</b><br><small style="color:var(--text-dim);">${escapeHtml(a.email || a.id)}</small></td>
-            <td style="font-size:0.8rem; font-family:monospace;">${escapeHtml(pmTxt)}</td>
+            <td style="font-size:0.8rem; font-family:monospace;">
+              <div>${escapeHtml(pmTxt)}</div>
+              <div style="margin-top:4px;"><span class="badge ${walletOn ? 'badge-approved' : 'badge-rejected'}" style="font-size:0.7rem;">${walletOn ? '🟢 Wallet ON (শুধু আপনার ইউজাররা দেখছে)' : '🔴 Wallet OFF'}</span></div>
+            </td>
             <td><b style="color:var(--primary); font-size:1.05rem;">৳ ${Math.round(a.balance || 0).toLocaleString('en-US')}</b></td>
             <td style="font-size:0.8rem;">
               <span style="color:#10b981;">ড: ৳${Math.round(a.totalProcessedDeposits || 0)}</span> •
@@ -8771,6 +8797,7 @@
       const next = !(a.active !== false && a.status !== 'suspended');
       try {
         await db.ref('agents/' + agentId).update({ active: next, status: next ? 'active' : 'suspended', updatedAt: firebase.database.ServerValue.TIMESTAMP });
+        await db.ref('agentWallets/' + agentId).update({ active: next, parentAdminId: a.parentAdminId || npMyUid() || '', adminUid: a.parentAdminId || npMyUid() || '' }).catch(() => {});
         recordAuditLog('AGENT_STATUS', agentId, next ? 'ACTIVATED' : 'SUSPENDED');
         showToast(next ? 'এজেন্ট সক্রিয় করা হয়েছে ✅' : 'এজেন্ট স্থগিত করা হয়েছে ⛔', 'info');
       } catch (err) { showToast('ব্যর্থ: ' + err.message, 'error'); }
@@ -8852,7 +8879,7 @@
         afBody.innerHTML = affs.length ? affs.map(af => {
           const isAct = af.active !== false && af.status !== 'suspended';
           const cOn = af.commissionEnabled !== false;
-          const refCnt = usersList.filter(u => u && (u.referredBy === af.id || u.affiliateUid === af.id || (af.referralCode && String(u.affCode || '').toUpperCase() === String(af.referralCode).toUpperCase()))).length;
+          const refCnt = usersList.filter(u => u && (u.referredBy === af.id || u.affiliateUid === af.id || u.affiliateId === af.id || (af.referralCode && String(u.affCode || u.referredByCode || '').toUpperCase() === String(af.referralCode).toUpperCase()))).length;
           const wdPct = Number(af.winDeductionPercent || 0);
           const wdBadge = (wdPct > 0 || af.commissionType === 'profit_share') ? ` · জিতলে −${wdPct}%` : '';
           return `<tr>
