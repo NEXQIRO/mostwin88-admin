@@ -1678,6 +1678,12 @@
               <span id="sidebar-master-chat-badge" style="display:none; margin-left:auto; background:#ef4444; color:#fff; border-radius:10px; padding:1px 6px; font-size:0.68rem; font-weight:800;">0</span>
             </button>
           </li>
+          <li class="nav-item" data-view="view-userpanel">
+          <button onclick="switchView('view-userpanel')">
+            <svg viewBox="0 0 24 24"><path d="M17 1.01L7 1c-1.1 0-2 .9-2 2v18c0 1.1.9 2 2 2h10c1.1 0 2-.9 2-2V3c0-1.1-.9-1.99-2-1.99zM17 19H7V5h10v14z"/></svg>
+            <span class="nav-label">ইউজার প্যানেল কন্ট্রোল</span>
+          </button>
+        </li>
           <li class="nav-item" data-view="view-settings">
           <button onclick="switchView('view-settings')">
             <svg viewBox="0 0 24 24"><path d="M19.14 12.94c.04-.3.06-.61.06-.94 0-.32-.02-.64-.07-.94l2.03-1.58c.18-.14.23-.41.12-.61l-1.92-3.32c-.12-.22-.37-.29-.59-.22l-2.39.96c-.5-.38-1.03-.7-1.62-.94l-.36-2.54c-.04-.24-.24-.41-.48-.41h-3.84c-.24 0-.43.17-.47.41l-.36 2.54c-.59.24-1.13.57-1.62.94l-2.39-.96c-.22-.08-.47 0-.59.22L2.74 8.87c-.12.21-.08.47.12.61l2.03 1.58c-.05.3-.09.63-.09.94s.02.64.07.94l-2.03 1.58c-.18.14-.23.41-.12.61l1.92 3.32c.12.22.37.29.59.22l2.39-.96c.5.38 1.03.7 1.62.94l.36 2.54c.05.24.24.41.48.41h3.84c.24 0 .44-.17.47-.41l.36-2.54c.59-.24 1.13-.56 1.62-.94l2.39.96c.22.08.47 0 .59-.22l1.92-3.32c.12-.22.07-.47-.12-.61l-2.01-1.58zM12 15.6c-1.98 0-3.6-1.62-3.6-3.6s1.62-3.6 3.6-3.6 3.6 1.62 3.6 3.6-1.62 3.6-3.6 3.6z"/></svg>
@@ -3310,6 +3316,103 @@
           </div>
         </section>
 
+        <!-- ==================== USER PANEL LIVE CONTROL (user.html CMS & Providers) ==================== -->
+        <section id="view-userpanel" class="view-section">
+          <div class="card accent-border" style="margin-bottom: 18px;">
+            <div style="display:flex; align-items:center; justify-content:space-between; flex-wrap:wrap; gap:12px;">
+              <div>
+                <h3 style="margin:0 0 4px; color:var(--primary); font-size:1.05rem;">📱 ইউজার প্যানেল (user.html) লাইভ কন্ট্রোল ও প্রোভাইডার</h3>
+                <p style="margin:0; font-size:0.82rem; color:var(--text-dim);">আপনার ইউজার প্যানেলের নোটিশ, ট্যাগলাইন, সাপোর্ট লিংক, পেমেন্ট নম্বর, স্লাইডার ও গেম প্রোভাইডার রিয়েল-টাইমে নিয়ন্ত্রণ করুন।</p>
+              </div>
+              <div style="display:flex; gap:10px; flex-wrap:wrap; align-items:center;">
+                <a id="ua-up-open-link" href="user.html" target="_blank" class="btn btn-outline btn-sm">↗ ইউজার প্যানেল খুলুন</a>
+                <button type="button" class="btn btn-primary" onclick="saveUserPanelConfigAdmin()">💾 সেভ ও পাবলিশ করুন</button>
+              </div>
+            </div>
+          </div>
+
+          <div style="display:grid; grid-template-columns:repeat(auto-fit, minmax(290px, 1fr)); gap:16px; margin-bottom:16px;">
+            <div class="card">
+              <div class="card-header"><div class="card-title"><span>📢 ব্র্যান্ড, নোটিশ ও মেইনটেন্যান্স</span></div></div>
+              <div style="display:flex; flex-direction:column; gap:10px;">
+                <div class="form-group">
+                  <label>ব্র্যান্ড ট্যাগলাইন (Logo Tagline)</label>
+                  <input type="text" id="ua-up-tag" class="form-control" placeholder="PLAY BIG, WIN BIGGER">
+                </div>
+                <div class="form-group">
+                  <label>হোম পেজ চলমান নোটিশ (Marquee)</label>
+                  <textarea id="ua-up-notice" class="form-control" rows="3" placeholder="স্বাগতম MOSTWIN88-এ..."></textarea>
+                </div>
+                <label style="display:flex; align-items:center; gap:8px; cursor:pointer; font-size:0.85rem;">
+                  <input type="checkbox" id="ua-up-maint" style="width:auto;"> ইউজার প্যানেল মেইনটেন্যান্স মোড (সাইট সাময়িক বন্ধ)
+                </label>
+                <div class="form-group">
+                  <label>মেইনটেন্যান্স মেসেজ</label>
+                  <input type="text" id="ua-up-maint-msg" class="form-control" placeholder="সিস্টেম আপগ্রেড চলছে...">
+                </div>
+              </div>
+            </div>
+
+            <div class="card">
+              <div class="card-header"><div class="card-title"><span>💬 সাপোর্ট ও পেমেন্ট ওভাররাইড</span></div></div>
+              <div style="display:flex; flex-direction:column; gap:10px;">
+                <div class="form-row">
+                  <div class="form-group"><label>WhatsApp লিংক/নম্বর</label><input type="text" id="ua-up-wa" class="form-control" placeholder="+8801..."></div>
+                  <div class="form-group"><label>Telegram লিংক</label><input type="text" id="ua-up-tg" class="form-control" placeholder="https://t.me/..."></div>
+                </div>
+                <div class="form-group">
+                  <label>সাপোর্ট অফিসারের ছবির URL (প্রতি লাইনে একটি)</label>
+                  <textarea id="ua-up-officers" class="form-control" rows="2" placeholder="https://..."></textarea>
+                </div>
+                <div class="form-row">
+                  <div class="form-group"><label>bKash নম্বর</label><input type="text" id="ua-up-bk" class="form-control" placeholder="017..."></div>
+                  <div class="form-group"><label>Nagad নম্বর</label><input type="text" id="ua-up-ng" class="form-control" placeholder="018..."></div>
+                </div>
+                <div class="form-row">
+                  <div class="form-group"><label>Rocket নম্বর</label><input type="text" id="ua-up-rk" class="form-control" placeholder="019..."></div>
+                  <div class="form-group"><label>Upay নম্বর</label><input type="text" id="ua-up-up" class="form-control" placeholder="016..."></div>
+                </div>
+                <div class="form-row">
+                  <div class="form-group"><label>Bank ডিটেইলস (ঐচ্ছিক)</label><input type="text" id="ua-up-bnk" class="form-control" placeholder="Bank A/C..."></div>
+                  <div class="form-group"><label>USDT TRC20 ঠিকানা</label><input type="text" id="ua-up-usdt" class="form-control" placeholder="T..."></div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="card" style="margin-bottom:16px;">
+            <div class="card-header"><div class="card-title"><span>🎨 হিরো স্লাইডার, স্পেশাল অফার ও ফুটার (JSON — খালি রাখলে ডিফল্ট থাকবে)</span></div></div>
+            <div style="display:grid; grid-template-columns:repeat(auto-fit, minmax(240px, 1fr)); gap:12px;">
+              <div class="form-group"><label>Hero Slides JSON</label><textarea id="ua-up-slides" class="form-control" rows="4" placeholder='[{"t":"Welcome","d":"Bonus","go":"games","img":""}]'></textarea></div>
+              <div class="form-group"><label>Special Offers JSON</label><textarea id="ua-up-offers" class="form-control" rows="4" placeholder='[{"t":"100% Bonus","d":"Up to 5000","b":"Deposit","go":"dep","img":""}]'></textarea></div>
+              <div class="form-group"><label>Side Banners JSON</label><textarea id="ua-up-sidebans" class="form-control" rows="4" placeholder='[{"t":"VIP","d":"Play & Earn","b":"VIP","go":"vip"}]'></textarea></div>
+              <div class="form-group"><label>Footer Sponsors/Partners JSON</label><textarea id="ua-up-footer" class="form-control" rows="4" placeholder='{"sponsors":[],"ambassadors":[],"partners":[],"licenses":[]}'></textarea></div>
+            </div>
+          </div>
+
+          <div class="card">
+            <div class="card-header"><div class="card-title"><span>🎰 গেম প্রোভাইডার কন্ট্রোল (Lobby Providers)</span></div></div>
+            <div class="form-row" style="margin-bottom:12px; align-items:flex-end;">
+              <div class="form-group"><label>প্রোভাইডার নাম</label><input type="text" id="ua-pv-nm" class="form-control" placeholder="যেমন: Evolution"></div>
+              <div class="form-group"><label>ক্যাটাগরি</label>
+                <select id="ua-pv-cat" class="form-control">
+                  <option>Live Casino</option><option>Slots</option><option>Sports</option><option>Table Games</option><option>Fishing</option><option>Crash &amp; Arcade</option>
+                </select>
+              </div>
+              <div class="form-group"><label>Logo URL (ঐচ্ছিক)</label><input type="text" id="ua-pv-logo" class="form-control" placeholder="https://..."></div>
+              <div class="form-group"><label>Banner URL (ঐচ্ছিক)</label><input type="text" id="ua-pv-ban" class="form-control" placeholder="https://..."></div>
+              <div class="form-group" style="max-width:90px;"><label>অর্ডার</label><input type="number" id="ua-pv-ord" class="form-control" value="1"></div>
+              <button type="button" class="btn btn-primary" onclick="saveProviderAdmin()">+ প্রোভাইডার সেভ</button>
+            </div>
+            <div class="table-container">
+              <table>
+                <thead><tr><th>প্রোভাইডার</th><th>ক্যাটাগরি</th><th>অর্ডার</th><th>স্ট্যাটাস</th><th>অ্যাকশন</th></tr></thead>
+                <tbody id="ua-providers-tbody"></tbody>
+              </table>
+            </div>
+          </div>
+        </section>
+
       </main>
 
     </div>
@@ -3985,7 +4088,10 @@
     }
     function npRefreshRefLink() {
       const el = document.getElementById('np-ref-link'), me = npMyUid();
-      if (el && me) el.value = location.href.replace(/[?#].*$/, '').replace(/[^/]*$/, '') + 'index.html?ref=' + me;
+      const base = location.href.replace(/[?#].*$/, '').replace(/[^/]*$/, '') + 'user.html';
+      if (el && me) el.value = base + '?ref=' + me;
+      const openLink = document.getElementById('ua-up-open-link');
+      if (openLink && me) openLink.href = 'user.html?ref=' + encodeURIComponent(me);
     }
     function npCopyRefLink() {
       const el = document.getElementById('np-ref-link'); if (!el || !el.value) { showToast('লিংক এখনো তৈরি হয়নি', 'error'); return; }
@@ -4386,6 +4492,19 @@
           STATE.notifications = [];
         }
         renderNotifications();
+      });
+
+      // 12. User Panel CMS & Casino Providers
+      const myUpUid = npMyUid();
+      if (myUpUid) {
+        db.ref('userPanelConfig/byAdmin/' + myUpUid).on('value', (snap) => {
+          STATE.userPanelConfig = snap.val() || {};
+          renderUserPanelControl();
+        });
+      }
+      db.ref('providers').on('value', (snap) => {
+        STATE.providers = snap.val() || {};
+        renderUserPanelProviders();
       });
 
     }
@@ -8197,6 +8316,7 @@
     function switchView(viewId) {
       STATE.currentView = viewId;
       if (viewId === 'view-gameactivity') { try { loadGameActivity(); } catch (e) {} }
+      if (viewId === 'view-userpanel') { try { renderUserPanelControl(); renderUserPanelProviders(); } catch (e) {} }
       document.querySelectorAll('.view-section').forEach(sec => sec.classList.remove('active'));
       const target = document.getElementById(viewId);
       if (target) target.classList.add('active');
@@ -8240,6 +8360,7 @@
         'view-notices': { bn: 'নোটিশ ও ঘোষণা', en: 'Notices & Broadcasts' },
         'view-notifications': { bn: 'ইউজার নোটিফিকেশন', en: 'User Notifications' },
         'view-settings': { bn: 'অ্যাপ সেটিংস', en: 'App Settings' },
+        'view-userpanel': { bn: 'ইউজার প্যানেল কন্ট্রোল', en: 'User Panel CMS' },
         'view-audit': { bn: 'রিপোর্ট ও অডিট লগ', en: 'Audit Logs' }
       };
 
@@ -8749,6 +8870,11 @@
         if (clean) {
           await db.ref('usernames/' + clean).set({ uid: cr.user.uid, email, role: 'AFFILIATE', updatedAt: firebase.database.ServerValue.TIMESTAMP }).catch(() => {});
         }
+        await db.ref('referralCodes/' + code).set({
+          uid: cr.user.uid, role: 'AFFILIATE', affiliateUid: cr.user.uid,
+          parentAdminId: me, adminUid: me, active: true,
+          createdAt: firebase.database.ServerValue.TIMESTAMP
+        }).catch(() => {});
         await sec.auth().signOut();
         recordAuditLog('AFFILIATE_CREATED', cr.user.uid, `Affiliate ${name} (${code}) created: ${cType} ${cRate}%`);
         showToast(`✅ অ্যাফিলিয়েট ${name} তৈরি হয়েছে (কোড: ${code})`, 'success');
@@ -9298,7 +9424,8 @@
       "notices":      { "view": "view-notices" },
       "notifications":{ "view": "view-notifications" },
       "master_chat":  { "extraCss": ".npc-tab-master{display:none !important}" },
-      "support_chat": { "fns": ["openChatThread"], "extraCss": ".npc-tab-agent,.npc-tab-aff{display:none !important}" },
+      "support_chat": { "fns": ["openChatThread"], "extraCss": ".npc-tab-agent,.npc-tab-aff,.npc-tab-players{display:none !important}" },
+      "userpanel_control": { "view": "view-userpanel", "fns": ["saveUserPanelConfigAdmin", "saveProviderAdmin", "toggleProviderAdminField", "deleteProviderAdmin"] },
       "settings":     { "view": "view-settings" },
       "audit":        { "view": "view-audit" },
       "u_ban":        { "fns": ["toggleUserStatus", "toggleUserStatusFromSecModal"] },
@@ -9603,10 +9730,10 @@
     #npc-overlay .npc-hinfo h1 { margin: 0 0 3px; font-size: 15px; line-height: 1.4; font-weight: 850; color: #fff; font-family: inherit; letter-spacing: 0; text-transform: none; }
     #npc-overlay .npc-hinfo p { margin: 0; font-size: 11px; line-height: 1.4; opacity: 0.92; color: #fff; }
     #npc-overlay .npc-x { flex: 0 0 auto; width: 36px; height: 36px; display: grid; place-items: center; padding: 0; border: 1px solid rgba(255, 255, 255, 0.5); border-radius: 50%; background: rgba(255, 255, 255, 0.15); color: #fff; font-size: 16px; line-height: 1; cursor: pointer; }
-    #npc-overlay .npc-tabs { flex: 0 0 auto; display: flex; gap: 6px; padding: 8px 12px; background: #f8f9fc; border-bottom: 1px solid #e8eaf1; }
-    #npc-overlay .npc-tab { flex: 1; display: inline-flex; align-items: center; justify-content: center; gap: 6px; padding: 8px 10px; border-radius: 10px; border: 1px solid #e2e5ef; background: #fff; color: #363c52; font-size: 12px; font-weight: 700; cursor: pointer; }
+    #npc-overlay .npc-tabs { flex: 0 0 auto; display: flex; gap: 5px; padding: 8px 10px; background: #f8f9fc; border-bottom: 1px solid #e8eaf1; overflow-x: auto; }
+    #npc-overlay .npc-tab { flex: 1; display: inline-flex; align-items: center; justify-content: center; gap: 4px; padding: 7px 6px; border-radius: 10px; border: 1px solid #e2e5ef; background: #fff; color: #363c52; font-size: 11px; font-weight: 700; cursor: pointer; white-space: nowrap; }
     #npc-overlay .npc-tab.active { background: #e91e63; border-color: #e91e63; color: #fff; }
-    #npc-overlay .npc-tbadge { background: #ef4444; color: #fff; border-radius: 99px; padding: 1px 6px; font-size: 10px; font-weight: 800; display: none; }
+    #npc-overlay .npc-tbadge { background: #ef4444; color: #fff; border-radius: 99px; padding: 1px 5px; font-size: 10px; font-weight: 800; display: none; }
     #npc-overlay .npc-tab.active .npc-tbadge { background: #fff; color: #e91e63; }
     #npc-overlay .npc-peers { flex: 0 0 auto; display: none; gap: 8px; padding: 8px 12px; background: #fff; border-bottom: 1px solid #e8eaf1; overflow-x: auto; white-space: nowrap; }
     #npc-overlay .npc-peers.open { display: flex; }
@@ -9648,6 +9775,7 @@
       </header>
       <div class="npc-tabs">
         <button type="button" class="npc-tab npc-tab-master active" id="npc-tab-master" onclick="switchNpcChannel('master')">👑 Master <span class="npc-tbadge" id="npc-tbadge-master">0</span></button>
+        <button type="button" class="npc-tab npc-tab-players" id="npc-tab-players" onclick="switchNpcChannel('players')">🎧 প্লেয়ার <span class="npc-tbadge" id="npc-tbadge-players">0</span></button>
         <button type="button" class="npc-tab npc-tab-agent" id="npc-tab-agent" onclick="switchNpcChannel('agent')">🧑‍💼 এজেন্ট <span class="npc-tbadge" id="npc-tbadge-agent">0</span></button>
         <button type="button" class="npc-tab npc-tab-aff" id="npc-tab-aff" onclick="switchNpcChannel('affiliate')">🤝 অ্যাফিলিয়েট <span class="npc-tbadge" id="npc-tbadge-aff">0</span></button>
       </div>
@@ -9678,14 +9806,16 @@
   var _masterChatRef = null;
   var _agentChatsRef = null;
   var _affChatsRef = null;
+  var _playerChatsRef = null;
   var _activePeerRef = null;
   var _masterChatModalOpen = false;
-  var _npcChannel = 'master'; // 'master' | 'agent' | 'affiliate'
+  var _npcChannel = 'master'; // 'master' | 'players' | 'agent' | 'affiliate'
   var _npcTargetUid = '';
   var _npcMasterMsgs = [];
   var _npcPeerMsgs = [];
   var _agentChatMetas = {};
   var _affChatMetas = {};
+  var _playerChatMetas = {};
   var _masterUnreadFlag = false;
 
   function npcEsc(s) {
@@ -9700,10 +9830,26 @@
     } catch (e) { return ''; }
   }
 
+  function getMyPlayerChatsList() {
+    var me = npcUid();
+    return Object.entries(_playerChatMetas || {}).filter(function (en) {
+      var id = en[0], c = en[1] || {};
+      if (c.adminUid && me && c.adminUid !== me) return false;
+      return typeof npOwns === 'function' ? npOwns(id, c.adminUid) : true;
+    }).map(function (en) {
+      var id = en[0], c = en[1] || {};
+      var u = (STATE.users || []).find(function (x) { return x.uid === id; }) || {};
+      return { id: id, name: c.userName || u.name || u.username || id, phone: c.phone || u.phone || '', lastMessage: c.lastMessage || '', updatedAt: c.updatedAt || 0, unreadForAdmin: c.unreadForAdmin === true };
+    }).sort(function (a, b) {
+      return ((b.unreadForAdmin ? 1 : 0) - (a.unreadForAdmin ? 1 : 0)) || ((b.updatedAt || 0) - (a.updatedAt || 0));
+    });
+  }
+
   function updateMasterChatBadges() {
     var mCount = _masterUnreadFlag ? 1 : 0;
     var aCount = 0;
     var afCount = 0;
+    var pCount = 0;
     (STATE.agents || []).forEach(function (ag) {
       var mt = _agentChatMetas[ag.id];
       if (mt && mt.unreadForAdmin === true) aCount++;
@@ -9712,7 +9858,10 @@
       var mt = _affChatMetas[af.id];
       if (mt && mt.unreadForAdmin === true) afCount++;
     });
-    var total = mCount + aCount + afCount;
+    getMyPlayerChatsList().forEach(function (pl) {
+      if (pl.unreadForAdmin === true) pCount++;
+    });
+    var total = mCount + aCount + afCount + pCount;
     var txt = total > 9 ? '9+' : String(total);
     var dot = document.getElementById('master-chat-badge-dot');
     var sBadge = document.getElementById('sidebar-master-chat-badge');
@@ -9722,9 +9871,11 @@
     if (fabBadge) { fabBadge.innerText = txt; fabBadge.style.display = total > 0 ? 'flex' : 'none'; }
 
     var bm = document.getElementById('npc-tbadge-master');
+    var bp = document.getElementById('npc-tbadge-players');
     var ba = document.getElementById('npc-tbadge-agent');
     var baf = document.getElementById('npc-tbadge-aff');
     if (bm) { bm.innerText = mCount; bm.style.display = mCount > 0 ? 'inline-block' : 'none'; }
+    if (bp) { bp.innerText = pCount; bp.style.display = pCount > 0 ? 'inline-block' : 'none'; }
     if (ba) { ba.innerText = aCount; ba.style.display = aCount > 0 ? 'inline-block' : 'none'; }
     if (baf) { baf.innerText = afCount; baf.style.display = afCount > 0 ? 'inline-block' : 'none'; }
   }
@@ -9742,17 +9893,17 @@
       bar.innerHTML = '';
       return;
     }
-    var list = _npcChannel === 'agent' ? (STATE.agents || []) : (STATE.affiliates || []);
+    var list = _npcChannel === 'players' ? getMyPlayerChatsList() : (_npcChannel === 'agent' ? (STATE.agents || []) : (STATE.affiliates || []));
     var metas = _npcChannel === 'agent' ? _agentChatMetas : _affChatMetas;
     if (!_npcTargetUid || !list.some(function (x) { return x.id === _npcTargetUid; })) {
       _npcTargetUid = list.length ? list[0].id : '';
     }
     bar.classList.add('open');
     bar.innerHTML = list.length ? list.map(function (p) {
-      var hasUnr = metas[p.id] && metas[p.id].unreadForAdmin === true;
+      var hasUnr = _npcChannel === 'players' ? p.unreadForAdmin === true : (metas[p.id] && metas[p.id].unreadForAdmin === true);
       return '<button type="button" class="npc-peer' + (p.id === _npcTargetUid ? ' sel' : '') + '" onclick="selectNpcPeer(\'' + npcEsc(p.id) + '\')">' +
         npcEsc(p.name || p.email || p.id) + (hasUnr ? ' <span class="npc-pdot"></span>' : '') + '</button>';
-    }).join('') : '<span style="font-size:12px; color:#7b8194; padding:4px 8px;">কোনো ' + (_npcChannel === 'agent' ? 'এজেন্ট' : 'অ্যাফিলিয়েট') + ' পাওয়া যায়নি</span>';
+    }).join('') : '<span style="font-size:12px; color:#7b8194; padding:4px 8px;">কোনো ' + (_npcChannel === 'players' ? 'প্লেয়ার চ্যাট' : (_npcChannel === 'agent' ? 'এজেন্ট' : 'অ্যাফিলিয়েট')) + ' পাওয়া যায়নি</span>';
   }
   window.renderNpcPeerBar = renderNpcPeerBar;
 
@@ -9765,6 +9916,11 @@
       av.textContent = '👑';
       nm.innerHTML = 'Master Administrator <span class="npc-ver">✓</span>';
       sub.textContent = '● Direct Master Support';
+    } else if (_npcChannel === 'players') {
+      var pl = getMyPlayerChatsList().find(function (x) { return x.id === _npcTargetUid; });
+      av.textContent = '🎧';
+      nm.innerHTML = npcEsc((pl && pl.name) || 'প্লেয়ার নির্বাচন করুন') + ' <span class="npc-ver">✓</span>';
+      sub.textContent = pl ? ('● Live Player Support (' + npcEsc(pl.phone || pl.id) + ')') : 'কোনো প্লেয়ার চ্যাট নেই';
     } else if (_npcChannel === 'agent') {
       var ag = (STATE.agents || []).find(function (x) { return x.id === _npcTargetUid; });
       av.textContent = '🧑‍💼';
@@ -9782,17 +9938,19 @@
     var c = document.getElementById('npc-msgs');
     if (!c) return;
     var entries = _npcChannel === 'master' ? _npcMasterMsgs : _npcPeerMsgs;
-    var label = _npcChannel === 'master' ? 'MASTER ADMIN ↔ USER ADMIN' : (_npcChannel === 'agent' ? 'USER ADMIN ↔ AGENT' : 'USER ADMIN ↔ AFFILIATE');
-    var avChar = _npcChannel === 'master' ? '👑' : (_npcChannel === 'agent' ? '🧑‍💼' : '🤝');
+    var label = _npcChannel === 'master' ? 'MASTER ADMIN ↔ USER ADMIN' : (_npcChannel === 'players' ? 'USER ADMIN ↔ PLAYER SUPPORT' : (_npcChannel === 'agent' ? 'USER ADMIN ↔ AGENT' : 'USER ADMIN ↔ AFFILIATE'));
+    var avChar = _npcChannel === 'master' ? '👑' : (_npcChannel === 'players' ? '🎧' : (_npcChannel === 'agent' ? '🧑‍💼' : '🤝'));
     var html = '<div class="npc-div"><span>MOSTWIN88 • ' + label + '</span></div>';
     if (_npcChannel !== 'master' && !_npcTargetUid) {
-      html += '<div style="text-align:center; padding:32px 16px; color:#7b8194; font-size:13px;">উপর থেকে চ্যাট করার জন্য একটি আইডি বেছে নিন অথবা নতুন তৈরি করুন।</div>';
+      html += '<div style="text-align:center; padding:32px 16px; color:#7b8194; font-size:13px;">উপর থেকে চ্যাট করার জন্য একটি আইডি বেছে নিন।</div>';
     } else if (!entries.length) {
       html += '<div style="text-align:center; padding:28px 16px; color:#7b8194; font-size:12px;">এখনও কোনো মেসেজ নেই — কথা শুরু করুন।</div>';
     } else {
       entries.forEach(function (it) {
         var m = it[1] || {};
-        var mine = _npcChannel === 'master' ? (m.sender === 'USER_ADMIN' || m.sender === 'ADMIN') : (m.sender === 'USER_ADMIN' || m.sender === 'ADMIN');
+        var mine = _npcChannel === 'players'
+          ? (m.sender === 'ADMIN' || m.sender === 'USER_ADMIN' || m.sender === 'MASTER')
+          : (m.sender === 'USER_ADMIN' || m.sender === 'ADMIN');
         var t = m.timestamp ? new Date(m.timestamp).toLocaleTimeString('bn-BD', { hour: '2-digit', minute: '2-digit' }) : '';
         var bub = '<div class="npc-bub">' + npcEsc(m.text) + '<span class="npc-time">' + t + '</span></div>';
         html += mine
@@ -9809,6 +9967,18 @@
     _activePeerRef = null;
     _npcPeerMsgs = [];
     if (!db || _npcChannel === 'master' || !_npcTargetUid) { renderCurrentChatMessages(); return; }
+    if (_npcChannel === 'players') {
+      _activePeerRef = db.ref('supportMessages/' + _npcTargetUid).limitToLast(120);
+      _activePeerRef.on('value', function (snap) {
+        var val = snap.val() || {};
+        _npcPeerMsgs = Object.entries(val).sort(function (a, b) { return (a[1].timestamp || 0) - (b[1].timestamp || 0); });
+        renderCurrentChatMessages();
+        if (_masterChatModalOpen) {
+          db.ref('supportChats/' + _npcTargetUid + '/unreadForAdmin').set(false).catch(function () {});
+        }
+      });
+      return;
+    }
     var base = (_npcChannel === 'agent' ? 'agent_admin_chats/' : 'affiliate_admin_chats/') + _npcTargetUid;
     _activePeerRef = db.ref(base + '/messages').limitToLast(120);
     _activePeerRef.on('value', function (snap) {
@@ -9823,15 +9993,16 @@
 
   function switchNpcChannel(ch) {
     if (ch === 'master' && typeof featureOn === 'function' && !featureOn('master_chat')) {
-      ch = 'agent';
+      ch = 'players';
     }
     if (ch !== 'master' && typeof featureOn === 'function' && !featureOn('support_chat')) {
       showToast('এই লাইভ চ্যাট ফিচারটি MASTER ADMINISTRATOR বন্ধ রেখেছেন', 'error');
       return;
     }
     _npcChannel = ch || 'master';
-    ['master', 'agent', 'affiliate'].forEach(function (k) {
-      var el = document.getElementById('npc-tab-' + (k === 'affiliate' ? 'aff' : k));
+    ['master', 'players', 'agent', 'affiliate'].forEach(function (k) {
+      var id = 'npc-tab-' + (k === 'affiliate' ? 'aff' : k);
+      var el = document.getElementById(id);
       if (el) el.classList.toggle('active', k === _npcChannel);
     });
     renderNpcPeerBar();
@@ -9867,7 +10038,7 @@
     var m = document.getElementById('npc-overlay');
     if (m) { m.classList.add('npc-open'); m.style.display = 'block'; }
     try { initMasterChatListener(); } catch (e) { console.warn('chat listener', e); }
-    var targetCh = defaultCh || ((typeof featureOn === 'function' && !featureOn('master_chat')) ? 'agent' : 'master');
+    var targetCh = defaultCh || ((typeof featureOn === 'function' && !featureOn('master_chat')) ? 'players' : 'master');
     switchNpcChannel(targetCh);
     setTimeout(function () {
       var inp = document.getElementById('master-chat-input');
@@ -9909,6 +10080,20 @@
         }
         updateMasterChatBadges();
       }, function () { _masterChatRef = null; });
+    }
+    if (!_playerChatsRef) {
+      _playerChatsRef = db.ref('supportChats');
+      _playerChatsRef.on('value', function (snap) {
+        var prevUnr = getMyPlayerChatsList().filter(function (x) { return x.unreadForAdmin === true; }).length;
+        _playerChatMetas = snap.val() || {};
+        var curUnr = getMyPlayerChatsList().filter(function (x) { return x.unreadForAdmin === true; }).length;
+        if (curUnr > prevUnr && !_masterChatModalOpen) {
+          try { playNotificationSound(); } catch (e) {}
+          try { showToast('💬 প্লেয়ার থেকে নতুন সাপোর্ট মেসেজ এসেছে!', 'info'); } catch (e) {}
+        }
+        updateMasterChatBadges();
+        if (_npcChannel === 'players') renderNpcPeerBar();
+      }, function () { _playerChatsRef = null; });
     }
     if (!_agentChatsRef) {
       _agentChatsRef = db.ref('agent_admin_chats');
@@ -9972,6 +10157,16 @@
           lastMessage: text, lastTimestamp: firebase.database.ServerValue.TIMESTAMP,
           lastSender: 'USER_ADMIN', unreadForMaster: true, unreadForAdmin: false
         });
+      } else if (_npcChannel === 'players') {
+        await db.ref('supportMessages/' + _npcTargetUid).push({
+          sender: 'ADMIN', senderName: name || 'Support Officer',
+          text: text, timestamp: firebase.database.ServerValue.TIMESTAMP
+        });
+        await db.ref('supportChats/' + _npcTargetUid).update({
+          lastMessage: text, lastSender: 'ADMIN',
+          unreadForAdmin: false, unreadForMaster: false,
+          updatedAt: firebase.database.ServerValue.TIMESTAMP
+        });
       } else {
         var isAg = _npcChannel === 'agent';
         var base = (isAg ? 'agent_admin_chats/' : 'affiliate_admin_chats/') + _npcTargetUid;
@@ -10026,14 +10221,141 @@
 
   function stopMasterChatListener() {
     try { if (_masterChatRef) _masterChatRef.off(); } catch (e) {}
+    try { if (_playerChatsRef) _playerChatsRef.off(); } catch (e) {}
     try { if (_agentChatsRef) _agentChatsRef.off(); } catch (e) {}
     try { if (_affChatsRef) _affChatsRef.off(); } catch (e) {}
     try { if (_activePeerRef) _activePeerRef.off(); } catch (e) {}
-    _masterChatRef = null; _agentChatsRef = null; _affChatsRef = null; _activePeerRef = null;
-    _masterUnreadFlag = false; _agentChatMetas = {}; _affChatMetas = {};
+    _masterChatRef = null; _playerChatsRef = null; _agentChatsRef = null; _affChatsRef = null; _activePeerRef = null;
+    _masterUnreadFlag = false; _agentChatMetas = {}; _affChatMetas = {}; _playerChatMetas = {};
     closeMasterChatModal();
     updateMasterChatBadges();
   }
+
+  /* ==================== USER PANEL CMS & PROVIDER CONTROL ==================== */
+  function renderUserPanelControl() {
+    var d = STATE.userPanelConfig || {};
+    var pay = d.payments || {}, ch = d.chat || {};
+    var sv = function (id, val) { var el = document.getElementById(id); if (el) el.value = val || ''; };
+    sv('ua-up-tag', d.tagline || 'PLAY BIG, WIN BIGGER');
+    sv('ua-up-notice', d.notice || '');
+    var mt = document.getElementById('ua-up-maint');
+    if (mt) mt.checked = !!d.maintenanceMode;
+    sv('ua-up-maint-msg', d.maintenanceMessage || '');
+    sv('ua-up-wa', ch.whatsapp || '');
+    sv('ua-up-tg', ch.telegram || '');
+    sv('ua-up-officers', Array.isArray(ch.officers) ? ch.officers.join('\n') : '');
+    sv('ua-up-bk', pay.bkashNumber || '');
+    sv('ua-up-ng', pay.nagadNumber || '');
+    sv('ua-up-rk', pay.rocketNumber || '');
+    sv('ua-up-up', pay.upayNumber || '');
+    sv('ua-up-bnk', pay.bankDetails || '');
+    sv('ua-up-usdt', pay.usdtAddress || '');
+    sv('ua-up-slides', d.slides ? JSON.stringify(d.slides, null, 2) : '');
+    sv('ua-up-offers', d.banners ? JSON.stringify(d.banners, null, 2) : '');
+    sv('ua-up-sidebans', d.sideBanners ? JSON.stringify(d.sideBanners, null, 2) : '');
+    sv('ua-up-footer', d.footer ? JSON.stringify(d.footer, null, 2) : '');
+  }
+
+  function renderUserPanelProviders() {
+    var tb = document.getElementById('ua-providers-tbody');
+    if (!tb) return;
+    var entries = Object.entries(STATE.providers || {});
+    if (!entries.length) {
+      tb.innerHTML = '<tr><td colspan="5" style="text-align:center;color:var(--text-dim);padding:18px;">ডিফল্ট সব প্রোভাইডার চালু আছে। পরিবর্তন বা নতুন যোগ করতে উপরের ফর্ম ব্যবহার করুন।</td></tr>';
+      return;
+    }
+    tb.innerHTML = entries.map(function (en) {
+      var id = en[0], p = en[1] || {};
+      return '<tr>' +
+        '<td><b>' + npcEsc(p.name || id) + '</b><br><small style="opacity:0.65;">' + npcEsc(id) + '</small></td>' +
+        '<td>' + npcEsc(p.category || '') + '</td>' +
+        '<td>' + (p.order || 0) + '</td>' +
+        '<td><span class="badge ' + (p.active === false ? 'badge-rejected' : 'badge-approved') + '">' + (p.active === false ? 'বন্ধ' : 'চালু') + '</span>' + (p.maintenance ? ' <span class="badge badge-pending">Maint</span>' : '') + '</td>' +
+        '<td style="display:flex;gap:6px;flex-wrap:wrap;">' +
+          '<button type="button" class="btn btn-secondary btn-sm" onclick="toggleProviderAdminField(\'' + npcEsc(id) + '\',\'active\')">' + (p.active === false ? 'চালু' : 'বন্ধ') + '</button>' +
+          '<button type="button" class="btn btn-outline btn-sm" onclick="toggleProviderAdminField(\'' + npcEsc(id) + '\',\'maintenance\')">Maint</button>' +
+          '<button type="button" class="btn btn-accent btn-sm" onclick="deleteProviderAdmin(\'' + npcEsc(id) + '\')">মুছুন</button>' +
+        '</td></tr>';
+    }).join('');
+  }
+
+  async function saveUserPanelConfigAdmin() {
+    var uid = npMyUid();
+    if (!db || !uid) { showToast('অ্যাডমিন লগইন পাওয়া যায়নি', 'error'); return; }
+    var gv = function (id) { var el = document.getElementById(id); return el ? el.value.trim() : ''; };
+    var cfg = JSON.parse(JSON.stringify(STATE.userPanelConfig || {}));
+    cfg.tagline = gv('ua-up-tag') || 'PLAY BIG, WIN BIGGER';
+    cfg.notice = gv('ua-up-notice');
+    cfg.maintenanceMode = !!(document.getElementById('ua-up-maint') && document.getElementById('ua-up-maint').checked);
+    cfg.maintenanceMessage = gv('ua-up-maint-msg');
+    cfg.chat = {
+      whatsapp: gv('ua-up-wa'),
+      telegram: gv('ua-up-tg'),
+      officers: gv('ua-up-officers').split('\n').map(function (x) { return x.trim(); }).filter(Boolean)
+    };
+    cfg.payments = {
+      bkashNumber: gv('ua-up-bk'),
+      nagadNumber: gv('ua-up-ng'),
+      rocketNumber: gv('ua-up-rk'),
+      upayNumber: gv('ua-up-up'),
+      bankDetails: gv('ua-up-bnk'),
+      usdtAddress: gv('ua-up-usdt')
+    };
+    var parseJsonField = function (id) {
+      var raw = gv(id);
+      if (!raw) return null;
+      return JSON.parse(raw);
+    };
+    try {
+      var sl = parseJsonField('ua-up-slides'); if (sl) cfg.slides = sl;
+      var of = parseJsonField('ua-up-offers'); if (of) cfg.banners = of;
+      var sb = parseJsonField('ua-up-sidebans'); if (sb) cfg.sideBanners = sb;
+      var ft = parseJsonField('ua-up-footer'); if (ft) cfg.footer = ft;
+      cfg.updatedAt = firebase.database.ServerValue.TIMESTAMP;
+      await db.ref('userPanelConfig/byAdmin/' + uid).set(cfg);
+      recordAuditLog('USERPANEL_CMS_SAVED', uid, 'Updated userPanelConfig/byAdmin/' + uid);
+      showToast('ইউজার প্যানেল কনফিগারেশন সেভ হয়েছে ✅', 'success');
+    } catch (e) {
+      showToast('সেভ ব্যর্থ: ' + e.message, 'error');
+    }
+  }
+
+  async function saveProviderAdmin() {
+    if (!db) return;
+    var gv = function (id) { var el = document.getElementById(id); return el ? el.value.trim() : ''; };
+    var nm = gv('ua-pv-nm'), cat = gv('ua-pv-cat') || 'Slots', lg = gv('ua-pv-logo'), bn = gv('ua-pv-ban');
+    var ord = parseInt(gv('ua-pv-ord'), 10) || 1;
+    if (!nm) { showToast('প্রোভাইডারের নাম দিন', 'error'); return; }
+    var id = nm.toLowerCase().replace(/[^a-z0-9]+/g, '_') + '_' + cat.toLowerCase().replace(/[^a-z0-9]+/g, '_');
+    var d = { id: id, name: nm, category: cat, order: ord, active: true, maintenance: false, updatedAt: firebase.database.ServerValue.TIMESTAMP };
+    if (lg) d.logo = lg;
+    if (bn) d.banner = bn;
+    try {
+      await db.ref('providers/' + id).update(d);
+      ['ua-pv-nm', 'ua-pv-logo', 'ua-pv-ban'].forEach(function (i) { var el = document.getElementById(i); if (el) el.value = ''; });
+      showToast('প্রোভাইডার সেভ হয়েছে ✅', 'success');
+    } catch (e) { showToast('সেভ ব্যর্থ: ' + e.message, 'error'); }
+  }
+
+  async function toggleProviderAdminField(id, field) {
+    if (!db || !id) return;
+    var p = (STATE.providers && STATE.providers[id]) || {};
+    var curVal = field === 'active' ? (p.active !== false) : (!!p.maintenance);
+    try { await db.ref('providers/' + id + '/' + field).set(!curVal); } catch (e) { showToast('আপডেট ব্যর্থ: ' + e.message, 'error'); }
+  }
+
+  async function deleteProviderAdmin(id) {
+    if (!db || !id) return;
+    if (!confirm('প্রোভাইডার "' + id + '" মুছে ফেলবেন?')) return;
+    try { await db.ref('providers/' + id).remove(); showToast('প্রোভাইডার মুছে ফেলা হয়েছে', 'info'); } catch (e) { showToast('ব্যর্থ: ' + e.message, 'error'); }
+  }
+
+  window.renderUserPanelControl = renderUserPanelControl;
+  window.renderUserPanelProviders = renderUserPanelProviders;
+  window.saveUserPanelConfigAdmin = saveUserPanelConfigAdmin;
+  window.saveProviderAdmin = saveProviderAdmin;
+  window.toggleProviderAdminField = toggleProviderAdminField;
+  window.deleteProviderAdmin = deleteProviderAdmin;
 
   if (typeof window.playNotificationSound !== 'function') {
     window.playNotificationSound = function () {

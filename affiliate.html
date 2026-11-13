@@ -738,7 +738,7 @@ function startLiveSync() {
 /* ==================== DATA AGGREGATION ==================== */
 function getRefUrl() {
   const code = (MY_PROF && MY_PROF.referralCode) || MY_UID.slice(0, 8).toUpperCase();
-  const base = (MY_PROF && MY_PROF.baseUrl) || 'https://mostwin88.com/register';
+  const base = (MY_PROF && MY_PROF.baseUrl) || (location.href.replace(/[?#].*$/, '').replace(/[^/]*$/, '') + 'user.html');
   return `${base}?ref=${encodeURIComponent(code)}`;
 }
 

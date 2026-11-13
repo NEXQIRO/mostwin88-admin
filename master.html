@@ -357,6 +357,7 @@ body[data-theme="light"] .lo circle[stroke*="255,255,255"]{stroke:rgba(28,25,23,
         <li class="nav-item"><button id="t-reqs" onclick="tab('reqs')"><svg viewBox="0 0 24 24"><path d="M21 18v1c0 1.1-.9 2-2 2H5c-1.11 0-2-.9-2-2V5c0-1.1.89-2 2-2h14c1.1 0 2 .9 2 2v1h-9c-1.11 0-2 .9-2 2v8c0 1.1.89 2 2 2h9zm-9-2h10V8H12v8zm4-2.5c-.83 0-1.5-.67-1.5-1.5s.67-1.5 1.5-1.5 1.5.67 1.5 1.5-.67 1.5-1.5 1.5z"/></svg><span class="nav-label">ব্যালেন্স রিকোয়েস্ট</span><span class="nav-badge" id="nav-pending">0</span></button></li>
         <li class="nav-item"><button id="t-led" onclick="tab('led')"><svg viewBox="0 0 24 24"><path d="M14 2H6c-1.1 0-1.99.9-1.99 2L4 20c0 1.1.89 2 1.99 2H18c1.1 0 2-.9 2-2V8l-6-6zm2 16H8v-2h8v2zm0-4H8v-2h8v2zm-3-5V3.5L18.5 9H13z"/></svg><span class="nav-label">লেজার</span></button></li>
         <li class="nav-item"><button id="t-games" onclick="tab('games')"><svg viewBox="0 0 24 24"><path d="M3 13h8V3H3v10zm0 8h8v-6H3v6zm10 0h8V11h-8v10zm0-18v6h8V3h-8z"/></svg><span class="nav-label">গেম ম্যানেজমেন্ট</span></button></li>
+        <li class="nav-item"><button id="t-userpanel" onclick="tab('userpanel')"><svg viewBox="0 0 24 24"><path d="M17 1H7c-1.1 0-2 .9-2 2v18c0 1.1.9 2 2 2h10c1.1 0 2-.9 2-2V3c0-1.1-.9-2-2-2zm0 18H7V5h10v14z"/></svg><span class="nav-label">ইউজার প্যানেল কন্ট্রোল</span></button></li>
         <li class="nav-item"><button id="t-players" onclick="tab('players')"><svg viewBox="0 0 24 24"><path d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z"/></svg><span class="nav-label">প্লেয়ার</span></button></li>
         <li class="nav-item"><button id="t-act" onclick="tab('act')"><svg viewBox="0 0 24 24"><path d="M19 3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zM9 17H7v-7h2v7zm4 0h-2V7h2v10zm4 0h-2v-4h2v4z"/></svg><span class="nav-label">গেম অ্যাক্টিভিটি</span></button></li>
         <li class="nav-item"><button id="t-feat" onclick="tab('feat')"><svg viewBox="0 0 24 24"><path d="M19.14 12.94c.04-.3.06-.61.06-.94 0-.32-.02-.64-.07-.94l2.03-1.58c.18-.14.23-.41.12-.61l-1.92-3.32c-.12-.22-.37-.29-.59-.22l-2.39.96c-.5-.38-1.03-.7-1.62-.94l-.36-2.54c-.04-.24-.24-.41-.48-.41h-3.84c-.24 0-.43.17-.47.41l-.36 2.54c-.59.24-1.13.57-1.62.94l-2.39-.96c-.22-.08-.47 0-.59.22L2.74 8.87c-.12.21-.08.47.12.61l2.03 1.58c-.05.3-.09.63-.09.94s.02.64.07.94l-2.03 1.58c-.18.14-.23.41-.12.61l1.92 3.32c.12.22.37.29.59.22l2.39-.96c.5.38 1.03.7 1.62.94l.36 2.54c.05.24.24.41.48.41h3.84c.24 0 .44-.17.47-.41l.36-2.54c.59-.24 1.13-.56 1.62-.94l2.39.96c.22.08.47 0 .59-.22l1.92-3.32c.12-.22.07-.47-.12-.61l-2.01-1.58zM12 15.6c-1.98 0-3.6-1.62-3.6-3.6s1.62-3.6 3.6-3.6 3.6 1.62 3.6 3.6-1.62 3.6-3.6 3.6z"/></svg><span class="nav-label">ফিচার কন্ট্রোল</span></button></li>
@@ -440,12 +441,14 @@ const FL=[
   ["wallet", "পেজ", "ওয়ালেট ও রিকোয়েস্ট (পেজ)"],
   ["agents", "পেজ", "এজেন্ট ম্যানেজমেন্ট (পেজ)"],
   ["affiliates", "পেজ", "অ্যাফিলিয়েট ও স্মার্ট কমিশন (পেজ)"],
+  ["games", "পেজ", "গেম ম্যানেজমেন্ট (পেজ)"],
+  ["userpanel_control", "পেজ", "ইউজার প্যানেল কন্ট্রোল ও প্রোভাইডার (পেজ)"],
   ["promotions", "পেজ", "ডিপোজিট প্রোমোশন (পেজ)"],
   ["finance", "পেজ", "আর্থিক রিপোর্ট / Finance (পেজ)"],
   ["notices", "পেজ", "নোটিশ ও ঘোষণা (পেজ)"],
   ["notifications", "পেজ", "ইউজার নোটিফিকেশন (পেজ)"],
   ["master_chat", "পেজ", "মাস্টার অ্যাডমিন সাপোর্ট চ্যাট"],
-  ["support_chat", "পেজ", "এজেন্ট ও অ্যাফিলিয়েট লাইভ চ্যাট"],
+  ["support_chat", "পেজ", "এজেন্ট, অ্যাফিলিয়েট ও প্লেয়ার লাইভ চ্যাট"],
   ["settings", "পেজ", "অ্যাপ সেটিংস (পেজ)"],
   ["audit", "পেজ", "রিপোর্ট ও অডিট লগ (পেজ)"],
   ["u_ban", "প্লেয়ার", "প্লেয়ার ব্যান / সক্রিয় করা"],
@@ -996,7 +999,36 @@ const RULES_TXT=`{
     },
     "games": {
       ".read": true,
-      ".write": "auth != null && auth.token.email == 'mijanbabu2015@gmail.com'"
+      ".write": "auth != null && (auth.token.email == 'mijanbabu2015@gmail.com' || (root.child('admins').child(auth.uid).exists() && root.child('admins').child(auth.uid).child('active').val() != false && root.child('adminSettings').child('userAdminOn').val() != false && root.child('adminFeatures').child('games_manage').val() != false && root.child('admins').child(auth.uid).child('features').child('games_manage').val() != false))"
+    },
+    "providers": {
+      ".read": true,
+      ".write": "auth != null && (auth.token.email == 'mijanbabu2015@gmail.com' || (root.child('admins').child(auth.uid).exists() && root.child('admins').child(auth.uid).child('active').val() != false && root.child('adminSettings').child('userAdminOn').val() != false && root.child('adminFeatures').child('userpanel_control').val() != false && root.child('admins').child(auth.uid).child('features').child('userpanel_control').val() != false))"
+    },
+    "provider_games": {
+      ".read": true,
+      ".write": "auth != null && (auth.token.email == 'mijanbabu2015@gmail.com' || (root.child('admins').child(auth.uid).exists() && root.child('admins').child(auth.uid).child('active').val() != false && root.child('adminSettings').child('userAdminOn').val() != false && root.child('adminFeatures').child('userpanel_control').val() != false && root.child('admins').child(auth.uid).child('features').child('userpanel_control').val() != false))"
+    },
+    "config": {
+      ".read": true,
+      ".write": "auth != null && (auth.token.email == 'mijanbabu2015@gmail.com' || (root.child('admins').child(auth.uid).exists() && root.child('admins').child(auth.uid).child('active').val() != false && root.child('adminSettings').child('userAdminOn').val() != false && root.child('adminFeatures').child('userpanel_control').val() != false && root.child('admins').child(auth.uid).child('features').child('userpanel_control').val() != false))"
+    },
+    "userPanelConfig": {
+      ".read": true,
+      "global": {
+        ".write": "auth != null && auth.token.email == 'mijanbabu2015@gmail.com'"
+      },
+      "byAdmin": {
+        "$adminUid": {
+          ".write": "auth != null && (auth.token.email == 'mijanbabu2015@gmail.com' || (auth.uid == $adminUid && root.child('admins').child(auth.uid).exists() && root.child('admins').child(auth.uid).child('active').val() != false && root.child('adminSettings').child('userAdminOn').val() != false && root.child('adminFeatures').child('userpanel_control').val() != false && root.child('admins').child(auth.uid).child('features').child('userpanel_control').val() != false))"
+        }
+      }
+    },
+    "referralCodes": {
+      ".read": true,
+      "$code": {
+        ".write": "auth != null && (!data.exists() || data.child('uid').val() == auth.uid || root.child('admins').child(auth.uid).exists() || auth.token.email == 'mijanbabu2015@gmail.com')"
+      }
     },
     "tournaments": {
       ".read": false,
@@ -1102,9 +1134,9 @@ const RULES_TXT=`{
       ".read": "auth != null && ((root.child('admins').child(auth.uid).exists() && root.child('admins').child(auth.uid).child('active').val() != false && root.child('adminSettings').child('userAdminOn').val() != false) || (root.child('agents').child(auth.uid).exists() && root.child('agents').child(auth.uid).child('active').val() != false) || (root.child('affiliates').child(auth.uid).exists() && root.child('affiliates').child(auth.uid).child('active').val() != false) || auth.token.email == 'mijanbabu2015@gmail.com')",
       "$uid": {
         ".read": "auth != null && (auth.uid == $uid || (root.child('admins').child(auth.uid).exists() && root.child('admins').child(auth.uid).child('active').val() != false && root.child('adminSettings').child('userAdminOn').val() != false) || (root.child('agents').child(auth.uid).exists() && root.child('agents').child(auth.uid).child('active').val() != false) || (root.child('affiliates').child(auth.uid).exists() && root.child('affiliates').child(auth.uid).child('active').val() != false) || auth.token.email == 'mijanbabu2015@gmail.com')",
-        ".write": "auth != null && ((root.child('admins').child(auth.uid).exists() && root.child('admins').child(auth.uid).child('active').val() != false && root.child('adminSettings').child('userAdminOn').val() != false) || auth.token.email == 'mijanbabu2015@gmail.com' || (auth.uid == $uid && !data.exists() && newData.child('balance').val() == 0 && root.child('adminLinks').child(newData.child('adminUid').val()).val() == true))",
+        ".write": "auth != null && ((root.child('admins').child(auth.uid).exists() && root.child('admins').child(auth.uid).child('active').val() != false && root.child('adminSettings').child('userAdminOn').val() != false) || auth.token.email == 'mijanbabu2015@gmail.com' || (auth.uid == $uid && !data.exists() && newData.child('balance').val() == 0 && (!newData.child('adminUid').exists() || newData.child('adminUid').val() == '' || root.child('adminLinks').child(newData.child('adminUid').val()).val() == true)))",
         "balance": {
-          ".write": "auth != null && ((root.child('admins').child(auth.uid).exists() && root.child('admins').child(auth.uid).child('active').val() != false && root.child('adminSettings').child('userAdminOn').val() != false) || (root.child('agents').child(auth.uid).exists() && root.child('agents').child(auth.uid).child('active').val() != false && data.exists() && newData.isNumber() && newData.val() >= data.val()) || auth.token.email == 'mijanbabu2015@gmail.com' || (auth.uid == $uid && data.exists() && newData.isNumber() && newData.val() <= data.val()))",
+          ".write": "auth != null && ((root.child('admins').child(auth.uid).exists() && root.child('admins').child(auth.uid).child('active').val() != false && root.child('adminSettings').child('userAdminOn').val() != false) || (root.child('agents').child(auth.uid).exists() && root.child('agents').child(auth.uid).child('active').val() != false && data.exists() && newData.isNumber() && newData.val() >= data.val()) || auth.token.email == 'mijanbabu2015@gmail.com' || (auth.uid == $uid && data.exists() && newData.isNumber() && newData.val() >= 0 && newData.val() <= data.val()))",
           ".validate": "newData.isNumber() && newData.val() >= 0"
         },
         "name": {
@@ -1163,6 +1195,69 @@ const RULES_TXT=`{
         "turnoverCompleted": {
           ".write": "auth != null && (auth.uid == $uid || (root.child('admins').child(auth.uid).exists() && root.child('admins').child(auth.uid).child('active').val() != false && root.child('adminSettings').child('userAdminOn').val() != false) || auth.token.email == 'mijanbabu2015@gmail.com')",
           ".validate": "newData.isNumber() && newData.val() >= 0 && (auth.uid != $uid || newData.val() >= (data.exists() ? data.val() : 0))"
+        },
+        "bonusBalance": {
+          ".write": "auth != null && (auth.uid == $uid || (root.child('admins').child(auth.uid).exists() && root.child('admins').child(auth.uid).child('active').val() != false && root.child('adminSettings').child('userAdminOn').val() != false) || auth.token.email == 'mijanbabu2015@gmail.com')",
+          ".validate": "newData.isNumber() && newData.val() >= 0"
+        },
+        "lastDailyBonusAt": {
+          ".write": "auth != null && (auth.uid == $uid || (root.child('admins').child(auth.uid).exists() && root.child('admins').child(auth.uid).child('active').val() != false && root.child('adminSettings').child('userAdminOn').val() != false) || auth.token.email == 'mijanbabu2015@gmail.com')"
+        },
+        "xp": {
+          ".write": "auth != null && (auth.uid == $uid || (root.child('admins').child(auth.uid).exists() && root.child('admins').child(auth.uid).child('active').val() != false && root.child('adminSettings').child('userAdminOn').val() != false) || auth.token.email == 'mijanbabu2015@gmail.com')",
+          ".validate": "newData.isNumber() && newData.val() >= 0"
+        },
+        "vipLevel": {
+          ".write": "auth != null && (auth.uid == $uid || (root.child('admins').child(auth.uid).exists() && root.child('admins').child(auth.uid).child('active').val() != false && root.child('adminSettings').child('userAdminOn').val() != false) || auth.token.email == 'mijanbabu2015@gmail.com')"
+        },
+        "betCount": {
+          ".write": "auth != null && (auth.uid == $uid || (root.child('admins').child(auth.uid).exists() && root.child('admins').child(auth.uid).child('active').val() != false && root.child('adminSettings').child('userAdminOn').val() != false) || auth.token.email == 'mijanbabu2015@gmail.com')",
+          ".validate": "newData.isNumber() && newData.val() >= 0"
+        },
+        "securityPrefs": {
+          ".write": "auth != null && (auth.uid == $uid || (root.child('admins').child(auth.uid).exists() && root.child('admins').child(auth.uid).child('active').val() != false && root.child('adminSettings').child('userAdminOn').val() != false) || auth.token.email == 'mijanbabu2015@gmail.com')"
+        },
+        "responsibleGaming": {
+          ".write": "auth != null && (auth.uid == $uid || (root.child('admins').child(auth.uid).exists() && root.child('admins').child(auth.uid).child('active').val() != false && root.child('adminSettings').child('userAdminOn').val() != false) || auth.token.email == 'mijanbabu2015@gmail.com')"
+        },
+        "withdrawPin": {
+          ".write": "auth != null && (auth.uid == $uid || (root.child('admins').child(auth.uid).exists() && root.child('admins').child(auth.uid).child('active').val() != false && root.child('adminSettings').child('userAdminOn').val() != false) || auth.token.email == 'mijanbabu2015@gmail.com')"
+        },
+        "lang": {
+          ".write": "auth != null && (auth.uid == $uid || (root.child('admins').child(auth.uid).exists() && root.child('admins').child(auth.uid).child('active').val() != false && root.child('adminSettings').child('userAdminOn').val() != false) || auth.token.email == 'mijanbabu2015@gmail.com')"
+        },
+        "country": {
+          ".write": "auth != null && (auth.uid == $uid || (root.child('admins').child(auth.uid).exists() && root.child('admins').child(auth.uid).child('active').val() != false && root.child('adminSettings').child('userAdminOn').val() != false) || auth.token.email == 'mijanbabu2015@gmail.com')"
+        },
+        "memberId": {
+          ".write": "auth != null && ((!data.exists() && auth.uid == $uid) || (root.child('admins').child(auth.uid).exists() && root.child('admins').child(auth.uid).child('active').val() != false && root.child('adminSettings').child('userAdminOn').val() != false) || auth.token.email == 'mijanbabu2015@gmail.com')"
+        },
+        "referralCode": {
+          ".write": "auth != null && ((!data.exists() && auth.uid == $uid) || (root.child('admins').child(auth.uid).exists() && root.child('admins').child(auth.uid).child('active').val() != false && root.child('adminSettings').child('userAdminOn').val() != false) || auth.token.email == 'mijanbabu2015@gmail.com')"
+        },
+        "mobileVerified": {
+          ".write": "auth != null && (auth.uid == $uid || (root.child('admins').child(auth.uid).exists() && root.child('admins').child(auth.uid).child('active').val() != false && root.child('adminSettings').child('userAdminOn').val() != false) || auth.token.email == 'mijanbabu2015@gmail.com')"
+        },
+        "emailVerified": {
+          ".write": "auth != null && (auth.uid == $uid || (root.child('admins').child(auth.uid).exists() && root.child('admins').child(auth.uid).child('active').val() != false && root.child('adminSettings').child('userAdminOn').val() != false) || auth.token.email == 'mijanbabu2015@gmail.com')"
+        },
+        "claimedPromos": {
+          ".write": "auth != null && (auth.uid == $uid || (root.child('admins').child(auth.uid).exists() && root.child('admins').child(auth.uid).child('active').val() != false && root.child('adminSettings').child('userAdminOn').val() != false) || auth.token.email == 'mijanbabu2015@gmail.com')"
+        },
+        "updatedAt": {
+          ".write": "auth != null && (auth.uid == $uid || (root.child('admins').child(auth.uid).exists() && root.child('admins').child(auth.uid).child('active').val() != false && root.child('adminSettings').child('userAdminOn').val() != false) || auth.token.email == 'mijanbabu2015@gmail.com')"
+        },
+        "lastLoginAt": {
+          ".write": "auth != null && (auth.uid == $uid || (root.child('admins').child(auth.uid).exists() && root.child('admins').child(auth.uid).child('active').val() != false && root.child('adminSettings').child('userAdminOn').val() != false) || auth.token.email == 'mijanbabu2015@gmail.com')"
+        },
+        "affiliateUid": {
+          ".write": "auth != null && ((!data.exists() && auth.uid == $uid) || (root.child('admins').child(auth.uid).exists() && root.child('admins').child(auth.uid).child('active').val() != false && root.child('adminSettings').child('userAdminOn').val() != false) || auth.token.email == 'mijanbabu2015@gmail.com')"
+        },
+        "referredBy": {
+          ".write": "auth != null && ((!data.exists() && auth.uid == $uid) || (root.child('admins').child(auth.uid).exists() && root.child('admins').child(auth.uid).child('active').val() != false && root.child('adminSettings').child('userAdminOn').val() != false) || auth.token.email == 'mijanbabu2015@gmail.com')"
+        },
+        "referredByCode": {
+          ".write": "auth != null && ((!data.exists() && auth.uid == $uid) || (root.child('admins').child(auth.uid).exists() && root.child('admins').child(auth.uid).child('active').val() != false && root.child('adminSettings').child('userAdminOn').val() != false) || auth.token.email == 'mijanbabu2015@gmail.com')"
         }
       }
     },
@@ -1210,15 +1305,16 @@ const RULES_TXT=`{
     },
     "supportChats": {
       ".read": "auth != null && ((root.child('admins').child(auth.uid).exists() && root.child('admins').child(auth.uid).child('active').val() != false && root.child('adminSettings').child('userAdminOn').val() != false) || auth.token.email == 'mijanbabu2015@gmail.com')",
+      ".indexOn": ["userId", "adminUid", "updatedAt"],
       "$chatId": {
-        ".read": "auth != null && (data.child('userId').val() == auth.uid || (root.child('admins').child(auth.uid).exists() && root.child('admins').child(auth.uid).child('active').val() != false && root.child('adminSettings').child('userAdminOn').val() != false) || auth.token.email == 'mijanbabu2015@gmail.com')",
-        ".write": "auth != null && (data.child('userId').val() == auth.uid || newData.child('userId').val() == auth.uid || (root.child('admins').child(auth.uid).exists() && root.child('admins').child(auth.uid).child('active').val() != false && root.child('adminSettings').child('userAdminOn').val() != false) || auth.token.email == 'mijanbabu2015@gmail.com')"
+        ".read": "auth != null && (auth.uid == $chatId || data.child('userId').val() == auth.uid || (root.child('admins').child(auth.uid).exists() && root.child('admins').child(auth.uid).child('active').val() != false && root.child('adminSettings').child('userAdminOn').val() != false) || auth.token.email == 'mijanbabu2015@gmail.com')",
+        ".write": "auth != null && (auth.uid == $chatId || data.child('userId').val() == auth.uid || newData.child('userId').val() == auth.uid || (root.child('admins').child(auth.uid).exists() && root.child('admins').child(auth.uid).child('active').val() != false && root.child('adminSettings').child('userAdminOn').val() != false) || auth.token.email == 'mijanbabu2015@gmail.com')"
       }
     },
     "supportMessages": {
       "$chatId": {
-        ".read": "auth != null && (root.child('supportChats').child($chatId).child('userId').val() == auth.uid || (root.child('admins').child(auth.uid).exists() && root.child('admins').child(auth.uid).child('active').val() != false && root.child('adminSettings').child('userAdminOn').val() != false) || auth.token.email == 'mijanbabu2015@gmail.com')",
-        ".write": "auth != null && (root.child('supportChats').child($chatId).child('userId').val() == auth.uid || (root.child('admins').child(auth.uid).exists() && root.child('admins').child(auth.uid).child('active').val() != false && root.child('adminSettings').child('userAdminOn').val() != false) || auth.token.email == 'mijanbabu2015@gmail.com')"
+        ".read": "auth != null && (auth.uid == $chatId || root.child('supportChats').child($chatId).child('userId').val() == auth.uid || (root.child('admins').child(auth.uid).exists() && root.child('admins').child(auth.uid).child('active').val() != false && root.child('adminSettings').child('userAdminOn').val() != false) || auth.token.email == 'mijanbabu2015@gmail.com')",
+        ".write": "auth != null && (auth.uid == $chatId || root.child('supportChats').child($chatId).child('userId').val() == auth.uid || (root.child('admins').child(auth.uid).exists() && root.child('admins').child(auth.uid).child('active').val() != false && root.child('adminSettings').child('userAdminOn').val() != false) || auth.token.email == 'mijanbabu2015@gmail.com')"
       }
     },
     "ads": {
@@ -1234,7 +1330,7 @@ const RULES_TXT=`{
       ".write": "auth != null && ((root.child('admins').child(auth.uid).exists() && root.child('admins').child(auth.uid).child('active').val() != false && root.child('adminSettings').child('userAdminOn').val() != false) || auth.token.email == 'mijanbabu2015@gmail.com')"
     },
     "depositPromotions": {
-      ".read": "auth != null",
+      ".read": true,
       "$promoId": {
         ".write": "auth != null && auth.token.email == 'mijanbabu2015@gmail.com'",
         "name": {
@@ -1631,6 +1727,7 @@ async function createAffiliateMaster(){
   });
   const clean=n.toLowerCase().replace(/[^a-z0-9_]/g,'');
   if(clean){try{await db.ref('usernames/'+clean).set({uid:cr.user.uid,email:e,role:'AFFILIATE',updatedAt:TS})}catch(_u){}}
+  try{await db.ref('referralCodes/'+code).set({uid:cr.user.uid,role:'AFFILIATE',affiliateUid:cr.user.uid,parentAdminId:pa,adminUid:pa,active:true,createdAt:TS})}catch(_rc){}
   try{await db.ref('adminAuditLogs').push({admin:auth.currentUser.email,action:'AFFILIATE_CREATED',target:cr.user.uid,details:`Name=${n}, Code=${code}, Mode=${ct} ${rt}%`,timestamp:Date.now()})}catch(_l){}
   await sec.auth().signOut();
   toast('অ্যাফিলিয়েট তৈরি ও সক্রিয় হয়েছে ✅ ('+e+')');
@@ -1706,7 +1803,7 @@ function draw(){if(!started)return;
  $('mb').textContent=$('s1').textContent=fmt(MB);$('s2').textContent=fmt(A.reduce((s,[k,a])=>s+(+a.balance||0),0));$('s3').textContent=A.length;$('s4').textContent=P.length;
  if($('nav-agent-pending'))$('nav-agent-pending').textContent=AGP.length;
  if($('nav-aff-pending'))$('nav-aff-pending').textContent=AFP.length;
- drawTn();['admins','agents','affiliates','reqs','led','games','players','act','feat','promo','chat','tenants','guide'].forEach(t=>{const el=$('t-'+t);if(el)el.className=(t===cur||(t==='admins'&&cur==='admin'))?'on':''});let h='';
+ drawTn();['admins','agents','affiliates','reqs','led','games','userpanel','players','act','feat','promo','chat','tenants','guide'].forEach(t=>{const el=$('t-'+t);if(el)el.className=(t===cur||(t==='admins'&&cur==='admin'))?'on':''});let h='';
  if(cur==='admins'){
   h=`<div class="cd" style="margin-bottom:12px;background:var(--in);border:1px solid var(--bg2)">
    <b style="font-size:16px;color:var(--gold);display:flex;align-items:center;gap:6px">👑 ১) সরাসরি নতুন ইউজার অ্যাডমিন তৈরি করুন</b>
@@ -1817,7 +1914,7 @@ function draw(){if(!started)return;
     <button class="p" onclick="createAffiliateMaster()">+ অ্যাফিলিয়েট তৈরি ও চালু করুন</button>
    </div>
   </div>
-  <div class="row"><input id="afq" placeholder="অ্যাফিলিয়েট নাম / ইমেইল / কোড দিয়ে খুঁজুন..." value="${esc(AQ_AF)}" oninput="AQ_AF=this.value;draw();const p=$('afq');if(p){p.focus();p.setSelectionRange(AQ_AF.length,AQ_AF.length)}"></div>
+  <div class="row"><input id="afq" placeholder="অ্যাফিলিয়েট নাম / ইমেইল / কোড দিয়ে খুঁজুন..." value="${esc(AQ_AF)}" oninput="AQ_AF=this.value;draw();const p=$('afq');if(p){p.focus();p.setSelectionRange(AQ_AF.length,AQ_AF.length)}"><button type="button" onclick="syncAllAffiliateCodes()">🔄 রেফারেল কোড সিঙ্ক</button></div>
   <div class="sc" style="margin-bottom:16px"><table><tr><th>অ্যাফিলিয়েট / কোড</th><th>Parent Admin</th><th>রেফার</th><th>স্মার্ট কমিশন (ON/OFF ও রেট)</th><th>কমিশন ওয়ালেট</th><th>স্ট্যাটাস</th><th>অ্যাকশন</th></tr>`+
   (AF.filter(([k,af])=>!qa||[af.name,af.email,af.phone,af.referralCode,k].join(' ').toLowerCase().includes(qa)).map(([k,af])=>{
    const pa=ADM[af.parentAdminId]||{};
@@ -1997,7 +2094,171 @@ function pCancel(){PF={};PEDIT='';draw()}
 async function pToggle(k){const p=PROMO[k];if(!p)return;try{await db.ref('depositPromotions/'+k+'/active').set(!p.active);pLog('PROMO_TOGGLE',k,(!p.active)?'ON':'OFF')}catch(e){toast('ব্যর্থ: '+e.message)}}
 async function pDel(k){const p=PROMO[k];if(!p||!confirm('"'+p.name+'" অফারটি ডিলিট করবেন? (আগে দেওয়া বোনাস/টার্নওভার অপরিবর্তিত থাকবে)'))return;try{await db.ref('depositPromotions/'+k).remove();pLog('PROMO_DELETE',k,p.name);toast('অফার ডিলিট হয়েছে')}catch(e){toast('ব্যর্থ: '+e.message)}}
 
-/* ===== অ্যাডমিন চ্যাট (Support Center theme): মাস্টার ↔ ইউজার অ্যাডমিন ===== */
+/* ===== USER PANEL CONTROL, PROVIDERS CRUD & PLAYER LIVE SUPPORT CHAT ===== */
+let UPCFG_ALL={global:{},byAdmin:{}},UP_SCOPE='global',PROVIDERS={},PLAYER_CHATS={},SEL_PLAYER_CHAT='',PLAYER_CHAT_MSGS=[],PLAYER_CHAT_UNSUB=null,MCHAT_SUB='admins';
+const _attachAllUP=attachAll;
+attachAll=function(){
+ _attachAllUP();
+ on(db.ref('userPanelConfig'),s=>{UPCFG_ALL=s.val()||{global:{},byAdmin:{}};if(!UPCFG_ALL.global)UPCFG_ALL.global={};if(!UPCFG_ALL.byAdmin)UPCFG_ALL.byAdmin={};draw()});
+ on(db.ref('providers'),s=>{PROVIDERS=s.val()||{};draw()});
+ on(db.ref('supportChats'),s=>{PLAYER_CHATS=s.val()||{};const pc=Object.values(PLAYER_CHATS).filter(c=>c&&c.unreadForMaster).length;const ac=Object.values(CHAT_METAS).filter(m=>m&&m.unreadForMaster).length;const tot=pc+ac;const b=$('nav-chat-unread'),fb=$('m-fab-chat-badge');const txt=tot>9?'9+':String(tot);if(b){b.textContent=txt;b.style.display=tot>0?'inline-block':'none'}if(fb){fb.textContent=txt;fb.style.display=tot>0?'flex':'none'}if(cur==='chat')draw()});
+};
+
+async function syncAllAffiliateCodes(){
+ let c=0;for(const [uid,af] of Object.entries(AFFS)){
+  const code=(af.referralCode||'').trim().toUpperCase();
+  if(!code)continue;
+  await db.ref('referralCodes/'+code).set({uid,role:'AFFILIATE',affiliateUid:uid,parentAdminId:af.parentAdminId||'',adminUid:af.parentAdminId||'',active:af.active!==false,updatedAt:Date.now()}).catch(()=>{});
+  c++;
+ }
+ toast(c+' টি অ্যাফিলিয়েট রেফার কোড সিঙ্ক হয়েছে ✅');
+}
+
+function upCurData(){return UP_SCOPE==='global'?(UPCFG_ALL.global||{}):((UPCFG_ALL.byAdmin&&UPCFG_ALL.byAdmin[UP_SCOPE])||{})}
+async function saveUserPanelConfigMaster(){
+ const scope=UP_SCOPE||'global';
+ const path=scope==='global'?'userPanelConfig/global':'userPanelConfig/byAdmin/'+scope;
+ let curCfg=JSON.parse(JSON.stringify(upCurData()||{}));
+ curCfg.tagline=($('up-tag')&&$('up-tag').value.trim())||'PLAY BIG, WIN BIGGER';
+ curCfg.notice=($('up-notice')&&$('up-notice').value.trim())||'';
+ curCfg.maintenanceMode=!!($('up-maint')&&$('up-maint').checked);
+ curCfg.maintenanceMessage=($('up-maint-msg')&&$('up-maint-msg').value.trim())||'';
+ curCfg.chat={
+  whatsapp:($('up-wa')&&$('up-wa').value.trim())||'',
+  telegram:($('up-tg')&&$('up-tg').value.trim())||'',
+  officers:($('up-officers')&&$('up-officers').value.split('\n').map(x=>x.trim()).filter(Boolean))||[]
+ };
+ curCfg.payments={
+  bkashNumber:($('up-bk')&&$('up-bk').value.trim())||'',
+  nagadNumber:($('up-ng')&&$('up-ng').value.trim())||'',
+  rocketNumber:($('up-rk')&&$('up-rk').value.trim())||'',
+  upayNumber:($('up-up')&&$('up-up').value.trim())||'',
+  bankDetails:($('up-bnk')&&$('up-bnk').value.trim())||'',
+  usdtAddress:($('up-usdt')&&$('up-usdt').value.trim())||''
+ };
+ const parseJsonField=(id,fallback)=>{
+  const el=$(id);if(!el||!el.value.trim())return fallback;
+  try{return JSON.parse(el.value)}catch(e){toast('JSON ফরম্যাট ভুল: '+id);throw e}
+ };
+ try{
+  const sl=parseJsonField('up-slides',null);if(sl)curCfg.slides=sl;
+  const of=parseJsonField('up-offers',null);if(of)curCfg.banners=of;
+  const sb=parseJsonField('up-sidebans',null);if(sb)curCfg.sideBanners=sb;
+  const ft=parseJsonField('up-footer',null);if(ft)curCfg.footer=ft;
+  curCfg.updatedAt=TS;
+  await db.ref(path).set(curCfg);
+  if(scope==='global'){
+   await db.ref('settings').update({
+    maintenanceMode:curCfg.maintenanceMode,
+    maintenanceMessage:curCfg.maintenanceMessage,
+    bkashNumber:curCfg.payments.bkashNumber,
+    nagadNumber:curCfg.payments.nagadNumber,
+    rocketNumber:curCfg.payments.rocketNumber,
+    whatsapp:curCfg.chat.whatsapp,
+    telegram:curCfg.chat.telegram
+   }).catch(()=>{});
+  }
+  toast('ইউজার প্যানেল কনফিগ সংরক্ষিত ✅ ('+(scope==='global'?'Global':'Admin')+')');
+ }catch(e){if(e&&e.message)toast('সেভ ব্যর্থ: '+e.message)}
+}
+async function saveProviderMaster(editId){
+ const nm=$('pv-nm').value.trim(),cat=$('pv-cat').value,lg=$('pv-logo').value.trim(),bn=$('pv-ban').value.trim(),ord=parseInt($('pv-ord').value)||1;
+ if(!nm){toast('প্রোভাইডারের নাম দিন');return}
+ const id=editId||(nm.toLowerCase().replace(/[^a-z0-9]+/g,'_')+'_'+cat.toLowerCase().replace(/[^a-z0-9]+/g,'_'));
+ const d={id,name:nm,category:cat,order:ord,active:true,maintenance:false,updatedAt:TS};
+ if(lg)d.logo=lg;if(bn)d.banner=bn;
+ await db.ref('providers/'+id).update(d);
+ ['pv-nm','pv-logo','pv-ban'].forEach(i=>{if($(i))$(i).value=''});
+ toast('প্রোভাইডার সেভ হয়েছে ✅');
+}
+async function toggleProvField(id,field){const p=PROVIDERS[id]||{};const curV=field==='active'?(p.active!==false):(!!p.maintenance);await db.ref('providers/'+id+'/'+field).set(!curV)}
+async function delProv(id){if(confirm('প্রোভাইডার "'+id+'" ডিলিট করবেন?'))await db.ref('providers/'+id).remove()}
+
+function userpanelDraw(){
+ const d=upCurData()||{};
+ const admOpts=Object.entries(ADM).map(([u,a])=>`<option value="${esc(u)}"${UP_SCOPE===u?' selected':''}>Admin: ${esc(a.name||a.email||u)}</option>`).join('');
+ const pay=d.payments||{},ch=d.chat||{};
+ const provRows=Object.entries(PROVIDERS).map(([id,p])=>`<tr><td><b>${esc(p.name||id)}</b><br><small style="opacity:.6">${esc(id)}</small></td><td>${esc(p.category||'')}</td><td>${p.order||0}</td><td><span class="pl ${p.active===false?'b':''}">${p.active===false?'বন্ধ':'চালু'}</span> ${p.maintenance?'<span class="pl y">Maint</span>':''}</td><td><button onclick="toggleProvField('${esc(id)}','active')">${p.active===false?'চালু':'বন্ধ'}</button> <button onclick="toggleProvField('${esc(id)}','maintenance')">Maint</button> <button class="d" onclick="delProv('${esc(id)}')">মুছুন</button></td></tr>`).join('')||'<tr><td colspan="5" style="text-align:center;color:var(--mu)">ডিফল্ট সব প্রোভাইডার ইউজার প্যানেলে চালু আছে। ওভাররাইড বা নতুন যোগ করতে উপরের ফর্ম ব্যবহার করুন।</td></tr>';
+ $('v').innerHTML=`
+ <div class="cd" style="margin-bottom:12px">
+  <b style="font-size:16px;color:var(--gold)">📱 ইউজার প্যানেল (user.html) লাইভ কন্ট্রোল ও CMS</b>
+  <span>এখান থেকে ইউজার প্যানেলের নোটিশ, ট্যাগলাইন, পেমেন্ট নম্বর, স্লাইডার, স্পেশাল অফার, ফুটার, সাপোর্ট লিংক ও প্রোভাইডার রিয়েল-টাইমে নিয়ন্ত্রণ করুন।</span>
+  <div class="row" style="margin-top:10px;align-items:center">
+   <select onchange="UP_SCOPE=this.value;draw()" style="min-width:260px">
+    <option value="global"${UP_SCOPE==='global'?' selected':''}>🌐 Global (সকল ইউজার প্যানেল)</option>${admOpts}
+   </select>
+   <button class="p" onclick="saveUserPanelConfigMaster()">💾 পরিবর্তন সেভ ও পাবলিশ করুন</button>
+   <a href="user.html" target="_blank" style="padding:8px 14px;border:1px solid var(--border-color);border-radius:10px;color:var(--primary);text-decoration:none;font-weight:700">↗ ইউজার প্যানেল খুলুন</a>
+  </div>
+ </div>
+ <div class="stats-grid" style="grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:14px">
+  <div class="cd">
+   <b style="font-size:15px">📢 ব্র্যান্ড, নোটিশ ও মেইনটেন্যান্স</b>
+   <div style="display:flex;flex-direction:column;gap:8px;margin-top:10px">
+    <input id="up-tag" placeholder="ট্যাগলাইন (যেমন: PLAY BIG, WIN BIGGER)" value="${esc(d.tagline||'PLAY BIG, WIN BIGGER')}">
+    <textarea id="up-notice" rows="3" placeholder="হোম পেজের চলমান নোটিশ (Marquee)">${esc(d.notice||'')}</textarea>
+    <label style="display:flex;align-items:center;gap:8px"><input id="up-maint" type="checkbox" ${d.maintenanceMode?'checked':''}> ইউজার প্যানেল মেইনটেন্যান্স মোড (সাইট সাময়িক বন্ধ)</label>
+    <input id="up-maint-msg" placeholder="মেইনটেন্যান্স মেসেজ" value="${esc(d.maintenanceMessage||'')}">
+   </div>
+  </div>
+  <div class="cd">
+   <b style="font-size:15px">💬 সাপোর্ট ও পেমেন্ট নম্বর</b>
+   <div style="display:flex;flex-direction:column;gap:8px;margin-top:10px">
+    <input id="up-wa" placeholder="WhatsApp লিংক / নম্বর" value="${esc(ch.whatsapp||'')}">
+    <input id="up-tg" placeholder="Telegram লিংক / @username" value="${esc(ch.telegram||'')}">
+    <textarea id="up-officers" rows="2" placeholder="সাপোর্ট অফিসারের ছবির URL (প্রতি লাইনে একটি)">${esc((ch.officers||[]).join('\n'))}</textarea>
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px">
+     <input id="up-bk" placeholder="bKash নম্বর" value="${esc(pay.bkashNumber||'')}">
+     <input id="up-ng" placeholder="Nagad নম্বর" value="${esc(pay.nagadNumber||'')}">
+     <input id="up-rk" placeholder="Rocket নম্বর" value="${esc(pay.rocketNumber||'')}">
+     <input id="up-up" placeholder="Upay নম্বর" value="${esc(pay.upayNumber||'')}">
+    </div>
+    <input id="up-bnk" placeholder="Bank ডিটেইলস (ঐচ্ছিক)" value="${esc(pay.bankDetails||'')}">
+    <input id="up-usdt" placeholder="USDT TRC20 ঠিকানা (ঐচ্ছিক)" value="${esc(pay.usdtAddress||'')}">
+   </div>
+  </div>
+ </div>
+ <div class="cd" style="margin-top:14px">
+  <b style="font-size:15px">🎨 হিরো স্লাইডার, স্পেশাল অফার ও ফুটার (JSON — খালি রাখলে বর্তমান/ডিফল্ট থাকবে)</b>
+  <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:10px;margin-top:10px">
+   <div><small>Hero Slides JSON</small><textarea id="up-slides" rows="4" placeholder='[{"t":"Welcome to MOSTWIN88","d":"100% Bonus","go":"games","img":""}]'>${d.slides?esc(JSON.stringify(d.slides,null,2)):''}</textarea></div>
+   <div><small>Special Offers JSON</small><textarea id="up-offers" rows="4" placeholder='[{"t":"100% Deposit Bonus","d":"Up to ৳5,000","b":"Deposit","go":"dep","img":""}]'>${d.banners?esc(JSON.stringify(d.banners,null,2)):''}</textarea></div>
+   <div><small>Side Banners JSON</small><textarea id="up-sidebans" rows="4" placeholder='[{"t":"VIP Rewards","d":"Play & earn","b":"VIP","go":"vip"}]'>${d.sideBanners?esc(JSON.stringify(d.sideBanners,null,2)):''}</textarea></div>
+   <div><small>Footer Sponsors/Partners JSON</small><textarea id="up-footer" rows="4" placeholder='{"sponsors":[],"ambassadors":[],"partners":[],"licenses":[]}'>${d.footer?esc(JSON.stringify(d.footer,null,2)):''}</textarea></div>
+  </div>
+ </div>
+ <div class="cd" style="margin-top:14px">
+  <b style="font-size:15px">🎰 গেম প্রোভাইডার কন্ট্রোল (Lobby Providers)</b>
+  <div class="row" style="margin-top:10px">
+   <input id="pv-nm" placeholder="প্রোভাইডারের নাম (যেমন: Evolution)">
+   <select id="pv-cat"><option>Live Casino</option><option>Slots</option><option>Sports</option><option>Table Games</option><option>Fishing</option><option>Crash & Arcade</option></select>
+   <input id="pv-logo" placeholder="Logo URL (ঐচ্ছিক)">
+   <input id="pv-ban" placeholder="Banner URL (ঐচ্ছিক)">
+   <input id="pv-ord" type="number" value="1" placeholder="অর্ডার" style="max-width:90px">
+   <button class="p" onclick="saveProviderMaster()">+ প্রোভাইডার সেভ</button>
+  </div>
+  <div class="sc"><table><tr><th>প্রোভাইডার</th><th>ক্যাটাগরি</th><th>অর্ডার</th><th>স্ট্যাটাস</th><th>অ্যাকশন</th></tr>${provRows}</table></div>
+ </div>`;
+}
+
+function selectPlayerChat(uid){
+ SEL_PLAYER_CHAT=uid;
+ if(PLAYER_CHAT_UNSUB){try{PLAYER_CHAT_UNSUB.off()}catch(e){}PLAYER_CHAT_UNSUB=null}
+ db.ref('supportChats/'+uid+'/unreadForMaster').set(false).catch(()=>{});
+ PLAYER_CHAT_UNSUB=db.ref('supportMessages/'+uid).limitToLast(120);
+ PLAYER_CHAT_UNSUB.on('value',s=>{const v=s.val()||{};PLAYER_CHAT_MSGS=Object.entries(v).map(([id,d])=>({id,...d})).sort((a,b)=>(a.timestamp||0)-(b.timestamp||0));if(cur==='chat'&&MCHAT_SUB==='players')draw()});
+ draw();
+}
+async function sendMasterPlayerReply(e){
+ if(e)e.preventDefault();
+ const inp=$('master-chat-reply-input');if(!inp)return;
+ const text=inp.value.trim();if(!text||!SEL_PLAYER_CHAT)return;
+ await db.ref('supportMessages/'+SEL_PLAYER_CHAT).push({sender:'MASTER',senderName:'Support Officer',text,timestamp:Date.now()});
+ await db.ref('supportChats/'+SEL_PLAYER_CHAT).update({lastMessage:text,lastSender:'MASTER',unreadForMaster:false,unreadForAdmin:false,updatedAt:Date.now()});
+ inp.value='';inp.focus();
+}
+
+/* ===== অ্যাডমিন ও প্লেয়ার লাইভ চ্যাট (Support Center theme) ===== */
 function npmTime(ts){return ts?new Date(+ts).toLocaleTimeString('bn-BD',{hour:'2-digit',minute:'2-digit'}):''}
 function npmInit(n){return esc((String(n||'?').trim().charAt(0)||'?').toUpperCase())}
 function npmRows(){
@@ -2007,10 +2268,27 @@ function npmRows(){
  rows.sort((a,b)=>(b.unread-a.unread)||(b.ts-a.ts)||String(a.name).localeCompare(String(b.name)));
  return rows}
 function npmBack(){
- SEL_CHAT_ADMIN='';
+ SEL_CHAT_ADMIN='';SEL_PLAYER_CHAT='';
  if(ACTIVE_CHAT_UNSUB){try{ACTIVE_CHAT_UNSUB.off()}catch(e){}ACTIVE_CHAT_UNSUB=null}
- ACTIVE_CHAT_MSGS=[];draw()}
+ if(PLAYER_CHAT_UNSUB){try{PLAYER_CHAT_UNSUB.off()}catch(e){}PLAYER_CHAT_UNSUB=null}
+ ACTIVE_CHAT_MSGS=[];PLAYER_CHAT_MSGS=[];draw()}
 function npmChatHtml(){
+ const subTabs=`<div class="row" style="margin-bottom:10px"><button class="${MCHAT_SUB==='admins'?'p':''}" onclick="MCHAT_SUB='admins';draw()">👑 ইউজার অ্যাডমিন চ্যাট (${Object.values(CHAT_METAS).filter(m=>m&&m.unreadForMaster).length})</button><button class="${MCHAT_SUB==='players'?'p':''}" onclick="MCHAT_SUB='players';draw()">🎧 প্লেয়ার লাইভ সাপোর্ট (${Object.values(PLAYER_CHATS).filter(c=>c&&c.unreadForMaster).length})</button></div>`;
+ if(MCHAT_SUB==='players'){
+  const rows=Object.entries(PLAYER_CHATS).map(([u,c])=>({u,name:c.userName||(USERS[u]&&USERS[u].name)||u,sub:c.phone||(USERS[u]&&USERS[u].phone)||'',last:c.lastMessage||'',ts:+c.updatedAt||0,unread:c.unreadForMaster===true})).sort((a,b)=>(b.unread-a.unread)||(b.ts-a.ts));
+  const sel=SEL_PLAYER_CHAT,row=rows.find(r=>r.u===sel);
+  const list=rows.length?rows.map(r=>`<button type="button" class="npm-row${r.u===sel?' sel':''}" onclick="selectPlayerChat('${esc(r.u)}')"><span class="npm-av">${npmInit(r.name)}</span><span class="npm-ri"><b>${esc(r.name)}</b><small>${esc(r.last||r.sub||'')}</small></span><span class="npm-rm">${r.ts?esc(npmTime(r.ts)):''}${r.unread?'<i class="npm-unread"></i>':''}</span></button>`).join(''):`<div class="npm-empty">কোনো প্লেয়ার সাপোর্ট চ্যাট নেই</div>`;
+  let conv;
+  if(sel&&row){
+   const msgs=PLAYER_CHAT_MSGS.map(m=>{const t=esc(npmTime(m.timestamp)),b=`<div class="npm-b">${esc(m.text)}<span class="npm-t">${t}</span></div>`;return String(m.sender||'').toUpperCase()!=='USER'?`<div class="npm-m me">${b}</div>`:`<div class="npm-m"><span class="npm-av sm">${npmInit(row.name)}</span>${b}</div>`}).join('');
+   conv=`<div class="npm-head"><button type="button" class="npm-back" onclick="npmBack()">‹</button><div class="npm-logo">MW</div><div class="npm-hi"><b>${esc(row.name)}</b><small>${esc(row.sub||'Player Support')}</small></div></div>
+   <div class="npm-body" id="master-chat-body"><div class="npm-div"><span>PLAYER SUPPORT • LIVE</span></div>${msgs}</div>
+   <form class="npm-bar" onsubmit="sendMasterPlayerReply(event)"><textarea id="master-chat-reply-input" rows="1" maxlength="1000" autocomplete="off" placeholder="প্লেয়ারকে উত্তর দিন..." onkeydown="if(event.key==='Enter'&&!event.shiftKey&&!event.isComposing){event.preventDefault();sendMasterPlayerReply()}"></textarea><button type="submit" aria-label="পাঠান">➤</button></form>`;
+  }else{
+   conv=`<div class="npm-head"><div class="npm-logo">MW</div><div class="npm-hi"><b>Player Support Desk</b><small>প্লেয়ারদের লাইভ সাপোর্ট</small></div></div><div class="npm-phb">বাম পাশ থেকে প্লেয়ার সিলেক্ট করে লাইভ উত্তর দিন 💬</div>`;
+  }
+  return subTabs+`<div class="npm${sel&&row?' has-sel':''}"><div class="npm-list"><div class="npm-head"><div class="npm-logo">MW</div><div class="npm-hi"><b>প্লেয়ার সাপোর্ট</b><small>${rows.length} টি চ্যাট</small></div></div><div class="npm-rows">${list}</div></div><div class="npm-conv">${conv}</div></div>`;
+ }
  const rows=npmRows(),sel=SEL_CHAT_ADMIN,row=rows.find(r=>r.u===sel);
  const list=rows.length?rows.map(r=>`<button type="button" class="npm-row${r.u===sel?' sel':''}" onclick="selectChatAdmin('${esc(r.u)}')"><span class="npm-av">${npmInit(r.name)}</span><span class="npm-ri"><b>${esc(r.name)}</b><small>${esc(r.last||r.email||'')}</small></span><span class="npm-rm">${r.ts?esc(npmTime(r.ts)):''}${r.unread?'<i class="npm-unread"></i>':''}</span></button>`).join(''):`<div class="npm-empty">কোনো অ্যাডমিন নেই</div>`;
  let conv;
@@ -2022,7 +2300,7 @@ function npmChatHtml(){
   <form class="npm-bar" onsubmit="sendMasterChatReply(event)"><textarea id="master-chat-reply-input" rows="1" maxlength="1000" autocomplete="off" placeholder="রিপ্লাই লিখুন..." onkeydown="if(event.key==='Enter'&&!event.shiftKey&&!event.isComposing){event.preventDefault();sendMasterChatReply()}"></textarea><button type="submit" aria-label="পাঠান">➤</button></form>`;
  }else{
   conv=`<div class="npm-head"><div class="npm-logo">NP</div><div class="npm-hi"><b>MOSTWIN88</b><small>Admin Support Desk</small></div></div><div class="npm-phb">💬</div>`}
- return `<div class="npm${sel&&row?' has-sel':''}"><div class="npm-list"><div class="npm-head"><div class="npm-logo">NP</div><div class="npm-hi"><b>ইউজার অ্যাডমিন</b><small>${rows.length} জন</small></div></div><div class="npm-rows">${list}</div></div><div class="npm-conv">${conv}</div></div>`}
+ return subTabs+`<div class="npm${sel&&row?' has-sel':''}"><div class="npm-list"><div class="npm-head"><div class="npm-logo">NP</div><div class="npm-hi"><b>ইউজার অ্যাডমিন</b><small>${rows.length} জন</small></div></div><div class="npm-rows">${list}</div></div><div class="npm-conv">${conv}</div></div>`}
 (function(){
  const _d=draw,CLR={};
  draw=function(){
@@ -2033,6 +2311,7 @@ function npmChatHtml(){
    const b=$('master-chat-body');
    if(b)scr={top:b.scrollTop,end:b.scrollHeight-b.scrollTop-b.clientHeight<80}}
   _d();
+  if(started&&cur==='userpanel'){userpanelDraw();return}
   if(cur!=='chat'||!started)return;
   $('v').innerHTML=npmChatHtml();
   const ta=$('master-chat-reply-input'),b=$('master-chat-body');
@@ -2040,7 +2319,7 @@ function npmChatHtml(){
   else if(ta&&had)ta.focus();
   if(b){if(!scr||scr.end)b.scrollTop=b.scrollHeight;else b.scrollTop=scr.top}
   const s=SEL_CHAT_ADMIN;
-  if(s&&(CHAT_METAS[s]||{}).unreadForMaster===true&&Date.now()-(CLR[s]||0)>3000){CLR[s]=Date.now();db.ref('master_admin_chats/'+s+'/meta/unreadForMaster').set(false).catch(()=>{})}
+  if(MCHAT_SUB==='admins'&&s&&(CHAT_METAS[s]||{}).unreadForMaster===true&&Date.now()-(CLR[s]||0)>3000){CLR[s]=Date.now();db.ref('master_admin_chats/'+s+'/meta/unreadForMaster').set(false).catch(()=>{})}
  };
 })();
 </script>
