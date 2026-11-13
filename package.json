@@ -1,0 +1,12 @@
+{
+  "name": "mostwin88-platform",
+  "version": "1.0.0",
+  "description": "MOSTWIN88 Multi-Panel Backend & Static Server for Render (User, User Admin, Master Admin, Agent, Affiliate)",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js"
+  },
+  "engines": {
+    "node": ">=18.0.0"
+  }
+}

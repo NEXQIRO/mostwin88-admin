@@ -1,0 +1,20 @@
+{
+  "database": {
+    "rules": "database.rules.json"
+  },
+  "hosting": {
+    "public": ".",
+    "ignore": [
+      "firebase.json",
+      "**/.*",
+      "**/node_modules/**",
+      "app/**",
+      "gradle/**",
+      "public/**",
+      "*.kts",
+      "*.properties",
+      "*.base64",
+      "metadata.json"
+    ]
+  }
+}
