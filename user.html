@@ -667,8 +667,10 @@ let LIVE_CLIENT_IP = '';
 let LIVE_ADMIN_REF_BOUND = '';
 let userListenersBound = false;
 let userRefs = [];
+let LIVE_AGENT_WALLETS = {};
+let ACTIVE_AGENT_BY_METHOD = {};
 
-const M = {
+const DEFAULT_M = {
   bKash: ['Contact Live Chat for Number', 'Send Money', ''],
   Nagad: ['Contact Live Chat for Number', 'Send Money', ''],
   Rocket: ['Contact Live Chat for Number', 'Send Money', ''],
@@ -676,6 +678,7 @@ const M = {
   Bank: ['Ask Support for Bank Details', 'Bank Transfer', ''],
   USDT: ['Ask Support for USDT TRC20 Address', 'Transfer', '']
 };
+const M = JSON.parse(JSON.stringify(DEFAULT_M));
 
 const T = [];
 const BASE_PROMOS = [
@@ -766,7 +769,10 @@ function rebuildMergedConfig() {
 
   Object.assign(CFG, base);
 
-  /* Payment methods from settings / CMS */
+  /* Payment methods from settings / CMS (reset to defaults first so turned-off numbers never linger) */
+  Object.keys(DEFAULT_M).forEach(k => { M[k] = DEFAULT_M[k].slice(); });
+  ACTIVE_AGENT_BY_METHOD = {};
+
   const payLayer = (LIVE_ADMIN_CMS && LIVE_ADMIN_CMS.payments) || (LIVE_GLOBAL_CMS && LIVE_GLOBAL_CMS.payments) || {};
   const setNum = (k, field, logoField) => {
     const n = payLayer[field] || LIVE_SETTINGS[field];
@@ -780,6 +786,32 @@ function rebuildMergedConfig() {
   if (payLayer.upayNumber) M.Upay[0] = payLayer.upayNumber;
   if (payLayer.bankDetails) M.Bank[0] = payLayer.bankDetails;
   if (payLayer.usdtAddress) M.USDT[0] = payLayer.usdtAddress;
+
+  /* Active Agent Self-Managed Wallets (show ONLY when Agent toggles wallet ON) */
+  const playerAdminUid = (typeof S !== 'undefined' && S.adminUid) ? S.adminUid : (typeof getSavedRefAdmin === 'function' ? getSavedRefAdmin() : '');
+  const activeAgentWallets = Object.entries(LIVE_AGENT_WALLETS || {})
+    .map(([uid, w]) => Object.assign({ agentUid: uid }, w || {}))
+    .filter(w => w.active !== false && w.enabled === true && w.numbers && typeof w.numbers === 'object')
+    .filter(w => !playerAdminUid || w.parentAdminId === playerAdminUid || !w.parentAdminId)
+    .sort((a, b) => {
+      const aMatch = playerAdminUid && a.parentAdminId === playerAdminUid ? 1 : 0;
+      const bMatch = playerAdminUid && b.parentAdminId === playerAdminUid ? 1 : 0;
+      if (bMatch !== aMatch) return bMatch - aMatch;
+      return Number(b.updatedAt || 0) - Number(a.updatedAt || 0);
+    });
+
+  ['bKash', 'Nagad', 'Rocket', 'Upay'].forEach(method => {
+    for (const w of activeAgentWallets) {
+      const togOn = !w.toggles || w.toggles[method] !== false;
+      const rawNum = w.numbers[method] || w.numbers[method.toLowerCase()] || '';
+      const num = String(rawNum || '').trim();
+      if (togOn && num) {
+        M[method][0] = num;
+        ACTIVE_AGENT_BY_METHOD[method] = { agentUid: w.agentUid, agentName: w.agentName || 'Verified Agent', number: num };
+        break;
+      }
+    }
+  });
 
   const sub = document.getElementById('logoSub');
   if (sub && CFG.tagline) sub.textContent = CFG.tagline;
@@ -857,6 +889,10 @@ if (fbDb) {
   });
   fbDb.ref('adminLinks').on('value', s => {
     LIVE_ADMIN_LINKS = s.val() || {};
+  });
+  fbDb.ref('agentWallets').on('value', s => {
+    LIVE_AGENT_WALLETS = s.val() || {};
+    rebuildMergedConfig();
   });
 }
 
@@ -941,6 +977,7 @@ function bindUserListeners(uid) {
     S.securityPrefs = Object.assign({twoFactor:true,loginAlerts:true,biometric:false}, u.securityPrefs || {});
     S.responsibleGaming = Object.assign({dailyLimit:false,sessionReminder:true,selfExclusion:false}, u.responsibleGaming || {});
     bindAdminCmsListener(S.adminUid || getSavedRefAdmin());
+    rebuildMergedConfig();
     updBal();
     if (window.mwUpdateHeaderUser) window.mwUpdateHeaderUser();
     if (['wallet', 'dep', 'wd', 'vip', 'bonus', 'promo', 'home'].includes(cur) && !pe && !vk) {
@@ -1428,7 +1465,9 @@ function now() { return new Date().toLocaleString('en-GB', {day:'2-digit',month:
 const mob = m => !['Bank', 'USDT'].includes(m);
 function pinfo(m) {
   const n = M[m][0], logoUrl = M[m][2] || '';
-  return `<div class="pinfo"><div class="row sp"><div style="min-width:0"><div class="sub">${logoUrl?`<img src="${imgUrl(logoUrl)}" alt="" style="height:18px;vertical-align:middle;margin-right:6px">`:''}${m} ${mob(m)?'Agent Number':'Details'}</div><b style="word-break:break-all">${esc(n)}</b></div><button class="btn bgold sm" onclick="copyText('${esc(n)}','Copied')">Copy</button></div><ol><li>Open your ${mob(m)?m+' app':'payment app'} and choose ${M[m][1]}.</li><li>Send the amount to the details above.</li><li>Copy the Transaction ID (TrxID).</li><li>Enter the details below and submit.</li></ol></div>`;
+  const ag = ACTIVE_AGENT_BY_METHOD[m] || null;
+  const hasCopyable = n && !n.startsWith('Contact Live Chat') && !n.startsWith('Ask Support');
+  return `<div class="pinfo"><div class="row sp"><div style="min-width:0"><div class="sub">${logoUrl?`<img src="${imgUrl(logoUrl)}" alt="" style="height:18px;vertical-align:middle;margin-right:6px">`:''}${m} ${mob(m)?'Agent Number':'Details'}${ag?` <span style="display:inline-block;margin-left:6px;padding:1px 7px;border-radius:99px;background:rgba(0,230,118,.15);color:#00E676;font-size:10px;font-weight:700">● Live Agent</span>`:''}</div><b style="word-break:break-all">${esc(n)}</b></div>${hasCopyable?`<button class="btn bgold sm" onclick="copyText('${esc(n)}','Copied')">Copy</button>`:''}</div><ol><li>Open your ${mob(m)?m+' app':'payment app'} and choose ${M[m][1]}.</li><li>Send the amount to the details above.</li><li>Copy the Transaction ID (TrxID).</li><li>Enter the details below and submit.</li></ol></div>`;
 }
 function selPay(m) { pay = m; document.querySelectorAll('#pm .chip').forEach(c => c.classList.toggle('s', c.textContent === m)); $('#pi').innerHTML = pinfo(m); $('#sl').textContent = mob(m) ? 'Your ' + m + ' number' : 'Sender account or wallet'; }
 function selWm(m) { wm = m; document.querySelectorAll('#wm .chip').forEach(c => c.classList.toggle('s', c.textContent === m)); $('#wf').innerHTML = wfields(m); }
@@ -1457,6 +1496,7 @@ async function dep() {
   try {
     const adminUid = S.adminUid || getSavedRefAdmin() || '';
     if (S.uid && S.adminUid === undefined) await fbDb.ref('users/' + S.uid + '/adminUid').set(adminUid);
+    const activeAg = ACTIVE_AGENT_BY_METHOD[pay] || null;
     const reqRef = fbDb.ref('depositRequests').push();
     const payload = {
       id: reqRef.key,
@@ -1472,6 +1512,8 @@ async function dep() {
       bonusOptIn: bonusOptIn,
       status: 'Pending',
       adminUid: adminUid,
+      assignedAgentId: activeAg ? activeAg.agentUid : '',
+      agentWalletNumber: activeAg ? activeAg.number : '',
       affiliateUid: S.affiliateUid || '',
       timestamp: Date.now(),
       createdAt: TS

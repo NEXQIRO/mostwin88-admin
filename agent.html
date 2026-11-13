@@ -200,6 +200,23 @@ details.dayrow summary::-webkit-details-marker{display:none}
 .reportlink{width:100%;display:flex;align-items:center;gap:12px;text-align:left;padding:16px;border-radius:18px;border:1px solid rgba(232,195,106,.35);background:linear-gradient(135deg,#2a2412,#151c2c);color:#fff;margin-top:10px}
 .reportlink b{display:block;font-size:13px;color:var(--gold2)}
 .reportlink small{display:block;color:var(--muted);font-size:10px;margin-top:3px}
+.ag-wsetup{background:linear-gradient(150deg,#1a2840,#121d30);border:1px solid rgba(255,210,63,.28);border-radius:18px;padding:16px;margin:12px 0}
+.ag-whead{display:flex;align-items:center;justify-content:space-between;gap:10px;padding-bottom:12px;border-bottom:1px solid rgba(255,255,255,.08)}
+.ag-wstatus{margin-top:10px;padding:9px 12px;border-radius:11px;font-size:11.5px;font-weight:700;display:flex;align-items:center;justify-content:space-between;gap:8px}
+.ag-wstatus.on{background:rgba(0,230,118,.12);color:#47e2ad;border:1px solid rgba(0,230,118,.3)}
+.ag-wstatus.off{background:rgba(255,102,124,.12);color:#ff8ea2;border:1px solid rgba(255,102,124,.3)}
+.ag-wrow{display:flex;align-items:center;gap:8px;margin-top:10px;background:#0d1727;border:1px solid #354664;border-radius:12px;padding:8px 10px}
+.ag-wrow-lbl{width:64px;font-size:11.5px;font-weight:800;color:var(--gold2);flex:none}
+.ag-wrow input[type="tel"],.ag-wrow input[type="text"]{flex:1;min-width:0;background:transparent;border:0;color:#fff;outline:none;font-size:13px;font-weight:700;padding:4px 0}
+.sw{position:relative;display:inline-block;width:44px;height:24px;flex:none}
+.sw input{opacity:0;width:0;height:0}
+.sw i{position:absolute;inset:0;background:#334155;border-radius:24px;cursor:pointer;transition:.2s;border:1px solid rgba(255,255,255,.15)}
+.sw i::before{content:"";position:absolute;width:18px;height:18px;left:2px;top:2px;background:#fff;border-radius:50%;transition:.2s;box-shadow:0 2px 5px rgba(0,0,0,.4)}
+.sw input:checked+i{background:linear-gradient(135deg,#128a66,#25c595);border-color:rgba(71,226,173,.6)}
+.sw input:checked+i::before{transform:translateX(20px)}
+.home-wallet-bar{display:flex;align-items:center;justify-content:space-between;gap:10px;background:linear-gradient(145deg,#17243b,#111a2b);border:1px solid rgba(255,210,63,.25);border-radius:16px;padding:12px 14px;margin-top:12px}
+.home-wallet-bar b{display:block;font-size:12.5px}
+.home-wallet-bar small{display:block;font-size:10.5px;color:var(--muted);margin-top:2px}
 
 /* PROFILE */
 .profile{display:flex;gap:14px;align-items:center;padding:18px;background:linear-gradient(150deg,#1b2940,#131e31);border:1px solid #334460;border-radius:18px;margin:14px 0}
@@ -277,6 +294,10 @@ body.light .report-card{background:#fff;border-color:#d5deea}
 body.light .rseg,body.light .bars{background:#eef2f8;border-color:#d7dfeb}
 body.light .rdate button,body.light .rdate input,body.light .rrange input{background:#f7f9fc;color:#172033;border-color:#cbd5e1;color-scheme:light}
 body.light details.dayrow{border-color:#d7dfeb}
+body.light .ag-wsetup,body.light .home-wallet-bar{background:#fff;border-color:#d7dfeb;color:#172033}
+body.light .ag-wrow{background:#f5f7fb;border-color:#cbd5e1}
+body.light .ag-wrow input{color:#172033}
+body.light .ag-wrow-lbl{color:#b45309}
 /* LIVE CHAT FAB & DRAWER (user.html Support Popup Style) */
 @keyframes mwChatPulse{0%{box-shadow:0 0 0 0 rgba(0,230,118,.6)}70%{box-shadow:0 0 0 10px rgba(0,230,118,0)}100%{box-shadow:0 0 0 0 rgba(0,230,118,0)}}
 .chat-fab{position:fixed;right:18px;bottom:82px;width:58px;height:58px;padding:0;border-radius:50%;border:2px solid rgba(255,255,255,.35);background:linear-gradient(135deg,#ffe27a,#f5b82e 55%,#e49a00);color:#2a1c00;display:flex;flex-direction:column;align-items:center;justify-content:center;box-shadow:0 10px 24px -6px rgba(255,210,63,.55),0 0 0 4px rgba(5,11,26,.7);z-index:88;cursor:pointer;transition:transform .2s}
@@ -374,6 +395,15 @@ body.light .chat-bar input{background:#0a1530;color:#EAF0FF;border-color:rgba(25
   <small>MY AGENT WALLET BALANCE</small>
   <h1 id="agentBalanceHome">৳ 0</h1>
   <p id="agentParentMeta">রিয়েল অপারেশনাল ব্যালেন্স • সরাসরি অ্যাডমিন প্যানেল যুক্ত</p>
+ </div>
+
+ <!-- QUICK USER PANEL WALLET ON/OFF -->
+ <div class="home-wallet-bar">
+  <div style="min-width:0;flex:1" onclick="go('wallet')">
+   <b id="homeWalletBarTitle">User Panel Wallet: 🔴 বন্ধ (OFF)</b>
+   <small id="homeWalletBarSub">নম্বর সেট ও ON/OFF করতে ট্যাপ করুন</small>
+  </div>
+  <label class="sw" title="User Panel-এ ওয়ালেট নম্বর ON/OFF"><input type="checkbox" id="homeWalletToggle" onchange="toggleAgentWalletMaster(this.checked)"><i></i></label>
  </div>
 
  <!-- 4 STATS BOXES -->
@@ -496,6 +526,24 @@ body.light .chat-bar input{background:#0a1530;color:#EAF0FF;border-color:rgba(25
   <div class="walletrow"><span>Completed Withdrawals</span><b id="completedPaymentsText" style="color:var(--gold2)">৳ 0</b></div>
  </div>
  <button class="reportlink" type="button" onclick="go('report')"><span style="font-size:24px">📊</span><span style="flex:1"><b>পূর্ণ লেনদেন রিপোর্ট দেখুন</b><small>Daily · Weekly · Monthly · Custom (১ মাস পর্যন্ত)</small></span><em style="font-size:22px;font-style:normal">›</em></button>
+
+ <div class="sectiontitle"><h3>আমার ডিপোজিট ওয়ালেট নম্বর (ON / OFF)</h3></div>
+ <div class="ag-wsetup">
+  <div class="ag-whead">
+   <div>
+    <b style="font-size:13.5px;display:block">User Panel-এ নম্বর প্রদর্শন</b>
+    <small style="color:var(--muted);font-size:10.5px">ON করলে User Panel ডিপোজিটে আপনার নম্বর দেখাবে, OFF করলে লুকানো থাকবে</small>
+   </div>
+   <label class="sw" title="Master Wallet ON/OFF"><input type="checkbox" id="agWalletMasterToggle" onchange="toggleAgentWalletMaster(this.checked)"><i></i></label>
+  </div>
+  <div id="agWalletLiveStatus" class="ag-wstatus off">🔴 ওয়ালেট বন্ধ (OFF) — User Panel-এ আপনার নম্বর শো করছে না</div>
+  <div class="ag-wrow"><span class="ag-wrow-lbl">bKash</span><input id="agNum_bKash" type="tel" inputmode="numeric" placeholder="01XXXXXXXXX"><label class="sw" title="bKash ON/OFF"><input type="checkbox" id="agOn_bKash" checked onchange="toggleAgentMethodSwitch()"><i></i></label></div>
+  <div class="ag-wrow"><span class="ag-wrow-lbl">Nagad</span><input id="agNum_Nagad" type="tel" inputmode="numeric" placeholder="01XXXXXXXXX"><label class="sw" title="Nagad ON/OFF"><input type="checkbox" id="agOn_Nagad" checked onchange="toggleAgentMethodSwitch()"><i></i></label></div>
+  <div class="ag-wrow"><span class="ag-wrow-lbl">Rocket</span><input id="agNum_Rocket" type="tel" inputmode="numeric" placeholder="01XXXXXXXXX"><label class="sw" title="Rocket ON/OFF"><input type="checkbox" id="agOn_Rocket" checked onchange="toggleAgentMethodSwitch()"><i></i></label></div>
+  <div class="ag-wrow"><span class="ag-wrow-lbl">Upay</span><input id="agNum_Upay" type="tel" inputmode="numeric" placeholder="01XXXXXXXXX"><label class="sw" title="Upay ON/OFF"><input type="checkbox" id="agOn_Upay" checked onchange="toggleAgentMethodSwitch()"><i></i></label></div>
+  <button class="primary" id="btnSaveAgentWallet" type="button" style="margin-top:14px" onclick="saveAgentWalletNumbers()">💾 ওয়ালেট নম্বর ও ON/OFF সেভ করুন</button>
+ </div>
+
  <div class="sectiontitle"><h3>Request Balance from Admin</h3></div>
  <div class="balance-request-form">
   <div class="subtitle" style="margin-top:0">আপনার Wallet-এ পর্যাপ্ত টাকা না থাকলে Admin-এর কাছে নতুন Balance Request পাঠান।</div>
@@ -1401,6 +1449,128 @@ function renderWallet() {
   document.getElementById('receivedBalanceText').textContent = formatTaka(recv);
   document.getElementById('completedDepositsText').textContent = formatTaka(compDep);
   document.getElementById('completedPaymentsText').textContent = formatTaka(compWd);
+  hydrateAgentWalletForm();
+}
+
+const AG_PAY_METHODS = ['bKash', 'Nagad', 'Rocket', 'Upay'];
+let _agWalletHydratedUid = '';
+function hydrateAgentWalletForm(force) {
+  if (!agentProfile || !currentAgentUid) return;
+  const enabled = agentProfile.walletEnabled === true;
+  const nums = agentProfile.paymentNumbers || {};
+  const togs = agentProfile.paymentToggles || {};
+  const mTog = document.getElementById('agWalletMasterToggle');
+  const hTog = document.getElementById('homeWalletToggle');
+  if (mTog) mTog.checked = enabled;
+  if (hTog) hTog.checked = enabled;
+
+  const activeEl = document.activeElement;
+  const isTypingWallet = activeEl && activeEl.id && activeEl.id.startsWith('agNum_');
+  if (force || _agWalletHydratedUid !== currentAgentUid || !isTypingWallet) {
+    AG_PAY_METHODS.forEach(m => {
+      const inp = document.getElementById('agNum_' + m);
+      const sw = document.getElementById('agOn_' + m);
+      const val = nums[m] || nums[m.toLowerCase()] || '';
+      if (inp) inp.value = val;
+      if (sw) sw.checked = togs[m] !== false;
+    });
+    _agWalletHydratedUid = currentAgentUid;
+  }
+
+  const activeMethods = AG_PAY_METHODS.filter(m => {
+    const val = (document.getElementById('agNum_' + m)?.value || nums[m] || nums[m.toLowerCase()] || '').trim();
+    const on = document.getElementById('agOn_' + m) ? document.getElementById('agOn_' + m).checked : (togs[m] !== false);
+    return !!val && on;
+  });
+
+  const stBox = document.getElementById('agWalletLiveStatus');
+  if (stBox) {
+    if (enabled && activeMethods.length) {
+      stBox.className = 'ag-wstatus on';
+      stBox.textContent = '🟢 চালু (ON) — User Panel-এ প্রদর্শিত হচ্ছে: ' + activeMethods.join(', ');
+    } else if (enabled) {
+      stBox.className = 'ag-wstatus off';
+      stBox.textContent = '⚠ ওয়ালেট ON আছে, কিন্তু কোনো সক্রিয় নম্বর সেট করা নেই';
+    } else {
+      stBox.className = 'ag-wstatus off';
+      stBox.textContent = '🔴 ওয়ালেট বন্ধ (OFF) — User Panel-এ আপনার নম্বর শো করছে না';
+    }
+  }
+  const hTitle = document.getElementById('homeWalletBarTitle');
+  const hSub = document.getElementById('homeWalletBarSub');
+  if (hTitle) hTitle.textContent = enabled ? 'User Panel Wallet: 🟢 চালু (ON)' : 'User Panel Wallet: 🔴 বন্ধ (OFF)';
+  if (hSub) hSub.textContent = enabled && activeMethods.length ? ('সক্রিয়: ' + activeMethods.join(' · ')) : 'নম্বর সেট ও ON/OFF করতে ট্যাপ করুন';
+}
+
+function collectAgentWalletPayload(overrideMaster) {
+  const nums = {}, toggles = {};
+  AG_PAY_METHODS.forEach(m => {
+    const inp = document.getElementById('agNum_' + m);
+    const sw = document.getElementById('agOn_' + m);
+    nums[m] = inp ? inp.value.trim() : ((agentProfile && agentProfile.paymentNumbers && agentProfile.paymentNumbers[m]) || '');
+    toggles[m] = sw ? !!sw.checked : true;
+  });
+  const mTog = document.getElementById('agWalletMasterToggle');
+  const enabled = typeof overrideMaster === 'boolean' ? overrideMaster : !!(mTog && mTog.checked);
+  return { enabled, nums, toggles };
+}
+
+async function persistAgentWallet(enabled, nums, toggles, msg) {
+  if (!currentAgentUid || !agentProfile) return;
+  try {
+    await Promise.all([
+      db.ref('agentWallets/' + currentAgentUid).set({
+        agentUid: currentAgentUid,
+        agentName: agentProfile.name || 'Agent',
+        parentAdminId: agentProfile.parentAdminId || '',
+        enabled: !!enabled,
+        active: agentProfile.active !== false,
+        numbers: nums,
+        toggles: toggles,
+        updatedAt: TS
+      }),
+      db.ref('agents/' + currentAgentUid).update({
+        walletEnabled: !!enabled,
+        paymentNumbers: nums,
+        paymentToggles: toggles,
+        updatedAt: TS
+      })
+    ]);
+    agentProfile.walletEnabled = !!enabled;
+    agentProfile.paymentNumbers = nums;
+    agentProfile.paymentToggles = toggles;
+    hydrateAgentWalletForm(true);
+    if (msg) toast(msg);
+  } catch (err) {
+    toast('ওয়ালেট সেভ ব্যর্থ: ' + (err.message || err));
+    hydrateAgentWalletForm(true);
+  }
+}
+
+async function toggleAgentWalletMaster(isOn) {
+  const { nums, toggles } = collectAgentWalletPayload(isOn);
+  const hasAnyNum = AG_PAY_METHODS.some(m => nums[m] && toggles[m] !== false);
+  if (isOn && !hasAnyNum) {
+    toast('কমপক্ষে একটি পেমেন্ট নম্বর লিখে ON করুন');
+    go('wallet');
+  }
+  await persistAgentWallet(isOn, nums, toggles, isOn ? '🟢 ওয়ালেট ON করা হয়েছে — User Panel-এ নম্বর দেখাবে' : '🔴 ওয়ালেট OFF করা হয়েছে — User Panel-এ নম্বর দেখাবে না');
+}
+
+async function toggleAgentMethodSwitch() {
+  const { enabled, nums, toggles } = collectAgentWalletPayload();
+  await persistAgentWallet(enabled, nums, toggles, 'পেমেন্ট মেথড স্ট্যাটাস আপডেট হয়েছে ✓');
+}
+
+async function saveAgentWalletNumbers() {
+  const btn = document.getElementById('btnSaveAgentWallet');
+  if (btn) btn.disabled = true;
+  try {
+    const { enabled, nums, toggles } = collectAgentWalletPayload();
+    await persistAgentWallet(enabled, nums, toggles, enabled ? '✅ ওয়ালেট নম্বর সেভ ও চালু (ON) আছে' : '✅ ওয়ালেট নম্বর সেভ হয়েছে (বর্তমানে OFF)');
+  } finally {
+    if (btn) btn.disabled = false;
+  }
 }
 
 async function submitBalanceRequest() {

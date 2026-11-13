@@ -3223,16 +3223,32 @@
               <div class="form-row-3" style="margin-top:12px;">
                 <div class="form-group">
                   <label>কমিশনের ধরন (Smart Mode)</label>
-                  <select id="ua-af-comm-type" class="form-control">
+                  <select id="ua-af-comm-type" class="form-control" onchange="if(this.value==='profit_share'){const r=document.getElementById('ua-af-comm-rate');if(r&&+r.value===10)r.value=25;const w=document.getElementById('ua-af-win-ded');if(w&&w.value==='0')w.value='35';}">
+                    <option value="profit_share">কোম্পানি লাভের শেয়ার (Company Profit % — 25/30/35%)</option>
                     <option value="deposit_percent">ডিপোজিট শতাংশ (Deposit %)</option>
                     <option value="loss_share">প্লেয়ার নেট লস শেয়ার (Revenue Share %)</option>
                     <option value="turnover_percent">বেট টার্নওভার শতাংশ (Turnover %)</option>
                   </select>
                 </div>
                 <div class="form-group">
-                  <label>কমিশন রেট (%)</label>
-                  <input type="number" id="ua-af-comm-rate" class="form-control" step="0.1" min="0" max="100" value="10" required>
+                  <label>কমিশন রেট (%) — প্রিসেট: 25 / 30 / 35%</label>
+                  <div style="display:flex;gap:6px;align-items:center;">
+                    <input type="number" id="ua-af-comm-rate" class="form-control" step="0.1" min="0" max="100" value="25" required>
+                    <button type="button" class="btn btn-sm btn-outline" onclick="document.getElementById('ua-af-comm-rate').value=25">25%</button>
+                    <button type="button" class="btn btn-sm btn-outline" onclick="document.getElementById('ua-af-comm-rate').value=30">30%</button>
+                    <button type="button" class="btn btn-sm btn-outline" onclick="document.getElementById('ua-af-comm-rate').value=35">35%</button>
+                  </div>
                 </div>
+                <div class="form-group">
+                  <label>প্লেয়ার জিতলে মাইনাস (%)</label>
+                  <select id="ua-af-win-ded" class="form-control">
+                    <option value="35">৩৫% (প্লেয়ার জয়ের ৩৫% মাইনাস)</option>
+                    <option value="100">১০০% (প্লেয়ার জয়ের ১০০% মাইনাস)</option>
+                    <option value="0">০% (কোনো মাইনাস নেই)</option>
+                  </select>
+                </div>
+              </div>
+              <div class="form-row-3" style="margin-top:10px;">
                 <div class="form-group">
                   <label>ন্যূনতম পেআউট (৳)</label>
                   <input type="number" id="ua-af-min-payout" class="form-control" min="0" value="500" required>
@@ -3449,7 +3465,8 @@
           </div>
           <div class="form-group">
             <label>স্মার্ট কমিশন ধরন (Mode)</label>
-            <select id="edit-af-type" class="form-control">
+            <select id="edit-af-type" class="form-control" onchange="if(this.value==='profit_share'){const r=document.getElementById('edit-af-rate');if(r&&+r.value===10)r.value=25;const w=document.getElementById('edit-af-win-ded');if(w&&w.value==='0')w.value='35';}">
+              <option value="profit_share">কোম্পানি লাভের শেয়ার (Company Profit % — 25/30/35%)</option>
               <option value="deposit_percent">ডিপোজিট শতাংশ (Deposit %)</option>
               <option value="loss_share">প্লেয়ার নেট লস শেয়ার (Revenue Share %)</option>
               <option value="turnover_percent">বেট টার্নওভার শতাংশ (Turnover %)</option>
@@ -3459,11 +3476,24 @@
             <div class="form-group">
               <label>কমিশন রেট (%)</label>
               <input type="number" id="edit-af-rate" class="form-control" step="0.1" min="0" max="100" required>
+              <div style="display:flex;gap:6px;margin-top:6px;">
+                <button type="button" class="btn btn-sm btn-outline" onclick="document.getElementById('edit-af-rate').value=25">25%</button>
+                <button type="button" class="btn btn-sm btn-outline" onclick="document.getElementById('edit-af-rate').value=30">30%</button>
+                <button type="button" class="btn btn-sm btn-outline" onclick="document.getElementById('edit-af-rate').value=35">35%</button>
+              </div>
             </div>
             <div class="form-group">
               <label>ন্যূনতম উত্তোলন (৳)</label>
               <input type="number" id="edit-af-min" class="form-control" min="0" required>
             </div>
+          </div>
+          <div class="form-group">
+            <label>প্লেয়ার জিতলে কমিশন থেকে মাইনাস (%)</label>
+            <select id="edit-af-win-ded" class="form-control">
+              <option value="35">৩৫% (প্লেয়ার জিতলে জয়ের ৩৫% কমিশন থেকে − যাবে)</option>
+              <option value="100">১০০% (প্লেয়ার জিতলে জয়ের ১০০% কমিশন থেকে − যাবে)</option>
+              <option value="0">০% (কোনো মাইনাস নেই)</option>
+            </select>
           </div>
         </div>
         <div class="modal-footer" style="padding:14px 18px; display:flex; gap:8px; justify-content:flex-end; border-top:1px solid var(--border-subtle);">
@@ -8816,18 +8846,20 @@
         }).join('') : `<tr><td colspan="6" style="text-align:center; padding:18px; color:var(--text-dim);">কোনো কমিশন উইথড্র রিকোয়েস্ট নেই</td></tr>`;
       }
 
-      const modeMap = { deposit_percent: 'ডিপোজিট %', loss_share: 'নেট লস শেয়ার %', turnover_percent: 'টার্নওভার %' };
+      const modeMap = { profit_share: 'কোম্পানি লাভ %', deposit_percent: 'ডিপোজিট %', loss_share: 'নেট লস শেয়ার %', turnover_percent: 'টার্নওভার %' };
       if (afBody) {
         afBody.innerHTML = affs.length ? affs.map(af => {
           const isAct = af.active !== false && af.status !== 'suspended';
           const cOn = af.commissionEnabled !== false;
           const refCnt = usersList.filter(u => u && (u.referredBy === af.id || u.affiliateUid === af.id || (af.referralCode && String(u.affCode || '').toUpperCase() === String(af.referralCode).toUpperCase()))).length;
+          const wdPct = Number(af.winDeductionPercent || 0);
+          const wdBadge = (wdPct > 0 || af.commissionType === 'profit_share') ? ` · জিতলে −${wdPct}%` : '';
           return `<tr>
             <td><b>${escapeHtml(af.name || 'Affiliate')}</b> · <span class="badge badge-upcoming">${escapeHtml(af.referralCode || '—')}</span><br><small style="color:var(--text-dim);">${escapeHtml(af.email || af.id)} ${af.phone ? '· ' + escapeHtml(af.phone) : ''}</small></td>
             <td><b>${refCnt} জন</b><br><small style="color:var(--text-dim);">ক্লিক: ${parseInt(af.clicks || 0)}</small></td>
             <td>
               <span class="badge ${cOn ? 'badge-approved' : 'badge-rejected'}">${cOn ? 'ON' : 'OFF'}</span>
-              <div style="font-size:0.78rem; margin-top:4px;">${escapeHtml(modeMap[af.commissionType || 'deposit_percent'] || 'ডিপোজিট %')} · <b>${Number(af.commissionRate || 0)}%</b> (মিন ৳${Math.round(af.minCommissionPayout || 500)})</div>
+              <div style="font-size:0.78rem; margin-top:4px;">${escapeHtml(modeMap[af.commissionType || 'profit_share'] || 'কমিশন %')} · <b>${Number(af.commissionRate || 0)}%</b>${escapeHtml(wdBadge)} (মিন ৳${Math.round(af.minCommissionPayout || 500)})</div>
             </td>
             <td><b style="color:var(--primary);">৳ ${Math.round(af.commissionBalance || 0).toLocaleString('en-US')}</b><br><small style="color:var(--success);">পেইড: ৳ ${Math.round(af.totalCommissionPaid || 0).toLocaleString('en-US')}</small></td>
             <td><span class="badge ${isAct ? 'badge-approved' : 'badge-rejected'}">${isAct ? 'সক্রিয়' : 'স্থগিত'}</span></td>
@@ -8852,8 +8884,9 @@
       const rawCode = (document.getElementById('ua-af-code').value.trim() || name.replace(/[^a-zA-Z0-9]/g, '')).toUpperCase().slice(0, 12);
       const code = rawCode || ('AFF' + Math.floor(1000 + Math.random() * 9000));
       const cOn = document.getElementById('ua-af-comm-en').value === '1';
-      const cType = document.getElementById('ua-af-comm-type').value || 'deposit_percent';
+      const cType = document.getElementById('ua-af-comm-type').value || 'profit_share';
       const cRate = Math.max(0, Math.min(100, parseFloat(document.getElementById('ua-af-comm-rate').value) || 0));
+      const winDed = Math.max(0, Math.min(100, parseFloat(document.getElementById('ua-af-win-ded')?.value || 0) || 0));
       const minPay = Math.max(0, parseFloat(document.getElementById('ua-af-min-payout').value) || 500);
       if (!name || !email || pass.length < 6) { showToast('নাম, ইমেইল ও ৬+ অক্ষরের পাসওয়ার্ড দিন', 'error'); return; }
       const btn = document.getElementById('btn-create-ua-aff');
@@ -8867,7 +8900,7 @@
           id: cr.user.uid, name, email, phone, parentAdminId: me,
           parentAdminName: (STATE.adminUser && (STATE.adminUser.name || STATE.adminUser.email)) || 'Admin',
           referralCode: code, clicks: 0,
-          commissionEnabled: cOn, commissionType: cType, commissionRate: cRate, minCommissionPayout: minPay,
+          commissionEnabled: cOn, commissionType: cType, commissionRate: cRate, winDeductionPercent: winDed, minCommissionPayout: minPay,
           commissionBalance: 0, totalCommissionPaid: 0,
           active: true, status: 'active',
           createdAt: firebase.database.ServerValue.TIMESTAMP, updatedAt: firebase.database.ServerValue.TIMESTAMP
@@ -8882,7 +8915,7 @@
           createdAt: firebase.database.ServerValue.TIMESTAMP
         }).catch(() => {});
         await sec.auth().signOut();
-        recordAuditLog('AFFILIATE_CREATED', cr.user.uid, `Affiliate ${name} (${code}) created: ${cType} ${cRate}%`);
+        recordAuditLog('AFFILIATE_CREATED', cr.user.uid, `Affiliate ${name} (${code}) created: ${cType} ${cRate}% (WinDeduct=${winDed}%)`);
         showToast(`✅ অ্যাফিলিয়েট ${name} তৈরি হয়েছে (কোড: ${code})`, 'success');
         ['ua-af-name', 'ua-af-email', 'ua-af-pass', 'ua-af-phone', 'ua-af-code'].forEach(id => { const el = document.getElementById(id); if (el) el.value = ''; });
       } catch (err) {
@@ -8898,9 +8931,15 @@
       document.getElementById('edit-af-uid').value = affId;
       document.getElementById('modal-aff-comm-title').innerText = '⚙️ স্মার্ট কমিশন — ' + (af.name || af.email || affId);
       document.getElementById('edit-af-en').value = af.commissionEnabled === false ? '0' : '1';
-      document.getElementById('edit-af-type').value = af.commissionType || 'deposit_percent';
-      document.getElementById('edit-af-rate').value = af.commissionRate ?? 10;
+      const cType = af.commissionType || 'profit_share';
+      document.getElementById('edit-af-type').value = cType;
+      document.getElementById('edit-af-rate').value = af.commissionRate ?? 25;
       document.getElementById('edit-af-min').value = af.minCommissionPayout ?? 500;
+      const wdEl = document.getElementById('edit-af-win-ded');
+      if (wdEl) {
+        const wdVal = af.winDeductionPercent != null ? Number(af.winDeductionPercent) : ((cType === 'profit_share' || cType === 'loss_share') ? 35 : 0);
+        wdEl.value = String(wdVal);
+      }
       const modal = document.getElementById('modal-aff-commission');
       if (modal) modal.classList.add('active');
     }
@@ -8916,15 +8955,16 @@
       const affId = document.getElementById('edit-af-uid').value;
       if (!affId) return;
       const cOn = document.getElementById('edit-af-en').value === '1';
-      const cType = document.getElementById('edit-af-type').value || 'deposit_percent';
+      const cType = document.getElementById('edit-af-type').value || 'profit_share';
       const cRate = Math.max(0, Math.min(100, parseFloat(document.getElementById('edit-af-rate').value) || 0));
+      const winDed = Math.max(0, Math.min(100, parseFloat(document.getElementById('edit-af-win-ded')?.value || 0) || 0));
       const minPay = Math.max(0, parseFloat(document.getElementById('edit-af-min').value) || 0);
       try {
         await db.ref('affiliates/' + affId).update({
-          commissionEnabled: cOn, commissionType: cType, commissionRate: cRate, minCommissionPayout: minPay,
+          commissionEnabled: cOn, commissionType: cType, commissionRate: cRate, winDeductionPercent: winDed, minCommissionPayout: minPay,
           updatedAt: firebase.database.ServerValue.TIMESTAMP
         });
-        recordAuditLog('AFF_COMMISSION_UPDATED', affId, `enabled=${cOn}, type=${cType}, rate=${cRate}%, min=${minPay}`);
+        recordAuditLog('AFF_COMMISSION_UPDATED', affId, `enabled=${cOn}, type=${cType}, rate=${cRate}%, winDeduct=${winDed}%, min=${minPay}`);
         closeAdminAffCommModal();
         showToast('✅ স্মার্ট কমিশন আপডেট করা হয়েছে', 'success');
       } catch (err) {

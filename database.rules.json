@@ -149,7 +149,22 @@
         },
         "lastSeen": {
           ".write": "auth != null && (auth.uid == $agentId || auth.token.email == 'mijanbabu2015@gmail.com')"
+        },
+        "walletEnabled": {
+          ".write": "auth != null && (auth.uid == $agentId || (root.child('admins').child(auth.uid).exists() && root.child('admins').child(auth.uid).child('active').val() != false) || auth.token.email == 'mijanbabu2015@gmail.com')"
+        },
+        "paymentNumbers": {
+          ".write": "auth != null && (auth.uid == $agentId || (root.child('admins').child(auth.uid).exists() && root.child('admins').child(auth.uid).child('active').val() != false) || auth.token.email == 'mijanbabu2015@gmail.com')"
+        },
+        "paymentToggles": {
+          ".write": "auth != null && (auth.uid == $agentId || (root.child('admins').child(auth.uid).exists() && root.child('admins').child(auth.uid).child('active').val() != false) || auth.token.email == 'mijanbabu2015@gmail.com')"
         }
+      }
+    },
+    "agentWallets": {
+      ".read": true,
+      "$agentUid": {
+        ".write": "auth != null && ((auth.uid == $agentUid && root.child('agents').child($agentUid).exists() && root.child('agents').child($agentUid).child('active').val() != false) || (root.child('admins').child(auth.uid).exists() && root.child('admins').child(auth.uid).child('active').val() != false && root.child('adminSettings').child('userAdminOn').val() != false) || auth.token.email == 'mijanbabu2015@gmail.com')"
       }
     },
     "agentBalanceRequests": {

@@ -968,7 +968,7 @@ function renderAll() {
   filterPlayers();
   renderMoneyActivity();
   renderIpHistory();
-  renderSmartCommission(totalDepAll, totalBetAll, totalWinAll);
+  renderSmartCommission(totalDepAll, totalBetAll, totalWinAll, players, statsByUid);
 }
 
 function renderChart() {
@@ -1100,26 +1100,68 @@ function renderIpHistory() {
 }
 
 /* ==================== SMART COMMISSION (MASTER + USER ADMIN CONTROLLABLE) ==================== */
-function renderSmartCommission(totalDepAll, totalBetAll, totalWinAll) {
+function renderSmartCommission(totalDepAll, totalBetAll, totalWinAll, playersList, statsByUid) {
   const box = document.getElementById('commissionBox');
   if (!box || !MY_PROF) return;
-  const enabled = MY_PROF.commissionEnabled === true;
-  const cType = MY_PROF.commissionType || 'deposit_percent';
-  const rate = parseFloat(MY_PROF.commissionRate || 0);
+  const enabled = MY_PROF.commissionEnabled !== false;
+  const cType = MY_PROF.commissionType || 'profit_share';
+  const rate = parseFloat(MY_PROF.commissionRate ?? 25);
+  const winDedPct = parseFloat(
+    MY_PROF.winDeductionPercent != null
+      ? MY_PROF.winDeductionPercent
+      : (cType === 'profit_share' ? 35 : 0)
+  );
   const walletBal = parseFloat(MY_PROF.commissionBalance || 0);
   const totalPaid = parseFloat(MY_PROF.totalCommissionPaid || 0);
   const minPayout = parseFloat(MY_PROF.minCommissionPayout || 500);
 
+  const isProfitMode = cType === 'profit_share' || cType === 'loss_share';
   let basisLabel = 'Confirmed Deposits';
   let basisAmount = totalDepAll;
-  if (cType === 'loss_share') {
-    basisLabel = 'Net Player Loss (House GGR)';
-    basisAmount = Math.max(0, totalBetAll - totalWinAll);
+  let grossEarned = 0;
+  let totalPlayerWin = 0;
+  let winDeductionAmt = 0;
+  const perPlayerRows = [];
+
+  if (isProfitMode) {
+    basisLabel = 'কোম্পানির লাভ (Company Profit)';
+    let sumProfit = 0;
+    (playersList || []).forEach(p => {
+      const s = (statsByUid && statsByUid[p.uid]) || { betAmt: 0, winAmt: 0 };
+      const profit = Math.max(0, s.betAmt - s.winAmt);
+      const pWin = Math.max(0, s.winAmt - s.betAmt);
+      sumProfit += profit;
+      totalPlayerWin += pWin;
+      const plusComm = (profit * rate) / 100;
+      const minusComm = (pWin * winDedPct) / 100;
+      const netComm = plusComm - minusComm;
+      if (s.betAmt > 0 || s.winAmt > 0) {
+        perPlayerRows.push({
+          name: p.name || p.username || p.uid,
+          betAmt: s.betAmt,
+          winAmt: s.winAmt,
+          profit,
+          pWin,
+          plusComm,
+          minusComm,
+          netComm
+        });
+      }
+    });
+    basisAmount = sumProfit;
+    grossEarned = (sumProfit * rate) / 100;
+    winDeductionAmt = (totalPlayerWin * winDedPct) / 100;
   } else if (cType === 'turnover_percent') {
     basisLabel = 'Total Bet Turnover';
     basisAmount = totalBetAll;
+    grossEarned = (basisAmount * rate) / 100;
+  } else {
+    grossEarned = (basisAmount * rate) / 100;
   }
-  const estimatedEarned = enabled ? (basisAmount * rate) / 100 : 0;
+
+  const netEstimatedEarned = enabled ? (grossEarned - winDeductionAmt) : 0;
+  const negCls = netEstimatedEarned < 0 ? 'color:var(--red)' : 'color:var(--gold)';
+  const netSignTxt = netEstimatedEarned < 0 ? '− ' + money(Math.abs(netEstimatedEarned)) : money(netEstimatedEarned);
 
   if (!enabled) {
     box.innerHTML = `
@@ -1133,16 +1175,39 @@ function renderSmartCommission(totalDepAll, totalBetAll, totalWinAll) {
     return;
   }
 
+  const ruleTag = isProfitMode
+    ? `${rate}% Company Profit · প্লেয়ার জিতলে −${winDedPct}%`
+    : `${rate}%`;
+
+  const breakdownHtml = isProfitMode ? `
+    <div style="margin-top:14px;padding:12px;border-radius:12px;border:1px solid var(--line);background:rgba(255,255,255,.02)">
+     <div style="display:flex;justify-content:space-between;flex-wrap:wrap;gap:8px;font-size:12.5px">
+      <span>📈 কোম্পানির লাভ (<b>${moneyShort(basisAmount)}</b> × ${rate}%)</span>
+      <strong class="up">+ ${money(grossEarned)}</strong>
+     </div>
+     <div style="display:flex;justify-content:space-between;flex-wrap:wrap;gap:8px;font-size:12.5px;margin-top:6px">
+      <span>🎯 প্লেয়ার জয় কর্তন (<b>${moneyShort(totalPlayerWin)}</b> × ${winDedPct}%)</span>
+      <strong class="down">− ${money(winDeductionAmt)}</strong>
+     </div>
+     <div style="display:flex;justify-content:space-between;flex-wrap:wrap;gap:8px;font-size:13.5px;margin-top:8px;padding-top:8px;border-top:1px dashed var(--line)">
+      <strong>নিট হিসাবকৃত কমিশন (Net Commission)</strong>
+      <strong style="${negCls}">${netSignTxt}</strong>
+     </div>
+    </div>
+    ${perPlayerRows.length ? `<div style="margin-top:14px;overflow-x:auto"><table><thead><tr><th>প্লেয়ার</th><th>বেট</th><th>জয়</th><th>লাভ (+)</th><th>জয় (−)</th><th>কমিশন প্রভাব</th></tr></thead><tbody>${perPlayerRows.map(r => `<tr><td>${esc(r.name)}</td><td>${moneyShort(r.betAmt)}</td><td>${moneyShort(r.winAmt)}</td><td class="up">+${money(r.plusComm)}</td><td class="down">−${money(r.minusComm)}</td><td><strong class="${r.netComm >= 0 ? 'up' : 'down'}">${r.netComm >= 0 ? '+' + money(r.netComm) : '−' + money(Math.abs(r.netComm))}</strong></td></tr>`).join('')}</tbody></table></div>` : ''}
+  ` : '';
+
   box.innerHTML = `
-    <span class="status">Smart Commission Active (${rate}%)</span>
-    <h2 style="margin-top:14px">${esc(basisLabel)} · ${rate}%</h2>
+    <span class="status">Smart Commission Active (${esc(ruleTag)})</span>
+    <h2 style="margin-top:14px">${esc(basisLabel)} · ${rate}%${isProfitMode ? ` <small style="color:var(--red);font-size:13px">(প্লেয়ার জিতলে −${winDedPct}%)</small>` : ''}</h2>
     <p>Master Admin ও User Admin দ্বারা সেটকৃত অটোমেটিক স্মার্ট কমিশন। ন্যূনতম পেআউট: ${moneyShort(minPayout)}।</p>
     <div class="grid" style="margin-top:16px">
      <div><small style="color:var(--muted)">${esc(basisLabel)}</small><h2>${moneyShort(basisAmount)}</h2></div>
-     <div><small style="color:var(--muted)">Calculated Commission</small><h2 style="color:var(--gold)">${money(estimatedEarned)}</h2></div>
+     <div><small style="color:var(--muted)">Net Commission</small><h2 style="${negCls}">${netSignTxt}</h2></div>
      <div><small style="color:var(--muted)">Credited Commission Wallet</small><h2 style="color:var(--green)">${money(walletBal)}</h2></div>
      <div><small style="color:var(--muted)">Total Paid</small><h2>${money(totalPaid)}</h2></div>
     </div>
+    ${breakdownHtml}
     <hr style="border:0;border-top:1px solid var(--line);margin:20px 0">
     <div class="toolbar">
      <input id="commReqAmt" type="number" min="1" placeholder="উত্তোলনের পরিমাণ (৳)">
