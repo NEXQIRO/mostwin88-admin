@@ -277,27 +277,46 @@ body.light .report-card{background:#fff;border-color:#d5deea}
 body.light .rseg,body.light .bars{background:#eef2f8;border-color:#d7dfeb}
 body.light .rdate button,body.light .rdate input,body.light .rrange input{background:#f7f9fc;color:#172033;border-color:#cbd5e1;color-scheme:light}
 body.light details.dayrow{border-color:#d7dfeb}
-/* LIVE CHAT FAB & DRAWER */
-.chat-fab{position:fixed;right:18px;bottom:82px;width:54px;height:54px;border-radius:50%;border:0;background:linear-gradient(135deg,#f04489,#8a1a52);color:#fff;font-size:22px;display:grid;place-items:center;box-shadow:0 10px 26px rgba(240,68,137,.5);z-index:88;cursor:pointer;transition:transform .2s}
+/* LIVE CHAT FAB & DRAWER (user.html Support Popup Style) */
+@keyframes mwChatPulse{0%{box-shadow:0 0 0 0 rgba(0,230,118,.6)}70%{box-shadow:0 0 0 10px rgba(0,230,118,0)}100%{box-shadow:0 0 0 0 rgba(0,230,118,0)}}
+.chat-fab{position:fixed;right:18px;bottom:82px;width:58px;height:58px;padding:0;border-radius:50%;border:2px solid rgba(255,255,255,.35);background:linear-gradient(135deg,#ffe27a,#f5b82e 55%,#e49a00);color:#2a1c00;display:flex;flex-direction:column;align-items:center;justify-content:center;box-shadow:0 10px 24px -6px rgba(255,210,63,.55),0 0 0 4px rgba(5,11,26,.7);z-index:88;cursor:pointer;transition:transform .2s}
+.chat-fab.hidden{display:none!important}
+body.chat-open .chat-fab{display:none!important}
 .chat-fab:hover{transform:scale(1.06)}
-.chat-fab-badge{position:absolute;top:-3px;right:-3px;min-width:20px;height:20px;padding:0 5px;border-radius:20px;background:#ef4444;color:#fff;font-size:10px;font-weight:800;display:none;place-items:center;border:2px solid #0b1424}
-.chat-drawer{position:fixed;right:16px;bottom:146px;width:360px;max-width:calc(100vw - 24px);height:460px;max-height:70dvh;background:#162236;border:1px solid rgba(255,255,255,.15);border-radius:18px;box-shadow:0 20px 60px rgba(0,0,0,.85);z-index:92;display:none;flex-direction:column;overflow:hidden}
-.chat-drawer.open{display:flex}
-.chat-head{padding:14px 16px;background:linear-gradient(135deg,#f04489,#8a1a52);color:#fff;display:flex;align-items:center;justify-content:space-between;gap:10px}
-.chat-head b{display:block;font-size:14px}
-.chat-head small{display:block;font-size:10.5px;opacity:.9}
-.chat-close{background:rgba(255,255,255,.2);border:0;color:#fff;width:30px;height:30px;border-radius:50%;font-size:15px}
-.chat-msgs{flex:1;overflow-y:auto;padding:12px;display:flex;flex-direction:column;gap:8px;background:#0b1424}
-.cmsg{max-width:82%;padding:9px 12px;border-radius:12px 12px 12px 4px;background:#1c2b43;border:1px solid rgba(255,255,255,.08);color:#fff;font-size:12.5px;line-height:1.45;word-wrap:break-word;align-self:flex-start}
-.cmsg.me{align-self:flex-end;background:linear-gradient(135deg,#f04489,#b82265);border-color:transparent;border-radius:12px 12px 4px 12px}
-.cmsg small{display:block;font-size:9.5px;opacity:.7;margin-top:4px;text-align:right}
-.chat-bar{display:flex;gap:8px;padding:10px 12px;border-top:1px solid rgba(255,255,255,.1);background:#162236}
-.chat-bar input{flex:1;background:#0b1424;border:1px solid #354764;color:#fff;border-radius:20px;padding:9px 14px;font-size:13px;outline:none}
-.chat-bar button{width:40px;height:40px;border-radius:50%;border:0;background:#f04489;color:#fff;font-size:16px}
-body.light .chat-drawer,body.light .chat-bar{background:#fff;border-color:#d7dfeb}
-body.light .chat-msgs{background:#f5f7fb}
-body.light .cmsg:not(.me){background:#e9eef5;color:#172033;border-color:#d7dfeb}
-body.light .chat-bar input{background:#fff;color:#172033;border-color:#cbd5e1}
+.chat-fab i{font-style:normal;font-size:21px;line-height:1}
+.chat-fab .fab-lbl{font-size:7.5px;font-weight:800;letter-spacing:.3px;color:#2a1c00;margin-top:1px}
+.chat-fab::after{content:"";position:absolute;top:3px;right:3px;width:11px;height:11px;border-radius:50%;background:#00E676;border:2px solid #050B1A;animation:mwChatPulse 1.8s infinite}
+.chat-fab-badge{position:absolute;top:-4px;left:-4px;min-width:20px;height:20px;padding:0 5px;border-radius:20px;background:#ef4444;color:#fff;font-size:10px;font-weight:800;display:none;place-items:center;border:2px solid #050B1A;z-index:2}
+.chat-drawer{position:fixed;right:16px;bottom:16px;width:min(380px,calc(100vw - 24px));height:min(580px,calc(100dvh - 32px));z-index:92;display:flex;flex-direction:column;border-radius:20px;overflow:hidden;background:linear-gradient(180deg,rgba(10,22,52,.98),rgba(5,11,26,.98));border:1px solid rgba(255,210,63,.35);box-shadow:0 24px 60px -12px rgba(0,0,0,.85);backdrop-filter:blur(18px);-webkit-backdrop-filter:blur(18px);opacity:0;pointer-events:none;transform:translateY(24px) scale(.96);transform-origin:bottom right;transition:opacity .28s,transform .28s cubic-bezier(.2,.8,.2,1);color:#EAF0FF}
+.chat-drawer.open{opacity:1;pointer-events:auto;transform:none}
+.chat-head{display:flex;align-items:center;justify-content:space-between;gap:10px;padding:max(14px,env(safe-area-inset-top)) 14px 14px;background:linear-gradient(135deg,rgba(255,210,63,.16),rgba(255,255,255,.02));border-bottom:1px solid rgba(255,255,255,.06);color:#EAF0FF}
+.chat-head-left{display:flex;align-items:center;gap:12px;min-width:0}
+.chat-av{width:42px;height:42px;border-radius:50%;display:grid;place-items:center;background:linear-gradient(135deg,#ffe27a,#e49a00);color:#2a1c00;font-size:13px;font-weight:900;letter-spacing:.5px;flex:none;box-shadow:0 0 14px rgba(255,210,63,.45)}
+.chat-head b{display:block;font-size:15px;font-weight:800;color:#EAF0FF}
+.chat-head small{display:flex;align-items:center;gap:6px;font-size:11px;color:#8E9BB8}
+.chat-head .cdot{width:8px;height:8px;border-radius:50%;background:#00E676;box-shadow:0 0 8px #00E676;display:inline-block}
+.chat-close{width:36px;height:36px;border-radius:10px;background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.11);color:#EAF0FF;display:grid;place-items:center;font-size:16px;flex:none;cursor:pointer}
+.chat-officer{display:flex;align-items:center;gap:11px;padding:10px 14px;background:rgba(255,255,255,.045)}
+.chat-officer-av{position:relative;width:44px;height:44px;border-radius:50%;display:grid;place-items:center;background:linear-gradient(135deg,#1f3466,#0c1836);border:2px solid rgba(255,210,63,.55);font-size:18px;flex:none}
+.chat-officer-av::after{content:"";position:absolute;right:0;bottom:0;width:11px;height:11px;background:#00E676;border:2px solid #07102a;border-radius:50%}
+.chat-officer-info{flex:1;min-width:0}.chat-officer-info strong{display:block;font-size:13.5px;color:#EAF0FF}.chat-officer-info span{display:block;font-size:11px;color:#00E676}
+.chat-officer-lbl{font-size:10px;color:#8E9BB8;text-align:right;line-height:1.45}.chat-officer-lbl strong{display:block;font-size:11px;color:#EAF0FF}
+.chat-notice{padding:8px 14px;font-size:11.5px;line-height:1.5;color:#f5d98a;background:rgba(255,210,63,.08);border-bottom:1px solid rgba(255,210,63,.12)}
+.chat-msgs{flex:1;min-height:0;overflow-x:hidden;overflow-y:auto;overscroll-behavior:contain;padding:12px 14px 18px;display:flex;flex-direction:column;gap:8px;background:transparent}
+.chat-div{text-align:center;margin:2px 0 8px;font-size:10px;letter-spacing:1px;color:#8E9BB8}
+.cmsg{max-width:82%;padding:9px 12px;border-radius:14px 14px 14px 4px;background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.08);color:#EAF0FF;font-size:13.5px;line-height:1.5;overflow-wrap:anywhere;align-self:flex-start}
+.cmsg.me{align-self:flex-end;background:linear-gradient(135deg,#ffe27a,#e49a00);border-color:transparent;color:#2a1c00;font-weight:600;border-radius:14px 14px 4px 14px}
+.cmsg small{display:block;font-size:9.5px;opacity:.65;margin-top:3px;text-align:right}
+.chat-bar{display:flex;gap:8px;padding:10px 12px;padding-bottom:max(10px,env(safe-area-inset-bottom));background:#08122b;border-top:1px solid rgba(255,255,255,.08)}
+.chat-bar input{flex:1;min-height:42px;background:#0a1530;border:1px solid rgba(255,255,255,.11);color:#EAF0FF;border-radius:21px;padding:0 14px;font-size:14px;outline:none}
+.chat-bar input:focus{border-color:#FFD23F}
+.chat-bar button{width:42px;height:42px;border-radius:50%;border:0;background:linear-gradient(135deg,#ffe27a,#e49a00);color:#2a1c00;font-size:16px;font-weight:900;flex:none;display:grid;place-items:center;cursor:pointer}
+@media(max-width:600px){.chat-drawer{inset:0;width:100%;max-width:none;height:100dvh;max-height:none;border-radius:0;border:0;transform:translateY(100%)}.chat-drawer.open{transform:none}}
+body.light .chat-drawer{background:linear-gradient(180deg,rgba(10,22,52,.98),rgba(5,11,26,.98));color:#EAF0FF;border-color:rgba(255,210,63,.35)}
+body.light .chat-msgs{background:transparent}
+body.light .cmsg:not(.me){background:rgba(255,255,255,.08);color:#EAF0FF;border-color:rgba(255,255,255,.08)}
+body.light .chat-bar{background:#08122b;border-color:rgba(255,255,255,.08)}
+body.light .chat-bar input{background:#0a1530;color:#EAF0FF;border-color:rgba(255,255,255,.11)}
 </style>
 </head>
 <body>
@@ -558,22 +577,34 @@ body.light .chat-bar input{background:#fff;color:#172033;border-color:#cbd5e1}
  </div>
 </div>
 
-<!-- FLOATING LIVE CHAT FAB & DRAWER -->
-<button type="button" id="liveChatFab" class="chat-fab hidden" onclick="toggleAgentLiveChat()" aria-label="Live Chat with Admin" title="অ্যাডমিনের সাথে লাইভ চ্যাট">
- 💬
+<!-- FLOATING LIVE CHAT FAB & DRAWER (user.html Style) -->
+<button type="button" id="liveChatFab" class="chat-fab hidden" onclick="toggleAgentLiveChat()" aria-label="Customer Support" title="অ্যাডমিনের সাথে লাইভ চ্যাট">
+ <i>🎧</i><span class="fab-lbl">SUPPORT</span>
  <span id="liveChatFabBadge" class="chat-fab-badge">0</span>
 </button>
 <div id="liveChatDrawer" class="chat-drawer" role="dialog" aria-label="User Admin Live Chat">
  <div class="chat-head">
-  <div>
-   <b>💬 Live Chat — User Admin</b>
-   <small id="agentChatSub">Direct support channel</small>
+  <div class="chat-head-left">
+   <span class="chat-av">MW</span>
+   <div>
+    <b>MOSTWIN88</b>
+    <small><i class="cdot"></i><span>Agent Support Center</span></small>
+   </div>
   </div>
   <button type="button" class="chat-close" onclick="toggleAgentLiveChat(false)" aria-label="Close">✕</button>
  </div>
+ <div class="chat-officer">
+  <div class="chat-officer-av">👑</div>
+  <div class="chat-officer-info">
+   <strong>Admin Support <span style="color:#4aa8ff">✓</span></strong>
+   <span id="agentChatSub">● Online Support</span>
+  </div>
+  <div class="chat-officer-lbl"><strong>Support Desk</strong>আমরা পাশে আছি</div>
+ </div>
+ <div class="chat-notice">🔒 আপনার পাসওয়ার্ড, PIN বা OTP কখনো শেয়ার করবেন না।</div>
  <div id="agentChatMsgs" class="chat-msgs"></div>
  <form class="chat-bar" onsubmit="sendAgentLiveChat(event)">
-  <input id="agentChatInput" type="text" placeholder="অ্যাডমিনকে মেসেজ লিখুন..." autocomplete="off" maxlength="1000">
+  <input id="agentChatInput" type="text" placeholder="অ্যাডমিনকে সরাসরি লাইভ মেসেজ লিখুন..." autocomplete="off" maxlength="1000">
   <button type="submit" aria-label="Send">➤</button>
  </form>
 </div>
@@ -1485,6 +1516,7 @@ function toggleAgentLiveChat(forceState) {
   if (!dr) return;
   agentChatOpen = typeof forceState === 'boolean' ? forceState : !agentChatOpen;
   dr.classList.toggle('open', agentChatOpen);
+  document.body.classList.toggle('chat-open', agentChatOpen);
   const sub = document.getElementById('agentChatSub');
   if (sub && agentProfile) sub.textContent = 'Admin: ' + (agentProfile.parentAdminName || agentProfile.parentAdminId || 'User Admin');
   if (agentChatOpen) {
@@ -1498,11 +1530,12 @@ function toggleAgentLiveChat(forceState) {
 function renderAgentChatMessages() {
   const box = document.getElementById('agentChatMsgs');
   if (!box) return;
-  box.innerHTML = agentChatMsgs.length ? agentChatMsgs.map(m => {
+  const divider = '<div class="chat-div"><span>MOSTWIN88 • SUPPORT</span></div>';
+  box.innerHTML = divider + (agentChatMsgs.length ? agentChatMsgs.map(m => {
     const mine = m.sender === 'AGENT';
     const time = m.timestamp ? new Date(m.timestamp).toLocaleTimeString('bn-BD', { hour: '2-digit', minute: '2-digit' }) : '';
-    return `<div class="cmsg ${mine ? 'me' : ''}">${!mine ? `<b style="font-size:10px;color:var(--gold2);display:block;margin-bottom:2px">${escapeRequestText(m.senderName || m.sender || 'Admin')}</b>` : ''}${escapeRequestText(m.text)}<small>${escapeRequestText(time)}</small></div>`;
-  }).join('') : `<div style="color:var(--muted);font-size:12px;text-align:center;margin:auto">আপনার User Admin-এর সাথে সরাসরি লাইভ চ্যাট শুরু করতে মেসেজ লিখুন...</div>`;
+    return `<div class="cmsg ${mine ? 'me' : ''}">${!mine ? `<b style="font-size:10px;color:#FFD23F;display:block;margin-bottom:2px">${escapeRequestText(m.senderName || m.sender || 'Admin')}</b>` : ''}${escapeRequestText(m.text)}<small>${escapeRequestText(time)}</small></div>`;
+  }).join('') : `<div style="color:#8E9BB8;font-size:12px;text-align:center;margin:auto;padding:24px 10px">আপনার User Admin-এর সাথে সরাসরি লাইভ চ্যাট শুরু করতে মেসেজ লিখুন...</div>`);
   box.scrollTop = box.scrollHeight;
 }
 async function sendAgentLiveChat(e) {

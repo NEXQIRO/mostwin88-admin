@@ -514,24 +514,30 @@ body.am-lock{overflow:hidden}
 <div id="net" role="status">You are offline — some features may not work</div>
 <script>
 /* ===== FIREBASE BOOT & CORE STATE ===== */
-(function(){
+var cur = 'home', timer, pay = 'bKash', wm = 'bKash', pe = 0, vk = '', vc0 = '', tms = [];
+const userFbApp = (function(){
   const cfg = window.NP_FIREBASE_CONFIG || {
-    apiKey: "",
+    apiKey: "AIzaSyACoy90K8WHdxSU3_KtUiwWNPHGErT0P3w",
     authDomain: "mostwin88-febbf.firebaseapp.com",
     databaseURL: "https://mostwin88-febbf-default-rtdb.asia-southeast1.firebasedatabase.app",
     projectId: "mostwin88-febbf",
     storageBucket: "mostwin88-febbf.firebasestorage.app",
-    messagingSenderId: "843429237161",
-    appId: "1:843429237161:web:44b572357b05f4c46983d7"
+    messagingSenderId: "1091271266801",
+    appId: "1:1091271266801:web:0b4da03572189864077450",
+    measurementId: "G-5Q07GB1YD6"
   };
   try {
-    if (!firebase.apps.length) firebase.initializeApp(cfg);
+    if (typeof firebase !== 'undefined') {
+      return firebase.apps.find(a => a.name === 'mwUserApp') || firebase.initializeApp(cfg, 'mwUserApp');
+    }
   } catch (e) {}
+  return null;
 })();
 
-const fbAuth = firebase.auth();
-const fbDb = firebase.database();
-const TS = firebase.database.ServerValue.TIMESTAMP;
+const fbAuth = userFbApp ? userFbApp.auth() : null;
+const fbDb = userFbApp ? userFbApp.database() : null;
+try { if (fbAuth && firebase.auth && firebase.auth.Auth) fbAuth.setPersistence(firebase.auth.Auth.Persistence.LOCAL).catch(() => {}); } catch (e) {}
+const TS = (typeof firebase !== 'undefined' && firebase.database && firebase.database.ServerValue) ? firebase.database.ServerValue.TIMESTAMP : Date.now();
 
 const $ = s => document.querySelector(s);
 const esc = t => String(t == null ? '' : t).replace(/[&<>"]/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
@@ -542,7 +548,7 @@ const S = {
   uid: '',
   dep: 0,
   bon: 0,
-  name: 'Guest',
+  name: '',
   id: '',
   code: '',
   lvl: 'Bronze',
@@ -821,36 +827,38 @@ function bindAdminCmsListener(adminUid) {
 }
 
 /* Public Firebase listeners */
-fbDb.ref('settings').on('value', s => {
-  LIVE_SETTINGS = s.val() || {};
-  rebuildMergedConfig();
-});
-fbDb.ref('userPanelConfig/global').on('value', s => {
-  LIVE_GLOBAL_CMS = s.val() || {};
-  rebuildMergedConfig();
-});
-fbDb.ref('banners').on('value', s => {
-  const v = s.val();
-  LIVE_GLOBAL_BANNERS = v ? Object.values(v).filter(b => b && b.active !== false) : null;
-  rebuildMergedConfig();
-});
-fbDb.ref('notices').on('value', s => {
-  const v = s.val();
-  LIVE_GLOBAL_NOTICES = v ? Object.values(v).filter(n => n && n.active !== false) : null;
-  rebuildMergedConfig();
-});
-fbDb.ref('games').on('value', s => {
-  const v = s.val();
-  LIVE_GLOBAL_GAMES = v ? Object.entries(v).map(([id, g]) => Object.assign({id}, g || {})) : null;
-  rebuildMergedConfig();
-});
-fbDb.ref('depositPromotions').on('value', s => {
-  LIVE_DEPOSIT_PROMOS = s.val() || {};
-  if (typeof cur !== 'undefined' && (cur === 'dep' || cur === 'promo' || cur === 'bonus')) go(cur);
-});
-fbDb.ref('adminLinks').on('value', s => {
-  LIVE_ADMIN_LINKS = s.val() || {};
-});
+if (fbDb) {
+  fbDb.ref('settings').on('value', s => {
+    LIVE_SETTINGS = s.val() || {};
+    rebuildMergedConfig();
+  });
+  fbDb.ref('userPanelConfig/global').on('value', s => {
+    LIVE_GLOBAL_CMS = s.val() || {};
+    rebuildMergedConfig();
+  });
+  fbDb.ref('banners').on('value', s => {
+    const v = s.val();
+    LIVE_GLOBAL_BANNERS = v ? Object.values(v).filter(b => b && b.active !== false) : null;
+    rebuildMergedConfig();
+  });
+  fbDb.ref('notices').on('value', s => {
+    const v = s.val();
+    LIVE_GLOBAL_NOTICES = v ? Object.values(v).filter(n => n && n.active !== false) : null;
+    rebuildMergedConfig();
+  });
+  fbDb.ref('games').on('value', s => {
+    const v = s.val();
+    LIVE_GLOBAL_GAMES = v ? Object.entries(v).map(([id, g]) => Object.assign({id}, g || {})) : null;
+    rebuildMergedConfig();
+  });
+  fbDb.ref('depositPromotions').on('value', s => {
+    LIVE_DEPOSIT_PROMOS = s.val() || {};
+    if (typeof cur !== 'undefined' && (cur === 'dep' || cur === 'promo' || cur === 'bonus')) go(cur);
+  });
+  fbDb.ref('adminLinks').on('value', s => {
+    LIVE_ADMIN_LINKS = s.val() || {};
+  });
+}
 
 function formatTime(ts) {
   if (!ts) return now();
@@ -1114,7 +1122,6 @@ const MENU = [
 ];
 
 const tot = () => Number(S.dep || 0) + Number(S.bon || 0);
-let cur = 'home', timer, pay = 'bKash', wm = 'bKash', pe = 0, vk = '', vc0 = '', tms = [];
 
 function toast(t) {
   const e = $('#toast');
@@ -1577,19 +1584,21 @@ function hideIns(x) {
 addEventListener('beforeinstallprompt', e => { e.preventDefault(); dp = e; setTimeout(() => showIns(0), 1500); });
 addEventListener('appinstalled', () => hideIns(1));
 if (/iphone|ipad|ipod/i.test(navigator.userAgent)) setTimeout(() => showIns(1), 2500);
-const ibBtn = $('#ib');
-if (ibBtn) ibBtn.onclick = async () => { if (dp) { dp.prompt(); await dp.userChoice; dp = 0; hideIns(1); } else { toast('Tap Share, then Add to Home Screen'); hideIns(); } };
-
 {
   const IA = Element.prototype.insertAdjacentHTML;
   Element.prototype.insertAdjacentHTML = function(p, h) { return IA.call(this, p, cr(h)); };
   const D = Object.getOwnPropertyDescriptor(Element.prototype, 'innerHTML');
-  Object.defineProperty(Element.prototype, 'innerHTML', {
-    get: D.get,
-    set(v) { D.set.call(this, typeof v === 'string' ? cr(v) : v); }
-  });
+  if (D && D.get && D.set) {
+    Object.defineProperty(Element.prototype, 'innerHTML', {
+      get: D.get,
+      set(v) { D.set.call(this, typeof v === 'string' ? cr(v) : v); },
+      configurable: true
+    });
+  }
   document.querySelectorAll('header,#ins,#net').forEach(e => { e.innerHTML = e.innerHTML; });
 }
+const ibBtn = $('#ib');
+if (ibBtn) ibBtn.onclick = async () => { if (dp) { dp.prompt(); await dp.userChoice; dp = 0; hideIns(1); } else { toast('Tap Share, then Add to Home Screen'); hideIns(); } };
 </script>
 <script>
 /* ===== SUPPORT CHAT CONTROLLER (GUIDED + LIVE FIREBASE) ===== */
@@ -2051,6 +2060,7 @@ if (ibBtn) ibBtn.onclick = async () => { if (dp) { dp.prompt(); await dp.userCho
 
   const h0 = location.hash.slice(1);
   if (h0 && h0 !== 'home' && V[h0]) _go(h0);
+  else _go('home');
   foot();
 
   let pv = null;
@@ -2357,7 +2367,7 @@ if (ibBtn) ibBtn.onclick = async () => { if (dp) { dp.prompt(); await dp.userCho
   };
 
   /* Sync live Firebase providers merged cleanly with base catalog */
-  fbDb.ref("providers").on("value", s => {
+  if (fbDb) fbDb.ref("providers").on("value", s => {
     const v = s.val();
     if (v && Object.keys(v).length) {
       const merged = new Map();
@@ -2532,7 +2542,7 @@ if (ibBtn) ibBtn.onclick = async () => { if (dp) { dp.prompt(); await dp.userCho
   }
 
   function guestState() {
-    Object.assign(S, {uid:'',name:'Guest',id:'',code:'',lvl:'Bronze',xp:0,next:2000,dep:0,bon:0,mob:'',email:'',photo:'',adminUid:'',affiliateUid:'',withdrawPin:'',betCount:0,turnoverRequired:0,turnoverDone:0});
+    Object.assign(S, {uid:'',name:'',id:'',code:'',lvl:'Bronze',xp:0,next:2000,dep:0,bon:0,mob:'',email:'',photo:'',adminUid:'',affiliateUid:'',withdrawPin:'',betCount:0,turnoverRequired:0,turnoverDone:0});
   }
 
   function ui() {
@@ -2739,26 +2749,25 @@ if (ibBtn) ibBtn.onclick = async () => { if (dp) { dp.prompt(); await dp.userCho
       const sd = q('#sd'); if (!sd) return;
       sd.querySelectorAll('button').forEach(b => { if ((b.getAttribute('onclick') || '').includes("'out'")) b.remove(); });
       const lg = sd.firstElementChild;
-      if (lg) lg.insertAdjacentHTML('afterend', '<div class="sdg"><div>Welcome, Guest</div><div class="two"><button class="btn out sm" onclick="drawer(0);openAuth(\'login\')">Login</button><button class="btn bgold sm" onclick="drawer(0);openAuth(\'signup\')">Sign Up</button></div></div>');
+      if (lg) lg.insertAdjacentHTML('afterend', '<div class="sdg"><div>Welcome to MOSTWIN88</div><div class="two"><button class="btn out sm" onclick="drawer(0);openAuth(\'login\')">Login</button><button class="btn bgold sm" onclick="drawer(0);openAuth(\'signup\')">Sign Up</button></div></div>');
     }
   };
   const _play = window.play;
   window.play = function(n) { if (!S.uid) { openAuth('login'); toast('Login to play'); return; } return _play.apply(this, arguments); };
-
-  const hr = q('header .hr');
-  if (hr) hr.insertAdjacentHTML('afterbegin', '<div class="ah"><button type="button" class="ahl" onclick="openAuth(\'login\')">Login</button><button type="button" class="ahs" onclick="openAuth(\'signup\')">Sign Up</button></div>');
 
   function hdr() {
     const g = q('#hgS'), t = q('#hgT'), p = q('#hpr'); if (!g) return;
     if (S.uid) {
       const h = new Date().getHours();
       g.textContent = h < 12 ? 'Good morning' : h < 17 ? 'Good afternoon' : 'Good evening';
-      t.textContent = S.name;
+      t.style.display = '';
+      t.textContent = S.name || 'Player';
       p.innerHTML = '👑 VIP ' + esc(S.lvl);
       p.onclick = () => go('vip');
     } else {
       g.textContent = 'Welcome to the lobby';
-      t.textContent = 'Guest';
+      t.textContent = '';
+      t.style.display = 'none';
       p.innerHTML = '🎁 Sign up &amp; get 100% Welcome Bonus';
       p.onclick = () => openAuth('signup');
     }
@@ -2819,29 +2828,38 @@ if (ibBtn) ibBtn.onclick = async () => { if (dp) { dp.prompt(); await dp.userCho
   } catch (e) {}
 
   /* Firebase Auth state listener */
-  fbAuth.onAuthStateChanged(async fbUser => {
-    if (fbUser) {
-      S.uid = fbUser.uid;
-      try {
-        const snap = await fbDb.ref('users/' + fbUser.uid).once('value');
-        if (!snap.exists()) {
-          await provisionUserRecord(fbUser, { name: fbUser.displayName || 'Player', email: fbUser.email || '', ref: LS('mw_ref') || '' });
-        }
-      } catch (e) {}
-      bindUserListeners(fbUser.uid);
-      ui();
-      go(cur || 'home');
-    } else {
-      unbindUserListeners();
-      guestState();
-      ui();
-      go(cur || 'home');
-      try {
-        const rf = new URLSearchParams(location.search).get('ref');
-        if (rf) setTimeout(() => openAuth('signup'), 600);
-      } catch (e) {}
-    }
-  });
+  if (fbAuth) {
+    fbAuth.onAuthStateChanged(async fbUser => {
+      if (fbUser) {
+        S.uid = fbUser.uid;
+        try {
+          if (fbDb) {
+            const snap = await fbDb.ref('users/' + fbUser.uid).once('value');
+            if (!snap.exists()) {
+              await provisionUserRecord(fbUser, { name: fbUser.displayName || 'Player', email: fbUser.email || '', ref: LS('mw_ref') || '' });
+            }
+          }
+        } catch (e) {}
+        bindUserListeners(fbUser.uid);
+        ui();
+        go(cur || 'home');
+      } else {
+        unbindUserListeners();
+        guestState();
+        ui();
+        if (!document.querySelector('#m .screen')) go(cur || 'home');
+        else { nav(); updBal(); hdr(); }
+        try {
+          const rf = new URLSearchParams(location.search).get('ref');
+          if (rf) setTimeout(() => openAuth('signup'), 600);
+        } catch (e) {}
+      }
+    });
+  } else {
+    guestState();
+    ui();
+    if (!document.querySelector('#m .screen')) go('home');
+  }
 })();
 </script>
 </body></html>
