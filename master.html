@@ -158,7 +158,22 @@ apply();window.addEventListener('load',function(){setTimeout(apply,150)});window
     #tn { height:38px; max-width:220px; border-color:var(--border-color); color:var(--primary); font-weight:600; padding:0 10px; }
     select option { background:var(--c-surface); color:var(--text-main); }
     .row { display:flex; gap:8px; flex-wrap:wrap; margin-bottom:12px; }
+    .row > * { min-width:0; }
     .row input { flex:1; min-width:140px; }
+    .cd > * { min-width:0; }
+    .pw-wrap { position:relative; display:flex; align-items:center; width:100%; }
+    .pw-wrap input { padding-right:64px; }
+    .pw-eye { position:absolute; right:6px; top:50%; transform:translateY(-50%); min-height:32px !important; padding:4px 10px; font-size:12px; border-radius:8px; background:var(--c-surface); color:var(--primary); border:1px solid var(--border-subtle); }
+    .login-err { display:none; padding:9px 12px; border-radius:10px; background:rgba(248,113,113,.14); border:1px solid rgba(248,113,113,.45); color:#fca5a5; font-size:12.5px; line-height:1.45; text-align:left; }
+    [data-theme="light"] .login-err { color:#991b1b; background:rgba(239,68,68,.1); }
+    .login-gbtn { display:flex; align-items:center; justify-content:center; gap:9px; width:100%; min-height:44px; border-radius:var(--radius-md); background:#fff !important; color:#1f2937 !important; border:1px solid #d1d5db !important; font-weight:700; }
+    .login-gbtn:hover { background:#f3f4f6 !important; color:#111827 !important; }
+    .login-link { background:none !important; border:0 !important; color:var(--primary) !important; font-size:12.5px; font-weight:600; padding:4px 0 !important; min-height:auto !important; text-decoration:underline; align-self:flex-end; }
+    .up-slide-row { display:flex; align-items:center; justify-content:space-between; gap:10px; padding:10px 12px; border:1px solid var(--border-subtle); border-radius:10px; background:var(--c-inner); margin-bottom:8px; flex-wrap:wrap; }
+    .up-slide-info { display:flex; align-items:center; gap:10px; flex:1; min-width:200px; }
+    .up-slide-thumb { width:64px; height:40px; border-radius:8px; object-fit:cover; display:grid; place-items:center; font-size:20px; background:linear-gradient(120deg,#0b1d52,#5b2a8a); flex-shrink:0; border:1px solid var(--border-subtle); }
+    .up-slide-acts { display:flex; gap:6px; flex-wrap:wrap; align-items:center; }
+    .up-slide-acts button { padding:5px 9px; font-size:12px; }
 
     /* ---------- Tables ---------- */
     .sc { overflow-x:auto; border-radius:var(--radius-md); }
@@ -204,7 +219,8 @@ apply();window.addEventListener('load',function(){setTimeout(apply,150)});window
       .mobile-menu-btn { display:grid; }
       .content-area { padding:14px; }
       .stats-grid { grid-template-columns:1fr 1fr; }
-      .topbar { padding:0 12px; }
+      .topbar { padding:8px 12px; height:auto; min-height:var(--header-height); flex-wrap:wrap; }
+      .topbar-actions { flex-wrap:wrap; justify-content:flex-end; }
     }
     @media (max-width:500px) { .stats-grid { grid-template-columns:1fr; } }
 
@@ -387,10 +403,22 @@ body[data-theme="light"] .lo circle[stroke*="255,255,255"]{stroke:rgba(28,25,23,
   </div>
   <h2 class="login-title" id="lt" style="display:none">MOSTWIN88</h2>
   <p class="login-sub">মাস্টার কন্ট্রোল প্যানেল</p>
-  <div class="login-form">
-    <input id="em" type="email" placeholder="Master ইমেইল"><input id="pw" type="password" placeholder="পাসওয়ার্ড">
-    <button class="p" onclick="login()">লগইন</button><button id="lback" style="display:none" onclick="switchTenant('main')">← মূল প্রজেক্টে ফিরুন</button>
-  </div>
+  <form class="login-form" onsubmit="event.preventDefault();login()">
+    <input id="em" type="email" autocomplete="username" placeholder="Master ইমেইল" required>
+    <div class="pw-wrap">
+      <input id="pw" type="password" autocomplete="current-password" placeholder="পাসওয়ার্ড" required>
+      <button type="button" class="pw-eye" onclick="toggleMasterPw(this)">দেখুন</button>
+    </div>
+    <button type="button" class="login-link" onclick="forgotMasterPassword()">পাসওয়ার্ড ভুলে গেছেন? রিসেট লিংক পাঠান</button>
+    <div id="login-err" class="login-err"></div>
+    <button type="submit" class="p" id="m-login-btn">লগইন করুন</button>
+    <div style="display:flex;align-items:center;gap:8px;font-size:11.5px;color:var(--text-muted);margin:2px 0"><span style="flex:1;height:1px;background:var(--border-subtle)"></span><span>অথবা</span><span style="flex:1;height:1px;background:var(--border-subtle)"></span></div>
+    <button type="button" class="login-gbtn" onclick="loginWithGoogle()">
+      <svg width="18" height="18" viewBox="0 0 48 48" aria-hidden="true"><path fill="#EA4335" d="M24 9.5c3.54 0 6.71 1.22 9.21 3.6l6.85-6.85C35.9 2.38 30.47 0 24 0 14.62 0 6.51 5.38 2.56 13.22l7.98 6.19C12.43 13.72 17.74 9.5 24 9.5z"/><path fill="#4285F4" d="M46.98 24.55c0-1.57-.15-3.09-.38-4.55H24v9.02h12.94c-.58 2.96-2.26 5.48-4.78 7.18l7.73 6c4.51-4.18 7.09-10.36 7.09-17.65z"/><path fill="#FBBC05" d="M10.53 28.59c-.48-1.45-.76-2.99-.76-4.59s.27-3.14.76-4.59l-7.98-6.19C.92 16.46 0 20.12 0 24c0 3.88.92 7.54 2.56 10.78l7.97-6.19z"/><path fill="#34A853" d="M24 48c6.48 0 11.93-2.13 15.89-5.81l-7.73-6c-2.15 1.45-4.92 2.3-8.16 2.3-6.26 0-11.57-4.22-13.47-9.91l-7.98 6.19C6.51 42.62 14.62 48 24 48z"/></svg>
+      <span>Google দিয়ে লগইন করুন</span>
+    </button>
+    <button type="button" id="lback" style="display:none" onclick="switchTenant('main')">← মূল প্রজেক্টে ফিরুন</button>
+  </form>
 </div></div>
 
 <div id="app">
@@ -557,8 +585,57 @@ const FL=[
   ["ref_link", "অন্যান্য ফিচার", "ইউজার রেফারেল লিংক কার্ড ও কপি"]
 ];
 function sanitizeUiMsg(v){return String(v||'').replace(/Firebase:\s*/gi,'').replace(/\s*\(auth\/[^)]+\)\.?/gi,'').replace(/\b(firebase|github|render)\b/gi,'server').replace(/ফায়ারবেস|ফায়ারবেস|গিটহাব|রেন্ডার/g,'সার্ভার').trim()}
+function translateAuthErr(e){
+ const c=(e&&e.code)||'';
+ if(c==='auth/invalid-credential'||c==='auth/wrong-password'||c==='auth/user-not-found'||c==='auth/invalid-login-credentials')return 'ইমেইল বা পাসওয়ার্ড সঠিক নয়। সঠিক পাসওয়ার্ড দিন অথবা "পাসওয়ার্ড রিসেট" / "Google দিয়ে লগইন" ব্যবহার করুন।';
+ if(c==='auth/invalid-email')return 'সঠিক ইমেইল ঠিকানা লিখুন।';
+ if(c==='auth/too-many-requests')return 'বারবার ভুল চেষ্টার কারণে সাময়িকভাবে ব্লক হয়েছে। পাসওয়ার্ড রিসেট বা Google লগইন ব্যবহার করুন।';
+ if(c==='auth/popup-closed-by-user'||c==='auth/cancelled-popup-request')return 'Google লগইন পপআপ বন্ধ করা হয়েছে।';
+ if(c==='auth/network-request-failed')return 'নেটওয়ার্ক সংযোগ সমস্যা। ইন্টারনেট চেক করে আবার চেষ্টা করুন।';
+ if(c==='auth/user-disabled')return 'এই অ্যাকাউন্টটি নিষ্ক্রিয় করা হয়েছে।';
+ return sanitizeUiMsg(e&&e.message?e.message:e)||'লগইন ব্যর্থ হয়েছে। আবার চেষ্টা করুন।';
+}
+function showLoginErr(m){const el=$('login-err');if(!el)return;if(!m){el.style.display='none';el.textContent='';return}el.textContent=sanitizeUiMsg(m);el.style.display='block'}
+function toggleMasterPw(btn){const p=$('pw');if(!p)return;const show=p.type==='password';p.type=show?'text':'password';if(btn)btn.textContent=show?'লুকান':'দেখুন'}
 function toast(m){const t=$('toast');t.textContent=sanitizeUiMsg(m);t.style.display='block';clearTimeout(t._t);t._t=setTimeout(()=>t.style.display='none',3500)}
-async function login(){try{await auth.signInWithEmailAndPassword($('em').value.trim(),$('pw').value)}catch(e){toast('লগইন ব্যর্থ: '+e.message)}}
+async function login(){
+ showLoginErr('');
+ const email=$('em').value.trim(),pass=$('pw').value;
+ if(!email||!pass){showLoginErr('Master ইমেইল এবং পাসওয়ার্ড লিখুন।');return}
+ const btn=$('m-login-btn');if(btn){btn.disabled=true;btn.textContent='যাচাই করা হচ্ছে...'}
+ try{
+  await auth.signInWithEmailAndPassword(email,pass);
+ }catch(e){
+  const msg=translateAuthErr(e);
+  showLoginErr(msg);
+  toast('লগইন ব্যর্থ: '+msg);
+ }finally{
+  if(btn){btn.disabled=false;btn.textContent='লগইন করুন'}
+ }
+}
+async function loginWithGoogle(){
+ showLoginErr('');
+ try{
+  await auth.signInWithPopup(new firebase.auth.GoogleAuthProvider());
+ }catch(e){
+  const msg=translateAuthErr(e);
+  showLoginErr(msg);
+  toast(msg);
+ }
+}
+async function forgotMasterPassword(){
+ showLoginErr('');
+ const email=$('em').value.trim();
+ if(!email||!email.includes('@')){showLoginErr('পাসওয়ার্ড রিসেট করতে উপরে আপনার Master ইমেইল লিখুন।');return}
+ try{
+  await auth.sendPasswordResetEmail(email);
+  toast('পাসওয়ার্ড রিসেট লিংক পাঠানো হয়েছে ('+email+')। ইনবক্স বা স্প্যাম ফোল্ডার দেখুন ✅');
+ }catch(e){
+  const msg=translateAuthErr(e);
+  showLoginErr(msg);
+  toast(msg);
+ }
+}
 const on=(r,cb)=>{r.on('value',cb);LST.push(r)};
 
 let SEL_CHAT_ADMIN = '';
@@ -718,8 +795,8 @@ function bindAuth(){if(AUTHUNSUB)AUTHUNSUB();const my=TID;
  AUTHUNSUB=auth.onAuthStateChanged(async u=>{if(my!==TID)return;
   if(!u){$('lt').textContent=TID==='main'?'MOSTWIN88':'লগইন: '+TNAME;$('lback').style.display=TID==='main'?'none':'block';$('login').style.display='flex';$('app').style.display='none';return}
   const m=await db.ref('master/balance').once('value').catch(()=>null);if(my!==TID)return;
-  if(!m){await auth.signOut();toast('এই অ্যাকাউন্টের Master অ্যাক্সেস নেই ('+TNAME+'): ওই প্রজেক্টে রুলস পাবলিশ ও Master ইউজার আছে কিনা দেখুন');return}
-  $('login').style.display='none';$('app').style.display='block';
+  if(!m){const errTxt='এই অ্যাকাউন্টের Master অ্যাক্সেস নেই ('+TNAME+')। অনুমোদিত Master ইমেইল দিয়ে লগইন করুন।';showLoginErr(errTxt);await auth.signOut();toast(errTxt);return}
+  showLoginErr('');$('login').style.display='none';$('app').style.display='block';
   if(started)return;started=true;attachAll();draw()})}
 // ===== একাধিক Firebase প্রজেক্ট (টেন্যান্ট) =====
 function getTenants(){try{return JSON.parse(localStorage.getItem('np_tenants')||'[]')}catch(e){return[]}}
@@ -1682,7 +1759,7 @@ async function createAdmin(){
    updatedAt:TS
   });
   await db.ref('adminLinks/'+cr.user.uid).set(true).catch(()=>{});
-  const clean=n.toLowerCase().replace(/[^a-z0-9_]/g,'');
+  const clean=(n.toLowerCase().replace(/[^a-z0-9_]/g,''))||(e.split('@')[0].toLowerCase().replace(/[^a-z0-9_]/g,''));
   if(clean){
    try{await db.ref('usernames/'+clean).set({uid:cr.user.uid,email:e,isAdmin:true,role:r,updatedAt:TS})}catch(_u){}
   }
@@ -1712,6 +1789,8 @@ async function grantAdminByUid(){
   });
   await db.ref('adminLinks/'+u).set(true).catch(()=>{});
   await db.ref('users/'+u+'/role').set(r).catch(()=>{});
+  const cleanG=(finalName||'').toLowerCase().replace(/[^a-z0-9_]/g,'');
+  if(cleanG){try{await db.ref('usernames/'+cleanG).set({uid:u,email:finalEmail,isAdmin:true,role:r,updatedAt:TS})}catch(_u){}}
   try{await db.ref('adminAuditLogs').push({admin:auth.currentUser.email,action:'ADMIN_GRANTED_BY_UID',target:u,details:`Name=${finalName}, Role=${r}`,timestamp:Date.now()})}catch(_l){}
   toast('UID: '+u+' কে সফলভাবে ইউজার অ্যাডমিন পারমিশন দেওয়া হয়েছে ✅');
   if($('auid'))$('auid').value='';
@@ -1723,11 +1802,12 @@ async function grantAdminByUid(){
 async function makeAdminFromPlayer(uid){
  const u=USERS[uid]||{};
  const n=u.name||u.username||'User Admin';
+ const finalEmail=u.email||(u.username?u.username+'@npapp.local':uid+'@admin.local');
  if(!confirm('"'+n+'" (UID: '+uid+') কে কি User Admin বানাতে চান? সে তার একাউন্ট দিয়ে User Admin প্যানেলে ঢুকতে পারবে।'))return;
  try{
   await db.ref('admins/'+uid).set({
    name:n,
-   email:u.email||(u.username?u.username+'@npapp.local':uid+'@admin.local'),
+   email:finalEmail,
    role:'USER_ADMIN',
    active:true,
    balance:0,
@@ -1738,6 +1818,8 @@ async function makeAdminFromPlayer(uid){
   });
   await db.ref('adminLinks/'+uid).set(true).catch(()=>{});
   await db.ref('users/'+uid+'/role').set('USER_ADMIN').catch(()=>{});
+  const cleanP=(u.username||n||'').toLowerCase().replace(/[^a-z0-9_]/g,'');
+  if(cleanP){try{await db.ref('usernames/'+cleanP).set({uid:uid,email:finalEmail,isAdmin:true,role:'USER_ADMIN',updatedAt:TS})}catch(_u){}}
   try{await db.ref('adminAuditLogs').push({admin:auth.currentUser.email,action:'PLAYER_PROMOTED_TO_ADMIN',target:uid,details:`Name=${n}`,timestamp:Date.now()})}catch(_l){}
   toast(n+' এখন User Admin! সে এডমিন প্যানেলে লগইন করতে পারবে ✅');
   draw();
@@ -2240,7 +2322,81 @@ async function syncAllAffiliateCodes(){
  toast(c+' টি অ্যাফিলিয়েট রেফার কোড সিঙ্ক হয়েছে ✅');
 }
 
+let UP_SLIDE_EDIT_IDX=-1;
 function upCurData(){return UP_SCOPE==='global'?(UPCFG_ALL.global||{}):((UPCFG_ALL.byAdmin&&UPCFG_ALL.byAdmin[UP_SCOPE])||{})}
+function upGetSlides(){const d=upCurData()||{};return Array.isArray(d.slides)?d.slides.map(s=>Object.assign({},s)):[]}
+async function upPersistSlides(slides){
+ const scope=UP_SCOPE||'global';
+ const base=scope==='global'?'userPanelConfig/global':'userPanelConfig/byAdmin/'+scope;
+ await db.ref(base+'/slides').set(slides);
+ await db.ref(base+'/updatedAt').set(TS).catch(()=>{});
+ if(scope==='global'){if(!UPCFG_ALL.global)UPCFG_ALL.global={};UPCFG_ALL.global.slides=slides}
+ else{if(!UPCFG_ALL.byAdmin)UPCFG_ALL.byAdmin={};if(!UPCFG_ALL.byAdmin[scope])UPCFG_ALL.byAdmin[scope]={};UPCFG_ALL.byAdmin[scope].slides=slides}
+ const ta=$('up-slides');if(ta)ta.value=JSON.stringify(slides,null,2);
+}
+function upSlideEdit(idx){
+ const list=upGetSlides();const s=list[idx];if(!s)return;
+ UP_SLIDE_EDIT_IDX=idx;
+ draw();
+ setTimeout(()=>{
+  if($('ups-title'))$('ups-title').value=String(s.t||'').replace(/<\/?em>/g,'');
+  if($('ups-sub'))$('ups-sub').value=s.d||'';
+  if($('ups-img'))$('ups-img').value=s.img||'';
+  if($('ups-theme'))$('ups-theme').value=s.c||'s1';
+  if($('ups-emoji'))$('ups-emoji').value=s.a||'🎰';
+  if($('ups-go'))$('ups-go').value=s.go||'games';
+  if($('ups-locked'))$('ups-locked').checked=!!s.locked;
+ },0);
+}
+function upSlideCancel(){UP_SLIDE_EDIT_IDX=-1;draw()}
+async function upSlideSave(){
+ const t=($('ups-title')&&$('ups-title').value.trim())||'';
+ const d=($('ups-sub')&&$('ups-sub').value.trim())||'';
+ const img=($('ups-img')&&$('ups-img').value.trim())||'';
+ const c=($('ups-theme')&&$('ups-theme').value)||'s1';
+ const a=($('ups-emoji')&&$('ups-emoji').value)||'🎰';
+ const go=($('ups-go')&&$('ups-go').value)||'games';
+ const locked=!!($('ups-locked')&&$('ups-locked').checked);
+ if(!t&&!img){toast('স্লাইডারের শিরোনাম অথবা ইমেজ URL দিন');return}
+ const list=upGetSlides();
+ const existing=(UP_SLIDE_EDIT_IDX>=0&&list[UP_SLIDE_EDIT_IDX])||{};
+ const item={
+  id:existing.id||('sl_'+Date.now()+'_'+Math.random().toString(36).slice(2,6)),
+  t:t||'MOSTWIN88 Offer',
+  d:d,
+  img:img,
+  c:c,
+  a:a,
+  go:go,
+  locked:UP_SCOPE==='global'?locked:false
+ };
+ if(UP_SLIDE_EDIT_IDX>=0&&UP_SLIDE_EDIT_IDX<list.length)list[UP_SLIDE_EDIT_IDX]=item;
+ else list.push(item);
+ UP_SLIDE_EDIT_IDX=-1;
+ try{await upPersistSlides(list);toast('স্লাইডার সেভ ও পাবলিশ হয়েছে ✅');draw()}
+ catch(e){toast('স্লাইডার সেভ ব্যর্থ: '+e.message)}
+}
+async function upSlideDel(idx){
+ const list=upGetSlides();if(idx<0||idx>=list.length)return;
+ if(!confirm('এই স্লাইডারটি ডিলিট করবেন?'))return;
+ list.splice(idx,1);
+ if(UP_SLIDE_EDIT_IDX===idx)UP_SLIDE_EDIT_IDX=-1;
+ try{await upPersistSlides(list);toast('স্লাইডার মুছে ফেলা হয়েছে ✅');draw()}
+ catch(e){toast('মুছতে ব্যর্থ: '+e.message)}
+}
+async function upSlideMove(idx,dir){
+ const list=upGetSlides(),ni=idx+dir;
+ if(ni<0||ni>=list.length)return;
+ const tmp=list[idx];list[idx]=list[ni];list[ni]=tmp;
+ try{await upPersistSlides(list);draw()}catch(e){toast(e.message)}
+}
+async function upSlideToggleLock(idx){
+ if(UP_SCOPE!=='global')return;
+ const list=upGetSlides();if(!list[idx])return;
+ list[idx].locked=!list[idx].locked;
+ try{await upPersistSlides(list);toast(list[idx].locked?'🔒 মাস্টার লক চালু হয়েছে (User Admin ডিলিট করতে পারবে না)':'🔓 লক খোলা হয়েছে');draw()}
+ catch(e){toast(e.message)}
+}
 async function saveUserPanelConfigMaster(){
  const scope=UP_SCOPE||'global';
  const path=scope==='global'?'userPanelConfig/global':'userPanelConfig/byAdmin/'+scope;
@@ -2304,20 +2460,79 @@ function userpanelDraw(){
  const d=upCurData()||{};
  const admOpts=Object.entries(ADM).map(([u,a])=>`<option value="${esc(u)}"${UP_SCOPE===u?' selected':''}>Admin: ${esc(a.name||a.email||u)}</option>`).join('');
  const pay=d.payments||{},ch=d.chat||{};
+ const slides=upGetSlides();
+ const slideRows=slides.length?slides.map((s,i)=>`
+  <div class="up-slide-row">
+   <div class="up-slide-info">
+    ${s.img?`<img class="up-slide-thumb" src="${esc(s.img)}" alt="slide" onerror="this.style.display='none'">`:`<div class="up-slide-thumb">${esc(s.a||'🎰')}</div>`}
+    <div style="min-width:0;flex:1">
+     <div style="font-weight:700;font-size:13.5px;display:flex;align-items:center;gap:6px;flex-wrap:wrap">
+      <span>${esc(String(s.t||'').replace(/<\/?em>/g,''))}</span>
+      ${s.locked?'<span class="pl y">🔒 মাস্টার লকড (Admin এডিট/ডিলিট করতে পারবে না)</span>':'<span class="pl">🔓 অ্যাডমিন এডিটেবল</span>'}
+     </div>
+     <div style="font-size:11.5px;color:var(--mu);margin-top:2px;word-break:break-word">${esc(s.d||'')} · অ্যাকশন: <b>${esc(s.go||'games')}</b></div>
+    </div>
+   </div>
+   <div class="up-slide-acts">
+    ${UP_SCOPE==='global'?`<button type="button" onclick="upSlideToggleLock(${i})">${s.locked?'🔓 আনলক':'🔒 লক'}</button>`:''}
+    ${i>0?`<button type="button" onclick="upSlideMove(${i},-1)">↑</button>`:''}
+    ${i<slides.length-1?`<button type="button" onclick="upSlideMove(${i},1)">↓</button>`:''}
+    <button type="button" onclick="upSlideEdit(${i})">✏️ এডিট</button>
+    <button type="button" class="d" onclick="upSlideDel(${i})">🗑️</button>
+   </div>
+  </div>`).join(''):'<div style="padding:12px;border:1px dashed var(--border-subtle);border-radius:10px;color:var(--mu);font-size:12.5px">এখনও কোনো কাস্টম স্লাইডার যোগ করা হয়নি। নিচের ফর্ম থেকে ১টি বা ২টি মাস্টার স্লাইডার যোগ ও লক করতে পারেন।</div>';
  const provRows=Object.entries(PROVIDERS).map(([id,p])=>`<tr><td><b>${esc(p.name||id)}</b><br><small style="opacity:.6">${esc(id)}</small></td><td>${esc(p.category||'')}</td><td>${p.order||0}</td><td><span class="pl ${p.active===false?'b':''}">${p.active===false?'বন্ধ':'চালু'}</span> ${p.maintenance?'<span class="pl y">Maint</span>':''}</td><td><button onclick="toggleProvField('${esc(id)}','active')">${p.active===false?'চালু':'বন্ধ'}</button> <button onclick="toggleProvField('${esc(id)}','maintenance')">Maint</button> <button class="d" onclick="delProv('${esc(id)}')">মুছুন</button></td></tr>`).join('')||'<tr><td colspan="5" style="text-align:center;color:var(--mu)">ডিফল্ট সব প্রোভাইডার ইউজার প্যানেলে চালু আছে। ওভাররাইড বা নতুন যোগ করতে উপরের ফর্ম ব্যবহার করুন।</td></tr>';
  $('v').innerHTML=`
  <div class="cd" style="margin-bottom:12px">
   <b style="font-size:16px;color:var(--gold)">📱 ইউজার প্যানেল (user.html) লাইভ কন্ট্রোল ও CMS</b>
   <span>এখান থেকে ইউজার প্যানেলের নোটিশ, ট্যাগলাইন, পেমেন্ট নম্বর, স্লাইডার, স্পেশাল অফার, ফুটার, সাপোর্ট লিংক ও প্রোভাইডার রিয়েল-টাইমে নিয়ন্ত্রণ করুন।</span>
   <div class="row" style="margin-top:10px;align-items:center">
-   <select onchange="UP_SCOPE=this.value;draw()" style="min-width:260px">
+   <select onchange="UP_SCOPE=this.value;UP_SLIDE_EDIT_IDX=-1;draw()" style="min-width:240px;flex:1">
     <option value="global"${UP_SCOPE==='global'?' selected':''}>🌐 Global (সকল ইউজার প্যানেল)</option>${admOpts}
    </select>
    <button class="p" onclick="saveUserPanelConfigMaster()">💾 পরিবর্তন সেভ ও পাবলিশ করুন</button>
    <a href="user.html" target="_blank" style="padding:8px 14px;border:1px solid var(--border-color);border-radius:10px;color:var(--primary);text-decoration:none;font-weight:700">↗ ইউজার প্যানেল খুলুন</a>
   </div>
  </div>
- <div class="stats-grid" style="grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:14px">
+ <div class="cd" style="margin-bottom:14px">
+  <b style="font-size:15px">🎞️ হিরো স্লাইডার ম্যানেজার (User Panel Slider &amp; Master Lock)</b>
+  <span>যে স্লাইডারগুলোতে <b>🔒 মাস্টার লক</b> চালু থাকবে, সেগুলো কোনো User Admin এডিট বা ডিলিট করতে পারবে না — বাকি স্লাইডারগুলো User Admin নিজেদের প্যানেলে যোগ/এডিট/ডিলিট করতে পারবে।</span>
+  <div style="margin-top:12px">${slideRows}</div>
+  <div style="margin-top:14px;padding:12px;border:1px solid var(--border-subtle);border-radius:10px;background:var(--c-inner)">
+   <div style="font-weight:700;font-size:13.5px;color:var(--primary);margin-bottom:8px">${UP_SLIDE_EDIT_IDX>=0?'✏️ স্লাইডার এডিট করুন':'+ নতুন স্লাইডার যোগ করুন'}</div>
+   <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:8px">
+    <input id="ups-title" placeholder="স্লাইডার শিরোনাম (যেমন: Welcome to MOSTWIN88)">
+    <input id="ups-sub" placeholder="সাবটাইটেল / বিবরণ (যেমন: 100% Welcome Bonus)">
+    <input id="ups-img" placeholder="ব্যানার ইমেজ URL (ঐচ্ছিক — দিলে ছবি দেখাবে)">
+    <select id="ups-go">
+     <option value="games">বাটন অ্যাকশন: Games</option>
+     <option value="promo">বাটন অ্যাকশন: Promotions</option>
+     <option value="dep">বাটন অ্যাকশন: Deposit</option>
+     <option value="vip">বাটন অ্যাকশন: VIP Club</option>
+     <option value="ref">বাটন অ্যাকশন: Referral</option>
+    </select>
+    <select id="ups-theme">
+     <option value="s1">থিম রঙ: Royal Purple</option>
+     <option value="s2">থিম রঙ: Emerald Ocean</option>
+     <option value="s3">থিম রঙ: Sunset Gold</option>
+    </select>
+    <select id="ups-emoji">
+     <option value="🎰">আইকন: 🎰 Slots</option>
+     <option value="💎">আইকন: 💎 Bonus</option>
+     <option value="🎲">আইকন: 🎲 Cashback</option>
+     <option value="🔥">আইকন: 🔥 Hot Offer</option>
+     <option value="🎁">আইকন: 🎁 Gift</option>
+     <option value="🏏">আইকন: 🏏 Sports</option>
+    </select>
+   </div>
+   ${UP_SCOPE==='global'?`<label style="display:flex;align-items:center;gap:8px;margin-top:10px;font-size:13px;cursor:pointer"><input type="checkbox" id="ups-locked" checked> 🔒 <b>মাস্টার লক চালু রাখুন</b> (কোনো User Admin এই স্লাইডার ডিলিট বা এডিট করতে পারবে না)</label>`:''}
+   <div class="row" style="margin-top:10px;margin-bottom:0;justify-content:flex-end">
+    ${UP_SLIDE_EDIT_IDX>=0?`<button type="button" onclick="upSlideCancel()">বাতিল</button>`:''}
+    <button type="button" class="p" onclick="upSlideSave()">${UP_SLIDE_EDIT_IDX>=0?'💾 স্লাইডার আপডেট করুন':'+ স্লাইডার যোগ ও পাবলিশ করুন'}</button>
+   </div>
+  </div>
+ </div>
+ <div class="stats-grid" style="grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:14px">
   <div class="cd">
    <b style="font-size:15px">📢 ব্র্যান্ড, নোটিশ ও মেইনটেন্যান্স</b>
    <div style="display:flex;flex-direction:column;gap:8px;margin-top:10px">
@@ -2345,13 +2560,15 @@ function userpanelDraw(){
   </div>
  </div>
  <div class="cd" style="margin-top:14px">
-  <b style="font-size:15px">🎨 হিরো স্লাইডার, স্পেশাল অফার ও ফুটার (JSON — খালি রাখলে বর্তমান/ডিফল্ট থাকবে)</b>
-  <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:10px;margin-top:10px">
-   <div><small>Hero Slides JSON</small><textarea id="up-slides" rows="4" placeholder='[{"t":"Welcome to MOSTWIN88","d":"100% Bonus","go":"games","img":""}]'>${d.slides?esc(JSON.stringify(d.slides,null,2)):''}</textarea></div>
-   <div><small>Special Offers JSON</small><textarea id="up-offers" rows="4" placeholder='[{"t":"100% Deposit Bonus","d":"Up to ৳5,000","b":"Deposit","go":"dep","img":""}]'>${d.banners?esc(JSON.stringify(d.banners,null,2)):''}</textarea></div>
-   <div><small>Side Banners JSON</small><textarea id="up-sidebans" rows="4" placeholder='[{"t":"VIP Rewards","d":"Play & earn","b":"VIP","go":"vip"}]'>${d.sideBanners?esc(JSON.stringify(d.sideBanners,null,2)):''}</textarea></div>
-   <div><small>Footer Sponsors/Partners JSON</small><textarea id="up-footer" rows="4" placeholder='{"sponsors":[],"ambassadors":[],"partners":[],"licenses":[]}'>${d.footer?esc(JSON.stringify(d.footer,null,2)):''}</textarea></div>
-  </div>
+  <details>
+   <summary style="cursor:pointer;font-weight:700;font-size:14px;color:var(--primary)">⚙️ অ্যাডভান্সড JSON এডিটর (স্লাইডার / অফার / ফুটার)</summary>
+   <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(250px,1fr));gap:10px;margin-top:10px">
+    <div><small>Hero Slides JSON</small><textarea id="up-slides" rows="4" placeholder='[{"t":"Welcome to MOSTWIN88","d":"100% Bonus","go":"games","img":""}]'>${d.slides?esc(JSON.stringify(d.slides,null,2)):''}</textarea></div>
+    <div><small>Special Offers JSON</small><textarea id="up-offers" rows="4" placeholder='[{"t":"100% Deposit Bonus","d":"Up to ৳5,000","b":"Deposit","go":"dep","img":""}]'>${d.banners?esc(JSON.stringify(d.banners,null,2)):''}</textarea></div>
+    <div><small>Side Banners JSON</small><textarea id="up-sidebans" rows="4" placeholder='[{"t":"VIP Rewards","d":"Play & earn","b":"VIP","go":"vip"}]'>${d.sideBanners?esc(JSON.stringify(d.sideBanners,null,2)):''}</textarea></div>
+    <div><small>Footer Sponsors/Partners JSON</small><textarea id="up-footer" rows="4" placeholder='{"sponsors":[],"ambassadors":[],"partners":[],"licenses":[]}'>${d.footer?esc(JSON.stringify(d.footer,null,2)):''}</textarea></div>
+   </div>
+  </details>
  </div>
  <div class="cd" style="margin-top:14px">
   <b style="font-size:15px">🎰 গেম প্রোভাইডার কন্ট্রোল (Lobby Providers)</b>
@@ -2482,7 +2699,9 @@ function npmBack(){
  if(PLAYER_CHAT_UNSUB){try{PLAYER_CHAT_UNSUB.off()}catch(e){}PLAYER_CHAT_UNSUB=null}
  ACTIVE_CHAT_MSGS=[];PLAYER_CHAT_MSGS=[];draw()}
 function npmChatHtml(){
- const subTabs=`<div class="row" style="margin-bottom:10px"><button class="${MCHAT_SUB==='admins'?'p':''}" onclick="MCHAT_SUB='admins';draw()">👑 ইউজার অ্যাডমিন চ্যাট (${Object.values(CHAT_METAS).filter(m=>m&&m.unreadForMaster).length})</button><button class="${MCHAT_SUB==='players'?'p':''}" onclick="MCHAT_SUB='players';draw()">🎧 প্লেয়ার লাইভ সাপোর্ট (${Object.values(PLAYER_CHATS).filter(c=>c&&c.unreadForMaster).length})</button></div>`;
+ const admUnr=Object.values(CHAT_METAS).filter(m=>m&&m.unreadForMaster).length;
+ const plUnr=Object.values(PLAYER_CHATS).filter(c=>c&&c.unreadForMaster).length;
+ const subTabs=`<div class="row" style="margin-bottom:10px;align-items:center"><select onchange="MCHAT_SUB=this.value;draw()" style="min-width:240px;max-width:360px"><option value="admins"${MCHAT_SUB==='admins'?' selected':''}>👑 ইউজার অ্যাডমিন চ্যাট (${admUnr})</option><option value="players"${MCHAT_SUB==='players'?' selected':''}>🎧 প্লেয়ার লাইভ সাপোর্ট (${plUnr})</option></select></div>`;
  if(MCHAT_SUB==='players'){
   const rows=Object.entries(PLAYER_CHATS).map(([u,c])=>({u,name:c.userName||(USERS[u]&&USERS[u].name)||u,sub:c.phone||(USERS[u]&&USERS[u].phone)||'',last:c.lastMessage||'',ts:+c.updatedAt||0,unread:c.unreadForMaster===true})).sort((a,b)=>(b.unread-a.unread)||(b.ts-a.ts));
   const sel=SEL_PLAYER_CHAT,row=rows.find(r=>r.u===sel);

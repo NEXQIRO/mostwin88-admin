@@ -45,10 +45,11 @@ h2 a{font-size:12px;color:var(--gold);font-weight:600;cursor:pointer}
 .on{color:var(--g)}.dot{width:8px;height:8px;border-radius:50%;background:var(--g);box-shadow:0 0 8px var(--g);display:inline-block}
 .car{display:flex;overflow-x:auto;scroll-snap-type:x mandatory;gap:10px;scrollbar-width:none;border-radius:20px;margin-bottom:8px}
 .car::-webkit-scrollbar{display:none}
-.sl{flex:0 0 100%;scroll-snap-align:center;min-height:170px;border-radius:20px;padding:18px;position:relative;overflow:hidden;border:1px solid #ffd23f66}
-.sl h3{font-size:22px;line-height:1.15;color:#fff;max-width:68%;text-shadow:0 2px 10px #0008}.sl h3 em{font-style:normal;color:var(--gold)}
-.sl p{font-size:12px;color:#dce6ff;margin:6px 0 12px;max-width:65%}
-.sl .art{position:absolute;right:10px;bottom:-6px;font-size:84px;filter:drop-shadow(0 0 18px #ffd23f)}
+.sl{flex:0 0 100%;scroll-snap-align:center;min-height:170px;border-radius:20px;padding:18px 128px 20px 18px;position:relative;overflow:hidden;border:1px solid #ffd23f66}
+.sl h3{font-size:22px;line-height:1.15;color:#fff;max-width:100%;text-shadow:0 2px 10px #0008;position:relative;z-index:2}.sl h3 em{font-style:normal;color:var(--gold)}
+.sl p{font-size:12px;color:#dce6ff;margin:6px 0 12px;max-width:100%;position:relative;z-index:2}
+.sl .btn{position:relative;z-index:2}
+.sl .art{position:absolute;right:12px;bottom:-4px;font-size:84px;filter:drop-shadow(0 0 18px #ffd23f);z-index:0;pointer-events:none;opacity:.88}
 .s1{background:linear-gradient(120deg,#0b1d52,#2a1a6e 70%,#5b2a8a)}.s2{background:linear-gradient(120deg,#062f2a,#0b4d5e 70%,#0e2f6e)}.s3{background:linear-gradient(120deg,#3a1a05,#6b2c0a 70%,#8a1d4a)}
 .dots{display:flex;justify-content:center;gap:6px;margin-bottom:14px}.dots i{width:7px;height:7px;border-radius:4px;background:#ffffff33;transition:.3s}.dots i.a{width:20px;background:var(--gold)}
 .grid{display:grid;grid-template-columns:repeat(4,1fr);gap:10px}
@@ -122,7 +123,7 @@ main{padding:18px 22px;max-width:1300px;margin:auto}
 @media(max-width:480px){
 main{padding:12px 12px 0}h2{font-size:15px}
 header{padding-left:10px;padding-right:10px}.ib,.av{width:38px;height:38px;font-size:17px}.logo{font-size:clamp(16px,5.2vw,21px)}
-.sl{min-height:148px;padding:14px}.sl h3{font-size:clamp(16px,5vw,20px);max-width:72%}.sl p{font-size:11px;margin:4px 0 10px;max-width:66%}.sl .art{font-size:64px;right:8px}.sl .btn{min-height:38px;font-size:13px}
+.sl{min-height:148px;padding:14px 86px 14px 14px}.sl h3{font-size:clamp(16px,5vw,20px);max-width:100%}.sl p{font-size:11px;margin:4px 0 10px;max-width:100%}.sl .art{font-size:62px;right:8px;bottom:0}.sl .btn{min-height:38px;font-size:13px}
 .cw{padding:12px;gap:10px}.cw>div:first-child{font-size:28px!important}.cw .btn{min-width:0;min-height:40px;font-size:13px;padding:0 10px}
 .q{min-height:76px;font-size:10.5px;padding:10px 2px}.q span{font-size:24px}
 .dbn{gap:10px;padding:10px}.dbn>div:first-child{font-size:34px!important}.dbn i{font-size:17px!important}.dbn .btn{font-size:12px;padding:0 10px}
@@ -136,7 +137,7 @@ header{padding-left:10px;padding-right:10px}.ib,.av{width:38px;height:38px;font-
 .nbt{flex:1;overflow:hidden;white-space:nowrap;-webkit-mask-image:linear-gradient(90deg,transparent,#000 4%,#000 96%,transparent);mask-image:linear-gradient(90deg,transparent,#000 4%,#000 96%,transparent)}
 .nbt span{display:inline-block;padding-left:100%;animation:mq 25s linear infinite;color:var(--gold);font-weight:600;font-size:13px}
 @keyframes mq{to{transform:translateX(-100%)}}
-@media(max-width:899px){header{display:flex;gap:8px;padding-left:10px;padding-right:10px}header .av{display:none}header .logo{min-width:0;flex:0 1 auto;text-align:left;white-space:nowrap;font-size:clamp(14px,4.3vw,20px)}header .logo small{letter-spacing:.6px}.hr{margin-left:auto;gap:6px;align-items:center;flex-shrink:0}.hbal{order:2;padding:3px 10px;min-height:38px;border-radius:12px}.hbal .em{display:none}.hbal b{font-size:13px}}
+@media(max-width:899px){header{display:flex;gap:8px;padding-left:10px;padding-right:10px}header .av{display:none}header .logo{min-width:0;max-width:calc(100vw - 178px);overflow:hidden;flex:0 1 auto;text-align:left;white-space:nowrap;font-size:clamp(14px,4.2vw,20px)}header .logo small{letter-spacing:.6px}.hr{margin-left:auto;gap:6px;align-items:center;flex-shrink:0}.hbal{order:2;padding:3px 10px;min-height:38px;border-radius:12px}.hbal .em{display:none}.hbal b{font-size:13px}}
 @media(min-width:900px){header .av{display:grid}}
 @media(prefers-reduced-motion:reduce){.nbt span{padding-left:0}}
 .av img{width:100%;height:100%;border-radius:50%;object-fit:cover}
@@ -218,7 +219,13 @@ aside{background:linear-gradient(180deg,#09142e,#050B1A);border-right:1px solid 
 .chip.s{box-shadow:0 0 0 1px rgba(255,210,63,.35)}
 main .card,main .pg,main .car,main .nb,main .hg,main .grid{margin-bottom:12px}
 h2{margin:2px 0 10px;letter-spacing:.2px}
-.dots{margin:-26px 0 12px;position:relative;z-index:2;height:14px;align-items:center}
+.dots{margin:6px 0 12px;position:relative;z-index:2;height:14px;align-items:center}
+.mw-sel{width:100%;min-height:46px;border-radius:12px;border:1px solid rgba(255,210,63,.35);background:#0d193a;color:var(--t);padding:0 14px;font-size:14px;font-weight:700;cursor:pointer;outline:0}
+.mw-sel:focus{border-color:var(--gold);box-shadow:0 0 0 3px #ffd23f22}
+.amt-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px;margin:10px 0}
+.amt-grid .chip{width:100%;text-align:center;min-height:40px;padding:8px 4px}
+.pv-tabs-wrap{margin:6px 0 10px}
+.pv-spr{grid-column:1/-1;display:grid;grid-template-columns:repeat(auto-fit,minmax(140px,1fr));gap:8px;min-width:0}
 .pg{padding-bottom:2px;margin-bottom:12px}
 .hg>*{margin-top:0;margin-bottom:10px}.hg>*:last-child{margin-bottom:0}.hg .sh{margin:8px 0 8px}
 .hm{gap:16px}.hm>.dk .card{margin-bottom:12px}
@@ -305,7 +312,7 @@ html::-webkit-scrollbar,body::-webkit-scrollbar,aside::-webkit-scrollbar,main::-
 @media(max-width:360px){.pv-grid{grid-template-columns:repeat(3,minmax(0,1fr))}}
 @media(min-width:640px){.pv-grid{grid-template-columns:repeat(auto-fill,minmax(120px,1fr));gap:10px}.pv-grid.pv-games{grid-template-columns:repeat(auto-fill,minmax(130px,1fr))}.pv-grid.pv-sportlist{grid-template-columns:repeat(auto-fill,minmax(300px,1fr))}.pv-sp{padding:14px 6px 12px}.pv-sp b{font-size:32px}.pv-sp span{font-size:12px}}
 @media(min-width:900px){.pv-ban{height:280px}.pv-cap{font-size:24px}}
-.pv-spr{grid-column:1/-1;display:flex;gap:8px;min-width:0;overflow-x:auto;scrollbar-width:none}.pv-spr::-webkit-scrollbar{display:none}.pv-spr .pv-tab{flex:none}
+.pv-spr>*{min-width:0}
 .pv-mc{background:var(--gl);border:1px solid var(--bd);border-radius:16px;padding:12px;min-width:0}
 .pv-mh{display:flex;justify-content:space-between;font-size:12px;color:var(--m)}.pv-mh em{font-style:normal}.pv-mh .pv-lv{color:#ff3b52;font-weight:700}
 .pv-mt{display:flex;align-items:center;justify-content:space-between;gap:8px;margin:10px 0;font-size:14px}.pv-mt b{flex:1;font-weight:600}.pv-mt b:last-child{text-align:right}.pv-mt i{color:var(--gold);font-style:normal;font-size:11px}
@@ -362,7 +369,7 @@ aside{padding:calc(16px + env(safe-area-inset-top)) 14px 24px}
 .am-tabs.s i{transform:translateX(100%)}
 .am-tabs button{position:relative;z-index:1;min-height:40px;font-weight:700;color:var(--m);transition:.2s}
 .am-tabs button.on{color:#2a1c00}
-.af{margin-top:6px}.af input.bad{border-color:#ff6b84;box-shadow:0 0 0 3px #ff3b5c22}
+.af{margin-top:8px}.af label{margin:8px 0 6px;display:block}.af input.bad,.af select.bad{border-color:#ff6b84;box-shadow:0 0 0 3px #ff3b5c22}
 .ae{display:block;color:#ff6b84;font-size:12px;margin-top:4px}.ae.big{text-align:center;margin:10px 0 0;font-size:13px}
 .pw{position:relative}.pw input{padding-right:68px}.pws{position:absolute;right:6px;top:6px;height:36px;padding:0 12px;border-radius:9px;font-size:12px;font-weight:700;color:var(--gold)}
 .sm-bar{display:flex;gap:5px;margin-top:8px}.sm-bar i{flex:1;height:5px;border-radius:3px;background:#ffffff1f;transition:.25s}
@@ -402,7 +409,7 @@ body.am-lock{overflow:hidden}
 }
 @media(min-width:900px) and (max-width:1200px){.hp{display:none}}
 .gbtn{width:100%;min-height:46px;border-radius:14px;background:#fff;color:#1f1f1f;border:1px solid #dadce0;font-weight:700;display:flex;align-items:center;justify-content:center;gap:10px;margin-top:6px;transition:.15s}.gbtn:active{transform:scale(.98)}
-.or{display:flex;align-items:center;gap:10px;color:var(--m);font-size:12px;margin:16px 0 14px}.or:before,.or:after{content:"";flex:1;height:1px;background:var(--bd)}
+.or{display:flex;align-items:center;gap:10px;color:var(--m);font-size:12px;margin:14px 0 14px;line-height:1.25}.or:before,.or:after{content:"";flex:1;height:1px;background:var(--bd)}
 #maintOverlay{position:fixed;inset:0;z-index:9999;background:radial-gradient(circle at top,#1a2c60,#050B1A 65%);display:none;flex-direction:column;align-items:center;justify-content:center;text-align:center;padding:24px}
 #maintOverlay.o{display:flex}
 </style>
@@ -757,7 +764,6 @@ function rebuildMergedConfig() {
     if (!layer || typeof layer !== 'object') return;
     if (layer.tagline) base.tagline = layer.tagline;
     if (layer.notice) base.notice = layer.notice;
-    if (Array.isArray(layer.slides) && layer.slides.length) base.slides = layer.slides;
     if (Array.isArray(layer.banners) && layer.banners.length) base.banners = layer.banners;
     if (Array.isArray(layer.sideBanners) && layer.sideBanners.length) base.sideBanners = layer.sideBanners;
     if (Array.isArray(layer.games) && layer.games.length) base.games = layer.games;
@@ -777,6 +783,20 @@ function rebuildMergedConfig() {
 
   applyLayer(LIVE_GLOBAL_CMS);
   applyLayer(LIVE_ADMIN_CMS);
+
+  /* Merge Master-locked slides + User Admin slides (locked Master slides cannot be deleted or replaced by User Admin) */
+  const globalSlides = (LIVE_GLOBAL_CMS && Array.isArray(LIVE_GLOBAL_CMS.slides)) ? LIVE_GLOBAL_CMS.slides.filter(Boolean) : [];
+  const lockedMasterSlides = globalSlides.filter(s => s && s.locked === true);
+  const unlockedGlobalSlides = globalSlides.filter(s => s && s.locked !== true);
+  const adminSlides = (LIVE_ADMIN_CMS && Array.isArray(LIVE_ADMIN_CMS.slides))
+    ? LIVE_ADMIN_CMS.slides.filter(s => s && !s.locked && !s.masterLockedId)
+    : [];
+
+  if (adminSlides.length) {
+    base.slides = [...lockedMasterSlides, ...adminSlides];
+  } else if (globalSlides.length) {
+    base.slides = [...lockedMasterSlides, ...unlockedGlobalSlides];
+  }
 
   if (LIVE_SETTINGS.whatsapp) base.chat.whatsapp = LIVE_SETTINGS.whatsapp.startsWith('http') ? LIVE_SETTINGS.whatsapp : ('https://wa.me/' + String(LIVE_SETTINGS.whatsapp).replace(/\D/g, ''));
   if (LIVE_SETTINGS.telegram) base.chat.telegram = LIVE_SETTINGS.telegram.startsWith('http') ? LIVE_SETTINGS.telegram : ('https://t.me/' + String(LIVE_SETTINGS.telegram).replace(/^@/, ''));
@@ -844,11 +864,29 @@ function rebuildMergedConfig() {
   }
 
   if (typeof cur !== 'undefined' && ['home', 'promo', 'dep', 'ref', 'vip'].includes(cur) && !pe && !vk) {
-    if (cur === 'home' && window.drawList && document.getElementById('pvTabs')) {
+    if (cur === 'home' && window.drawList && (document.getElementById('pvList') || document.getElementById('pvTabs'))) {
       const m = $('#m');
-      if (m && m.querySelector('.car')) {
+      if (m) {
         const nbEl = m.querySelector('.nbt span');
         if (nbEl) nbEl.textContent = CFG.notice;
+        const carEl = m.querySelector('#car');
+        const dotsEl = m.querySelector('#dots');
+        const nextSlides = (CFG.slides && CFG.slides.length) ? CFG.slides : DEFAULT_CFG.slides;
+        const nextSig = JSON.stringify(nextSlides);
+        if (carEl && carEl.dataset.sig !== nextSig) {
+          carEl.dataset.sig = nextSig;
+          carEl.innerHTML = cr(nextSlides.map(sl).join(''));
+          if (dotsEl) dotsEl.innerHTML = nextSlides.map((_, i) => `<i class="${i ? '' : 'a'}"></i>`).join('');
+          carEl.scrollLeft = 0;
+          if (typeof carousel === 'function') carousel();
+        }
+        const bnEl = m.querySelector('#bn');
+        const offers = (CFG.banners && CFG.banners.length) ? CFG.banners : DEFAULT_CFG.banners;
+        const offerSig = JSON.stringify(offers);
+        if (bnEl && bnEl.dataset.sig !== offerSig) {
+          bnEl.dataset.sig = offerSig;
+          bnEl.innerHTML = cr(offers.map(b => b.img ? `<button class="bs" style="background:#0b1d52 url('${imgUrl(b.img)}') center/cover" onclick="go('${esc(b.go||'promo')}')" aria-label="Offer"></button>` : `<button class="bs" style="--h:${b.h||265};--h2:${b.h2||300}" onclick="go('${esc(b.go||'promo')}')"><span class="ba">${esc(b.a||'🎁')}</span><div><b>${esc(b.t)}</b><small>${esc(b.d||'')}</small><u>${esc(b.b||'Learn More')} →</u></div></button>`).join(''));
+        }
       }
     } else if (cur === 'dep') {
       const pi = document.getElementById('pi');
@@ -1321,33 +1359,35 @@ const V = {
     const notice = CFG.notice || DEFAULT_CFG.notice;
     const offers = CFG.banners && CFG.banners.length ? CFG.banners : DEFAULT_CFG.banners;
     const sides = CFG.sideBanners && CFG.sideBanners.length ? CFG.sideBanners : DEFAULT_CFG.sideBanners;
+    const slidesSig = esc(JSON.stringify(slides));
+    const offersSig = esc(JSON.stringify(offers));
     const pct = Math.min(100, Math.round((Number(S.xp || 0) / Math.max(1, Number(S.next || 2000))) * 100));
-    return `<div class="hm"><div class="mn"><div class="car" id="car">${slides.map(sl).join('')}</div><div class="dots" id="dots">${slides.map((_,i)=>`<i class="${i?'':'a'}"></i>`).join('')}</div><div class="nb"><span>📢</span><div class="nbt"><span style="animation-duration:${Math.max(14,notice.length*.26)}s">${esc(notice)}</span></div></div>
+    return `<div class="hm"><div class="mn"><div class="car" id="car" data-sig="${slidesSig}">${slides.map(sl).join('')}</div><div class="dots" id="dots">${slides.map((_,i)=>`<i class="${i?'':'a'}"></i>`).join('')}</div><div class="nb"><span>📢</span><div class="nbt"><span style="animation-duration:${Math.max(14,notice.length*.26)}s">${esc(notice)}</span></div></div>
 <h2>Popular Games <span class="ar"><button class="ib" onclick="pgs(-1)" aria-label="Previous">‹</button><button class="ib" onclick="pgs(1)" aria-label="Next">›</button></span></h2><div class="pg" id="pg" onmouseenter="pgp=1" onmouseleave="pgp=0" ontouchstart="pgp=1" ontouchend="pgp=0">${gl().filter(g=>g[3]).map((g,k)=>`<button class="pc" style="--h:${k*47+200}" onclick="play('${esc(g[1])}')"><span class="hot">HOT</span>${g[4]?`<i class="pci" style="background-image:url('${imgUrl(g[4])}')"></i>`:`<i>${g[0]}</i>`}<b>${esc(g[1])}</b><u>Play Now</u></button>`).join('')}</div>
 <h2 class="pv-lobby" style="margin-bottom:6px">Game Lobby</h2>${window.homeGames?homeGames():''}
-<h2>Special Offers <span class="ar"><button class="ib" onclick="bns(-1)" aria-label="Previous">‹</button><button class="ib" onclick="bns(1)" aria-label="Next">›</button></span></h2><div class="pg bn" id="bn" onmouseenter="bnp=1" onmouseleave="bnp=0" ontouchstart="bnp=1" ontouchend="bnp=0">${offers.map(b=>b.img?`<button class="bs" style="background:#0b1d52 url('${imgUrl(b.img)}') center/cover" onclick="go('${esc(b.go||'promo')}')" aria-label="Offer"></button>`:`<button class="bs" style="--h:${b.h||265};--h2:${b.h2||300}" onclick="go('${esc(b.go||'promo')}')"><span class="ba">${esc(b.a||'🎁')}</span><div><b>${esc(b.t)}</b><small>${esc(b.d||'')}</small><u>${esc(b.b||'Learn More')} →</u></div></button>`).join('')}</div></div>
+<h2>Special Offers <span class="ar"><button class="ib" onclick="bns(-1)" aria-label="Previous">‹</button><button class="ib" onclick="bns(1)" aria-label="Next">›</button></span></h2><div class="pg bn" id="bn" data-sig="${offersSig}" onmouseenter="bnp=1" onmouseleave="bnp=0" ontouchstart="bnp=1" ontouchend="bnp=0">${offers.map(b=>b.img?`<button class="bs" style="background:#0b1d52 url('${imgUrl(b.img)}') center/cover" onclick="go('${esc(b.go||'promo')}')" aria-label="Offer"></button>`:`<button class="bs" style="--h:${b.h||265};--h2:${b.h2||300}" onclick="go('${esc(b.go||'promo')}')"><span class="ba">${esc(b.a||'🎁')}</span><div><b>${esc(b.t)}</b><small>${esc(b.d||'')}</small><u>${esc(b.b||'Learn More')} →</u></div></button>`).join('')}</div></div>
 <div class="dk"><div class="card" style="text-align:center;border-color:#ffd23f99;box-shadow:0 0 22px #ffd23f33"><div style="font-size:46px">👑</div><h2 style="justify-content:center;font-size:22px;color:var(--gold)">VIP CLUB</h2><div class="sub">Your VIP Level: <b style="color:var(--gold)">${esc(S.lvl)}</b></div><div class="bar"><i style="width:${pct}%"></i></div>✔ Higher Rewards<br>✔ Exclusive Bonuses<br>✔ Priority Support<br><br><button class="btn bgold sm" onclick="go('vip')">Upgrade Now →</button></div><div class="card"><h2>📊 Betting Summary</h2>${betSummaryTotals().map(x=>`<div class="tx"><div style="flex:1">${x[0]}</div><b>${f(x[1])}</b></div>`).join('')}<br><button class="btn out sm" style="width:100%" onclick="go('bets')">View Details</button></div><div class="sbs">${sides.map(b=>b.img?`<button class="bs" style="background:#0b1d52 url('${imgUrl(b.img)}') center/cover" onclick="go('${esc(b.go||'promo')}')" aria-label="Offer"></button>`:`<button class="bs" style="--h:${b.h||265};--h2:${b.h2||300}" onclick="go('${esc(b.go||'promo')}')"><span class="ba">${esc(b.a||'🎁')}</span><div><b>${esc(b.t)}</b><small>${esc(b.d||'')}</small><u>${esc(b.b||'Learn More')} →</u></div></button>`).join('')}</div></div></div>`;
   },
 
   profile: () => bk('My Profile') + (pe
-    ? `<div class="card" style="text-align:center"><div class="av" style="width:64px;height:64px;font-size:32px;margin:auto">${avh()}</div><label class="btn out sm" style="margin-top:10px;width:auto;cursor:pointer">Change Photo<input type="file" accept="image/*" hidden onchange="photo(this)"></label></div><div class="card"><label>Full name</label><input id="pn" value="${esc(S.name)}"><label>Country (selected at signup)</label><input value="${esc(S.country)}" disabled style="opacity:.6"><label>Mobile</label><input id="pm2" type="tel" inputmode="numeric" value="${esc(S.mob)}"><label>Email</label><input id="pe2" type="email" value="${esc(S.email)}"><div class="sub" style="margin-top:6px">Changing your mobile or email will require verification again.</div><label>Language</label><div class="chips" id="pl">${['English','বাংলা'].map(l=>`<button class="chip ${l==S.lang?'s':''}" onclick="pick(this)">${l}</button>`).join('')}</div><br><div class="two"><button class="btn out sm" style="width:100%" onclick="pe=0;go('profile')">Cancel</button><button class="btn bg sm" style="width:100%" onclick="saveP()">Save Changes</button></div></div>`
+    ? `<div class="card" style="text-align:center"><div class="av" style="width:64px;height:64px;font-size:32px;margin:auto">${avh()}</div><label class="btn out sm" style="margin-top:10px;width:auto;cursor:pointer">Change Photo<input type="file" accept="image/*" hidden onchange="photo(this)"></label></div><div class="card"><label>Full name</label><input id="pn" value="${esc(S.name)}"><label>Country (selected at signup)</label><input value="${esc(S.country)}" disabled style="opacity:.6"><label>Mobile</label><input id="pm2" type="tel" inputmode="numeric" value="${esc(S.mob)}"><label>Email</label><input id="pe2" type="email" value="${esc(S.email)}"><div class="sub" style="margin-top:6px">Changing your mobile or email will require verification again.</div><label for="plSel">Language</label><select id="plSel" class="mw-sel">${['English','বাংলা'].map(l=>`<option value="${l}" ${l==S.lang?'selected':''}>${l}</option>`).join('')}</select><br><br><div class="two"><button class="btn out sm" style="width:100%" onclick="pe=0;go('profile')">Cancel</button><button class="btn bg sm" style="width:100%" onclick="saveP()">Save Changes</button></div></div>`
     : `<div class="card" style="text-align:center"><div class="av" style="width:64px;height:64px;font-size:32px;margin:auto">${avh()}</div><h2 style="justify-content:center;margin-top:10px">${esc(S.name)}</h2><div class="sub">Member ID: ${esc(S.id)}</div><div style="margin:8px"><span class="on"><i class="dot"></i> Online</span> &nbsp;<span class="pill vip">👑 VIP ${esc(S.lvl)}</span></div></div><div class="card">${prow()}</div>${vk ? vcard() : ''}<div class="two"><button class="btn bb sm" style="width:100%" onclick="pe=1;go('profile')">Edit Profile</button><button class="btn bgold sm" style="width:100%" onclick="go('vip')">VIP Level</button></div>`),
 
   wallet: () => bk('My Wallet') + wal() + `<div class="card"><h2>Recent Activity <a onclick="go('tx')">View All</a></h2>${T.length ? T.slice(0,5).map(txr).join('') : '<p class="sub">No transactions yet. Make a deposit to get started.</p>'}</div>`,
 
   dep: () => {
     const dyn = getActiveDepositPromos();
-    const bonChips = dyn.length
-      ? dyn.map((p, i) => `<button class="chip ${i === 0 ? 's' : ''}" data-pid="${esc(p.id)}" data-pname="${esc(p.name)}" data-v="1" onclick="pick(this)">${esc(p.name)} (${p.bonusType==='percent'?p.bonusValue+'%':f(p.bonusValue)})</button>`).join('') + `<button class="chip" data-pid="" data-v="0" onclick="pick(this)">No Bonus</button>`
-      : `<button class="chip s" data-pid="" data-pname="Welcome Bonus" data-v="1" onclick="pick(this)">Deposit Bonus</button><button class="chip" data-pid="" data-v="0" onclick="pick(this)">No Bonus</button>`;
-    return bk('Deposit') + `<div class="card"><label>Payment method</label><div class="chips" id="pm">${Object.keys(M).map(m=>`<button class="chip ${m==pay?'s':''}" onclick="selPay('${m}')">${m}</button>`).join('')}</div><div id="pi">${pinfo(pay)}</div></div><div class="card"><label>Amount (min ৳${Number(LIVE_SETTINGS.minDeposit||500)} · max ৳${Number(LIVE_SETTINGS.maxDeposit||50000).toLocaleString()})</label><input id="a" type="number" inputmode="decimal" placeholder="Enter amount"><div class="chips" style="margin:10px 0">${[500,1000,2000,5000,10000].map(v=>`<button class="chip" onclick="$('#a').value=${v}">৳${v}</button>`).join('')}</div><label id="sl">${mob(pay)?'Your '+pay+' number':'Sender account or wallet'}</label><input id="sn" type="tel" inputmode="numeric" placeholder="01XXXXXXXXX" value="${esc(S.mob||'')}"><label>Transaction ID (TrxID)</label><input id="tid" placeholder="e.g. 9H7K2L5M1P" autocapitalize="characters"><label>Bonus / Promotion</label><div class="chips" id="bo">${bonChips}</div><br><button class="btn bg" id="depBtn" onclick="dep()">Submit Deposit</button><p class="sub" style="margin-top:10px">Your balance updates as soon as an admin/agent verifies your payment.</p></div>`;
+    const bonOpts = dyn.length
+      ? dyn.map((p, i) => `<option value="1" data-pid="${esc(p.id)}" data-pname="${esc(p.name)}" ${i === 0 ? 'selected' : ''}>${esc(p.name)} (${p.bonusType==='percent'?p.bonusValue+'%':f(p.bonusValue)})</option>`).join('') + `<option value="0" data-pid="" data-pname="">No Bonus</option>`
+      : `<option value="1" data-pid="" data-pname="Welcome Bonus" selected>Deposit Bonus</option><option value="0" data-pid="" data-pname="">No Bonus</option>`;
+    return bk('Deposit') + `<div class="card"><label for="pmSel">Payment method</label><select id="pmSel" class="mw-sel" onchange="selPay(this.value)">${Object.keys(M).map(m=>`<option value="${m}" ${m==pay?'selected':''}>${m}</option>`).join('')}</select><div id="pi">${pinfo(pay)}</div></div><div class="card"><label>Amount (min ৳${Number(LIVE_SETTINGS.minDeposit||500)} · max ৳${Number(LIVE_SETTINGS.maxDeposit||50000).toLocaleString()})</label><input id="a" type="number" inputmode="decimal" placeholder="Enter amount"><div class="amt-grid">${[500,1000,2000,5000,10000].map(v=>`<button class="chip" type="button" onclick="$('#a').value=${v}">৳${v}</button>`).join('')}</div><label id="sl">${mob(pay)?'Your '+pay+' number':'Sender account or wallet'}</label><input id="sn" type="tel" inputmode="numeric" placeholder="01XXXXXXXXX" value="${esc(S.mob||'')}"><label>Transaction ID (TrxID)</label><input id="tid" placeholder="e.g. 9H7K2L5M1P" autocapitalize="characters"><label for="boSel">Bonus / Promotion</label><select id="boSel" class="mw-sel">${bonOpts}</select><br><br><button class="btn bg" id="depBtn" onclick="dep()">Submit Deposit</button><p class="sub" style="margin-top:10px">Your balance updates as soon as an admin/agent verifies your payment.</p></div>`;
   },
 
   wd: () => {
     const remTo = Math.max(0, Number(S.turnoverRequired || 0) - Number(S.turnoverDone || 0));
     const pTurn = Object.values(LIVE_PROMO_TURNOVER || {}).filter(x => x && !x.completed);
     const pRem = pTurn.reduce((a, x) => a + Math.max(0, Number(x.required || 0) - Number(x.completedAmount || x.progress || 0)), 0);
-    return bk('Withdraw') + `<div class="card"><div class="row sp"><div><div class="sub">Withdrawable balance</div><div class="tot" style="font-size:24px">${f(S.dep)}</div></div><div style="text-align:right"><div class="sub">Bonus (locked)</div><b>${f(S.bon)}</b></div></div>${(remTo > 0 || pRem > 0) ? `<div class="sub" style="margin-top:10px;color:var(--gold)">⚠ Remaining Turnover required before withdraw: <b>${f(Math.max(remTo, pRem))}</b></div>` : ''}</div><div class="card"><label>Withdraw method</label><div class="chips" id="wm">${['bKash','Nagad','Rocket','Upay','Bank'].map(m=>`<button class="chip ${m==wm?'s':''}" onclick="selWm('${m}')">${m}</button>`).join('')}</div><div id="wf">${wfields(wm)}</div><label>Amount (min ৳${Number(LIVE_SETTINGS.minWithdraw||500)} · max ৳${Number(LIVE_SETTINGS.maxWithdraw||25000).toLocaleString()})</label><div class="row"><input id="a" type="number" inputmode="decimal" placeholder="Enter amount"><button class="btn out sm" onclick="$('#a').value=Math.min(S.dep,${Number(LIVE_SETTINGS.maxWithdraw||25000)})">Max</button></div><label>Withdrawal PIN ${S.withdrawPin ? '' : '(first-time PIN will be saved)'}</label><input id="pin" type="password" inputmode="numeric" maxlength="6" placeholder="4-6 digit PIN"><br><br><button class="btn bb" id="wdBtn" onclick="wd()">Request Withdrawal</button></div><div class="card"><h2>Withdrawal Rules</h2><ul class="rules"><li>The account must be in your own name.</li><li>Requests are processed within 24 hours.</li><li>Bonus balance cannot be withdrawn until turnover is complete.</li><li>Check the account number carefully before submitting.</li></ul></div>`;
+    return bk('Withdraw') + `<div class="card"><div class="row sp"><div><div class="sub">Withdrawable balance</div><div class="tot" style="font-size:24px">${f(S.dep)}</div></div><div style="text-align:right"><div class="sub">Bonus (locked)</div><b>${f(S.bon)}</b></div></div>${(remTo > 0 || pRem > 0) ? `<div class="sub" style="margin-top:10px;color:var(--gold)">⚠ Remaining Turnover required before withdraw: <b>${f(Math.max(remTo, pRem))}</b></div>` : ''}</div><div class="card"><label for="wmSel">Withdraw method</label><select id="wmSel" class="mw-sel" onchange="selWm(this.value)">${['bKash','Nagad','Rocket','Upay','Bank'].map(m=>`<option value="${m}" ${m==wm?'selected':''}>${m}</option>`).join('')}</select><div id="wf">${wfields(wm)}</div><label>Amount (min ৳${Number(LIVE_SETTINGS.minWithdraw||500)} · max ৳${Number(LIVE_SETTINGS.maxWithdraw||25000).toLocaleString()})</label><div class="row"><input id="a" type="number" inputmode="decimal" placeholder="Enter amount"><button class="btn out sm" onclick="$('#a').value=Math.min(S.dep,${Number(LIVE_SETTINGS.maxWithdraw||25000)})">Max</button></div><label>Withdrawal PIN ${S.withdrawPin ? '' : '(first-time PIN will be saved)'}</label><input id="pin" type="password" inputmode="numeric" maxlength="6" placeholder="4-6 digit PIN"><br><br><button class="btn bb" id="wdBtn" onclick="wd()">Request Withdrawal</button></div><div class="card"><h2>Withdrawal Rules</h2><ul class="rules"><li>The account must be in your own name.</li><li>Requests are processed within 24 hours.</li><li>Bonus balance cannot be withdrawn until turnover is complete.</li><li>Check the account number carefully before submitting.</li></ul></div>`;
   },
 
   tx: () => bk('Transaction History') + `<div class="card">${T.length ? T.map(txr).join('') : '<p class="sub">No transactions found.</p>'}</div>`,
@@ -1469,8 +1509,8 @@ async function saveP() {
   if (n.length < 2) return toast('Enter your full name');
   if (!/^01\d{9}$/.test(m)) return toast('Enter a valid 11-digit mobile number');
   if (e && !/^\S+@\S+\.\S+$/.test(e)) return toast('Enter a valid email address');
-  const langChip = $('#pl .s');
-  const lang = langChip ? langChip.textContent : S.lang;
+  const langEl = $('#plSel');
+  const lang = langEl ? langEl.value : S.lang;
   const mv = m !== S.mob ? false : !!S.mv;
   const ev = e !== S.email ? false : !!S.ev;
   if (S.uid) {
@@ -1548,6 +1588,9 @@ async function changeUserPassword() {
 }
 
 function carousel() {
+  clearInterval(timer);
+  tms.forEach(t => { clearTimeout(t); clearInterval(t); });
+  tms = [];
   const c = $('#car'), dots = $('#dots');
   const bn = $('#bn');
   if (bn && bn.children.length >= 3 && innerWidth < 900) {
@@ -1575,8 +1618,8 @@ function pinfo(m) {
   const displayNum = hasCopyable ? n : (mob(m) ? 'Agent wallet is currently OFF — Contact Live Chat' : n);
   return `<div class="pinfo"><div class="row sp"><div style="min-width:0"><div class="sub">${logoUrl?`<img src="${imgUrl(logoUrl)}" alt="" style="height:18px;vertical-align:middle;margin-right:6px">`:''}${m} ${mob(m)?'Agent Number':'Details'}${ag?` <span style="display:inline-block;margin-left:6px;padding:1px 7px;border-radius:99px;background:rgba(0,230,118,.15);color:#00E676;font-size:10px;font-weight:700">● Live Agent</span>`:''}</div><b style="word-break:break-all;${hasCopyable?'':'color:#8E9BB8;font-size:12px'}">${esc(displayNum)}</b></div>${hasCopyable?`<button class="btn bgold sm" onclick="copyText('${esc(n)}','Copied')">Copy</button>`:''}</div><ol><li>Open your ${mob(m)?m+' app':'payment app'} and choose ${M[m][1]}.</li><li>Send the amount to the details above.</li><li>Copy the Transaction ID (TrxID).</li><li>Enter the details below and submit.</li></ol></div>`;
 }
-function selPay(m) { pay = m; document.querySelectorAll('#pm .chip').forEach(c => c.classList.toggle('s', c.textContent === m)); $('#pi').innerHTML = pinfo(m); $('#sl').textContent = mob(m) ? 'Your ' + m + ' number' : 'Sender account or wallet'; }
-function selWm(m) { wm = m; document.querySelectorAll('#wm .chip').forEach(c => c.classList.toggle('s', c.textContent === m)); $('#wf').innerHTML = wfields(m); }
+function selPay(m) { pay = m; const ps = $('#pmSel'); if (ps) ps.value = m; $('#pi').innerHTML = pinfo(m); $('#sl').textContent = mob(m) ? 'Your ' + m + ' number' : 'Sender account or wallet'; }
+function selWm(m) { wm = m; const ws = $('#wmSel'); if (ws) ws.value = m; $('#wf').innerHTML = wfields(m); }
 function pick(e) { [...e.parentNode.children].forEach(c => c.classList.remove('s')); e.classList.add('s'); }
 function wfields(m) { return m === 'Bank' ? '<label>Bank name</label><input id="wb" placeholder="e.g. ABC Bank"><label>Account holder name</label><input id="wh"><label>Account number</label><input id="wn" inputmode="numeric">' : `<label>${m} account number</label><input id="wn" type="tel" inputmode="numeric" placeholder="01XXXXXXXXX" value="${esc(S.mob||'')}">`; }
 
@@ -1594,8 +1637,9 @@ async function dep() {
   }
   if (mob(pay) ? !/^01\d{9}$/.test(sn) : sn.length < 4) return toast('Enter a valid sender ' + (mob(pay) ? pay + ' number' : 'account'));
   if (tid.length < 6) return toast('Enter a valid Transaction ID');
-  const selBo = $('#bo .s');
-  const bonusOptIn = selBo ? selBo.dataset.v === '1' : false;
+  const selBoEl = $('#boSel');
+  const selBo = selBoEl && selBoEl.options ? selBoEl.options[selBoEl.selectedIndex] : null;
+  const bonusOptIn = selBo ? selBo.value === '1' : false;
   const promoId = selBo ? (selBo.dataset.pid || '') : '';
   const promoName = selBo ? (selBo.dataset.pname || '') : '';
   const btn = $('#depBtn'); if (btn) { btn.disabled = true; btn.textContent = 'Submitting...'; }
@@ -2364,8 +2408,8 @@ if (ibBtn) ibBtn.onclick = async () => { if (dp) { dp.prompt(); await dp.userCho
     const f0 = [["all","সব"],["live","লাইভ"],["up","আসন্ন"]];
     const items = d.m.filter(x => spF === "all" || x[3] === spF).filter(x => spL === "all" || x[0] === spL);
     const lgs = d.lg ? [["all","সব লিগ"], ...d.lg.map(l => [l,l])] : null;
-    return `<div class="pv-spr">${f0.map(([v,t])=>`<button class="pv-tab ${v==spF?"on":""}" onclick="pvSpF('${v}')">${t}</button>`).join("")}</div>`
-      + (lgs ? `<div class="pv-spr">${lgs.map(([v,t],i)=>`<button class="pv-tab ${v==spL?"on":""}" onclick="pvSpL(${i})">${E(t)}</button>`).join("")}</div>` : "")
+    const curLgIdx = lgs ? Math.max(0, lgs.findIndex(([v]) => v === spL)) : 0;
+    return `<div class="pv-spr"><select class="mw-sel" aria-label="Match Filter" onchange="pvSpF(this.value)">${f0.map(([v,t])=>`<option value="${v}" ${v==spF?"selected":""}>${t}</option>`).join("")}</select>${lgs ? `<select class="mw-sel" aria-label="League Filter" onchange="pvSpL(Number(this.value))">${lgs.map(([v,t],i)=>`<option value="${i}" ${i===curLgIdx?"selected":""}>${E(t)}</option>`).join("")}</select>` : ""}</div>`
       + (items.length ? items.map(([lg,a,b,s,info,od]) => {
         const lb = od.length === 3 ? ["১","X","২"] : ["১","২"], lv = s === "live";
         return `<div class="pv-mc"><div class="pv-mh"><span>${E(lg)}</span>${lv?'<em class="pv-lv">● লাইভ</em>':`<em>${E(info)}</em>`}</div><div class="pv-mt"><b>${E(a)}</b><i>vs</i><b>${E(b)}</b></div>${lv?`<div class="pv-ms">${E(info)}</div>`:""}<div class="pv-od">${od.map((o,i)=>`<button class="pv-odd" onclick="pvOdd('${E(a)} vs ${E(b)}','${o}')"><small>${lb[i]}</small>${o}</button>`).join("")}</div></div>`;
@@ -2391,11 +2435,11 @@ if (ibBtn) ibBtn.onclick = async () => { if (dp) { dp.prompt(); await dp.userCho
     const n0 = cols("pvList") * 2, shown = st.showAll ? all : all.slice(0, n0);
     return shown.map(card).join("") + (all.length > n0 ? `<button class="pv-more" onclick="pvMore()">${st.showAll?"কম দেখুন ▲":"আরও দেখুন ("+(all.length-n0)+" টি) ▼"}</button>` : "");
   }
-  const tabs = () => CATS.map(c => `<button class="pv-tab ${c==st.cat?"on":""}" onclick="pvTab('${E(c)}')">${E(CAT_LABEL[c]||c)}</button>`).join("");
+  const tabs = () => `<select id="pvCatSel" class="mw-sel" aria-label="Game Category" onchange="pvTab(this.value)">${CATS.map(c => `<option value="${E(c)}" ${c==st.cat?"selected":""}>${E(CAT_LABEL[c]||c)}</option>`).join("")}</select>`;
   const spWrap = () => (st.cat === "Sports") ? sportsRow() : "";
   window.drawList = function() {
     const l = q$("#pvList"); if (l) { l.className = "pv-grid"; l.innerHTML = listHtml(); }
-    const t = q$("#pvTabs"); if (t) t.innerHTML = tabs();
+    const t = q$("#pvTabs"); if (t) { const sel = q$("#pvCatSel"); if (sel) sel.value = st.cat; else t.innerHTML = tabs(); }
     const sw = q$("#pvSpW"); if (sw) sw.innerHTML = spWrap();
   };
   function gamesHtml(p, games) {
@@ -2455,9 +2499,9 @@ if (ibBtn) ibBtn.onclick = async () => { if (dp) { dp.prompt(); await dp.userCho
       if (p) return `<div class="pv-head"><button class="pv-back" onclick="pvBack()" aria-label="ফিরে যান">←</button><div class="pv-lg pv-mini" style="background:${grad(p.name)}">${logo(p)}</div><div><h2>${E(p.name)}</h2><small>${E(p.category)}</small></div></div><div class="pv-grid pv-games" id="pvGames"></div>`;
       st.cur = null;
     }
-    return `<h2 class="pv-lobby">Game Lobby</h2><div class="pv-tabs" id="pvTabs">${tabs()}</div><div id="pvSpW">${spWrap()}</div><div class="pv-grid" id="pvList">${listHtml()}</div>`;
+    return `<h2 class="pv-lobby">Game Lobby</h2><div class="pv-tabs-wrap" id="pvTabs">${tabs()}</div><div id="pvSpW">${spWrap()}</div><div class="pv-grid" id="pvList">${listHtml()}</div>`;
   };
-  window.homeGames = () => `<div class="pv-home"><div class="pv-tabs" id="pvTabs">${tabs()}</div><div id="pvSpW">${spWrap()}</div><div class="pv-grid" id="pvList">${listHtml()}</div></div>`;
+  window.homeGames = () => `<div class="pv-home"><div class="pv-tabs-wrap" id="pvTabs">${tabs()}</div><div id="pvSpW">${spWrap()}</div><div class="pv-grid" id="pvList">${listHtml()}</div></div>`;
   window.pvOpen = id => {
     const p = st.providers.find(x => x.id === id); if (!p) return;
     if (p.maintenance) return toast(p.name + " এখন মেইনটেন্যান্সে আছে");
@@ -2584,26 +2628,39 @@ if (ibBtn) ibBtn.onclick = async () => { if (dp) { dp.prompt(); await dp.userCho
   const LS = (k, v) => { try { if (v === undefined) return localStorage.getItem(k); v === null ? localStorage.removeItem(k) : localStorage.setItem(k, v); } catch (e) { return null; } };
   const q = (s, r) => (r || document).querySelector(s);
   let mode = 'login', pend = null, busy = false, suStep = 1, refPrompted = false;
-  let suDraft = { username: '', mob: '', email: '' };
+  let suDraft = { username: '', country: 'Bangladesh', mob: '', name: '', email: '' };
   const PROT = {wallet:1,dep:1,wd:1,tx:1,bets:1,bonus:1,profile:1,ref:1,notif:1,sec:1};
   const normMob = v => String(v || '').replace(/[\s\-()]/g, '').replace(/^\+?88(?=01)/, '');
   const normUser = v => String(v || '').trim().replace(/^@+/, '');
   const isUser = v => /^[A-Za-z0-9_]{3,20}$/.test(v);
   const isMob = v => /^01[3-9]\d{8}$/.test(v);
+  const isIntlMob = v => /^\d{6,15}$/.test(v);
   const isMail = v => /^\S+@\S+\.\S+$/.test(v);
   const clean = v => String(v || '').replace(/[<>"'&`]/g, '').replace(/\s+/g, ' ').trim();
+  function translateUserAuthErr(e) {
+    const c = (e && e.code) || '';
+    if (c === 'auth/invalid-credential' || c === 'auth/wrong-password' || c === 'auth/user-not-found' || c === 'auth/invalid-login-credentials') {
+      return 'Incorrect username/mobile/email or password. Try Forgot Password or Continue with Google.';
+    }
+    if (c === 'auth/email-already-in-use') return 'This email or mobile number is already registered.';
+    if (c === 'auth/weak-password') return 'Password must be at least 8 characters with letters and numbers.';
+    if (c === 'auth/too-many-requests') return 'Too many login attempts. Please try again in a few minutes.';
+    if (c === 'auth/network-request-failed') return 'Network error. Please check your internet connection.';
+    if (c === 'auth/user-disabled') return 'This account has been disabled. Please contact support.';
+    return sanitizeUiMsg((e && e.message) || '') || 'Authentication failed. Please try again.';
+  }
   const GSVG = '<svg width="20" height="20" viewBox="0 0 48 48" aria-hidden="true"><path fill="#EA4335" d="M24 9.5c3.54 0 6.71 1.22 9.21 3.6l6.85-6.85C35.9 2.38 30.47 0 24 0 14.62 0 6.51 5.38 2.56 13.22l7.98 6.19C12.43 13.72 17.74 9.5 24 9.5z"/><path fill="#4285F4" d="M46.98 24.55c0-1.57-.15-3.09-.38-4.55H24v9.02h12.94c-.58 2.96-2.26 5.48-4.78 7.18l7.73 6c4.51-4.18 7.09-10.36 7.09-17.65z"/><path fill="#FBBC05" d="M10.53 28.59c-.48-1.45-.76-2.99-.76-4.59s.27-3.14.76-4.59l-7.98-6.19C.92 16.46 0 20.12 0 24c0 3.88.92 7.54 2.56 10.78l7.97-6.19z"/><path fill="#34A853" d="M24 48c6.48 0 11.93-2.13 15.89-5.81l-7.73-6c-2.15 1.45-4.92 2.3-8.16 2.3-6.26 0-11.57-4.22-13.47-9.91l-7.98 6.19C6.51 42.62 14.62 48 24 48z"/></svg>';
   const gb = () => '<button type="button" class="gbtn" data-g="1">' + GSVG + '<span>Continue with Google</span></button><div class="or">or use mobile / email</div>';
 
   function extractRefFromUrl() {
     try {
       const sp = new URLSearchParams(location.search || '');
-      let r = sp.get('ref') || sp.get('r') || sp.get('invite') || '';
+      let r = sp.get('ref') || sp.get('r') || sp.get('invite') || sp.get('admin') || sp.get('adminUid') || '';
       if (!r && location.hash && location.hash.includes('ref=')) {
         const hm = location.hash.match(/[?&#]ref=([^&#]+)/i);
         if (hm && hm[1]) r = decodeURIComponent(hm[1]);
       }
-      return clean(r).slice(0, 32);
+      return clean(r).slice(0, 64);
     } catch (e) { return ''; }
   }
 
@@ -2784,12 +2841,38 @@ if (ibBtn) ibBtn.onclick = async () => { if (dp) { dp.prompt(); await dp.userCho
       const s = q('[data-e="' + i.id + '"]'); if (s) s.textContent = '';
       if (q('#amErr')) q('#amErr').textContent = '';
       if (i.id === 'as_user') { i.value = i.value.replace(/[^A-Za-z0-9_]/g, '').slice(0, 20); suDraft.username = i.value; }
-      if (i.id === 'as_mob') { i.value = i.value.replace(/\D/g, '').slice(0, 11); suDraft.mob = i.value; }
+      if (i.id === 'as_country') {
+        suDraft.country = i.value;
+        const mEl = q('#as_mob');
+        if (mEl) {
+          const isBd = i.value === 'Bangladesh';
+          mEl.maxLength = isBd ? 11 : 15;
+          mEl.placeholder = isBd ? '01XXXXXXXXX' : 'Phone number (6-15 digits)';
+        }
+      }
+      if (i.id === 'as_mob') {
+        const maxL = (suDraft.country === 'Bangladesh') ? 11 : 15;
+        i.value = i.value.replace(/\D/g, '').slice(0, maxL);
+        suDraft.mob = i.value;
+      }
+      if (i.id === 'as_name') { suDraft.name = i.value; }
       if (i.id === 'as_mail') { suDraft.email = i.value.trim(); }
       if (i.id === 'as_pw') meter(i.value);
       if (i.id === 'as_pw2' || i.id === 'as_pw') {
         const a = q('#as_pw') && q('#as_pw').value, b = q('#as_pw2') && q('#as_pw2').value, s2 = q('[data-e="as_pw2"]');
         if (s2) s2.textContent = (b && a !== b) ? 'Passwords do not match' : '';
+      }
+    });
+    F.addEventListener('change', e => {
+      const i = e.target;
+      if (i.id === 'as_country') {
+        suDraft.country = i.value;
+        const mEl = q('#as_mob');
+        if (mEl) {
+          const isBd = i.value === 'Bangladesh';
+          mEl.maxLength = isBd ? 11 : 15;
+          mEl.placeholder = isBd ? '01XXXXXXXXX' : 'Phone number (6-15 digits)';
+        }
       }
     });
     addEventListener('keydown', e => { if (e.key === 'Escape' && q('#authM.o')) close(); });
@@ -2812,7 +2895,7 @@ if (ibBtn) ibBtn.onclick = async () => { if (dp) { dp.prompt(); await dp.userCho
       : pend
         ? 'Please login to continue'
         : mode === 'signup'
-          ? (suStep === 1 ? 'Step 1 of 2 — Enter Username & Contact' : 'Step 2 of 2 — Complete Profile & Password')
+          ? (suStep === 1 ? 'Step 1 of 2 — Username, Country & Mobile' : 'Step 2 of 2 — Profile & Password')
           : 'Welcome back! Login to play and manage your wallet.';
     const fld = (id, lab, at, ph, ex, val) => '<div class="af"><label for="' + id + '">' + lab + '</label><input id="' + id + '" ' + at + ' placeholder="' + ph + '" value="' + esc(val || '') + '"><small class="ae" data-e="' + id + '"></small>' + (ex || '') + '</div>';
     const pwf = (id, lab, ac, ph, ex) => '<div class="af"><label for="' + id + '">' + lab + '</label><div class="pw"><input id="' + id + '" type="password" autocomplete="' + ac + '" placeholder="' + ph + '"><button type="button" class="pws" data-t="' + id + '">Show</button></div><small class="ae" data-e="' + id + '"></small>' + (ex || '') + '</div>';
@@ -2822,21 +2905,23 @@ if (ibBtn) ibBtn.onclick = async () => { if (dp) { dp.prompt(); await dp.userCho
         + '<div class="ar2"><label class="ck"><input type="checkbox" id="al_rm" checked> Remember me</label><a class="al" data-a="forgot" style="margin-top:12px">Forgot password?</a></div>'
         + '<div class="ae big" id="amErr"></div><button class="btn bgold" id="amGo" type="submit">Login</button><div class="am-alt">New here? <a data-m="signup">Create an account</a></div>';
     } else if (mode === 'signup') {
-      const stepHead = `<div class="su-steps"><span>Step <b>${suStep}</b> of 2</span><span>${suStep === 1 ? 'Account Info' : 'Profile &amp; Password'}</span></div><div class="su-bars"><i class="on"></i><i class="${suStep === 2 ? 'on' : ''}"></i></div>`;
+      const stepHead = `<div class="su-steps"><span>Step <b>${suStep}</b> of 2</span><span>${suStep === 1 ? 'Username, Country &amp; Number' : 'Complete Registration'}</span></div><div class="su-bars"><i class="on"></i><i class="${suStep === 2 ? 'on' : ''}"></i></div>`;
       if (suStep === 1) {
+        const curCountry = suDraft.country || 'Bangladesh';
+        const cOpts = COUNTRIES.map(c => `<option value="${esc(c[0])}" ${c[0] === curCountry ? 'selected' : ''}>${esc(c[0])} (${esc(c[1])})</option>`).join('');
+        const isBd = curCountry === 'Bangladesh';
         F.innerHTML = stepHead + gb()
           + fld('as_user','Username','autocomplete="username" autocapitalize="none" spellcheck="false" maxlength="20"','e.g. mijan88 (letters, numbers, _)', '', suDraft.username)
-          + fld('as_mob','Mobile number <span style="opacity:.6">(or use email below)</span>','type="tel" inputmode="numeric" autocomplete="tel" maxlength="11"','01XXXXXXXXX', '', suDraft.mob)
-          + fld('as_mail','Email <span style="opacity:.6">(optional if phone given)</span>','type="email" autocomplete="email" autocapitalize="none"','you@example.com', '', suDraft.email)
+          + '<div class="af"><label for="as_country">Country</label><select id="as_country">' + cOpts + '</select><small class="ae" data-e="as_country"></small></div>'
+          + fld('as_mob','Mobile number','type="tel" inputmode="numeric" autocomplete="tel" maxlength="' + (isBd ? 11 : 15) + '"', isBd ? '01XXXXXXXXX' : 'Phone number (6-15 digits)', '', suDraft.mob)
           + '<div class="ae big" id="amErr"></div><button class="btn bgold" id="amGo" type="submit">Next →</button><div class="am-alt">Already have an account? <a data-m="login">Login</a></div>';
       } else {
         const rf = LS('mw_ref') || '';
-        const cOpts = COUNTRIES.map(c => `<option value="${esc(c[0])}">${esc(c[0])} (${esc(c[1])})</option>`).join('');
-        const contactTxt = [suDraft.mob, suDraft.email].filter(Boolean).join(' · ');
+        const cnMeta = COUNTRIES.find(c => c[0] === suDraft.country) || COUNTRIES[0];
         F.innerHTML = stepHead
-          + `<div class="su-summary"><span>👤 <b>@${esc(suDraft.username)}</b></span><span>· ${esc(contactTxt)}</span></div>`
-          + fld('as_name','Full name','autocomplete="name" maxlength="40"','Your full name')
-          + '<div class="af"><label for="as_country">Country</label><select id="as_country">' + cOpts + '</select></div>'
+          + `<div class="su-summary"><span>👤 <b>@${esc(suDraft.username)}</b></span><span>· ${esc(cnMeta[0])} (${esc(cnMeta[1])}) · ${esc(suDraft.mob)}</span></div>`
+          + fld('as_name','Full name','autocomplete="name" maxlength="40"','Your full name', '', suDraft.name)
+          + fld('as_mail','Email <span style="opacity:.6">(optional)</span>','type="email" autocomplete="email" autocapitalize="none"','you@example.com', '', suDraft.email)
           + pwf('as_pw','Password','new-password','Create a password','<div class="sm-bar" id="smB"><i></i><i></i><i></i><i></i></div><div class="sm-t" id="smT">8+ characters with letters and numbers</div>')
           + pwf('as_pw2','Confirm password','new-password','Re-enter password')
           + fld('as_ref','Referral code <span style="opacity:.6">(optional)</span>','autocomplete="off" maxlength="32"','Referral code', rf ? '<div class="rfok">✓ Referral code applied</div>' : '', rf)
@@ -2867,7 +2952,7 @@ if (ibBtn) ibBtn.onclick = async () => { if (dp) { dp.prompt(); await dp.userCho
     mode = m || 'login';
     pend = p || null;
     suStep = 1;
-    suDraft = { username: '', mob: '', email: '' };
+    suDraft = { username: '', country: 'Bangladesh', mob: '', name: '', email: '' };
     render();
     q('#authM').classList.add('o');
     document.body.classList.add('am-lock');
@@ -2884,7 +2969,7 @@ if (ibBtn) ibBtn.onclick = async () => { if (dp) { dp.prompt(); await dp.userCho
       if (!isMail(v)) return setErr('af_id', 'Enter your registered email address');
       setBusy(true);
       try { await fbAuth.sendPasswordResetEmail(v); setBusy(false); mode = 'login'; render(); toast('Password reset link sent to ' + v); }
-      catch (e) { setBusy(false); setErr('af_id', sanitizeUiMsg(e.message) || 'Reset failed'); }
+      catch (e) { setBusy(false); setErr('af_id', translateUserAuthErr(e)); }
       return;
     }
     if (mode === 'login') {
@@ -2914,22 +2999,22 @@ if (ibBtn) ibBtn.onclick = async () => { if (dp) { dp.prompt(); await dp.userCho
         if (target) go(target);
       } catch (e) {
         setBusy(false);
-        q('#amErr').textContent = 'Incorrect username/mobile/email or password';
+        q('#amErr').textContent = translateUserAuthErr(e);
       }
       return;
     }
 
     if (mode === 'signup' && suStep === 1) {
       const uname = normUser(q('#as_user').value);
+      const country = (q('#as_country') && q('#as_country').value) || 'Bangladesh';
       const mob = normMob(q('#as_mob').value);
-      const email = q('#as_mail').value.trim();
+      const isBd = country === 'Bangladesh';
       const E = [];
       if (!isUser(uname)) E.push(['as_user', 'Use 3–20 letters, numbers or _ (no spaces)']);
-      if (!mob && !email) {
-        E.push(['as_mob', 'Enter your mobile number or email']);
-      } else {
-        if (mob && !isMob(mob)) E.push(['as_mob', 'Enter a valid 11-digit mobile number (01XXXXXXXXX)']);
-        if (email && !isMail(email)) E.push(['as_mail', 'Enter a valid email address']);
+      if (!mob) {
+        E.push(['as_mob', 'Enter your mobile number']);
+      } else if (isBd ? !isMob(mob) : !isIntlMob(mob)) {
+        E.push(['as_mob', isBd ? 'Enter a valid 11-digit mobile number (01XXXXXXXXX)' : 'Enter a valid phone number (6–15 digits)']);
       }
       E.forEach(x => setErr(x[0], x[1]));
       if (E.length) { q('#' + E[0][0]).focus(); return; }
@@ -2939,19 +3024,21 @@ if (ibBtn) ibBtn.onclick = async () => { if (dp) { dp.prompt(); await dp.userCho
         if (fbDb) {
           const uSnap = await fbDb.ref('usernames/' + uname.toLowerCase()).once('value');
           if (uSnap.exists()) { setBusy(false); setErr('as_user', 'This username is already taken.'); return; }
-          if (mob) {
-            const mSnap = await fbDb.ref('usernames/' + mob).once('value');
-            if (mSnap.exists()) { setBusy(false); setErr('as_mob', 'This mobile number is already registered.'); return; }
-          }
+          const mSnap = await fbDb.ref('usernames/' + mob).once('value');
+          if (mSnap.exists()) { setBusy(false); setErr('as_mob', 'This mobile number is already registered.'); return; }
         }
-        suDraft = { username: uname, mob, email };
+        suDraft.username = uname;
+        suDraft.country = country;
+        suDraft.mob = mob;
         setBusy(false);
         suStep = 2;
         render();
         setTimeout(() => { const n = q('#as_name'); if (n) n.focus(); }, 50);
       } catch (e) {
         setBusy(false);
-        suDraft = { username: uname, mob, email };
+        suDraft.username = uname;
+        suDraft.country = country;
+        suDraft.mob = mob;
         suStep = 2;
         render();
       }
@@ -2959,15 +3046,18 @@ if (ibBtn) ibBtn.onclick = async () => { if (dp) { dp.prompt(); await dp.userCho
     }
 
     const uname = normUser(suDraft.username);
+    const country = suDraft.country || 'Bangladesh';
     const mob = normMob(suDraft.mob);
-    const email = (suDraft.email || '').trim();
     const name = clean(q('#as_name').value);
-    const country = q('#as_country') ? q('#as_country').value : 'Bangladesh';
+    const email = q('#as_mail') ? q('#as_mail').value.trim() : '';
     const pw = q('#as_pw').value;
     const pw2 = q('#as_pw2').value;
     const ref = clean(q('#as_ref').value).slice(0, 32);
+    suDraft.name = name;
+    suDraft.email = email;
     const E = [];
     if (name.length < 2) E.push(['as_name', 'Enter your full name']);
+    if (email && !isMail(email)) E.push(['as_mail', 'Enter a valid email address']);
     if (pw.length < 8 || !/[A-Za-z]/.test(pw) || !/\d/.test(pw)) E.push(['as_pw', 'Use 8+ characters with letters and numbers']);
     else if (pw !== pw2) E.push(['as_pw2', 'Passwords do not match']);
     E.forEach(x => setErr(x[0], x[1]));
@@ -2985,7 +3075,7 @@ if (ibBtn) ibBtn.onclick = async () => { if (dp) { dp.prompt(); await dp.userCho
       if (target) go(target);
     } catch (e) {
       setBusy(false);
-      q('#amErr').textContent = (e && e.code === 'auth/email-already-in-use') ? 'This email or mobile is already registered.' : (sanitizeUiMsg(e.message) || 'Sign up failed.');
+      q('#amErr').textContent = translateUserAuthErr(e);
     }
   }
 
@@ -3058,7 +3148,7 @@ if (ibBtn) ibBtn.onclick = async () => { if (dp) { dp.prompt(); await dp.userCho
     }
   }
 
-  /* Capture ?ref=CODE or #ref=CODE from URL */
+  /* Capture ?ref=CODE, ?admin=UID, or #ref=CODE from URL */
   const urlRefCode = extractRefFromUrl();
   if (urlRefCode) {
     LS('mw_ref', urlRefCode);
@@ -3067,13 +3157,14 @@ if (ibBtn) ibBtn.onclick = async () => { if (dp) { dp.prompt(); await dp.userCho
       Promise.all([
         fbDb.ref('referralCodes/' + urlRefCode.toUpperCase()).once('value').catch(() => null),
         fbDb.ref('referralCodes/' + urlRefCode).once('value').catch(() => null),
-        fbDb.ref('adminLinks/' + urlRefCode).once('value').catch(() => null)
-      ]).then(([rcUp, rcExact, alSnap]) => {
+        fbDb.ref('adminLinks/' + urlRefCode).once('value').catch(() => null),
+        fbDb.ref('userPanelConfig/byAdmin/' + urlRefCode + '/slides').once('value').catch(() => null)
+      ]).then(([rcUp, rcExact, alSnap, admSlidesSnap]) => {
         const rc = (rcUp && rcUp.val()) || (rcExact && rcExact.val()) || null;
         let adm = '';
         if (rc) {
           adm = rc.adminUid || rc.parentAdminId || (rc.role === 'ADMIN' ? rc.uid : '') || '';
-        } else if (alSnap && alSnap.val() === true) {
+        } else if ((alSnap && alSnap.val() === true) || (admSlidesSnap && admSlidesSnap.exists())) {
           adm = urlRefCode;
         }
         if (adm) {

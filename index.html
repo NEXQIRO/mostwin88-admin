@@ -1334,6 +1334,19 @@
       font-weight: 600;
     }
 
+    .dash-split-grid { display: grid; grid-template-columns: 2fr 1fr; gap: 20px; }
+    .settings-split-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; }
+    .card, .stat-card, .form-group { min-width: 0; }
+    .pw-input-wrap { position: relative; display: flex; align-items: center; }
+    .pw-input-wrap input { padding-right: 68px; }
+    .pw-toggle-btn { position: absolute; right: 6px; top: 50%; transform: translateY(-50%); background: var(--bg-inner); border: 1px solid var(--border-subtle); color: var(--primary); font-size: 0.78rem; font-weight: 700; padding: 4px 10px; border-radius: 7px; cursor: pointer; }
+    .login-err-box { display: none; margin: 10px 0 12px; padding: 10px 12px; border-radius: 9px; background: rgba(239, 68, 68, 0.14); border: 1px solid rgba(239, 68, 68, 0.4); color: #fca5a5; font-size: 0.82rem; line-height: 1.45; text-align: left; }
+    body[data-theme="light"] .login-err-box { color: #991b1b; background: rgba(239, 68, 68, 0.1); }
+    .login-forgot-btn { background: none; border: 0; color: var(--primary); font-size: 0.8rem; font-weight: 600; cursor: pointer; padding: 0; text-decoration: underline; }
+    .google-login-btn { width: 100%; min-height: 44px; border-radius: var(--radius-md); background: #fff !important; color: #1f2937 !important; border: 1px solid #d1d5db !important; font-weight: 700; display: flex; align-items: center; justify-content: center; gap: 9px; cursor: pointer; }
+    .slide-builder-row { display: flex; align-items: center; justify-content: space-between; gap: 10px; padding: 10px 12px; background: var(--bg-inner); border: 1px solid var(--border-subtle); border-radius: 10px; margin-bottom: 8px; flex-wrap: wrap; }
+    .slide-builder-info { display: flex; align-items: center; gap: 10px; flex: 1; min-width: 190px; }
+    .slide-thumb { width: 64px; height: 40px; border-radius: 8px; object-fit: cover; display: grid; place-items: center; font-size: 20px; background: #1e293b; border: 1px solid var(--border-subtle); flex-shrink: 0; }
     @media (max-width: 900px) {
       .sidebar { transform: translateX(-100%); }
       .sidebar.open { transform: translateX(0); }
@@ -1342,7 +1355,7 @@
       .bottom-nav { display: flex; }
       .content-area { padding: 14px; }
       .stats-grid { grid-template-columns: 1fr 1fr; }
-      .form-row, .form-row-3 { grid-template-columns: 1fr; }
+      .form-row, .form-row-3, .dash-split-grid, .settings-split-grid { grid-template-columns: 1fr; }
     }
 
     @media (max-width: 500px) {
@@ -1494,7 +1507,7 @@
     html.force-mobile .bottom-nav { display: flex; }
     html.force-mobile .content-area { padding: 14px; }
     html.force-mobile .stats-grid { grid-template-columns: 1fr 1fr; }
-    html.force-mobile .form-row, html.force-mobile .form-row-3 { grid-template-columns: 1fr; }
+    html.force-mobile .form-row, html.force-mobile .form-row-3, html.force-mobile .dash-split-grid, html.force-mobile .settings-split-grid { grid-template-columns: 1fr; }
     html.force-narrow .stats-grid { grid-template-columns: 1fr; }
     html.force-zoom body, html.force-zoom #app-container { min-height: calc(100vh / var(--fz, 1)); }
     html.force-zoom .modal-card { max-height: calc(92vh / var(--fz, 1)) !important; }
@@ -1583,16 +1596,32 @@
           <label data-bn="অ্যাডমিন ইউজারনেম বা ইমেইল" data-en="Admin Username or Email">অ্যাডমিন ইউজারনেম বা ইমেইল</label>
           <input type="text" id="login-email" class="form-control" placeholder="অ্যাডমিন ইমেইল বা ইউজারনেম লিখুন" value="" required autocomplete="username">
         </div>
-        <div class="form-group" style="text-align: left; margin-bottom: 20px;">
+        <div class="form-group" style="text-align: left; margin-bottom: 8px;">
           <label data-bn="পাসওয়ার্ড" data-en="Password">পাসওয়ার্ড</label>
-          <input type="password" id="login-password" class="form-control" placeholder="পাসওয়ার্ড লিখুন" value="" required autocomplete="current-password">
+          <div class="pw-input-wrap">
+            <input type="password" id="login-password" class="form-control" placeholder="পাসওয়ার্ড লিখুন" value="" required autocomplete="current-password">
+            <button type="button" class="pw-toggle-btn" onclick="toggleAdminLoginPw(this)">দেখুন</button>
+          </div>
         </div>
+        <div style="display:flex;justify-content:flex-end;margin-bottom:12px;">
+          <button type="button" class="login-forgot-btn" onclick="handleAdminForgotPassword()">পাসওয়ার্ড ভুলে গেছেন? রিসেট করুন</button>
+        </div>
+
+        <div id="admin-login-err" class="login-err-box"></div>
 
         <button type="submit" class="btn btn-primary" id="btn-admin-login" style="width: 100%;">
           <svg viewBox="0 0 24 24"><path d="M18 8h-1V6c0-2.76-2.24-5-5-5S7 3.24 7 6v2H6c-1.1 0-2 .9-2 2v10c0 1.1.9 2 2 2h12c1.1 0 2-.9 2-2V10c0-1.1-.9-2-2-2zm-6 9c-1.1 0-2-.9-2-2s.9-2 2-2 2 .9 2 2-.9 2-2 2zm3.1-9H8.9V6c0-1.71 1.39-3.1 3.1-3.1 1.71 0 3.1 1.39 3.1 3.1v2z"/></svg>
           <span data-bn="লগইন করুন" data-en="Sign In">লগইন করুন</span>
         </button>
 
+        <div style="display:flex;align-items:center;gap:8px;margin:12px 0;font-size:0.78rem;color:var(--text-dim);">
+          <span style="flex:1;height:1px;background:var(--border-subtle);"></span><span>অথবা</span><span style="flex:1;height:1px;background:var(--border-subtle);"></span>
+        </div>
+
+        <button type="button" class="google-login-btn" onclick="handleAdminGoogleLogin()">
+          <svg width="18" height="18" viewBox="0 0 48 48" aria-hidden="true"><path fill="#EA4335" d="M24 9.5c3.54 0 6.71 1.22 9.21 3.6l6.85-6.85C35.9 2.38 30.47 0 24 0 14.62 0 6.51 5.38 2.56 13.22l7.98 6.19C12.43 13.72 17.74 9.5 24 9.5z"/><path fill="#4285F4" d="M46.98 24.55c0-1.57-.15-3.09-.38-4.55H24v9.02h12.94c-.58 2.96-2.26 5.48-4.78 7.18l7.73 6c4.51-4.18 7.09-10.36 7.09-17.65z"/><path fill="#FBBC05" d="M10.53 28.59c-.48-1.45-.76-2.99-.76-4.59s.27-3.14.76-4.59l-7.98-6.19C.92 16.46 0 20.12 0 24c0 3.88.92 7.54 2.56 10.78l7.97-6.19z"/><path fill="#34A853" d="M24 48c6.48 0 11.93-2.13 15.89-5.81l-7.73-6c-2.15 1.45-4.92 2.3-8.16 2.3-6.26 0-11.57-4.22-13.47-9.91l-7.98 6.19C6.51 42.62 14.62 48 24 48z"/></svg>
+          <span>Google দিয়ে লগইন করুন</span>
+        </button>
 
         <p style="margin-top: 14px; font-size: 0.75rem; color: var(--text-dim);">
           🔒 শুধুমাত্র অনুমোদিত এডমিন অ্যাকাউন্ট ব্যবহার করুন। সাধারণ ইউজারদের অ্যাক্সেস সম্পূর্ণ নিষিদ্ধ।
@@ -1937,7 +1966,7 @@
           </div>
 
           <!-- Activity & Quick Controls -->
-          <div style="display: grid; grid-template-columns: 2fr 1fr; gap: 20px;">
+          <div class="dash-split-grid">
             
             <!-- Recent Transactions / Joins -->
             <div class="card">
@@ -2160,17 +2189,20 @@
           </div>
 
 
-          <!-- Sub Tabs -->
-          <div style="display: flex; gap: 8px; margin-bottom: 20px; border-bottom: 1px solid var(--border-subtle); padding-bottom: 12px; flex-wrap: wrap;">
-            <button class="btn btn-primary btn-sm" id="tab-deposits-btn" onclick="switchWalletTab('deposits')">
-              📥 ডিপোজিট রিকোয়েস্ট (<span id="count-pending-deposits">0</span>)
-            </button>
-            <button class="btn btn-secondary btn-sm" id="tab-withdrawals-btn" onclick="switchWalletTab('withdrawals')">
-              📤 উইথড্র রিকোয়েস্ট (<span id="count-pending-withdrawals">0</span>)
-            </button>
-            <button class="btn btn-secondary btn-sm" id="tab-ledger-btn" onclick="switchWalletTab('ledger')">
-              📜 সব লেনদেন লেজার (All Ledger)
-            </button>
+          <!-- Sub Tabs Dropdown -->
+          <div style="display: flex; align-items: center; justify-content: space-between; gap: 10px; margin-bottom: 20px; border-bottom: 1px solid var(--border-subtle); padding-bottom: 12px; flex-wrap: wrap;">
+            <div style="display:flex;align-items:center;gap:10px;flex-wrap:wrap;flex:1;min-width:220px;">
+              <label for="wallet-tab-select" style="font-size:0.84rem;color:var(--text-muted);font-weight:600;white-space:nowrap;">ওয়ালেট সেকশন:</label>
+              <select id="wallet-tab-select" class="form-control action-dropdown-select" style="max-width:340px;" onchange="switchWalletTab(this.value)">
+                <option value="deposits" id="opt-wallet-deposits">📥 ডিপোজিট রিকোয়েস্ট (0)</option>
+                <option value="withdrawals" id="opt-wallet-withdrawals">📤 উইথড্র রিকোয়েস্ট (0)</option>
+                <option value="ledger" id="opt-wallet-ledger">📜 সব লেনদেন লেজার (All Ledger)</option>
+              </select>
+            </div>
+            <div style="display:flex;gap:8px;font-size:0.8rem;color:var(--text-muted);flex-wrap:wrap;">
+              <span>ডিপোজিট পেন্ডিং: <b id="count-pending-deposits" style="color:var(--primary);">0</b></span>
+              <span>· উইথড্র পেন্ডিং: <b id="count-pending-withdrawals" style="color:var(--accent);">0</b></span>
+            </div>
           </div>
 
           <!-- Deposits Tab -->
@@ -2303,12 +2335,15 @@
 
             <!-- Filter Controls -->
             <div style="display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 12px; border-top: 1px solid var(--border-subtle); padding-top: 14px;">
-              <div style="display: flex; gap: 6px; flex-wrap: wrap;" id="finance-period-buttons">
-                <button class="btn btn-primary btn-sm" id="btn-period-all" onclick="setFinancePeriod('ALL')">সর্বমোট (All Time)</button>
-                <button class="btn btn-secondary btn-sm" id="btn-period-today" onclick="setFinancePeriod('TODAY')">আজকের হিসাব (Today)</button>
-                <button class="btn btn-secondary btn-sm" id="btn-period-month" onclick="setFinancePeriod('MONTH')">চলতি মাস (This Month)</button>
-                <button class="btn btn-secondary btn-sm" id="btn-period-year" onclick="setFinancePeriod('YEAR')">চলতি বছর (This Year)</button>
-                <button class="btn btn-secondary btn-sm" id="btn-period-custom" onclick="toggleFinanceCustomDate()">তারিখ নির্বাচন (Custom)</button>
+              <div style="display: flex; gap: 8px; align-items: center; flex-wrap: wrap;" id="finance-period-buttons">
+                <label for="finance-period-select" style="font-size: 0.84rem; color: var(--text-muted); font-weight: 600;">সময়কাল:</label>
+                <select id="finance-period-select" class="form-control action-dropdown-select" style="min-width:220px;max-width:290px;" onchange="this.value==='CUSTOM'?toggleFinanceCustomDate(true):setFinancePeriod(this.value)">
+                  <option value="ALL">সর্বমোট (All Time)</option>
+                  <option value="TODAY">আজকের হিসাব (Today)</option>
+                  <option value="MONTH">চলতি মাস (This Month)</option>
+                  <option value="YEAR">চলতি বছর (This Year)</option>
+                  <option value="CUSTOM">তারিখ নির্বাচন (Custom)</option>
+                </select>
               </div>
 
               <!-- Custom Date Range Picker Container -->
@@ -2515,11 +2550,13 @@
                 <span>পর্যায়ক্রমিক আর্থিক সারসংক্ষেপ (Periodic Summaries)</span>
               </div>
               
-              <!-- Tab Switcher -->
-              <div style="display: flex; gap: 6px;">
-                <button class="btn btn-primary btn-sm" id="btn-finance-tab-daily" onclick="switchFinanceTab('daily')">📅 দৈনিক (Daily)</button>
-                <button class="btn btn-secondary btn-sm" id="btn-finance-tab-monthly" onclick="switchFinanceTab('monthly')">🗓️ মাসিক (Monthly)</button>
-                <button class="btn btn-secondary btn-sm" id="btn-finance-tab-yearly" onclick="switchFinanceTab('yearly')">📆 বাৎসরিক (Yearly)</button>
+              <!-- Tab Switcher Dropdown -->
+              <div style="display: flex; gap: 8px; align-items: center;">
+                <select id="finance-tab-select" class="form-control action-dropdown-select" style="min-width:190px;" onchange="switchFinanceTab(this.value)">
+                  <option value="daily">📅 দৈনিক (Daily)</option>
+                  <option value="monthly">🗓️ মাসিক (Monthly)</option>
+                  <option value="yearly">📆 বাৎসরিক (Yearly)</option>
+                </select>
               </div>
             </div>
 
@@ -2779,7 +2816,7 @@
 
         <!-- ==================== 6. APP CONTENT & SETTINGS ==================== -->
         <section id="view-settings" class="view-section">
-          <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 20px;">
+          <div class="settings-split-grid">
             
             <!-- Payment Numbers & Wallet Configuration -->
             <div class="card">
@@ -3404,13 +3441,52 @@
           </div>
 
           <div class="card" style="margin-bottom:16px;">
-            <div class="card-header"><div class="card-title"><span>🎨 হিরো স্লাইডার, স্পেশাল অফার ও ফুটার (JSON — খালি রাখলে ডিফল্ট থাকবে)</span></div></div>
-            <div style="display:grid; grid-template-columns:repeat(auto-fit, minmax(240px, 1fr)); gap:12px;">
-              <div class="form-group"><label>Hero Slides JSON</label><textarea id="ua-up-slides" class="form-control" rows="4" placeholder='[{"t":"Welcome","d":"Bonus","go":"games","img":""}]'></textarea></div>
-              <div class="form-group"><label>Special Offers JSON</label><textarea id="ua-up-offers" class="form-control" rows="4" placeholder='[{"t":"100% Bonus","d":"Up to 5000","b":"Deposit","go":"dep","img":""}]'></textarea></div>
-              <div class="form-group"><label>Side Banners JSON</label><textarea id="ua-up-sidebans" class="form-control" rows="4" placeholder='[{"t":"VIP","d":"Play & Earn","b":"VIP","go":"vip"}]'></textarea></div>
-              <div class="form-group"><label>Footer Sponsors/Partners JSON</label><textarea id="ua-up-footer" class="form-control" rows="4" placeholder='{"sponsors":[],"ambassadors":[],"partners":[],"licenses":[]}'></textarea></div>
+            <div class="card-header"><div class="card-title"><span>🎞️ হিরো স্লাইডার ম্যানেজার (ইউজার প্যানেল হোম স্লাইডার)</span></div></div>
+            <p style="font-size:0.82rem;color:var(--text-dim);margin-bottom:12px;">এখানে যোগ করা স্লাইডার সরাসরি আপনার ইউজার প্যানেলের হোম পেজে দেখা যাবে। মাস্টার অ্যাডমিন লক করা স্লাইডারগুলো ডিলিট/এডিট করা যাবে না।</p>
+            <div id="ua-slides-visual-list" style="margin-bottom:14px;"></div>
+            <div style="padding:12px;border:1px solid var(--border-subtle);border-radius:10px;background:var(--bg-inner);">
+              <div style="font-weight:700;font-size:0.88rem;color:var(--primary);margin-bottom:10px;" id="ua-slide-form-title">+ নতুন স্লাইডার যোগ করুন</div>
+              <div class="form-row">
+                <div class="form-group"><label>স্লাইডার শিরোনাম</label><input type="text" id="ua-sl-title" class="form-control" placeholder="যেমন: 100% Welcome Bonus"></div>
+                <div class="form-group"><label>সাবটাইটেল / বিবরণ</label><input type="text" id="ua-sl-sub" class="form-control" placeholder="প্রথম ডিপোজিটে বোনাস নিন"></div>
+              </div>
+              <div class="form-row" style="margin-top:8px;">
+                <div class="form-group"><label>ব্যানার ইমেজ URL (ঐচ্ছিক)</label><input type="url" id="ua-sl-img" class="form-control" placeholder="https://...jpg (খালি রাখলে রঙিন কার্ড হবে)"></div>
+                <div class="form-group"><label>বাটন অ্যাকশন</label>
+                  <select id="ua-sl-go" class="form-control">
+                    <option value="games">Games</option><option value="promo">Promotions</option><option value="dep">Deposit</option><option value="vip">VIP Club</option><option value="ref">Referral</option>
+                  </select>
+                </div>
+              </div>
+              <div class="form-row" style="margin-top:8px;">
+                <div class="form-group"><label>কার্ড থিম রঙ</label>
+                  <select id="ua-sl-theme" class="form-control">
+                    <option value="s1">Royal Purple</option><option value="s2">Emerald Ocean</option><option value="s3">Sunset Gold</option>
+                  </select>
+                </div>
+                <div class="form-group"><label>আইকন</label>
+                  <select id="ua-sl-emoji" class="form-control">
+                    <option value="🎰">🎰 Slots</option><option value="💎">💎 Bonus</option><option value="🎲">🎲 Cashback</option><option value="🔥">🔥 Hot</option><option value="🎁">🎁 Gift</option><option value="🏏">🏏 Sports</option>
+                  </select>
+                </div>
+              </div>
+              <div style="display:flex;gap:8px;justify-content:flex-end;margin-top:12px;">
+                <button type="button" id="ua-sl-cancel-btn" class="btn btn-secondary btn-sm" style="display:none;" onclick="cancelUserAdminSlideEdit()">বাতিল</button>
+                <button type="button" id="ua-sl-save-btn" class="btn btn-primary btn-sm" onclick="saveUserAdminSlide()">+ স্লাইডার যোগ ও পাবলিশ করুন</button>
+              </div>
             </div>
+          </div>
+
+          <div class="card" style="margin-bottom:16px;">
+            <details>
+              <summary style="cursor:pointer;font-weight:700;font-size:0.9rem;color:var(--primary);">⚙️ অ্যাডভান্সড JSON এডিটর (স্লাইডার / অফার / ফুটার)</summary>
+              <div style="display:grid; grid-template-columns:repeat(auto-fit, minmax(240px, 1fr)); gap:12px; margin-top:12px;">
+                <div class="form-group"><label>Hero Slides JSON</label><textarea id="ua-up-slides" class="form-control" rows="4" placeholder='[{"t":"Welcome","d":"Bonus","go":"games","img":""}]'></textarea></div>
+                <div class="form-group"><label>Special Offers JSON</label><textarea id="ua-up-offers" class="form-control" rows="4" placeholder='[{"t":"100% Bonus","d":"Up to 5000","b":"Deposit","go":"dep","img":""}]'></textarea></div>
+                <div class="form-group"><label>Side Banners JSON</label><textarea id="ua-up-sidebans" class="form-control" rows="4" placeholder='[{"t":"VIP","d":"Play & Earn","b":"VIP","go":"vip"}]'></textarea></div>
+                <div class="form-group"><label>Footer Sponsors/Partners JSON</label><textarea id="ua-up-footer" class="form-control" rows="4" placeholder='{"sponsors":[],"ambassadors":[],"partners":[],"licenses":[]}'></textarea></div>
+              </div>
+            </details>
           </div>
 
           <div class="card">
@@ -4161,6 +4237,9 @@
       notices: [],
       notifications: [],
       auditLogs: [],
+      masterSlides: [],
+      userPanelConfig: {},
+      providers: {},
       settings: {
         maintenance: false,
         allowRegistration: true,
@@ -4538,11 +4617,17 @@
       });
 
       // 12. User Panel CMS & Casino Providers
+      db.ref('userPanelConfig/global/slides').on('value', (snap) => {
+        STATE.masterSlides = Array.isArray(snap.val()) ? snap.val() : [];
+        renderUserPanelControl();
+        renderBannersList();
+      });
       const myUpUid = npMyUid();
       if (myUpUid) {
         db.ref('userPanelConfig/byAdmin/' + myUpUid).on('value', (snap) => {
           STATE.userPanelConfig = snap.val() || {};
           renderUserPanelControl();
+          renderBannersList();
         });
       }
       db.ref('providers').on('value', (snap) => {
@@ -4723,13 +4808,100 @@
     let adminInactivityTimer = null;
     function resetAdminInactivity() {}
 
+    function translateAdminAuthErr(err) {
+      const code = (err && err.code) || '';
+      if (code === 'auth/invalid-credential' || code === 'auth/wrong-password' || code === 'auth/user-not-found' || code === 'auth/invalid-login-credentials') {
+        return 'ভুল ইউজারনেম/ইমেইল অথবা পাসওয়ার্ড! সঠিক তথ্য দিন অথবা "পাসওয়ার্ড রিসেট" / "Google দিয়ে লগইন" ব্যবহার করুন।';
+      }
+      if (code === 'auth/invalid-email') return 'সঠিক ইমেইল ঠিকানা লিখুন।';
+      if (code === 'auth/too-many-requests') return 'অনেকবার ভুল চেষ্টার কারণে সাময়িকভাবে ব্লক হয়েছে। কিছুক্ষণ পর চেষ্টা করুন বা পাসওয়ার্ড রিসেট করুন।';
+      if (code === 'auth/popup-closed-by-user' || code === 'auth/cancelled-popup-request') return 'Google লগইন পপআপ বন্ধ করা হয়েছে।';
+      if (code === 'auth/network-request-failed') return 'নেটওয়ার্ক সংযোগ সমস্যা। ইন্টারনেট চেক করে আবার চেষ্টা করুন।';
+      if (code === 'auth/user-disabled') return 'এই অ্যাকাউন্টটি নিষ্ক্রিয় করা হয়েছে।';
+      return (err && err.message) ? err.message : 'লগইন ব্যর্থ হয়েছে।';
+    }
+
+    function showAdminLoginErr(msg) {
+      const box = document.getElementById('admin-login-err');
+      if (!box) return;
+      if (!msg) { box.style.display = 'none'; box.textContent = ''; return; }
+      const clean = String(msg).replace(/Firebase:\s*/gi,'').replace(/\s*\(auth\/[^)]+\)\.?/gi,'').replace(/\b(firebase|github|render)\b/gi,'server').replace(/ফায়ারবেস|ফায়ারবেস|গিটহাব|রেন্ডার/g,'সার্ভার').trim();
+      box.textContent = clean;
+      box.style.display = 'block';
+    }
+
+    function toggleAdminLoginPw(btn) {
+      const p = document.getElementById('login-password');
+      if (!p) return;
+      const show = p.type === 'password';
+      p.type = show ? 'text' : 'password';
+      if (btn) btn.textContent = show ? 'লুকান' : 'দেখুন';
+    }
+
+    async function handleAdminForgotPassword() {
+      showAdminLoginErr('');
+      let inputVal = (document.getElementById('login-email').value || '').trim();
+      if (!inputVal) {
+        showAdminLoginErr('পাসওয়ার্ড রিসেট করতে আপনার অ্যাডমিন ইমেইল বা ইউজারনেম লিখুন।');
+        return;
+      }
+      if (!auth) return;
+      try {
+        let email = inputVal;
+        if (!email.includes('@') && db) {
+          const cleanUser = inputVal.toLowerCase().replace(/[^a-z0-9_]/g, '');
+          const uSnap = await db.ref(`usernames/${cleanUser}`).once('value');
+          if (uSnap.exists() && uSnap.val().email) email = uSnap.val().email;
+        }
+        if (!email.includes('@') || email.endsWith('@npapp.local') || email.endsWith('@admin.local')) {
+          showAdminLoginErr('এই অ্যাকাউন্টে আসল ইমেইল যুক্ত নেই। Master Admin-এর কাছ থেকে পাসওয়ার্ড রিসেট নিন।');
+          return;
+        }
+        await auth.sendPasswordResetEmail(email);
+        showToast('পাসওয়ার্ড রিসেট লিংক পাঠানো হয়েছে (' + email + ') ✅', 'success');
+      } catch (err) {
+        const msg = translateAdminAuthErr(err);
+        showAdminLoginErr(msg);
+        showToast(msg, 'error');
+      }
+    }
+
+    async function handleAdminGoogleLogin() {
+      showAdminLoginErr('');
+      if (!auth) return;
+      try {
+        const cred = await auth.signInWithPopup(new firebase.auth.GoogleAuthProvider());
+        let hasAdminRole = false;
+        if (db && cred && cred.user) {
+          const adminSnap = await db.ref(`admins/${cred.user.uid}`).once('value');
+          if (adminSnap.exists() && adminSnap.val().active !== false) hasAdminRole = true;
+        }
+        if (!hasAdminRole) {
+          await auth.signOut();
+          const msg = 'এই Google অ্যাকাউন্টটির অনুমোদিত User Admin অ্যাক্সেস নেই।';
+          showAdminLoginErr(msg);
+          showToast(msg, 'error');
+          return;
+        }
+        showAdminLoginErr('');
+        completeLogin(cred.user.email, cred.user.uid);
+        resetAdminInactivity();
+      } catch (err) {
+        const msg = translateAdminAuthErr(err);
+        showAdminLoginErr(msg);
+        showToast(msg, 'error');
+      }
+    }
+
     // --- Authentication (Username & Password Support) ---
     async function handleAdminLogin(event) {
       event.preventDefault();
+      showAdminLoginErr('');
       const inputVal = document.getElementById('login-email').value.trim();
       const pass = document.getElementById('login-password').value;
 
       if (!inputVal || !pass) {
+        showAdminLoginErr('ইউজারনেম বা ইমেইল এবং পাসওয়ার্ড লিখুন');
         showToast('ইউজারনেম বা ইমেইল এবং পাসওয়ার্ড লিখুন', 'error');
         return;
       }
@@ -4761,11 +4933,8 @@
         }
 
         const cred = await auth.signInWithEmailAndPassword(resolvedEmail, pass);
-        const userEmail = (cred.user.email || '').toLowerCase();
-        const isSuperAdminEmail = false;
-        
-        let hasAdminRole = isSuperAdminEmail;
-        if (!hasAdminRole && db) {
+        let hasAdminRole = false;
+        if (db) {
           const adminSnap = await db.ref(`admins/${cred.user.uid}`).once('value');
           if (adminSnap.exists() && adminSnap.val().active !== false) {
             hasAdminRole = true;
@@ -4774,14 +4943,15 @@
 
         if (!hasAdminRole) {
           await auth.signOut();
-          showToast('অননুমোদিত অ্যাক্সেস! সাধারণ ব্যবহারকারীরা এডমিন প্যানেলে প্রবেশ করতে পারবেন না।', 'error');
+          const msg = 'অননুমোদিত অ্যাক্সেস! এই অ্যাকাউন্টে সক্রিয় User Admin পারমিশন নেই।';
+          showAdminLoginErr(msg);
+          showToast(msg, 'error');
           return;
         }
 
         // Master-authorized admins (registered in admins/$uid) can log in directly without email verification block
         if (!cred.user.emailVerified) {
           try {
-            // mark verified in admins node if master allowed
             if (db) db.ref(`admins/${cred.user.uid}/emailVerified`).set(true).catch(() => {});
           } catch (e) {}
         }
@@ -4798,16 +4968,15 @@
         }
 
         db.ref(`admins/${cred.user.uid}/emailVerified`).set(true).catch(() => {});
+        showAdminLoginErr('');
         completeLogin(cred.user.email, cred.user.uid);
         resetAdminInactivity();
       } catch (err) {
-        if (err.code === 'auth/user-not-found' || err.code === 'auth/invalid-credential') {
-          showToast('ভুল ইউজারনেম/ইমেইল অথবা পাসওয়ার্ড!', 'error');
-        } else {
-          showToast('লগইন ত্রুটি: ' + err.message, 'error');
-        }
+        const msg = translateAdminAuthErr(err);
+        showAdminLoginErr(msg);
+        showToast(msg, 'error');
       } finally {
-        if (btn) { btn.disabled = false; btn.innerText = 'লগইন করুন (Admin Sign In)'; }
+        if (btn) { btn.disabled = false; btn.innerText = 'লগইন করুন'; }
       }
     }
 
@@ -4922,11 +5091,14 @@
       setTxt('stat-successful-withdrawals-amt', '৳ ' + totalCompletedWithdrawAmount.toLocaleString('en-US'));
       setTxt('stat-successful-withdrawals-cnt', totalCompletedWithdrawCount + ' টি সফল লেনদেন');
 
-      // Badges
       const totalPending = pendingDeps + pendingWiths;
       setTxt('sidebar-pending-badge', totalPending);
       setTxt('count-pending-deposits', pendingDeps);
       setTxt('count-pending-withdrawals', pendingWiths);
+      const optD = document.getElementById('opt-wallet-deposits');
+      if (optD) optD.textContent = `📥 ডিপোজিট রিকোয়েস্ট (${pendingDeps})`;
+      const optW = document.getElementById('opt-wallet-withdrawals');
+      if (optW) optW.textContent = `📤 উইথড্র রিকোয়েস্ট (${pendingWiths})`;
 
       // Quick Toggles
       const elMaint = document.getElementById('quick-toggle-maintenance');
@@ -5845,11 +6017,8 @@
       const bTab = document.getElementById('wallet-sub-bonus-turnover');
       if (bTab) bTab.style.display = tab === 'bonus-turnover' ? 'block' : 'none';
 
-      document.getElementById('tab-deposits-btn').className = `btn btn-sm ${tab === 'deposits' ? 'btn-primary' : 'btn-secondary'}`;
-      document.getElementById('tab-withdrawals-btn').className = `btn btn-sm ${tab === 'withdrawals' ? 'btn-primary' : 'btn-secondary'}`;
-      document.getElementById('tab-ledger-btn').className = `btn btn-sm ${tab === 'ledger' ? 'btn-primary' : 'btn-secondary'}`;
-      const bBtn = document.getElementById('tab-bonus-turnover-btn');
-      if (bBtn) bBtn.className = `btn btn-sm ${tab === 'bonus-turnover' ? 'btn-primary' : 'btn-secondary'}`;
+      const wSel = document.getElementById('wallet-tab-select');
+      if (wSel && wSel.value !== tab) wSel.value = tab;
     }
 
     function renderWallet() {
@@ -7205,39 +7374,93 @@
       }
     }
 
-    // --- Slider Banners with Delete Option (Requirement 1) ---
+    // --- Slider Banners with Master Lock & Per-Admin Sync ---
+    function getEditableAdminSlides() {
+      const raw = (STATE.userPanelConfig && Array.isArray(STATE.userPanelConfig.slides)) ? STATE.userPanelConfig.slides : [];
+      return raw.filter(s => s && !s.locked && !s.masterLockedId).map(s => Object.assign({}, s));
+    }
+
+    function getLockedMasterSlides() {
+      const raw = Array.isArray(STATE.masterSlides) ? STATE.masterSlides : [];
+      return raw.filter(s => s && s.locked === true).map(s => Object.assign({}, s));
+    }
+
     function renderBannersList() {
       const container = document.getElementById('admin-banners-list');
       if (!container) return;
 
-      if (!STATE.banners || STATE.banners.length === 0) {
-        container.innerHTML = `<div style="color:var(--text-dim); font-size:0.85rem; padding:12px 0;">কোনো স্লাইডার ব্যানার নেই। নিচের ফর্ম থেকে নতুন ব্যানার যোগ করুন।</div>`;
+      const lockedMaster = getLockedMasterSlides();
+      const mySlides = getEditableAdminSlides();
+
+      if (!lockedMaster.length && !mySlides.length) {
+        container.innerHTML = `<div style="color:var(--text-dim); font-size:0.85rem; padding:12px 0;">কোনো কাস্টম স্লাইডার ব্যানার নেই। নিচের ফর্ম থেকে নতুন ব্যানার যোগ করুন (সরাসরি আপনার ইউজার প্যানেলে দেখাবে)।</div>`;
         return;
       }
 
-      container.innerHTML = STATE.banners.map((b, idx) => `
-        <div style="display:flex; align-items:center; justify-content:space-between; gap:12px; padding:10px 14px; background:var(--bg-surface); border:1px solid var(--border-subtle); border-radius:var(--radius-sm); margin-bottom:8px;">
-          <div style="display:flex; align-items:center; gap:12px; overflow:hidden;">
-            <img src="${escapeHtml(b.img || '')}" style="width:70px; height:42px; object-fit:cover; border-radius:6px; border:1px solid var(--border-subtle); background:#000;" alt="Banner" onerror="this.src='https://images.unsplash.com/photo-1542751371-adc38448a05e?auto=format&fit=crop&w=600&q=80'">
+      const lockedHtml = lockedMaster.map(s => `
+        <div style="display:flex; align-items:center; justify-content:space-between; gap:12px; padding:10px 14px; background:var(--bg-surface); border:1px solid rgba(245,158,11,0.45); border-radius:var(--radius-sm); margin-bottom:8px; flex-wrap:wrap;">
+          <div style="display:flex; align-items:center; gap:12px; overflow:hidden; flex:1; min-width:180px;">
+            ${s.img ? `<img src="${escapeHtml(s.img)}" style="width:70px; height:42px; object-fit:cover; border-radius:6px; border:1px solid var(--border-subtle); background:#000;" alt="Banner">` : `<div style="width:70px;height:42px;border-radius:6px;display:grid;place-items:center;font-size:20px;background:#1e293b;">${escapeHtml(s.a || '🎰')}</div>`}
             <div style="overflow:hidden;">
-              <div style="font-weight:700; font-size:0.92rem; color:#fff; white-space:nowrap; overflow:hidden; text-overflow:ellipsis;">${escapeHtml(b.title || 'Untitled Banner')}</div>
-              <div style="font-size:0.75rem; color:var(--text-dim); white-space:nowrap; overflow:hidden; text-overflow:ellipsis;">${escapeHtml(b.sub || '')}</div>
+              <div style="font-weight:700; font-size:0.92rem; color:var(--text-main); white-space:nowrap; overflow:hidden; text-overflow:ellipsis;">${escapeHtml(String(s.t || '').replace(/<\/?em>/g, '') || 'Master Slider')}</div>
+              <div style="font-size:0.75rem; color:var(--text-dim); white-space:nowrap; overflow:hidden; text-overflow:ellipsis;">${escapeHtml(s.d || '')}</div>
             </div>
           </div>
-          <button class="btn btn-accent btn-sm" onclick="handleDeleteBanner('${b.id}')" title="ব্যানারটি মুছে ফেলুন" style="flex-shrink:0;">
+          <span class="badge badge-pending" style="flex-shrink:0;">🔒 মাস্টার লকড</span>
+        </div>
+      `).join('');
+
+      const myHtml = mySlides.map((b, idx) => `
+        <div style="display:flex; align-items:center; justify-content:space-between; gap:12px; padding:10px 14px; background:var(--bg-surface); border:1px solid var(--border-subtle); border-radius:var(--radius-sm); margin-bottom:8px; flex-wrap:wrap;">
+          <div style="display:flex; align-items:center; gap:12px; overflow:hidden; flex:1; min-width:180px;">
+            ${b.img ? `<img src="${escapeHtml(b.img)}" style="width:70px; height:42px; object-fit:cover; border-radius:6px; border:1px solid var(--border-subtle); background:#000;" alt="Banner">` : `<div style="width:70px;height:42px;border-radius:6px;display:grid;place-items:center;font-size:20px;background:#1e293b;">${escapeHtml(b.a || '🎰')}</div>`}
+            <div style="overflow:hidden;">
+              <div style="font-weight:700; font-size:0.92rem; color:var(--text-main); white-space:nowrap; overflow:hidden; text-overflow:ellipsis;">${escapeHtml(String(b.t || b.title || '').replace(/<\/?em>/g, '') || 'Untitled Banner')}</div>
+              <div style="font-size:0.75rem; color:var(--text-dim); white-space:nowrap; overflow:hidden; text-overflow:ellipsis;">${escapeHtml(b.d || b.sub || '')}</div>
+            </div>
+          </div>
+          <button class="btn btn-accent btn-sm" onclick="handleDeleteAdminSlide(${idx})" title="স্লাইডারটি মুছে ফেলুন" style="flex-shrink:0;">
             🗑️ মুছুন (Delete)
           </button>
         </div>
       `).join('');
+
+      container.innerHTML = lockedHtml + myHtml;
+    }
+
+    async function persistAdminSlidesList(nextList) {
+      const uid = npMyUid();
+      if (!db || !uid) throw new Error('Admin login missing');
+      const cleanList = (Array.isArray(nextList) ? nextList : []).filter(s => s && !s.locked && !s.masterLockedId);
+      await db.ref('userPanelConfig/byAdmin/' + uid + '/slides').set(cleanList);
+      await db.ref('userPanelConfig/byAdmin/' + uid + '/updatedAt').set(firebase.database.ServerValue.TIMESTAMP).catch(() => {});
+      if (!STATE.userPanelConfig) STATE.userPanelConfig = {};
+      STATE.userPanelConfig.slides = cleanList;
+      const ta = document.getElementById('ua-up-slides');
+      if (ta) ta.value = JSON.stringify(cleanList, null, 2);
+      renderUserPanelSlidesList();
+      renderBannersList();
+    }
+
+    async function handleDeleteAdminSlide(idx) {
+      const mySlides = getEditableAdminSlides();
+      if (idx < 0 || idx >= mySlides.length) return;
+      if (!confirm('আপনি কি নিশ্চিত যে এই স্লাইডারটি মুছে ফেলতে চান? এটি আপনার ইউজার প্যানেল থেকেও তৎক্ষণাৎ মুছে যাবে।')) return;
+      mySlides.splice(idx, 1);
+      try {
+        await persistAdminSlidesList(mySlides);
+        recordAuditLog('SLIDER_DELETED', npMyUid(), 'Admin slider removed');
+        showToast('স্লাইডারটি সফলভাবে মুছে ফেলা হয়েছে ✅', 'success');
+      } catch (err) {
+        showToast('স্লাইডার মুছতে সমস্যা: ' + err.message, 'error');
+      }
     }
 
     async function handleDeleteBanner(id) {
-      if (!confirm('আপনি কি নিশ্চিত যে এই স্লাইডার ছবিটি মুছে ফেলতে চান? এটি ইউজার প্যানেল থেকেও তৎক্ষণাৎ মুছে যাবে।')) return;
+      if (!confirm('আপনি কি নিশ্চিত যে এই স্লাইডার ছবিটি মুছে ফেলতে চান?')) return;
       if (!db || !id) return;
-
       try {
         await db.ref(`banners/${id}`).remove();
-        recordAuditLog('BANNER_DELETED', id, 'Slider banner removed by admin');
         showToast('স্লাইডার ছবিটি সফলভাবে মুছে ফেলা হয়েছে!', 'success');
       } catch (err) {
         showToast('ব্যানার মুছতে সমস্যা: ' + err.message, 'error');
@@ -7249,20 +7472,25 @@
       const sub = document.getElementById('banner-sub').value.trim();
       const img = document.getElementById('banner-url').value.trim();
 
-      if (!img || !db) {
-        showToast('ব্যানার ইমেজ লিংক দিন', 'error');
+      if (!img && !title) {
+        showToast('ব্যানার শিরোনাম অথবা ইমেজ লিংক দিন', 'error');
         return;
       }
 
       try {
-        const key = db.ref('banners').push().key;
-        await db.ref(`banners/${key}`).set({
-          title: title || 'MOSTWIN88 PRO CASINO',
-          sub: sub || 'সেরা প্রো ক্যাসিনো ও লাইভ গেমিং প্ল্যাটফর্ম',
-          img,
-          createdAt: firebase.database.ServerValue.TIMESTAMP
+        const mySlides = getEditableAdminSlides();
+        mySlides.push({
+          id: 'asl_' + Date.now() + '_' + Math.random().toString(36).slice(2, 6),
+          t: title || 'MOSTWIN88 PRO CASINO',
+          d: sub || 'সেরা প্রো ক্যাসিনো ও লাইভ গেমিং প্ল্যাটফর্ম',
+          img: img || '',
+          c: 's' + ((mySlides.length % 3) + 1),
+          a: '🎰',
+          go: 'games',
+          locked: false
         });
-        showToast('নতুন স্লাইডার ব্যানার যুক্ত হয়েছে!', 'success');
+        await persistAdminSlidesList(mySlides);
+        showToast('নতুন স্লাইডার ব্যানার যুক্ত হয়েছে ও ইউজার প্যানেলে পাবলিশ হয়েছে ✅', 'success');
         document.getElementById('banner-title').value = '';
         document.getElementById('banner-sub').value = '';
         document.getElementById('banner-url').value = '';
@@ -7544,13 +7772,8 @@
     function setFinancePeriod(period) {
       STATE.financePeriod = period;
       document.getElementById('finance-custom-date-wrap').style.display = 'none';
-
-      ['all', 'today', 'month', 'year', 'custom'].forEach(p => {
-        const btn = document.getElementById(`btn-period-${p}`);
-        if (btn) {
-          btn.className = `btn btn-sm ${p.toUpperCase() === period ? 'btn-primary' : 'btn-secondary'}`;
-        }
-      });
+      const pSel = document.getElementById('finance-period-select');
+      if (pSel && pSel.value !== period) pSel.value = period;
 
       const labelMap = {
         'ALL': 'সর্বমোট ঐতিহাসিক হিসাব (All Historical Records)',
@@ -7564,18 +7787,13 @@
       renderFinanceDashboard();
     }
 
-    function toggleFinanceCustomDate() {
+    function toggleFinanceCustomDate(forceOpen) {
       const wrap = document.getElementById('finance-custom-date-wrap');
       const isVisible = wrap.style.display === 'flex';
-      wrap.style.display = isVisible ? 'none' : 'flex';
-      if (!isVisible) {
-        ['all', 'today', 'month', 'year'].forEach(p => {
-          const btn = document.getElementById(`btn-period-${p}`);
-          if (btn) btn.className = 'btn btn-secondary btn-sm';
-        });
-        const btnCustom = document.getElementById('btn-period-custom');
-        if (btnCustom) btnCustom.className = 'btn btn-primary btn-sm';
-      }
+      const nextShow = forceOpen === true ? true : !isVisible;
+      wrap.style.display = nextShow ? 'flex' : 'none';
+      const pSel = document.getElementById('finance-period-select');
+      if (nextShow && pSel) pSel.value = 'CUSTOM';
     }
 
     function applyFinanceCustomDate() {
@@ -7608,11 +7826,11 @@
 
     function switchFinanceTab(tab) {
       STATE.financeActiveTab = tab;
+      const fSel = document.getElementById('finance-tab-select');
+      if (fSel && fSel.value !== tab) fSel.value = tab;
       ['daily', 'monthly', 'yearly'].forEach(t => {
         const content = document.getElementById(`finance-tab-content-${t}`);
-        const btn = document.getElementById(`btn-finance-tab-${t}`);
         if (content) content.style.display = (t === tab ? 'block' : 'none');
-        if (btn) btn.className = `btn btn-sm ${t === tab ? 'btn-primary' : 'btn-secondary'}`;
       });
     }
 
@@ -10320,6 +10538,119 @@
   }
 
   /* ==================== USER PANEL CMS & PROVIDER CONTROL ==================== */
+  var uaEditSlideIdx = -1;
+
+  function renderUserPanelSlidesList() {
+    var box = document.getElementById('ua-slides-visual-list');
+    if (!box) return;
+    var lockedMaster = getLockedMasterSlides();
+    var mySlides = getEditableAdminSlides();
+
+    var html = lockedMaster.map(function (s) {
+      return '<div class="slide-builder-row" style="border-color:rgba(245,158,11,0.45);">' +
+        '<div class="slide-builder-info">' +
+          (s.img ? '<img class="slide-thumb" src="' + npcEsc(s.img) + '" alt="slide">' : '<div class="slide-thumb">' + npcEsc(s.a || '🎰') + '</div>') +
+          '<div style="min-width:0;flex:1;">' +
+            '<div style="font-weight:700;font-size:0.88rem;display:flex;align-items:center;gap:6px;flex-wrap:wrap;">' +
+              '<span>' + npcEsc(String(s.t || '').replace(/<\/?em>/g, '')) + '</span>' +
+              '<span class="badge badge-pending">🔒 মাস্টার লকড (এডিট/ডিলিট অনুমোদিত নয়)</span>' +
+            '</div>' +
+            '<div style="font-size:0.76rem;color:var(--text-dim);">' + npcEsc(s.d || '') + ' · ' + npcEsc(s.go || 'games') + '</div>' +
+          '</div>' +
+        '</div>' +
+      '</div>';
+    }).join('');
+
+    if (mySlides.length) {
+      html += mySlides.map(function (s, i) {
+        return '<div class="slide-builder-row">' +
+          '<div class="slide-builder-info">' +
+            (s.img ? '<img class="slide-thumb" src="' + npcEsc(s.img) + '" alt="slide">' : '<div class="slide-thumb">' + npcEsc(s.a || '🎰') + '</div>') +
+            '<div style="min-width:0;flex:1;">' +
+              '<div style="font-weight:700;font-size:0.88rem;display:flex;align-items:center;gap:6px;flex-wrap:wrap;">' +
+                '<span>' + npcEsc(String(s.t || s.title || '').replace(/<\/?em>/g, '') || 'Slide #' + (i + 1)) + '</span>' +
+                '<span class="badge badge-approved">আপনার স্লাইডার</span>' +
+              '</div>' +
+              '<div style="font-size:0.76rem;color:var(--text-dim);">' + npcEsc(s.d || s.sub || '') + ' · অ্যাকশন: ' + npcEsc(s.go || 'games') + '</div>' +
+            '</div>' +
+          '</div>' +
+          '<div style="display:flex;gap:6px;flex-wrap:wrap;align-items:center;">' +
+            (i > 0 ? '<button type="button" class="btn btn-secondary btn-sm" onclick="moveUserAdminSlide(' + i + ',-1)">↑</button>' : '') +
+            (i < mySlides.length - 1 ? '<button type="button" class="btn btn-secondary btn-sm" onclick="moveUserAdminSlide(' + i + ',1)">↓</button>' : '') +
+            '<button type="button" class="btn btn-secondary btn-sm" onclick="editUserAdminSlide(' + i + ')">✏️ এডিট</button>' +
+            '<button type="button" class="btn btn-accent btn-sm" onclick="handleDeleteAdminSlide(' + i + ')">🗑️</button>' +
+          '</div>' +
+        '</div>';
+      }).join('');
+    } else if (!lockedMaster.length) {
+      html += '<div style="padding:12px;border:1px dashed var(--border-subtle);border-radius:10px;color:var(--text-dim);font-size:0.84rem;">এখনও কোনো কাস্টম স্লাইডার যোগ করা হয়নি। নিচের ফর্ম থেকে স্লাইডার যোগ করুন।</div>';
+    } else {
+      html += '<div style="padding:10px 12px;border:1px dashed var(--border-subtle);border-radius:10px;color:var(--text-dim);font-size:0.82rem;">উপরের মাস্টার স্লাইডার ছাড়াও আপনি নিচের ফর্ম থেকে আপনার নিজস্ব স্লাইডার যোগ করতে পারেন।</div>';
+    }
+    box.innerHTML = html;
+  }
+
+  function editUserAdminSlide(idx) {
+    var list = getEditableAdminSlides();
+    var s = list[idx];
+    if (!s) return;
+    uaEditSlideIdx = idx;
+    var sv = function (id, val) { var el = document.getElementById(id); if (el) el.value = val || ''; };
+    sv('ua-sl-title', String(s.t || s.title || '').replace(/<\/?em>/g, ''));
+    sv('ua-sl-sub', s.d || s.sub || '');
+    sv('ua-sl-img', s.img || '');
+    sv('ua-sl-go', s.go || 'games');
+    sv('ua-sl-theme', s.c || 's1');
+    sv('ua-sl-emoji', s.a || '🎰');
+    var ft = document.getElementById('ua-slide-form-title'); if (ft) ft.textContent = '✏️ স্লাইডার এডিট করুন';
+    var cb = document.getElementById('ua-sl-cancel-btn'); if (cb) cb.style.display = 'inline-flex';
+    var sb = document.getElementById('ua-sl-save-btn'); if (sb) sb.textContent = '💾 স্লাইডার আপডেট করুন';
+  }
+
+  function cancelUserAdminSlideEdit() {
+    uaEditSlideIdx = -1;
+    ['ua-sl-title', 'ua-sl-sub', 'ua-sl-img'].forEach(function (id) { var el = document.getElementById(id); if (el) el.value = ''; });
+    var ft = document.getElementById('ua-slide-form-title'); if (ft) ft.textContent = '+ নতুন স্লাইডার যোগ করুন';
+    var cb = document.getElementById('ua-sl-cancel-btn'); if (cb) cb.style.display = 'none';
+    var sb = document.getElementById('ua-sl-save-btn'); if (sb) sb.textContent = '+ স্লাইডার যোগ ও পাবলিশ করুন';
+  }
+
+  async function saveUserAdminSlide() {
+    var gv = function (id) { var el = document.getElementById(id); return el ? el.value.trim() : ''; };
+    var t = gv('ua-sl-title'), d = gv('ua-sl-sub'), img = gv('ua-sl-img');
+    var go = gv('ua-sl-go') || 'games', c = gv('ua-sl-theme') || 's1', a = gv('ua-sl-emoji') || '🎰';
+    if (!t && !img) { showToast('স্লাইডারের শিরোনাম অথবা ইমেজ URL দিন', 'error'); return; }
+    var list = getEditableAdminSlides();
+    var existing = (uaEditSlideIdx >= 0 && list[uaEditSlideIdx]) || {};
+    var item = {
+      id: existing.id || ('asl_' + Date.now() + '_' + Math.random().toString(36).slice(2, 6)),
+      t: t || 'MOSTWIN88 Offer',
+      d: d,
+      img: img,
+      c: c,
+      a: a,
+      go: go,
+      locked: false
+    };
+    if (uaEditSlideIdx >= 0 && uaEditSlideIdx < list.length) list[uaEditSlideIdx] = item;
+    else list.push(item);
+    try {
+      await persistAdminSlidesList(list);
+      cancelUserAdminSlideEdit();
+      recordAuditLog('USERPANEL_SLIDER_SAVED', npMyUid(), 'Updated admin hero slides');
+      showToast('স্লাইডার সেভ ও ইউজার প্যানেলে পাবলিশ হয়েছে ✅', 'success');
+    } catch (e) {
+      showToast('স্লাইডার সেভ ব্যর্থ: ' + e.message, 'error');
+    }
+  }
+
+  async function moveUserAdminSlide(idx, dir) {
+    var list = getEditableAdminSlides(), ni = idx + dir;
+    if (ni < 0 || ni >= list.length) return;
+    var tmp = list[idx]; list[idx] = list[ni]; list[ni] = tmp;
+    try { await persistAdminSlidesList(list); } catch (e) { showToast(e.message, 'error'); }
+  }
+
   function renderUserPanelControl() {
     var d = STATE.userPanelConfig || {};
     var pay = d.payments || {}, ch = d.chat || {};
@@ -10342,6 +10673,7 @@
     sv('ua-up-offers', d.banners ? JSON.stringify(d.banners, null, 2) : '');
     sv('ua-up-sidebans', d.sideBanners ? JSON.stringify(d.sideBanners, null, 2) : '');
     sv('ua-up-footer', d.footer ? JSON.stringify(d.footer, null, 2) : '');
+    renderUserPanelSlidesList();
   }
 
   function renderUserPanelProviders() {
@@ -10395,7 +10727,8 @@
       return JSON.parse(raw);
     };
     try {
-      var sl = parseJsonField('ua-up-slides'); if (sl) cfg.slides = sl;
+      var sl = parseJsonField('ua-up-slides');
+      if (Array.isArray(sl)) cfg.slides = sl.filter(function (s) { return s && !s.locked && !s.masterLockedId; });
       var of = parseJsonField('ua-up-offers'); if (of) cfg.banners = of;
       var sb = parseJsonField('ua-up-sidebans'); if (sb) cfg.sideBanners = sb;
       var ft = parseJsonField('ua-up-footer'); if (ft) cfg.footer = ft;
