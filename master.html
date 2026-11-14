@@ -9,7 +9,7 @@
 <meta name="apple-mobile-web-app-title" content="MOSTWIN88">
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
 <link rel="apple-touch-icon" href="master-icon-192.png">
-<link rel="icon" type="image/png" href="master-logo.png">
+<link rel="icon" type="image/png" href="master-icon-192.png">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Hind+Siliguri:wght@400;500;600;700&family=Rajdhani:wght@500;600;700&display=swap" rel="stylesheet">
@@ -96,7 +96,7 @@
     /* ---------- Main + Topbar ---------- */
     .main-wrapper { flex:1; margin-left:var(--sidebar-width); display:flex; flex-direction:column; min-width:0; min-height:100vh; background:var(--bg-base); }
     .topbar { height:var(--header-height); background:var(--c-surface); border-bottom:1px solid var(--border-subtle); position:sticky; top:0; z-index:90;
-      display:flex; align-items:center; justify-content:space-between; padding:0 20px; gap:10px; backdrop-filter:blur(10px); }
+      display:flex; align-items:center; justify-content:space-between; padding:0 20px; gap:10px; }
     .topbar-left { display:flex; align-items:center; gap:10px; min-width:0; }
     .topbar-actions { display:flex; align-items:center; gap:10px; margin-left:auto; }
     .mobile-menu-btn { display:none; width:40px; height:40px; border-radius:12px; background:var(--c-surface); border:1px solid var(--c-line); color:var(--c-text); cursor:pointer; place-items:center; padding:0; transition:all .2s; }
@@ -246,7 +246,7 @@
     .m-modal-card { width:100%; max-width:480px; background:var(--c-surface); border:1px solid var(--border-subtle); border-radius:14px; padding:20px; }
 
 /* ===== Floating Live Chat Popup (user.html Support Popup Style) ===== */
-.mcp-drawer{position:fixed;right:16px;bottom:16px;width:min(430px,calc(100vw - 24px));height:min(610px,calc(100dvh - 32px));z-index:1900;display:flex;flex-direction:column;border-radius:20px;overflow:hidden;background:linear-gradient(180deg,rgba(10,22,52,.98),rgba(5,11,26,.98));border:1px solid rgba(255,210,63,.35);box-shadow:0 24px 60px -12px rgba(0,0,0,.85)!important;backdrop-filter:blur(18px);-webkit-backdrop-filter:blur(18px);color:#EAF0FF;opacity:0;pointer-events:none;transform:translateY(24px) scale(.96);transform-origin:bottom right;transition:opacity .28s,transform .28s cubic-bezier(.2,.8,.2,1);font-family:"Noto Sans Bengali","Hind Siliguri","Segoe UI",Arial,sans-serif}
+.mcp-drawer{position:fixed;right:16px;bottom:16px;width:min(430px,calc(100vw - 24px));height:min(610px,calc(100dvh - 32px));z-index:1900;display:flex;flex-direction:column;border-radius:20px;overflow:hidden;background:linear-gradient(180deg,rgba(10,22,52,.99),rgba(5,11,26,.99));border:1px solid rgba(255,210,63,.35);box-shadow:0 24px 60px -12px rgba(0,0,0,.85)!important;color:#EAF0FF;opacity:0;pointer-events:none;transform:translateY(24px) scale(.96);transform-origin:bottom right;transition:opacity .28s,transform .28s cubic-bezier(.2,.8,.2,1);font-family:"Noto Sans Bengali","Hind Siliguri","Segoe UI",Arial,sans-serif}
 .mcp-drawer.open{opacity:1;pointer-events:auto;transform:none}
 .mcp-drawer,.mcp-drawer *{box-sizing:border-box;min-width:0}
 .mcp-head{flex:0 0 auto;display:flex;align-items:center;justify-content:space-between;gap:10px;padding:max(14px,env(safe-area-inset-top)) 14px 12px;background:linear-gradient(135deg,rgba(255,210,63,.16),rgba(255,255,255,.02));border-bottom:1px solid rgba(255,255,255,.06)}
@@ -388,7 +388,7 @@ body[data-theme="light"] .lo circle[stroke*="255,255,255"]{stroke:rgba(28,25,23,
 /* ========================================================
    Obsidian & Gold Mobile App UI + Auto-Detect PC Full-Page
    ======================================================== */
-.sidebar-backdrop{display:none;position:fixed;inset:0;background:rgba(0,0,0,.66);z-index:98;backdrop-filter:blur(2px)}
+.sidebar-backdrop{display:none;position:fixed;inset:0;background:rgba(0,0,0,.68);z-index:98}
 .sidebar-backdrop.open{display:block}
 .g{display:grid;grid-template-columns:repeat(auto-fit,minmax(190px,1fr));gap:10px;margin-bottom:12px}
 
@@ -560,6 +560,7 @@ body[data-theme="light"] .bottom-nav{background:#FFFFFF;border-top-color:#E6DECB
       <div class="admin-pill">
         <div class="admin-avatar" id="sidebar-avatar">M</div>
         <div class="admin-details"><div class="admin-name" id="sidebar-email"></div><div class="admin-role">MASTER ADMIN</div></div>
+        <button class="btn-icon" onclick="window.npOpenBiometricSetup&&npOpenBiometricSetup()" title="ফিঙ্গারপ্রিন্ট লক" style="width:32px;height:32px;font-size:15px;">🔐</button>
         <button class="btn-icon theme-toggle-btn" onclick="cycleTheme()" title="ডার্ক / লাইট থিম" style="width:32px;height:32px;"><svg viewBox="0 0 24 24"><path d="M12 3c-4.97 0-9 4.03-9 9s4.03 9 9 9 9-4.03 9-9c0-.46-.04-.92-.1-1.36-.98 1.37-2.58 2.26-4.4 2.26-2.98 0-5.4-2.42-5.4-5.4 0-1.81.89-3.42 2.26-4.4-.44-.06-.9-.1-1.36-.1z"/></svg></button>
         <button class="btn-icon" onclick="auth.signOut()" title="লগআউট" style="width:32px;height:32px;"><svg viewBox="0 0 24 24"><path d="M10.09 15.59L11.5 17l5-5-5-5-1.41 1.41L12.67 11H3v2h9.67l-2.58 2.59zM19 3H5c-1.11 0-2 .9-2 2v4h2V5h14v14H5v-4H3v4c0 1.1.89 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2z"/></svg></button>
       </div>
@@ -941,25 +942,27 @@ async function assignAllOrphans(){const O=Object.keys(USERS).filter(k=>!ADM[k]&&
  if(!confirm(O.length+' জন ইউজার "'+(ADM[adm].name||ADM[adm].email)+'" অ্যাডমিনকে দেওয়া হবে। নিশ্চিত?'))return;
  try{for(const k of O){await db.ref('users/'+k+'/adminUid').set(adm);await moveUserPending(k,adm)}toast(O.length+' জন ইউজার অ্যাডমিনের অধীনে গেছে ✅')}catch(e){toast('ব্যর্থ: '+e.message)}}
 
+let _drawRaf=0;
+function schedDraw(){if(_drawRaf)return;_drawRaf=requestAnimationFrame(()=>{_drawRaf=0;draw()})}
 function attachAll(){
  initMasterChatGlobalListener();
- on(db.ref('master/balance'),s=>{if(s.val()===null)db.ref('master/balance').set(0);MB=+s.val()||0;draw()});
- on(db.ref('admins'),s=>{ADM=s.val()||{};ADL=true;syncLinks();draw()});
+ on(db.ref('master/balance'),s=>{if(s.val()===null)db.ref('master/balance').set(0);MB=+s.val()||0;schedDraw()});
+ on(db.ref('admins'),s=>{ADM=s.val()||{};ADL=true;syncLinks();schedDraw()});
  on(db.ref('adminLinks'),s=>{ALK=s.val()||{};ALD=true;syncLinks()});
- on(db.ref('balanceRequests').limitToLast(100),s=>{REQ=s.val()||{};draw()});
- on(db.ref('adminFeatures'),s=>{FEAT=s.val()||{};draw()});
- on(db.ref('adminSettings/depositBonus'),s=>{BON=s.val()||{};draw()});
- on(db.ref('adminSettings/userAdminOn'),s=>{UAON=s.val()!==false;draw()});
- on(db.ref('games'),s=>{GAMES=s.val()||{};draw()});
- on(db.ref('provider_games'),s=>{PROV_GAMES=s.val()||{};if(cur==='games')draw()});
- on(db.ref('users'),s=>{USERS=s.val()||{};draw()});
- on(db.ref('device_registry'),s=>{DEVREG=s.val()||{};draw()});
- on(db.ref('game_transactions').limitToLast(2500),s=>{GTX=s.val()||{};draw()});
- on(db.ref('agents'),s=>{AGENTS=s.val()||{};draw()});
- on(db.ref('agentBalanceRequests').limitToLast(200),s=>{AGREQ=s.val()||{};draw()});
- on(db.ref('affiliates'),s=>{AFFS=s.val()||{};draw()});
- on(db.ref('affiliateCommissionRequests').limitToLast(200),s=>{AFFREQ=s.val()||{};draw()});
- on(db.ref('balanceLedger').limitToLast(100),s=>{LED=s.val()||{};draw()})}
+ on(db.ref('balanceRequests').limitToLast(100),s=>{REQ=s.val()||{};schedDraw()});
+ on(db.ref('adminFeatures'),s=>{FEAT=s.val()||{};schedDraw()});
+ on(db.ref('adminSettings/depositBonus'),s=>{BON=s.val()||{};schedDraw()});
+ on(db.ref('adminSettings/userAdminOn'),s=>{UAON=s.val()!==false;schedDraw()});
+ on(db.ref('games'),s=>{GAMES=s.val()||{};schedDraw()});
+ on(db.ref('provider_games'),s=>{PROV_GAMES=s.val()||{};if(cur==='games')schedDraw()});
+ on(db.ref('users'),s=>{USERS=s.val()||{};schedDraw()});
+ on(db.ref('device_registry'),s=>{DEVREG=s.val()||{};schedDraw()});
+ on(db.ref('game_transactions').limitToLast(2500),s=>{GTX=s.val()||{};schedDraw()});
+ on(db.ref('agents'),s=>{AGENTS=s.val()||{};schedDraw()});
+ on(db.ref('agentBalanceRequests').limitToLast(200),s=>{AGREQ=s.val()||{};schedDraw()});
+ on(db.ref('affiliates'),s=>{AFFS=s.val()||{};schedDraw()});
+ on(db.ref('affiliateCommissionRequests').limitToLast(200),s=>{AFFREQ=s.val()||{};schedDraw()});
+ on(db.ref('balanceLedger').limitToLast(100),s=>{LED=s.val()||{};schedDraw()})}
 function detachAll(){LST.forEach(r=>{try{r.off()}catch(e){}});LST=[];started=false;ALK={};ADL=false;ALD=false;ADM={};REQ={};LED={};GAMES={};PROV_GAMES={};USERS={};ACT={};GTX={};DEVREG={};AGENTS={};AGREQ={};AFFS={};AFFREQ={};MB=0;FEAT={};SEL='';UAON=true;BON={};AQ='';AFULL={};GTXFULL={};AQ_AG='';AQ_AF=''}
 function bindAuth(){if(AUTHUNSUB)AUTHUNSUB();const my=TID;
  AUTHUNSUB=auth.onAuthStateChanged(async u=>{if(my!==TID)return;
@@ -2903,7 +2906,7 @@ function draw(){if(!started)return;
    </tr>`}).join('')+`</table></div>`}
  if(cur==='act'){h=actView()}
  if(cur==='feat'){let g='';h=`<div class="row"><button class="p" onclick="fAll(true)">সব চালু</button><button class="d" onclick="fAll(false)">সব বন্ধ</button></div><div class="cd" style="margin-bottom:10px"><span>এখানে বন্ধ করা ফিচার User Admin প্যানেলে লুকিয়ে যাবে ও কাজ করবে না। চালু করলে আবার দেখা যাবে ও কাজ করবে।</span></div><div class="sc"><table>`+
-  FL.map(([k,gr,l])=>{const on=FEAT[k]!==false,hd=gr!==g?`<tr><th colspan="3" style="color:var(--gold)">${esc(gr)}</th></tr>`:'';g=gr;return hd+`<tr><td>${esc(l)}</td><td><span class="pl ${on?'':'b'}">${on?'চালু':'বন্ধ'}</span></td><td><button class="${on?'d':'p'}" onclick="fSet('${k}',${!on})">${on?'বন্ধ করুন':'চালু করুন'}</button></td></tr>`}).join('')+`</table></div>`}
+  FL.map(([k,gr,l])=>{const on=FEAT[k]!==false,hd=gr!==g?`<tr><th colspan="3" style="color:var(--gold)">${esc(gr)}</th></tr>`:'';g=gr;return hd+`<tr><td>${esc(l)}</td><td><span class="pl ${on?'':'b'}">${on?'চালু':'বন্ধ'}</span></td><td><button class="${on?'d':'p'}" onclick="fSet('${k}',${!on})">${on?'বন্ধ করুন':'চালু করুন'}</button></td></tr>`}).join('')+`</table></div><div id="mw-biometric-slot" style="margin-top:16px"></div>`}
 
  if(cur==='admin'){const a=ADM[SEL];if(!a){cur='admins';return draw()}
   const MF=a.features||{},my=Object.entries(USERS).filter(([k,u])=>u.adminUid===SEL),rq=Object.entries(REQ).filter(([k,r])=>r.uid===SEL).reverse(),lg=Object.values(LED).filter(l=>l.uid===SEL).reverse().slice(0,20);let g='';
@@ -2996,7 +2999,7 @@ appId: "1:123:web:abc"'></textarea></div>
 /* ===== DEPOSIT PROMOTION (নতুন ফিচার) ===== */
 let PROMO={},PF={},PEDIT='';
 const _attachAll=attachAll;
-attachAll=function(){_attachAll();on(db.ref('depositPromotions'),s=>{PROMO=s.val()||{};draw()})};
+attachAll=function(){_attachAll();on(db.ref('depositPromotions'),s=>{PROMO=s.val()||{};schedDraw()})};
 const _draw=draw;
 draw=function(){_draw();const b=$('t-promo');if(b)b.className=cur==='promo'?'on':'';if(started&&cur==='promo')promoDraw()};
 const pLoc=ms=>ms?new Date(+ms-new Date().getTimezoneOffset()*6e4).toISOString().slice(0,16):'';
@@ -3030,9 +3033,9 @@ let UPCFG_ALL={global:{},byAdmin:{}},UP_SCOPE='global',PROVIDERS={},PLAYER_CHATS
 const _attachAllUP=attachAll;
 attachAll=function(){
  _attachAllUP();
- on(db.ref('userPanelConfig'),s=>{UPCFG_ALL=s.val()||{global:{},byAdmin:{}};if(!UPCFG_ALL.global)UPCFG_ALL.global={};if(!UPCFG_ALL.byAdmin)UPCFG_ALL.byAdmin={};draw()});
- on(db.ref('providers'),s=>{PROVIDERS=s.val()||{};draw()});
- on(db.ref('supportChats'),s=>{PLAYER_CHATS=s.val()||{};const pc=Object.values(PLAYER_CHATS).filter(c=>c&&c.unreadForMaster).length;const ac=Object.values(CHAT_METAS).filter(m=>m&&m.unreadForMaster).length;const tot=pc+ac;const b=$('nav-chat-unread'),fb=$('m-fab-chat-badge');const txt=tot>9?'9+':String(tot);if(b){b.textContent=txt;b.style.display=tot>0?'inline-block':'none'}if(fb){fb.textContent=txt;fb.style.display=tot>0?'flex':'none'}if(cur==='chat')draw();if(M_POPUP_OPEN)renderMasterChatPopup()});
+ on(db.ref('userPanelConfig'),s=>{UPCFG_ALL=s.val()||{global:{},byAdmin:{}};if(!UPCFG_ALL.global)UPCFG_ALL.global={};if(!UPCFG_ALL.byAdmin)UPCFG_ALL.byAdmin={};schedDraw()});
+ on(db.ref('providers'),s=>{PROVIDERS=s.val()||{};schedDraw()});
+ on(db.ref('supportChats'),s=>{PLAYER_CHATS=s.val()||{};const pc=Object.values(PLAYER_CHATS).filter(c=>c&&c.unreadForMaster).length;const ac=Object.values(CHAT_METAS).filter(m=>m&&m.unreadForMaster).length;const tot=pc+ac;const b=$('nav-chat-unread'),fb=$('m-fab-chat-badge');const txt=tot>9?'9+':String(tot);if(b){b.textContent=txt;b.style.display=tot>0?'inline-block':'none'}if(fb){fb.textContent=txt;fb.style.display=tot>0?'flex':'none'}if(cur==='chat')schedDraw();if(M_POPUP_OPEN)renderMasterChatPopup()});
 };
 
 async function syncAllAffiliateCodes(){
@@ -3576,11 +3579,10 @@ function npmChatHtml(){
     }
   }
   var _d3=draw;
-  draw=function(){_d3();try{check();badge();if($$('notif-drawer').classList.contains('open'))renderDrawer()}catch(e){}};
+  draw=function(){_d3();try{check();badge();if($$('notif-drawer').classList.contains('open'))renderDrawer()}catch(e){}try{if(cur==='feat')window.dispatchEvent(new Event('mw:view'))}catch(e){}};
   drawerNote();
 })();
 </script>
-<script>if('serviceWorker' in navigator&&(location.protocol==='https:'||location.hostname==='localhost')){window.addEventListener('load',function(){navigator.serviceWorker.register('./master-sw.js').catch(function(){})})}</script>
 <script>
 (function(){
   function fitLogo(wrapId, tagId){
@@ -3602,4 +3604,6 @@ function npmChatHtml(){
   setTimeout(fitAll,200);
 })();
 </script>
+<script src="./pwa.js"></script>
+<script src="./passkey.js"></script>
 </body></html>

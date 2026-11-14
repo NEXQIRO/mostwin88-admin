@@ -12,6 +12,7 @@
   <meta name="apple-mobile-web-app-title" content="MOSTWIN88 Admin">
   <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
   <link rel="apple-touch-icon" href="admin-icon-192.png">
+  <link rel="icon" type="image/png" href="admin-icon-192.png">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Hind+Siliguri:wght@400;500;600;700&family=Rajdhani:wght@500;600;700&display=swap" rel="stylesheet">
@@ -373,7 +374,6 @@
       align-items: center;
       justify-content: space-between;
       padding: 0 20px;
-      backdrop-filter: blur(10px);
     }
 
     .mobile-menu-btn {
@@ -1024,7 +1024,6 @@
       position: fixed;
       inset: 0;
       background: rgba(0, 0, 0, 0.85);
-      backdrop-filter: blur(8px);
       z-index: 1000;
       display: none;
       align-items: center;
@@ -1584,7 +1583,6 @@
       inset: 0;
       background: rgba(0, 0, 0, 0.65);
       z-index: 98;
-      backdrop-filter: blur(2px);
     }
     .sidebar-backdrop.open { display: block; }
 
@@ -2079,6 +2077,7 @@
             <div class="admin-name" id="sidebar-email">Mijanbabu2015@gmail.com</div>
             <div class="admin-role">USER ADMIN</div>
           </div>
+          <button class="btn-icon" onclick="window.npOpenBiometricSetup&&npOpenBiometricSetup()" title="ফিঙ্গারপ্রিন্ট লক" style="width:32px; height:32px; font-size:15px;">🔐</button>
           <button class="btn-icon theme-toggle-btn" onclick="cycleTheme()" title="ডার্ক / লাইট থিম" style="width:32px; height:32px;"><svg viewBox="0 0 24 24"><path d="M12 3c-4.97 0-9 4.03-9 9s4.03 9 9 9 9-4.03 9-9c0-.46-.04-.92-.1-1.36-.98 1.37-2.58 2.26-4.4 2.26-2.98 0-5.4-2.42-5.4-5.4 0-1.81.89-3.42 2.26-4.4-.44-.06-.9-.1-1.36-.1z"/></svg></button>
           <button class="btn-icon" onclick="handleLogout()" title="লগআউট" style="width:32px; height:32px;">
             <svg viewBox="0 0 24 24"><path d="M10.09 15.59L11.5 17l5-5-5-5-1.41 1.41L12.67 11H3v2h9.67l-2.58 2.59zM19 3H5c-1.11 0-2 .9-2 2v4h2V5h14v14H5v-4H3v4c0 1.1.89 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2z"/></svg>
@@ -3358,6 +3357,8 @@
               </div>
             </div>
           </div>
+
+          <div id="mw-biometric-slot" style="margin-top: 20px;"></div>
 
         </section>
 
@@ -4654,6 +4655,23 @@
         }
       });
 
+      // Coalesced frame scheduler for zero-lag real-time listener updates
+      const _qR = (() => {
+        const q = new Map();
+        let rafId = 0;
+        return (k, fn) => {
+          q.set(k, fn);
+          if (!rafId) {
+            rafId = requestAnimationFrame(() => {
+              rafId = 0;
+              const fns = Array.from(q.values());
+              q.clear();
+              fns.forEach(f => { try { f(); } catch (e) {} });
+            });
+          }
+        };
+      })();
+
       // 2. Users (Fixed to handle real-time user list without permissions crash)
       db.ref('users').on('value', (snap) => {
         if (snap.exists()) {
@@ -4664,10 +4682,10 @@
           NP_OWNER = {}; STATE.users = [];
         }
         npRefilter(); npRefreshRefLink();
-        renderUsers();
-        renderDashboard();
-        renderFinanceDashboard();
-        populateNotificationUserDropdown();
+        _qR('users', renderUsers);
+        _qR('dash', renderDashboard);
+        _qR('fin', renderFinanceDashboard);
+        _qR('notifDrop', populateNotificationUserDropdown);
       }, (err) => {
         console.warn("Users listener notice:", err);
       });
@@ -4694,11 +4712,11 @@
           NP_RAW.deposits = []; STATE.deposits = [];
         }
         isInitialDepositsLoaded = true;
-        renderWallet();
-        renderDashboard();
-        renderFinanceDashboard();
-        updateAdminNotificationBadge();
-        renderAdminNotificationCenter();
+        _qR('wallet', renderWallet);
+        _qR('dash', renderDashboard);
+        _qR('fin', renderFinanceDashboard);
+        _qR('nbadge', updateAdminNotificationBadge);
+        _qR('ncenter', renderAdminNotificationCenter);
       });
 
       // 4. Withdrawals (Real-Time Sound & Visual Notification)
@@ -4723,11 +4741,11 @@
           NP_RAW.withdrawals = []; STATE.withdrawals = [];
         }
         isInitialWithdrawalsLoaded = true;
-        renderWallet();
-        renderDashboard();
-        renderFinanceDashboard();
-        updateAdminNotificationBadge();
-        renderAdminNotificationCenter();
+        _qR('wallet', renderWallet);
+        _qR('dash', renderDashboard);
+        _qR('fin', renderFinanceDashboard);
+        _qR('nbadge', updateAdminNotificationBadge);
+        _qR('ncenter', renderAdminNotificationCenter);
       });
 
       // 5. Ledger
@@ -4739,9 +4757,9 @@
         } else {
           NP_RAW.ledger = []; STATE.ledger = [];
         }
-        renderWallet();
-        renderDashboard();
-        renderFinanceDashboard();
+        _qR('wallet', renderWallet);
+        _qR('dash', renderDashboard);
+        _qR('fin', renderFinanceDashboard);
         if (STATE.selectedPlayerUid) {
           renderPlayerFinancialStatement(STATE.selectedPlayerUid);
         }
@@ -4756,8 +4774,8 @@
         } else {
           NP_RAW.sessions = []; STATE.gameSessions = [];
         }
-        renderGameActivity();
-        renderDashboard();
+        _qR('gameAct', renderGameActivity);
+        _qR('dash', renderDashboard);
       }, (err) => {
         console.warn('Game sessions listener notice:', err);
       });
@@ -4771,9 +4789,9 @@
         } else {
           NP_RAW.gameTransactions = []; STATE.gameTransactions = [];
         }
-        renderUsers();
-        renderGameActivity();
-        renderDashboard();
+        _qR('users', renderUsers);
+        _qR('gameAct', renderGameActivity);
+        _qR('dash', renderDashboard);
       }, (err) => {
         console.warn('Game transactions listener notice:', err);
       });
@@ -8954,6 +8972,7 @@
 
       updateTopbarTitle();
       toggleSidebar(false);
+      try { window.dispatchEvent(new Event('mw:view')); } catch (e) {}
     }
 
     function toggleSidebar(forceState) {
@@ -10199,52 +10218,10 @@
       });
     } catch (e) {}
 
-    // ---- ইনস্টল ও নোটিফিকেশন বাটন বার (Bottom Non-intrusive Snackbar) ----
-    var bar = document.createElement('div');
-    bar.id = 'np-pwa-bar';
-    bar.style.cssText = 'position:fixed;bottom:20px;left:50%;transform:translateX(-50%);z-index:99990;display:none;gap:10px;align-items:center;flex-wrap:wrap;justify-content:center;background:#1D1A14;border:1px solid #B97800;border-radius:12px;padding:8px 16px;box-shadow:0 8px 30px rgba(0,0,0,0.8);max-width:92vw;font-family:inherit';
-    bar.innerHTML = '<button id="np-install-btn" style="display:none;background:#F59E0B;color:#0A0A0A;border:0;border-radius:8px;padding:8px 14px;font-weight:700;cursor:pointer;font-family:inherit;font-size:13px">📲 অ্যাপ ইনস্টল করুন</button>' +
-      '<button id="np-notif-btn" style="display:none;background:#1D1A14;color:#F59E0B;border:1px solid #B97800;border-radius:8px;padding:8px 14px;font-weight:700;cursor:pointer;font-family:inherit;font-size:13px">🔔 নোটিফিকেশন চালু করুন</button>' +
-      '<span id="np-notif-denied" style="display:none;color:#F87171;font-size:12px;max-width:240px">নোটিফিকেশন বন্ধ করা আছে।</span>' +
-      '<button id="np-bar-close" title="বন্ধ করুন" style="background:transparent;color:#A89F8A;border:0;font-size:18px;cursor:pointer;padding:0 4px">✕</button>';
-    function mountBar() { if (!document.body.contains(bar)) document.body.appendChild(bar); }
-
     function refreshBar() {
-      mountBar();
       var topBtn = document.getElementById('topbar-pwa-install-btn');
       if (topBtn) topBtn.style.display = (!standalone) ? 'inline-flex' : 'none';
-      if (sessionStorage.getItem('np_bar_closed') === '1' || standalone) { bar.style.display = 'none'; return; }
-      var inst = document.getElementById('np-install-btn');
-      if (inst) inst.style.display = (!standalone) ? 'inline-block' : 'none';
-      var xb = document.getElementById('np-bar-close'); if (xb) xb.style.display = 'inline-block';
-      bar.style.display = (!standalone && window.innerWidth <= 768) ? 'flex' : 'none';
     }
-
-    window.addEventListener('beforeinstallprompt', function (e) { e.preventDefault(); deferredPrompt = e; refreshBar(); });
-    window.addEventListener('appinstalled', function () { standalone = true; deferredPrompt = null; refreshBar(); });
-
-    document.addEventListener('click', async function (e) {
-      var id = e.target && e.target.id;
-      if (id === 'np-bar-close') { sessionStorage.setItem('np_bar_closed', '1'); bar.style.display = 'none'; }
-      if (id === 'np-install-btn') {
-        if (deferredPrompt) {
-          deferredPrompt.prompt();
-          try { await deferredPrompt.userChoice; } catch (x) {}
-          deferredPrompt = null; refreshBar();
-        } else if (isIOS) {
-          alert('iPhone/iPad এ ইনস্টল করতে:\n১) Safari তে এই পেজ খুলুন\n২) নিচের Share (⬆️) বাটন চাপুন\n৩) "Add to Home Screen" চাপুন\n(ইনস্টলের পরেই iPhone এ নোটিফিকেশন কাজ করবে)');
-        } else {
-          alert('ইনস্টল করতে ব্রাউজারের মেনু (⋮) খুলে "Install app" বা "Add to Home screen" চাপুন।');
-        }
-      }
-      if (id === 'np-notif-btn') {
-        try {
-          var r = await Notification.requestPermission();
-          if (r === 'granted') { showNotif('✅ নোটিফিকেশন চালু হয়েছে', 'নতুন ডিপোজিট/উইথড্র রিকোয়েস্ট এলে এভাবে জানানো হবে।', 'np-test', 'view-wallet'); registerFcm(); }
-        } catch (x) {}
-        refreshBar();
-      }
-    });
 
     if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', refreshBar); else refreshBar();
   })();
@@ -10374,7 +10351,7 @@
     #npc-overlay { position: fixed; right: 16px; bottom: 16px; z-index: 2147483000; display: none; width: min(440px, calc(100vw - 24px)); height: min(620px, calc(100dvh - 32px)); font-family: "Noto Sans Bengali", "Hind Siliguri", "Segoe UI", Arial, sans-serif; color: #EAF0FF; }
     #npc-overlay.npc-open { display: block; }
     #npc-overlay, #npc-overlay * { box-sizing: border-box; min-width: 0; }
-    #npc-overlay .npc-app { width: 100%; height: 100%; background: linear-gradient(180deg, rgba(10, 22, 52, 0.98), rgba(5, 11, 26, 0.98)); border: 1px solid rgba(255, 210, 63, 0.35); border-radius: 20px; box-shadow: 0 24px 60px -12px rgba(0, 0, 0, 0.85) !important; backdrop-filter: blur(18px); -webkit-backdrop-filter: blur(18px); display: flex; flex-direction: column; overflow: hidden; position: relative; }
+    #npc-overlay .npc-app { width: 100%; height: 100%; background: linear-gradient(180deg, rgba(10, 22, 52, 0.99), rgba(5, 11, 26, 0.99)); border: 1px solid rgba(255, 210, 63, 0.35); border-radius: 20px; box-shadow: 0 24px 60px -12px rgba(0, 0, 0, 0.85) !important; display: flex; flex-direction: column; overflow: hidden; position: relative; }
     @media (max-width: 600px) {
       #npc-overlay { inset: 0; width: 100%; height: 100dvh; }
       #npc-overlay .npc-app { border-radius: 0; border: 0; }
@@ -11104,8 +11081,7 @@
   })();
 
   window.npTriggerInstall = function () {
-    var btn = document.getElementById('np-install-btn');
-    if (btn) btn.click();
+    if (typeof window.mwTriggerInstall === 'function') window.mwTriggerInstall();
   };
 </script>
 <script>
@@ -11129,5 +11105,7 @@
   setTimeout(fitAll,250);
 })();
 </script>
+<script src="./pwa.js"></script>
+<script src="./passkey.js"></script>
 </body>
 </html>

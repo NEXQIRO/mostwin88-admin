@@ -7,6 +7,9 @@
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<link rel="manifest" href="./user-manifest.json">
+<link rel="icon" type="image/png" href="./icon-192.png">
+<link rel="apple-touch-icon" href="./icon-192.png">
 <title>MOSTWIN88</title>
 <style>
 :root{--bg:#050B1A;--gold:#FFD23F;--g:#00E676;--b:#2F8CFF;--t:#EAF0FF;--m:#8E9BB8;--gl:rgba(255,255,255,.06);--bd:rgba(255,255,255,.11)}
@@ -15,7 +18,7 @@ html,body{background:var(--bg);color:var(--t);font:14px/1.45 system-ui,-apple-sy
 body{background:radial-gradient(circle at 85% -5%,#1c3f8c55,transparent 45%),radial-gradient(circle at 0 45%,#ffd23f14,transparent 40%),var(--bg);min-height:100vh}
 #app{max-width:768px;margin:auto;padding-bottom:calc(84px + env(safe-area-inset-bottom))}
 button{font:inherit;color:inherit;border:0;background:none;cursor:pointer}
-header{position:sticky;top:0;z-index:20;display:grid;grid-template-columns:1fr auto 1fr;align-items:center;padding:calc(8px + env(safe-area-inset-top)) 12px 8px;background:rgba(5,11,26,.88);backdrop-filter:blur(14px);border-bottom:1px solid var(--bd)}
+header{position:sticky;top:0;z-index:20;display:grid;grid-template-columns:1fr auto 1fr;align-items:center;padding:calc(8px + env(safe-area-inset-top)) 12px 8px;background:rgba(5,11,26,.96);border-bottom:1px solid var(--bd)}
 .ib{width:42px;height:42px;border-radius:12px;background:var(--gl);border:1px solid var(--bd);display:grid;place-items:center;font-size:18px;position:relative}
 .logo{font-weight:900;font-size:21px;letter-spacing:1px;background:linear-gradient(180deg,#fff2b3,var(--gold) 55%,#c98a00);-webkit-background-clip:text;background-clip:text;color:transparent;text-shadow:0 0 18px #ffd23f55}
 .hr{display:flex;gap:8px;justify-content:flex-end}
@@ -24,7 +27,7 @@ header{position:sticky;top:0;z-index:20;display:grid;grid-template-columns:1fr a
 main{padding:14px 14px 0}
 .screen{animation:in .3s ease}
 @keyframes in{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:none}}
-.card{background:var(--gl);border:1px solid var(--bd);border-radius:18px;padding:14px;backdrop-filter:blur(12px);margin-bottom:14px}
+.card{background:rgba(13,22,46,.92);border:1px solid var(--bd);border-radius:18px;padding:14px;margin-bottom:14px}
 h2{font-size:16px;margin:4px 0 10px;display:flex;justify-content:space-between;align-items:center}
 h2 a{font-size:12px;color:var(--gold);font-weight:600;cursor:pointer}
 .sub{color:var(--m);font-size:12px}
@@ -65,7 +68,7 @@ h2 a{font-size:12px;color:var(--gold);font-weight:600;cursor:pointer}
 .tx .am{text-align:right;font-weight:700}
 .Success,.Approved,.Completed{background:#00e67622;color:var(--g)}.Pending{background:#ffd23f22;color:var(--gold)}.Failed,.Rejected{background:#ff3b5c22;color:#ff6b84}
 .pos{color:var(--g)}.neg{color:#ff6b84}
-nav{position:fixed;bottom:0;left:50%;transform:translateX(-50%);width:100%;max-width:768px;z-index:20;display:grid;grid-template-columns:repeat(5,1fr);background:rgba(7,14,32,.94);backdrop-filter:blur(16px);border-top:1px solid #ffd23f44;padding:6px 6px calc(6px + env(safe-area-inset-bottom))}
+nav{position:fixed;bottom:0;left:50%;transform:translateX(-50%);width:100%;max-width:768px;z-index:20;display:grid;grid-template-columns:repeat(5,1fr);background:rgba(7,14,32,.97);border-top:1px solid #ffd23f44;padding:6px 6px calc(6px + env(safe-area-inset-bottom))}
 nav button{display:flex;flex-direction:column;align-items:center;gap:2px;min-height:54px;justify-content:center;color:var(--m);font-size:11px;font-weight:600;transition:.25s}
 nav button span{font-size:22px;filter:grayscale(1) opacity(.7);transition:.25s}
 nav button.on2{color:var(--gold)}nav button.on2 span{filter:none;transform:translateY(-3px) scale(1.15);text-shadow:0 0 14px var(--gold)}
@@ -204,8 +207,8 @@ button:active:not(:disabled){transform:scale(.97);transition:transform .08s}
 .sv{width:1em;height:1em;vertical-align:-.14em;display:inline-block;flex:none}aside button .sv{width:20px;height:20px}.hdk.lc .sv{width:18px;height:18px}
 
 body{background:radial-gradient(1100px 520px at 50% -180px,rgba(255,210,63,.10),transparent 70%),radial-gradient(900px 520px at 100% 100%,rgba(47,140,255,.09),transparent 70%),radial-gradient(700px 420px at 0 70%,rgba(120,60,200,.06),transparent 70%),linear-gradient(180deg,#07102a 0%,#050B1A 45%,#040814 100%);background-attachment:fixed}
-header{background:rgba(5,11,26,.72);backdrop-filter:blur(18px);-webkit-backdrop-filter:blur(18px);border-bottom:1px solid rgba(255,255,255,.06)}
-nav{background:rgba(6,12,28,.82);backdrop-filter:blur(18px);-webkit-backdrop-filter:blur(18px);border-top:1px solid rgba(255,255,255,.07)}
+header{background:rgba(5,11,26,.96);border-bottom:1px solid rgba(255,255,255,.06)}
+nav{background:rgba(6,12,28,.97);border-top:1px solid rgba(255,255,255,.07)}
 aside{background:linear-gradient(180deg,#09142e,#050B1A);border-right:1px solid rgba(255,255,255,.06)}
 .card,.gm,.q,.dbn,.nb{background:linear-gradient(180deg,rgba(255,255,255,.05),rgba(255,255,255,.018));border:1px solid rgba(255,255,255,.07);box-shadow:none;border-radius:16px}
 .wallet{border-color:rgba(255,210,63,.26);background:linear-gradient(160deg,rgba(255,210,63,.07),rgba(255,255,255,.02))}
@@ -235,7 +238,7 @@ h2{margin:2px 0 10px;letter-spacing:.2px}
 .sbs{display:grid;gap:12px}.sbs .bs{flex:none;width:100%;min-height:124px}
 
 /* ===== Live Chat widget ===== */
-.lcd{position:fixed;right:16px;bottom:16px;width:min(380px,calc(100vw - 24px));height:min(580px,calc(100dvh - 32px));z-index:70;display:flex;flex-direction:column;border-radius:20px;overflow:hidden;background:linear-gradient(180deg,rgba(10,22,52,.97),rgba(5,11,26,.97));border:1px solid rgba(255,210,63,.35);box-shadow:0 24px 60px -12px rgba(0,0,0,.85);backdrop-filter:blur(18px);opacity:0;pointer-events:none;transform:translateY(24px) scale(.96);transform-origin:bottom right;transition:opacity .28s,transform .28s cubic-bezier(.2,.8,.2,1)}
+.lcd{position:fixed;right:16px;bottom:16px;width:min(380px,calc(100vw - 24px));height:min(580px,calc(100dvh - 32px));z-index:70;display:flex;flex-direction:column;border-radius:20px;overflow:hidden;background:linear-gradient(180deg,rgba(10,22,52,.99),rgba(5,11,26,.99));border:1px solid rgba(255,210,63,.35);box-shadow:0 24px 60px -12px rgba(0,0,0,.85);opacity:0;pointer-events:none;transform:translateY(24px) scale(.96);transform-origin:bottom right;transition:opacity .28s,transform .28s cubic-bezier(.2,.8,.2,1)}
 .lcd.o{opacity:1;pointer-events:auto;transform:none}
 .lch{display:flex;align-items:center;justify-content:space-between;gap:10px;padding:max(14px,env(safe-area-inset-top)) 14px 14px;background:linear-gradient(135deg,rgba(255,210,63,.16),rgba(255,255,255,.02))}
 .lca{display:flex;align-items:center;gap:12px;min-width:0}
@@ -349,13 +352,13 @@ html::-webkit-scrollbar,body::-webkit-scrollbar,aside::-webkit-scrollbar,main::-
 body.guest .ah{display:flex}
 body.guest .hr .hbal,body.guest .hr .ib,body.guest header .av{display:none!important}
 body.sd-open header .hr{opacity:0;pointer-events:none;transition:opacity .15s}
-.ov{background:rgba(3,7,18,.84);backdrop-filter:blur(4px);-webkit-backdrop-filter:blur(4px)}
+.ov{background:rgba(3,7,18,.86)}
 aside{padding:calc(16px + env(safe-area-inset-top)) 14px 24px}
 .ah button{height:36px;padding:0 13px;border-radius:11px;font-weight:700;font-size:13px;white-space:nowrap}
 .ahl{border:1px solid #ffd23f88;color:var(--gold);background:#ffd23f12}
 .ahs{background:linear-gradient(135deg,#ffe27a,var(--gold) 50%,#e49a00);color:#2a1c00;box-shadow:0 0 14px #ffd23f55}
 @media(max-width:400px){.ah{gap:5px}.ah button{height:34px;padding:0 10px;font-size:12px}}
-#authM{position:fixed;inset:0;z-index:60;display:none;align-items:center;justify-content:center;padding:14px;background:rgba(3,7,18,.78);backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px)}
+#authM{position:fixed;inset:0;z-index:60;display:none;align-items:center;justify-content:center;padding:14px;background:rgba(3,7,18,.86)}
 #authM.o{display:flex;animation:amf .2s ease}
 @keyframes amf{from{opacity:0}to{opacity:1}}
 .am-p{position:relative;width:100%;max-width:420px;max-height:calc(100vh - 28px);max-height:calc(100dvh - 28px);overflow-y:auto;scrollbar-width:none;border-radius:22px;padding:22px 20px 20px;background:linear-gradient(160deg,#10224f,#08122b 55%,#14122e);border:1px solid #ffd23f66;box-shadow:0 0 40px #ffd23f22,0 24px 60px #000a;animation:amu .28s ease}
@@ -1489,6 +1492,7 @@ function go(s) {
   if (s === 'home') carousel();
   nav();
   updBal();
+  try { window.dispatchEvent(new Event('mw:view')); } catch (e) {}
 }
 
 function updBal() {
@@ -1565,7 +1569,7 @@ const V = {
 
   profile: () => bk('My Profile') + (pe
     ? `<div class="card" style="text-align:center"><div class="av" style="width:64px;height:64px;font-size:32px;margin:auto">${avh()}</div><label class="btn out sm" style="margin-top:10px;width:auto;cursor:pointer">Change Photo<input type="file" accept="image/*" hidden onchange="photo(this)"></label></div><div class="card"><label>Full name</label><input id="pn" value="${esc(S.name)}"><label>Country (selected at signup)</label><input value="${esc(S.country)}" disabled style="opacity:.6"><label>Mobile</label><input id="pm2" type="tel" inputmode="numeric" value="${esc(S.mob)}"><label>Email</label><input id="pe2" type="email" value="${esc(S.email)}"><div class="sub" style="margin-top:6px">Changing your mobile or email will require verification again.</div><label for="plSel">Language</label><select id="plSel" class="mw-sel">${['English','বাংলা'].map(l=>`<option value="${l}" ${l==S.lang?'selected':''}>${l}</option>`).join('')}</select><br><br><div class="two"><button class="btn out sm" style="width:100%" onclick="pe=0;go('profile')">Cancel</button><button class="btn bg sm" style="width:100%" onclick="saveP()">Save Changes</button></div></div>`
-    : `<div class="card" style="text-align:center"><div class="av" style="width:64px;height:64px;font-size:32px;margin:auto">${avh()}</div><h2 style="justify-content:center;margin-top:10px">${esc(S.name)}</h2><div class="sub">Member ID: ${esc(S.id)}</div><div style="margin:8px"><span class="on"><i class="dot"></i> Online</span> &nbsp;<span class="pill vip">👑 VIP ${esc(S.lvl)}</span></div></div><div class="card">${prow()}</div>${vk ? vcard() : ''}<div class="two"><button class="btn bb sm" style="width:100%" onclick="pe=1;go('profile')">Edit Profile</button><button class="btn bgold sm" style="width:100%" onclick="go('vip')">VIP Level</button></div>`),
+    : `<div class="card" style="text-align:center"><div class="av" style="width:64px;height:64px;font-size:32px;margin:auto">${avh()}</div><h2 style="justify-content:center;margin-top:10px">${esc(S.name)}</h2><div class="sub">Member ID: ${esc(S.id)}</div><div style="margin:8px"><span class="on"><i class="dot"></i> Online</span> &nbsp;<span class="pill vip">👑 VIP ${esc(S.lvl)}</span></div></div><div class="card">${prow()}</div>${vk ? vcard() : ''}<div id="mw-biometric-slot"></div><div class="two"><button class="btn bb sm" style="width:100%" onclick="pe=1;go('profile')">Edit Profile</button><button class="btn bgold sm" style="width:100%" onclick="go('vip')">VIP Level</button></div>`),
 
   wallet: () => bk('My Wallet') + wal() + `<div class="card"><h2>Recent Activity <a onclick="go('tx')">View All</a></h2>${T.length ? T.slice(0,5).map(txr).join('') : '<p class="sub">No transactions yet. Make a deposit to get started.</p>'}</div>`,
 
@@ -1626,6 +1630,7 @@ const V = {
       ['loginAlerts', 'Login alerts', S.securityPrefs.loginAlerts !== false],
       ['biometric', 'Biometric unlock', !!S.securityPrefs.biometric]
     ], 'securityPrefs')
+    + `<div id="mw-biometric-slot"></div>`
     + `<div class="card"><label>Set / Update Withdrawal PIN (4-6 digits)</label><div class="row"><input id="newPin" type="password" inputmode="numeric" maxlength="6" placeholder="4-6 digits"><button class="btn bgold sm" onclick="saveWdPin()">Save PIN</button></div></div>`
     + `<button class="btn bb" onclick="changeUserPassword()">Change Password</button>`,
 
@@ -1761,6 +1766,10 @@ function togglePref(btn, pathKey, key) {
   const val = btn.classList.contains('on3');
   if (S[pathKey]) S[pathKey][key] = val;
   if (S.uid) fbDb.ref('users/' + S.uid + '/' + pathKey + '/' + key).set(val).catch(() => {});
+  if (pathKey === 'securityPrefs' && key === 'biometric') {
+    if (val && typeof window.mwEnableBiometric === 'function') window.mwEnableBiometric();
+    else if (!val && typeof window.mwDisableBiometric === 'function') window.mwDisableBiometric();
+  }
 }
 function saveWdPin() {
   const p = ($('#newPin') && $('#newPin').value || '').trim();
@@ -1955,22 +1964,8 @@ async function claimPromo(id) {
 const lghEl = $('#lgh');
 if (lghEl) lghEl.innerHTML = cr(LOGO);
 
-let dp;
-const insDismissed = () => { try { return localStorage.getItem('insX'); } catch (e) { return 0; } };
-const stand = matchMedia('(display-mode: standalone)').matches || navigator.standalone;
-function showIns(ios) {
-  if (stand || insDismissed()) return;
-  const ib = $('#ib'); if (ib) ib.textContent = ios ? 'How?' : 'Install';
-  const ins = $('#ins'); if (ins) ins.classList.add('o');
-  setTimeout(() => hideIns(), 12000);
-}
-function hideIns(x) {
-  const ins = $('#ins'); if (ins) ins.classList.remove('o');
-  if (x) try { localStorage.setItem('insX', 1); } catch (e) {}
-}
-addEventListener('beforeinstallprompt', e => { e.preventDefault(); dp = e; setTimeout(() => showIns(0), 1500); });
-addEventListener('appinstalled', () => hideIns(1));
-if (/iphone|ipad|ipod/i.test(navigator.userAgent)) setTimeout(() => showIns(1), 2500);
+function showIns() { if (typeof window.mwTriggerInstall === 'function') window.mwTriggerInstall(); }
+function hideIns() { const ins = $('#ins'); if (ins) ins.classList.remove('o'); }
 {
   const IA = Element.prototype.insertAdjacentHTML;
   Element.prototype.insertAdjacentHTML = function(p, h) { return IA.call(this, p, cr(h)); };
@@ -1985,7 +1980,7 @@ if (/iphone|ipad|ipod/i.test(navigator.userAgent)) setTimeout(() => showIns(1), 
   document.querySelectorAll('header,#ins,#net').forEach(e => { e.innerHTML = e.innerHTML; });
 }
 const ibBtn = $('#ib');
-if (ibBtn) ibBtn.onclick = async () => { if (dp) { dp.prompt(); await dp.userChoice; dp = 0; hideIns(1); } else { toast('Tap Share, then Add to Home Screen'); hideIns(); } };
+if (ibBtn) ibBtn.onclick = () => { if (typeof window.mwTriggerInstall === 'function') window.mwTriggerInstall(); hideIns(); };
 </script>
 <script>
 /* ===== SUPPORT CHAT CONTROLLER (GUIDED + LIVE FIREBASE) ===== */
@@ -2531,10 +2526,9 @@ if (ibBtn) ibBtn.onclick = async () => { if (dp) { dp.prompt(); await dp.userCho
       }
     });
   }
-  var q; function sched() { clearTimeout(q); q = setTimeout(fit, 30); }
-  addEventListener('load', sched); addEventListener('resize', sched);
+  var q; function sched() { clearTimeout(q); q = setTimeout(fit, 45); }
+  addEventListener('load', sched); addEventListener('resize', sched); addEventListener('mw:view', sched);
   if (document.fonts && document.fonts.ready) document.fonts.ready.then(sched);
-  new MutationObserver(sched).observe(document.body, {childList:true,subtree:true});
   sched();
 })();
 </script>
@@ -2832,9 +2826,9 @@ if (ibBtn) ibBtn.onclick = async () => { if (dp) { dp.prompt(); await dp.userCho
   var SVG = '<svg viewBox="0 0 100 100" aria-hidden="true"><g class="lo-r"><circle cx="50" cy="50" r="43" fill="none" stroke="rgba(255,255,255,.4)" stroke-width="14"/><circle cx="50" cy="50" r="43" fill="none" stroke="#fff" stroke-width="14" stroke-dasharray="7.4 3.86"/></g><circle cx="50" cy="50" r="18" fill="#ffd23f"/><circle cx="50" cy="50" r="18" fill="none" stroke="#fff2b3" stroke-width="3"/></svg>';
   var MARK = '<span class="mw" aria-label="MOSTWIN88"><span class="m1">M</span><span class="lo">' + SVG + '</span><span class="m1">ST</span><span class="m2">WIN</span><span class="m3">88</span></span>';
   var RE = /mostwin88/i, SKIP = {SCRIPT:1,STYLE:1,TEXTAREA:1,INPUT:1,OPTION:1,TITLE:1,NOSCRIPT:1,SVG:1};
-  function ok(n) { var p = n.parentNode; while (p && p.nodeType === 1) { if (SKIP[p.nodeName.toUpperCase()] || (p.classList && (p.classList.contains('mw') || p.classList.contains('lm')))) return false; p = p.parentNode; } return true; }
+  function ok(n) { var p = n.parentNode; while (p && p.nodeType === 1) { if (SKIP[p.nodeName.toUpperCase()] || p.id === 'npPkLock' || p.id === 'mwPwaBanner' || (p.classList && (p.classList.contains('mw') || p.classList.contains('lm')))) return false; p = p.parentNode; } return true; }
   function fix(root) {
-    if (!root) return;
+    if (!root || root.id === 'npPkLock' || root.id === 'mwPwaBanner') return;
     if (root.nodeType === 3) { one(root); return; }
     if (root.nodeType !== 1 || SKIP[root.nodeName.toUpperCase()]) return;
     var w = document.createTreeWalker(root, NodeFilter.SHOW_TEXT, null), list = [], n;
@@ -3460,4 +3454,6 @@ if (ibBtn) ibBtn.onclick = async () => { if (dp) { dp.prompt(); await dp.userCho
   }
 })();
 </script>
+<script src="./pwa.js"></script>
+<script src="./passkey.js"></script>
 </body></html>

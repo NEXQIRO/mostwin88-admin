@@ -7,6 +7,10 @@
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
 <meta name="apple-mobile-web-app-title" content="MOSTWIN88 Affiliate">
+<meta name="mobile-web-app-capable" content="yes">
+<link rel="manifest" href="./affiliate-manifest.json">
+<link rel="icon" type="image/png" href="./affiliate-icon-192.png">
+<link rel="apple-touch-icon" href="./affiliate-icon-192.png">
 <title>MOSTWIN88 — Live Affiliate Workspace</title>
 <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-app-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-auth-compat.js"></script>
@@ -136,7 +140,7 @@ body.chat-open .chat-fab{display:none!important}
 .chat-fab .fab-lbl{font-size:7.5px;font-weight:800;letter-spacing:.3px;color:#2a1c00;margin-top:1px}
 .chat-fab::after{content:"";position:absolute;top:3px;right:3px;width:11px;height:11px;border-radius:50%;background:#00E676;border:2px solid #050B1A;animation:mwChatPulse 1.8s infinite}
 .chat-fab-badge{position:absolute;top:-4px;left:-4px;background:#ef4444;color:#fff;font-size:10px;font-weight:800;min-width:20px;height:20px;padding:0 5px;border-radius:20px;display:none;place-items:center;border:2px solid #050B1A;z-index:2}
-.chat-drawer{position:fixed;right:16px;bottom:16px;width:min(380px,calc(100vw - 24px));height:min(580px,calc(100dvh - 32px));background:linear-gradient(180deg,rgba(10,22,52,.98),rgba(5,11,26,.98));border:1px solid rgba(255,210,63,.35);border-radius:20px;box-shadow:0 24px 60px -12px rgba(0,0,0,.85);backdrop-filter:blur(18px);-webkit-backdrop-filter:blur(18px);z-index:9995;display:flex;flex-direction:column;overflow:hidden;opacity:0;pointer-events:none;transform:translateY(24px) scale(.96);transform-origin:bottom right;transition:opacity .28s,transform .28s cubic-bezier(.2,.8,.2,1);color:#EAF0FF}
+.chat-drawer{position:fixed;right:16px;bottom:16px;width:min(380px,calc(100vw - 24px));height:min(580px,calc(100dvh - 32px));background:linear-gradient(180deg,rgba(10,22,52,.99),rgba(5,11,26,.99));border:1px solid rgba(255,210,63,.35);border-radius:20px;box-shadow:0 24px 60px -12px rgba(0,0,0,.85);z-index:9995;display:flex;flex-direction:column;overflow:hidden;opacity:0;pointer-events:none;transform:translateY(24px) scale(.96);transform-origin:bottom right;transition:opacity .28s,transform .28s cubic-bezier(.2,.8,.2,1);color:#EAF0FF}
 .chat-drawer.open{opacity:1;pointer-events:auto;transform:none}
 .chat-head{padding:max(14px,env(safe-area-inset-top)) 14px 14px;background:linear-gradient(135deg,rgba(255,210,63,.16),rgba(255,255,255,.02));border-bottom:1px solid rgba(255,255,255,.06);color:#EAF0FF;display:flex;align-items:center;justify-content:space-between;gap:10px}
 .chat-head-left{display:flex;align-items:center;gap:12px;min-width:0}
@@ -498,6 +502,7 @@ body.light .chat-bar input{background:#0a1530!important;color:#EAF0FF!important;
     <div><small style="color:var(--muted)">Parent Admin</small><h3 id="profParentAdmin">—</h3></div>
    </div>
   </div>
+  <div id="mw-biometric-slot" style="margin-top:16px"></div>
  </section>
 
  <!-- SETTINGS -->
@@ -511,6 +516,7 @@ body.light .chat-bar input{background:#0a1530!important;color:#EAF0FF!important;
    <h2 style="margin-top:25px">Security</h2>
    <p>Reset your password via Email Verification or sign out safely.</p>
    <div style="display:flex;gap:10px;flex-wrap:wrap;margin-top:12px">
+    <button class="btn" type="button" onclick="window.npOpenBiometricSetup&&npOpenBiometricSetup()">🔐 Fingerprint Lock</button>
     <button class="btn" onclick="sendAffPasswordReset()">🔑 Send Password Reset Email</button>
     <button class="btn btn-primary" onclick="affiliateLogout()">↪ Secure Log out</button>
    </div>
@@ -628,7 +634,8 @@ function showPage(id) {
   const sb = document.getElementById('sidebar');
   if (sb) sb.classList.remove('open');
   if (id === 'support') markChatRead();
-  window.scrollTo({ top: 0, behavior: 'smooth' });
+  window.scrollTo(0, 0);
+  try { window.dispatchEvent(new Event('mw:view')); } catch (e) {}
 }
 document.querySelectorAll('[data-page]').forEach(b => b.addEventListener('click', () => showPage(b.dataset.page)));
 document.getElementById('menu').addEventListener('click', () => document.getElementById('sidebar').classList.toggle('open'));
@@ -1547,5 +1554,7 @@ const savedLanguage = storage.get('language', 'English');
 document.getElementById('language').value = savedLanguage;
 if (savedLanguage === 'বাংলা') setLanguage(savedLanguage);
 </script>
+<script src="./pwa.js"></script>
+<script src="./passkey.js"></script>
 </body>
 </html>

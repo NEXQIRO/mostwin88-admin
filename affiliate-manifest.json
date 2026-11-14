@@ -1,0 +1,25 @@
+{
+  "name": "MOSTWIN88 Affiliate",
+  "short_name": "MW88 Partner",
+  "description": "MOSTWIN88 Official Affiliate Partner Dashboard",
+  "start_url": "./affiliate.html",
+  "scope": "./",
+  "display": "standalone",
+  "orientation": "any",
+  "background_color": "#070b14",
+  "theme_color": "#070b14",
+  "icons": [
+    {
+      "src": "./affiliate-icon-192.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "./affiliate-icon-512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any maskable"
+    }
+  ]
+}

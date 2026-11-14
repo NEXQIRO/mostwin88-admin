@@ -29,7 +29,29 @@ const ALLOWED_ROOT_FILES = new Set([
   'master.html',
   'agent.html',
   'affiliate.html',
-  'firebase-config.js'
+  'firebase-config.js',
+  'pwa.js',
+  'passkey.js',
+  'user-manifest.json',
+  'admin-manifest.json',
+  'master-manifest.json',
+  'agent-manifest.json',
+  'affiliate-manifest.json',
+  'user-sw.js',
+  'admin-sw.js',
+  'master-sw.js',
+  'agent-sw.js',
+  'affiliate-sw.js',
+  'icon-192.png',
+  'icon-512.png',
+  'admin-icon-192.png',
+  'admin-icon-512.png',
+  'master-icon-192.png',
+  'master-icon-512.png',
+  'agent-icon-192.png',
+  'agent-icon-512.png',
+  'affiliate-icon-192.png',
+  'affiliate-icon-512.png'
 ]);
 
 const ROUTE_ALIASES = {
@@ -130,7 +152,8 @@ const server = http.createServer((req, res) => {
     }
     const ext = path.extname(filePath).toLowerCase();
     const contentType = MIME[ext] || 'application/octet-stream';
-    const cacheControl = ext === '.html' ? 'no-cache, no-store, must-revalidate' : 'public, max-age=300';
+    const isSw = filePath.endsWith('-sw.js');
+    const cacheControl = (ext === '.html' || isSw) ? 'no-cache, no-store, must-revalidate' : 'public, max-age=300';
 
     res.writeHead(200, {
       'Content-Type': contentType,
