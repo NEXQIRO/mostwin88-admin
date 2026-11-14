@@ -1,12 +1,7 @@
 <!DOCTYPE html>
 <html lang="bn"><head><meta charset="UTF-8">
-<meta name="viewport" content="width=980, viewport-fit=cover">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
 <title>MOSTWIN88 - Master Administrator</title>
-<script>
-/* অ্যাডমিন প্যানেলের মতোই: ফোনেও ডেস্কটপের মতো সাইডবারসহ লেআউট দেখাবে। */
-(function(){var de=document.documentElement;function apply(){try{var vm=document.querySelector('meta[name="viewport"]');if(vm&&vm.getAttribute('content').indexOf('width=980')===-1){vm.setAttribute('content','width=980, viewport-fit=cover');}}catch(e){}}
-apply();window.addEventListener('load',function(){setTimeout(apply,150)});window.addEventListener('pageshow',apply);})();
-</script>
 <link rel="manifest" href="master-manifest.json">
 <meta name="theme-color" content="#0A0A0A">
 <meta name="mobile-web-app-capable" content="yes">
@@ -389,6 +384,113 @@ body[data-theme="light"] .lo circle[stroke*="255,255,255"]{stroke:rgba(28,25,23,
 @media (prefers-reduced-motion:reduce){.lo-r{animation:none}}
 .brand-header{flex-direction:column;align-items:flex-start;gap:4px}
 .login-logo{background:transparent !important;width:auto;height:auto;margin:0 auto 10px;border-radius:0;display:block}
+
+/* ========================================================
+   Obsidian & Gold Mobile App UI + Auto-Detect PC Full-Page
+   ======================================================== */
+.sidebar-backdrop{display:none;position:fixed;inset:0;background:rgba(0,0,0,.66);z-index:98;backdrop-filter:blur(2px)}
+.sidebar-backdrop.open{display:block}
+.g{display:grid;grid-template-columns:repeat(auto-fit,minmax(190px,1fr));gap:10px;margin-bottom:12px}
+
+body[data-theme="dark"]{
+  --bg-base:#070709;--bg-surface:#0D0E12;--bg-card:#0E0F13;--bg-card-hover:#15171D;--bg-inner:#13151B;
+  --border-subtle:rgba(255,255,255,.08);--border-color:rgba(255,184,0,.42);--primary:#FFB800;--primary-hover:#FFC933;
+  --c-base:#070709;--c-surface:#0D0E12;--c-inner:#13151B;--c-line:rgba(255,255,255,.08);--c-gold-line:rgba(255,184,0,.42);
+}
+
+.topbar{background:rgba(11,12,16,.94);border-bottom:1px solid var(--border-subtle);gap:10px;padding:0 18px}
+body[data-theme="light"] .topbar{background:rgba(255,255,255,.96)}
+.topbar-left{display:flex;align-items:center;gap:10px;min-width:0;flex:1}
+.topbar-page-title{font-family:var(--font-display);font-size:1.15rem;font-weight:700;color:var(--c-text);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;letter-spacing:.3px}
+.mobile-menu-btn{display:none;width:38px;height:38px;border-radius:10px;background:transparent;border:1px solid rgba(255,184,0,.28);color:var(--primary);cursor:pointer;place-items:center;flex-shrink:0;padding:0}
+.mobile-menu-btn svg{width:20px;height:20px;fill:currentColor}
+
+.bal-pill{display:inline-flex;align-items:center;gap:7px;padding:4px 6px 4px 12px;border-radius:999px;border:1px solid rgba(255,184,0,.48);background:rgba(255,184,0,.08);color:var(--primary);cursor:pointer;user-select:none;white-space:nowrap;flex-shrink:0}
+.bal-pill b{font-family:var(--font-display);font-size:.92rem;font-weight:700;color:var(--primary)}
+.bal-plus-dot{width:20px;height:20px;border-radius:50%;background:var(--primary);color:#09090B;display:inline-grid;place-items:center;font-weight:900;font-size:.85rem;line-height:1}
+
+.sidebar-mobile-tools{display:none;padding:10px 12px;border-bottom:1px solid var(--border-subtle);gap:8px;flex-direction:column;background:var(--c-inner)}
+.sidebar-mobile-tools select{width:100%;height:38px;font-size:12.5px}
+
+/* Hero Master Working Fund Card */
+.hero-fund-card{background:linear-gradient(135deg,rgba(255,184,0,.09) 0%,rgba(14,15,19,.98) 62%) !important;border:1px solid rgba(255,184,0,.36) !important;border-radius:16px !important;padding:16px 18px;margin-bottom:18px;cursor:pointer}
+body[data-theme="light"] .hero-fund-card{background:linear-gradient(135deg,#FFF7E0 0%,#FFFFFF 65%) !important;border-color:#D97706 !important}
+.hero-fund-top{display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap}
+.hero-fund-lbl{font-size:.72rem;font-weight:700;letter-spacing:.9px;text-transform:uppercase;color:var(--text-muted);margin-bottom:4px}
+.hero-fund-val{font-family:var(--font-display);font-size:1.95rem;font-weight:800;color:var(--primary);line-height:1.05;white-space:nowrap}
+.hero-fund-btn{background:var(--primary) !important;color:#09090B !important;border:0 !important;border-radius:11px;padding:10px 15px;font-weight:700;font-size:.85rem;display:inline-flex;align-items:center;gap:7px;cursor:pointer;white-space:nowrap;flex-shrink:0}
+.hero-fund-btn:hover{background:var(--primary-hover) !important}
+.hero-fund-meta{display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:6px 16px;margin-top:12px;padding-top:10px;border-top:1px solid rgba(255,255,255,.08);font-size:.78rem;font-weight:600}
+body[data-theme="light"] .hero-fund-meta{border-top-color:rgba(0,0,0,.08)}
+.hero-meta-alloc{color:#38BDF8}
+.hero-meta-parent{color:#4ADE80}
+
+.sec-overline-row{display:flex;align-items:center;justify-content:space-between;gap:10px;margin:4px 0 10px}
+.sec-overline{font-family:var(--font-display);font-size:.76rem;font-weight:700;letter-spacing:.9px;text-transform:uppercase;color:var(--text-muted)}
+.sec-overline-link{background:none !important;border:0 !important;color:var(--primary) !important;font-size:.78rem;font-weight:700;cursor:pointer;padding:2px 0 !important;white-space:nowrap}
+
+.tx-cards-list{display:flex;flex-direction:column;gap:10px;margin-bottom:18px}
+.tx-card-item{background:var(--bg-card);border:1px solid var(--border-subtle);border-radius:14px;padding:12px 14px;display:flex;align-items:center;gap:12px;cursor:pointer}
+.tx-card-ic{width:38px;height:38px;border-radius:50%;display:grid;place-items:center;font-size:16px;font-weight:800;flex-shrink:0}
+.tx-card-ic.in{background:rgba(74,222,128,.14);color:#4ADE80;border:1px solid rgba(74,222,128,.3)}
+.tx-card-ic.out{background:rgba(248,113,113,.14);color:#F87171;border:1px solid rgba(248,113,113,.3)}
+.tx-card-mid{flex:1;min-width:0}
+.tx-card-mid b{display:block;font-size:.88rem;font-weight:700;color:var(--c-text);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.tx-card-mid small{display:block;font-size:.74rem;color:var(--text-muted);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.tx-card-right{text-align:right;flex-shrink:0}
+.tx-card-amt{display:block;font-family:var(--font-display);font-size:.96rem;font-weight:700;color:var(--primary);white-space:nowrap}
+
+/* Show Hero & Recent TX only on Admins/Home tab */
+.content-area:not(.m-is-home) .m-home-card-only{display:none !important}
+
+/* Bottom Navigation Bar (Mobile) */
+.bottom-nav{display:none;position:fixed;bottom:0;left:0;right:0;background:#0A0B0E;border-top:1px solid rgba(255,255,255,.08);z-index:95;justify-content:space-around;align-items:center;padding:6px 4px max(6px,env(safe-area-inset-bottom));min-height:62px}
+body[data-theme="light"] .bottom-nav{background:#FFFFFF;border-top-color:#E6DECB}
+.bottom-nav-btn{flex:1;min-width:0;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:3px;background:none !important;border:0 !important;color:#8E95A5;font-size:.68rem;font-weight:600;cursor:pointer;padding:3px 2px}
+.bottom-nav-ic{display:inline-grid;place-items:center;padding:4px 14px;border-radius:999px;transition:background .18s ease,color .18s ease}
+.bottom-nav-btn svg{width:20px;height:20px;fill:currentColor}
+.bottom-nav-btn.active{color:var(--primary);font-weight:700}
+.bottom-nav-btn.active .bottom-nav-ic{background:rgba(255,184,0,.18);color:var(--primary)}
+.bottom-nav-btn span.bn-lbl{white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:100%}
+
+/* PC Full-Page Auto-Detect (>= 960px) */
+@media (min-width:960px){
+  .sidebar{transform:translateX(0) !important}
+  .main-wrapper{margin-left:var(--sidebar-width);padding-bottom:0}
+  .content-area{max-width:100%;padding:22px 26px}
+  .mobile-menu-btn,.bottom-nav,#m-topbar-title{display:none !important}
+  .stats-grid{grid-template-columns:repeat(auto-fit,minmax(210px,1fr)) !important;gap:14px}
+  .hero-fund-val{font-size:2.1rem}
+  .m-recent-wrap{display:none !important}
+}
+
+/* Mobile App View (<= 959px) matching reference screenshot */
+@media (max-width:959px){
+  .sidebar{transform:translateX(-100%);z-index:105}
+  .sidebar.open{transform:translateX(0)}
+  .sidebar-mobile-tools{display:flex}
+  .main-wrapper{margin-left:0 !important;padding-bottom:74px}
+  .mobile-menu-btn{display:grid !important}
+  .bottom-nav{display:flex !important}
+  .content-area{padding:12px 12px 22px}
+  .topbar{padding:0 12px;height:58px;flex-wrap:nowrap !important}
+  .topbar-actions{gap:6px;flex-wrap:nowrap !important}
+  #tn,#btn-sound,#btn-topbar-set-bal{display:none !important}
+  .content-area:not(.m-is-home) .m-home-only{display:none !important}
+  .stats-grid{grid-template-columns:repeat(2,minmax(0,1fr)) !important;gap:10px !important;margin-bottom:16px}
+  .stat-card{padding:12px !important;gap:10px !important;border-radius:14px !important}
+  .stat-icon{width:38px !important;height:38px !important;border-radius:10px !important}
+  .stat-icon svg{width:19px !important;height:19px !important}
+  .stat-title{font-size:.65rem !important;text-transform:uppercase;letter-spacing:.45px;line-height:1.25;margin-bottom:3px}
+  .stat-value{font-size:1.18rem !important;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+  .hero-fund-val{font-size:1.65rem}
+  .hero-fund-btn{padding:9px 13px;font-size:.8rem}
+  .g{grid-template-columns:1fr 1fr}
+  .row input,.row select{flex:1 1 200px;min-width:min(100%,180px)}
+  .m-chat-fab{right:14px;bottom:76px;width:50px;height:50px}
+  .m-chat-fab i{font-size:18px}
+  .m-chat-fab .fab-lbl{font-size:6.8px}
+}
 </style>
 </head>
 <body data-theme="dark">
@@ -422,6 +524,7 @@ body[data-theme="light"] .lo circle[stroke*="255,255,255"]{stroke:rgba(28,25,23,
 </div></div>
 
 <div id="app">
+  <div class="sidebar-backdrop" id="sidebar-backdrop" onclick="toggleSidebar(false)"></div>
   <aside class="sidebar" id="sidebar">
     <div class="brand-header">
       <div class="logo sm" id="mBrandLogoWrap">
@@ -429,6 +532,13 @@ body[data-theme="light"] .lo circle[stroke*="255,255,255"]{stroke:rgba(28,25,23,
         <span class="tag" id="mBrandTag">PLAY BIG, WIN BIGGER</span>
       </div>
       <div class="brand-sub" style="margin-top:4px">MASTER ADMINISTRATOR</div>
+    </div>
+    <div class="sidebar-mobile-tools">
+      <select id="tn-mobile" onchange="switchTenant(this.value)" title="প্রজেক্ট বদলান"></select>
+      <div style="display:flex;gap:8px;">
+        <button type="button" onclick="toggleMasterSound()" style="flex:1;font-size:12px;padding:6px 8px;">🔊 সাউন্ড টগল</button>
+        <button type="button" class="p" onclick="toggleSidebar(false);setMaster()" style="flex:1;font-size:12px;padding:6px 8px;">+ ব্যালেন্স সেট</button>
+      </div>
     </div>
     <ul class="nav-list">
         <li class="nav-item"><button id="t-admins" onclick="tab('admins')"><svg viewBox="0 0 24 24"><path d="M16 11c1.66 0 2.99-1.34 2.99-3S17.66 5 16 5c-1.66 0-3 1.34-3 3s1.34 3 3 3zm-8 0c1.66 0 2.99-1.34 2.99-3S9.66 5 8 5C6.34 5 5 6.34 5 8s1.34 3 3 3zm0 2c-2.33 0-7 1.17-7 3.5V19h14v-2.5c0-2.33-4.67-3.5-7-3.5zm8 0c-.29 0-.62.02-.97.05 1.16.84 1.97 1.97 1.97 3.45V19h6v-2.5c0-2.33-4.67-3.5-7-3.5z"/></svg><span class="nav-label">User Admins</span></button></li>
@@ -459,23 +569,60 @@ body[data-theme="light"] .lo circle[stroke*="255,255,255"]{stroke:rgba(28,25,23,
   <div class="main-wrapper">
     <header class="topbar">
       <div class="topbar-left">
-        <button class="mobile-menu-btn" onclick="toggleSidebar()" title="মেনু"><svg viewBox="0 0 24 24"><path d="M3 18h18v-2H3v2zm0-5h18v-2H3v2zm0-7v2h18V6H3z"/></svg></button>
+        <button class="mobile-menu-btn" onclick="toggleSidebar()" title="মেনু" aria-label="মেনু"><svg viewBox="0 0 24 24"><path d="M3 18h18v-2H3v2zm0-5h18v-2H3v2zm0-7v2h18V6H3z"/></svg></button>
+        <span class="topbar-page-title" id="m-topbar-title">Dashboard</span>
         <select id="tn" onchange="switchTenant(this.value)" title="প্রজেক্ট বদলান"></select>
       </div>
       <div class="topbar-actions">
+        <div class="bal-pill" onclick="setMaster()" title="মাস্টার ব্যালেন্স পরিবর্তন করুন">
+          <b id="mb">৳ 0</b>
+          <span class="bal-plus-dot">+</span>
+        </div>
         <button class="btn-icon notif-btn" onclick="toggleNotifDrawer()" id="btn-notif-bell" title="ব্যালেন্স রিকোয়েস্ট নোটিফিকেশন"><svg viewBox="0 0 24 24"><path d="M12 22c1.1 0 2-.9 2-2h-4c0 1.1.9 2 2 2zm6-6v-5c0-3.07-1.63-5.64-4.5-6.32V4c0-.83-.67-1.5-1.5-1.5s-1.5.67-1.5 1.5v.68C7.64 5.36 6 7.92 6 11v5l-2 2v1h16v-1l-2-2z"/></svg><span class="notif-badge" id="notif-badge">0</span></button>
         <button id="btn-sound" onclick="toggleMasterSound()" title="নতুন রিকোয়েস্টে সাউন্ড অন/অফ"><span id="snd-ic">🔊</span><span id="snd-lb">সাউন্ড অন</span></button>
-        <div class="bal" id="mb">৳ 0</div>
-        <button onclick="setMaster()">ব্যালেন্স সেট</button>
+        <button id="btn-topbar-set-bal" onclick="setMaster()">ব্যালেন্স সেট</button>
       </div>
     </header>
-    <main class="content-area">
-      <div class="stats-grid">
-        <div class="stat-card"><div class="stat-icon stat-gold"><svg viewBox="0 0 24 24"><path d="M21 18v1c0 1.1-.9 2-2 2H5c-1.11 0-2-.9-2-2V5c0-1.1.89-2 2-2h14c1.1 0 2 .9 2 2v1h-9c-1.11 0-2 .9-2 2v8c0 1.1.89 2 2 2h9zm-9-2h10V8H12v8zm4-2.5c-.83 0-1.5-.67-1.5-1.5s.67-1.5 1.5-1.5 1.5.67 1.5 1.5-.67 1.5-1.5 1.5z"/></svg></div><div class="stat-info"><div class="stat-title">Master ব্যালেন্স</div><div class="stat-value" id="s1">0</div></div></div>
-        <div class="stat-card"><div class="stat-icon stat-green"><svg viewBox="0 0 24 24"><path d="M19 3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zM9 17H7v-7h2v7zm4 0h-2V7h2v10zm4 0h-2v-4h2v4z"/></svg></div><div class="stat-info"><div class="stat-title">অ্যাডমিনদের মোট ব্যালেন্স</div><div class="stat-value" id="s2">0</div></div></div>
-        <div class="stat-card"><div class="stat-icon stat-blue"><svg viewBox="0 0 24 24"><path d="M16 11c1.66 0 2.99-1.34 2.99-3S17.66 5 16 5c-1.66 0-3 1.34-3 3s1.34 3 3 3zm-8 0c1.66 0 2.99-1.34 2.99-3S9.66 5 8 5C6.34 5 5 6.34 5 8s1.34 3 3 3zm0 2c-2.33 0-7 1.17-7 3.5V19h14v-2.5c0-2.33-4.67-3.5-7-3.5zm8 0c-.29 0-.62.02-.97.05 1.16.84 1.97 1.97 1.97 3.45V19h6v-2.5c0-2.33-4.67-3.5-7-3.5z"/></svg></div><div class="stat-info"><div class="stat-title">অ্যাডমিন সংখ্যা</div><div class="stat-value" id="s3">0</div></div></div>
-        <div class="stat-card"><div class="stat-icon stat-red"><svg viewBox="0 0 24 24"><path d="M18 16v-5c0-3.07-1.63-5.64-4.5-6.32V4c0-.83-.67-1.5-1.5-1.5s-1.5.67-1.5 1.5v.68C7.64 5.36 6 7.92 6 11v5l-2 2v1h16v-1l-2-2zm-6 6c1.1 0 2-.9 2-2h-4c0 1.1.9 2 2 2z"/></svg></div><div class="stat-info"><div class="stat-title">পেন্ডিং রিকোয়েস্ট</div><div class="stat-value" id="s4">0</div></div></div>
+    <main class="content-area m-is-home" id="m-content-area">
+      <!-- Hero Master Working Fund Card -->
+      <div class="hero-fund-card m-home-card-only m-home-only" onclick="setMaster()" title="Master Working Fund">
+        <div class="hero-fund-top">
+          <div style="min-width:0;">
+            <div class="hero-fund-lbl">MASTER WORKING FUND</div>
+            <div class="hero-fund-val" id="hero-mb">৳ 0</div>
+          </div>
+          <button type="button" class="hero-fund-btn" onclick="event.stopPropagation();setMaster()">
+            <span style="display:inline-grid;place-items:center;width:18px;height:18px;border-radius:50%;background:#09090B;color:#FFB800;font-weight:900;font-size:13px;line-height:1;">+</span>
+            <span>Set Fund</span>
+          </button>
+        </div>
+        <div class="hero-fund-meta">
+          <span class="hero-meta-alloc">Allocated to Admins: <b id="hero-m-alloc">৳ 0</b></span>
+          <span class="hero-meta-parent">Active Admins: <b id="hero-m-active">0</b></span>
+        </div>
       </div>
+
+      <div class="sec-overline-row m-home-card-only m-home-only">
+        <div class="sec-overline">SYSTEM METRICS OVERVIEW</div>
+      </div>
+
+      <div class="stats-grid m-home-only">
+        <div class="stat-card" onclick="setMaster()" style="cursor:pointer;"><div class="stat-icon stat-gold"><svg viewBox="0 0 24 24"><path d="M21 18v1c0 1.1-.9 2-2 2H5c-1.11 0-2-.9-2-2V5c0-1.1.89-2 2-2h14c1.1 0 2 .9 2 2v1h-9c-1.11 0-2 .9-2 2v8c0 1.1.89 2 2 2h9zm-9-2h10V8H12v8zm4-2.5c-.83 0-1.5-.67-1.5-1.5s.67-1.5 1.5-1.5 1.5.67 1.5 1.5-.67 1.5-1.5 1.5z"/></svg></div><div class="stat-info"><div class="stat-title">Master Balance</div><div class="stat-value" id="s1">0</div></div></div>
+        <div class="stat-card" onclick="tab('admins')" style="cursor:pointer;"><div class="stat-icon stat-green"><svg viewBox="0 0 24 24"><path d="M19 3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zM9 17H7v-7h2v7zm4 0h-2V7h2v10zm4 0h-2v-4h2v4z"/></svg></div><div class="stat-info"><div class="stat-title">Allocated Fund</div><div class="stat-value" id="s2">0</div></div></div>
+        <div class="stat-card" onclick="tab('admins')" style="cursor:pointer;"><div class="stat-icon stat-blue"><svg viewBox="0 0 24 24"><path d="M16 11c1.66 0 2.99-1.34 2.99-3S17.66 5 16 5c-1.66 0-3 1.34-3 3s1.34 3 3 3zm-8 0c1.66 0 2.99-1.34 2.99-3S9.66 5 8 5C6.34 5 5 6.34 5 8s1.34 3 3 3zm0 2c-2.33 0-7 1.17-7 3.5V19h14v-2.5c0-2.33-4.67-3.5-7-3.5zm8 0c-.29 0-.62.02-.97.05 1.16.84 1.97 1.97 1.97 3.45V19h6v-2.5c0-2.33-4.67-3.5-7-3.5z"/></svg></div><div class="stat-info"><div class="stat-title">User Admins</div><div class="stat-value" id="s3">0</div></div></div>
+        <div class="stat-card" onclick="tab('reqs')" style="cursor:pointer;"><div class="stat-icon stat-red"><svg viewBox="0 0 24 24"><path d="M18 16v-5c0-3.07-1.63-5.64-4.5-6.32V4c0-.83-.67-1.5-1.5-1.5s-1.5.67-1.5 1.5v.68C7.64 5.36 6 7.92 6 11v5l-2 2v1h16v-1l-2-2zm-6 6c1.1 0 2-.9 2-2h-4c0 1.1.9 2 2 2z"/></svg></div><div class="stat-info"><div class="stat-title">Pending Requests</div><div class="stat-value" id="s4">0</div></div></div>
+        <div class="stat-card" onclick="tab('agents')" style="cursor:pointer;"><div class="stat-icon stat-gold"><svg viewBox="0 0 24 24"><path d="M12 1a9 9 0 00-9 9v7c0 1.66 1.34 3 3 3h3v-8H5v-2c0-3.87 3.13-7 7-7s7 3.13 7 7v2h-4v8h3c1.66 0 3-1.34 3-3v-7a9 9 0 00-9-9z"/></svg></div><div class="stat-info"><div class="stat-title">Total Agents</div><div class="stat-value" id="s5">0</div></div></div>
+        <div class="stat-card" onclick="tab('players')" style="cursor:pointer;"><div class="stat-icon stat-green"><svg viewBox="0 0 24 24"><path d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z"/></svg></div><div class="stat-info"><div class="stat-title">Total Players</div><div class="stat-value" id="s6">0</div></div></div>
+      </div>
+
+      <div class="m-recent-wrap m-home-card-only m-home-only">
+        <div class="sec-overline-row">
+          <div class="sec-overline">RECENT TRANSACTIONS &amp; TRANSFERS</div>
+          <button type="button" class="sec-overline-link" onclick="tab('led')">View Full Ledger</button>
+        </div>
+        <div class="tx-cards-list" id="m-recent-cards"></div>
+      </div>
+
       <div id="v"></div>
     </main>
   </div>
@@ -504,6 +651,28 @@ body[data-theme="light"] .lo circle[stroke*="255,255,255"]{stroke:rgba(28,25,23,
       <button type="submit" aria-label="পাঠান">➤</button>
     </form>
   </div>
+  <nav class="bottom-nav" aria-label="মোবাইল ন্যাভিগেশন">
+    <button type="button" class="bottom-nav-btn active" data-tab="admins" onclick="tab('admins')">
+      <span class="bottom-nav-ic"><svg viewBox="0 0 24 24"><path d="M3 13h8V3H3v10zm0 8h8v-6H3v6zm10 0h8V11h-8v10zm0-18v6h8V3h-8z"/></svg></span>
+      <span class="bn-lbl">Admins</span>
+    </button>
+    <button type="button" class="bottom-nav-btn" data-tab="reqs" onclick="tab('reqs')">
+      <span class="bottom-nav-ic"><svg viewBox="0 0 24 24"><path d="M21 18v1c0 1.1-.9 2-2 2H5c-1.11 0-2-.9-2-2V5c0-1.1.89-2 2-2h14c1.1 0 2 .9 2 2v1h-9c-1.11 0-2 .9-2 2v8c0 1.1.89 2 2 2h9zm-9-2h10V8H12v8zm4-2.5c-.83 0-1.5-.67-1.5-1.5s.67-1.5 1.5-1.5 1.5.67 1.5 1.5-.67 1.5-1.5 1.5z"/></svg></span>
+      <span class="bn-lbl">Requests</span>
+    </button>
+    <button type="button" class="bottom-nav-btn" data-tab="agents" onclick="tab('agents')">
+      <span class="bottom-nav-ic"><svg viewBox="0 0 24 24"><path d="M12 1a9 9 0 00-9 9v7c0 1.66 1.34 3 3 3h3v-8H5v-2c0-3.87 3.13-7 7-7s7 3.13 7 7v2h-4v8h3c1.66 0 3-1.34 3-3v-7a9 9 0 00-9-9z"/></svg></span>
+      <span class="bn-lbl">Agents</span>
+    </button>
+    <button type="button" class="bottom-nav-btn" data-tab="games" onclick="tab('games')">
+      <span class="bottom-nav-ic"><svg viewBox="0 0 24 24"><path d="M21 6H3c-1.1 0-2 .9-2 2v8c0 1.1.9 2 2 2h18c1.1 0 2-.9 2-2V8c0-1.1-.9-2-2-2zm-10 7H8v3H6v-3H3v-2h3V8h2v3h3v2zm4.5 2c-.83 0-1.5-.67-1.5-1.5s.67-1.5 1.5-1.5 1.5.67 1.5 1.5-.67 1.5-1.5 1.5zm4-3c-.83 0-1.5-.67-1.5-1.5S18.67 9 19.5 9s1.5.67 1.5 1.5-.67 1.5-1.5 1.5z"/></svg></span>
+      <span class="bn-lbl">Games</span>
+    </button>
+    <button type="button" class="bottom-nav-btn" data-tab="feat" onclick="tab('feat')">
+      <span class="bottom-nav-ic"><svg viewBox="0 0 24 24"><path d="M19.14 12.94c.04-.3.06-.61.06-.94 0-.32-.02-.64-.07-.94l2.03-1.58c.18-.14.23-.41.12-.61l-1.92-3.32c-.12-.22-.37-.29-.59-.22l-2.39.96c-.5-.38-1.03-.7-1.62-.94l-.36-2.54c-.04-.24-.24-.41-.48-.41h-3.84c-.24 0-.43.17-.47.41l-.36 2.54c-.59.24-1.13.57-1.62.94l-2.39-.96c-.22-.08-.47 0-.59.22L2.74 8.87c-.12.21-.08.47.12.61l2.03 1.58c-.05.3-.09.63-.09.94s.02.64.07.94l-2.03 1.58c-.18.14-.23.41-.12.61l1.92 3.32c.12.22.37.29.59.22l2.39-.96c.5.38 1.03.7 1.62.94l.36 2.54c.05.24.24.41.48.41h3.84c.24 0 .44-.17.47-.41l.36-2.54c.59-.24 1.13-.56 1.62-.94l2.39.96c.22.08.47 0 .59-.22l1.92-3.32c.12-.22.07-.47-.12-.61l-2.01-1.58zM12 15.6c-1.98 0-3.6-1.62-3.6-3.6s1.62-3.6 3.6-3.6 3.6 1.62 3.6 3.6-1.62 3.6-3.6 3.6z"/></svg></span>
+      <span class="bn-lbl">Settings</span>
+    </button>
+  </nav>
 </div>
 <div class="m-modal-bg" id="mAffCommModal">
   <div class="m-modal-card">
@@ -782,6 +951,7 @@ function attachAll(){
  on(db.ref('adminSettings/depositBonus'),s=>{BON=s.val()||{};draw()});
  on(db.ref('adminSettings/userAdminOn'),s=>{UAON=s.val()!==false;draw()});
  on(db.ref('games'),s=>{GAMES=s.val()||{};draw()});
+ on(db.ref('provider_games'),s=>{PROV_GAMES=s.val()||{};if(cur==='games')draw()});
  on(db.ref('users'),s=>{USERS=s.val()||{};draw()});
  on(db.ref('device_registry'),s=>{DEVREG=s.val()||{};draw()});
  on(db.ref('game_transactions').limitToLast(2500),s=>{GTX=s.val()||{};draw()});
@@ -790,7 +960,7 @@ function attachAll(){
  on(db.ref('affiliates'),s=>{AFFS=s.val()||{};draw()});
  on(db.ref('affiliateCommissionRequests').limitToLast(200),s=>{AFFREQ=s.val()||{};draw()});
  on(db.ref('balanceLedger').limitToLast(100),s=>{LED=s.val()||{};draw()})}
-function detachAll(){LST.forEach(r=>{try{r.off()}catch(e){}});LST=[];started=false;ALK={};ADL=false;ALD=false;ADM={};REQ={};LED={};GAMES={};USERS={};ACT={};GTX={};DEVREG={};AGENTS={};AGREQ={};AFFS={};AFFREQ={};MB=0;FEAT={};SEL='';UAON=true;BON={};AQ='';AFULL={};GTXFULL={};AQ_AG='';AQ_AF=''}
+function detachAll(){LST.forEach(r=>{try{r.off()}catch(e){}});LST=[];started=false;ALK={};ADL=false;ALD=false;ADM={};REQ={};LED={};GAMES={};PROV_GAMES={};USERS={};ACT={};GTX={};DEVREG={};AGENTS={};AGREQ={};AFFS={};AFFREQ={};MB=0;FEAT={};SEL='';UAON=true;BON={};AQ='';AFULL={};GTXFULL={};AQ_AG='';AQ_AF=''}
 function bindAuth(){if(AUTHUNSUB)AUTHUNSUB();const my=TID;
  AUTHUNSUB=auth.onAuthStateChanged(async u=>{if(my!==TID)return;
   if(!u){$('lt').textContent=TID==='main'?'MOSTWIN88':'লগইন: '+TNAME;$('lback').style.display=TID==='main'?'none':'block';$('login').style.display='flex';$('app').style.display='none';return}
@@ -805,8 +975,8 @@ function parseCfg(t){const g=k=>{const m=String(t).match(new RegExp('["\']?'+k+'
  if(!c.authDomain&&c.projectId)c.authDomain=c.projectId+'.firebaseapp.com';
  if(!c.databaseURL&&c.projectId)c.databaseURL='https://'+c.projectId+'-default-rtdb.firebaseio.com';
  Object.keys(c).forEach(k=>{if(!c[k])delete c[k]});return c}
-function drawTn(){const sel=$('tn');if(!sel)return;const L=[['main','মূল প্রজেক্ট'],...getTenants().map(t=>[t.id,t.name])];
- sel.innerHTML=L.map(([id,n])=>`<option value="${esc(id)}"${id===TID?' selected':''}>${esc(n)}</option>`).join('')}
+function drawTn(){const L=[['main','মূল প্রজেক্ট'],...getTenants().map(t=>[t.id,t.name])];const opts=L.map(([id,n])=>`<option value="${esc(id)}"${id===TID?' selected':''}>${esc(n)}</option>`).join('');
+ ['tn','tn-mobile'].forEach(id=>{const sel=$(id);if(sel)sel.innerHTML=opts});}
 function switchTenant(id){if(id===TID){drawTn();return}
  const t=id==='main'?{id:'main',name:'মূল প্রজেক্ট',config:MAINCFG}:getTenants().find(x=>x.id===id);
  if(!t){toast('প্রজেক্ট পাওয়া যায়নি');drawTn();return}
@@ -824,7 +994,8 @@ function addTenant(){const name=$('tnm').value.trim(),c=parseCfg($('tcf').value)
 function delTenant(id){if(!confirm('এই প্রজেক্ট তালিকা থেকে সরাবেন? (সার্ভারের কোনো ডেটা মুছবে না)'))return;
  localStorage.setItem('np_tenants',JSON.stringify(getTenants().filter(x=>x.id!==id)));if(TID===id)switchTenant('main');drawTn();draw()}
 bindAuth();
-function tab(t){cur=t;if(t==='act')loadAct();draw()}
+const M_TAB_TITLES={admins:'Dashboard',admin:'Admin Details',agents:'Agents',affiliates:'Affiliates',reqs:'Requests',led:'Ledger',games:'Games',userpanel:'User Panel',players:'Players',act:'Activity',feat:'Settings',promo:'Promotions',chat:'Support Chat',tenants:'Projects',guide:'Guide'};
+function tab(t){cur=t;if(t==='act')loadAct();try{toggleSidebar(false)}catch(e){}draw();window.scrollTo(0,0)}
 async function loadAct(){
  try{
   const [s1,s2]=await Promise.all([
@@ -952,19 +1123,552 @@ function actView(){
   return`<tr><td>${esc(u.name||u.username||t.uid)}</td><td><b>${esc(t.gameName||t.game||'-')}</b></td><td><span class="pl ${isW?'':'b'}">${isW?'WIN (+)':'BET (−)'}</span></td><td style="color:${isW?'var(--ok)':'var(--er)'};font-weight:700">${isW?'+':'-'}${fmt(amt)}</td><td>${t.balance!==undefined?fmt(t.balance):'—'}</td><td><small>${t.ip?esc(t.ip):esc(u.lastIp||'—')} · ${t.device?esc(t.device):esc(u.lastDevice||'')}</small></td><td>${(t.time||t.timestamp)?new Date(t.time||t.timestamp).toLocaleString('bn-BD'):''}</td></tr>`;
  }).join('');
  return top+`<div class="cd" style="margin-bottom:8px"><b style="font-size:15px">🎮 গেম সেশন ও এন্ট্রি/এক্সিট</b></div><div class="sc" style="margin-bottom:14px"><table><tr><th>প্লেয়ার</th><th>গেম</th><th>মোট বেট (− / +)</th><th>শুরু</th><th>এন্ট্রি</th><th>এক্সিট</th><th>নেট (+/-)</th><th>IP / ডিভাইস</th><th>স্ট্যাটাস</th></tr>`+(rows||`<tr><td colspan="9" style="text-align:center;color:var(--mu)">কোনো সেশন পাওয়া যায়নি</td></tr>`)+`</table></div><div class="cd" style="margin-bottom:8px"><b style="font-size:15px">🎲 সাম্প্রতিক প্রতি-বেট ও জয়/হার (+/-) লগ</b></div><div class="sc"><table><tr><th>প্লেয়ার</th><th>গেম</th><th>ধরন</th><th>পরিমাণ (+/-)</th><th>পরবর্তী ব্যালেন্স</th><th>IP / ডিভাইস</th><th>সময়</th></tr>`+(txRows||`<tr><td colspan="7" style="text-align:center;color:var(--mu)">কোনো বেট লেনদেন পাওয়া যায়নি</td></tr>`)+`</table></div>`}
-async function saveGame(id){const g=id?GAMES[id]:{};
- const name=id?prompt('গেমের নাম:',g.name||''):$('gn').value.trim(),cat=id?prompt('ক্যাটাগরি (Popular Games / Crash Games):',g.category||'Popular Games'):$('gc').value,
- img=id?prompt('ছবির লিংক:',g.image||''):$('gi').value.trim(),url=id?prompt('গেমের লিংক:',g.url||''):$('gu').value.trim();
- if(!name||!img||!url){toast('সব তথ্য দিন');return}
- const k=id||db.ref('games').push().key,st=g.status||'Active';
- const d={id:k,name,category:cat,image:img,imageUrl:img,url,gameUrl:url,status:st,active:st==='Active',isActive:st==='Active',updatedAt:TS};if(!id){d.createdAt=TS;d.integrated=!!$('gint').checked;const hu=$('gh').value.trim();if(hu)d.healthUrl=hu}
- try{await db.ref('games/'+k).update(d);toast('গেম সংরক্ষিত ✅');if(!id)['gn','gi','gu','gh'].forEach(i=>$(i).value='')}catch(e){toast('ব্যর্থ: '+e.message)}}
+let PROV_GAMES={},GM_SUB='games',GM_Q='',GM_CAT_F='All',GM_PV_CAT='All',GM_SEL_PV='evolution_live_casino',GM_EDIT_GID='',GM_PG_EDIT='';
+const gmSlug=t=>String(t||'').toLowerCase().replace(/[^a-z0-9]+/g,'_').replace(/^_|_$/g,'');
+const DEF_GAME_CATS=[
+ {key:'Popular Games',label:'🔥 Popular Games (হোম)',order:0},
+ {key:'Slots',label:'🎰 Slots',order:1},
+ {key:'Live Casino',label:'🎥 Live Casino',order:2},
+ {key:'Sports',label:'🏏 Sports',order:3},
+ {key:'Table Games',label:'🃏 Table Games',order:4},
+ {key:'Fishing',label:'🐟 Fishing',order:5},
+ {key:'Crash & Arcade',label:'🚀 Crash & Arcade',order:6}
+];
+const DEF_SPORTS_LIST=[
+ {id:'ক্রিকেট',icon:'🏏',name:'ক্রিকেট'},
+ {id:'ফুটবল',icon:'⚽',name:'ফুটবল'},
+ {id:'টেনিস',icon:'🎾',name:'টেনিস'},
+ {id:'বাস্কেটবল',icon:'🏀',name:'বাস্কেটবল'},
+ {id:'কাবাডি',icon:'🤼',name:'কাবাডি'},
+ {id:'ই-স্পোর্টস',icon:'🎮',name:'ই-স্পোর্টস'}
+];
+const DEF_USER_GAMES=[
+ ['✈️','Aviator',1,'Crash & Arcade'],['🎡','Crazy Time',1,'Live Casino'],['🎱','Roulette',1,'Table Games'],
+ ['🎲','Ludo',1,'Table Games'],['🪙','Carrom King',1,'Table Games'],['🃏','Blackjack',1,'Table Games'],
+ ['♠️','Baccarat',1,'Live Casino'],['🐉','Dragon Tiger',1,'Live Casino'],['🎴','Teen Patti',0,'Table Games'],
+ ['🀄','Andar Bahar',0,'Live Casino'],['💣','Mines',0,'Crash & Arcade'],['🔮','Plinko',0,'Crash & Arcade'],
+ ['🔼','Hi-Lo',0,'Crash & Arcade'],['🎰','Super Slots',0,'Slots'],['🍒','Fruit Party',0,'Slots'],
+ ['7️⃣','Lucky 777',0,'Slots'],['⛏️','Gold Rush',0,'Slots'],['🚀','Rocket Crash',0,'Crash & Arcade'],
+ ['🎳','Sic Bo',0,'Table Games'],['🔢','Keno',0,'Crash & Arcade']
+].map((x,k)=>({id:'def_'+gmSlug(x[1]),icon:x[0],name:x[1],popular:!!x[2],category:x[3],order:k,active:true,status:'Active',isDefault:true}));
+const DEF_PROV_MAP={
+ 'Live Casino':['Evolution','Pragmatic Play Live','Ezugi','Playtech Live','SA Gaming','Sexy Gaming','Vivo Gaming','WM Casino','Asia Gaming','Dream Gaming','AllBet Gaming','OnAir Entertainment','TVBET','Lucky Streak','BetGames'],
+ 'Slots':['JILI','PG Soft','Pragmatic Play','Microgaming','NetEnt','Playtech','Habanero','CQ9 Gaming','JDB Gaming','KA Gaming','Joker Gaming','Spadegaming','Fa Chai Gaming','Red Tiger','Nolimit City','Play\'n GO','Hacksaw Gaming','Relax Gaming','Push Gaming','Yggdrasil','Blueprint Gaming','Playson','Betsoft','Evoplay','Big Time Gaming','Quickspin','Wazdan','ELK Studios','IGT','Light & Wonder'],
+ 'Fishing':['JILI','JDB','Fa Chai','KA Gaming','CQ9','Spadegaming','Joker Gaming','Playtech','Dragoon Soft','BT Gaming'],
+ 'Crash & Arcade':['Spribe','SmartSoft Gaming','Galaxsys','Evoplay','BGaming','Onlyplay','3 Oaks Gaming','JILI','Turbo Games','InOut Games'],
+ 'Table Games':['Evolution','Pragmatic Play','Playtech','Ezugi','JILI','SA Gaming','Asia Gaming','Vivo Gaming','BetGames','EvenBet Gaming'],
+ 'Sports':['Betradar','BetConstruct','Kambi','Digitain','Altenar','Golden Race','Kiron','Leap Gaming','1X2 Network','Sportradar Fantasy','Roanuz Fantasy']
+};
+let _pvOrd=0;
+const DEF_ALL_PROVIDERS=Object.keys(DEF_PROV_MAP).flatMap(c=>DEF_PROV_MAP[c].map(nm=>({id:gmSlug(nm)+'_'+gmSlug(c),name:nm,category:c,order:++_pvOrd,active:true,maintenance:false,isDefault:true})));
+const DEF_PROV_GB={
+ evolution_live_casino:['Crazy Time','Lightning Roulette','Monopoly Live','Dream Catcher','Mega Ball','Lightning Baccarat','Football Studio','Cash or Crash','Speed Baccarat'],
+ pragmatic_play_live_live_casino:['Sweet Bonanza CandyLand','Mega Wheel','Speed Roulette','VIP Blackjack','Boom City','Fortune Roulette'],
+ spribe_crash_arcade:['Aviator','Mines','Plinko','Dice','Goal','Hi-Lo','Keno','Mini Roulette'],
+ pragmatic_play_slots:['Gates of Olympus','Sweet Bonanza','Sugar Rush','Big Bass Bonanza','The Dog House','Starlight Princess','Wild West Gold'],
+ pg_soft_slots:['Fortune Tiger','Mahjong Ways','Lucky Neko','Fortune Ox','Wild Bandito','Treasures of Aztec'],
+ jili_slots:['Super Ace','Fortune Gems','Boxing King','Crazy777','Golden Empire','Money Coming'],
+ smartsoft_gaming_crash_arcade:['JetX','Cricket X','Balloon','Jet X3','Crystal','Rocketon']
+};
+const DEF_PROV_FB={
+ 'Live Casino':['Baccarat','Roulette','Blackjack','Dragon Tiger','Teen Patti','Andar Bahar'],
+ 'Slots':['Lucky Fruits','Golden Book','Wild Heist','Mega Fortune','Dragon Gold','Treasure Hunt','Star Burst'],
+ 'Crash & Arcade':['Rocket','Aviator X','Cash Rush','Space Ride','Turbo Jet','Lucky Plane'],
+ 'Fishing':['Fishing God','Ocean King','Dragon Fortune','Happy Fishing','Boom Legend','Fish Prawn Crab'],
+ 'Table Games':['Baccarat','Blackjack','Roulette','Texas Hold\'em','Dragon Tiger','Teen Patti'],
+ 'Sports':['ক্রিকেট','ফুটবল','টেনিস','বাস্কেটবল','কাবাডি','ই-স্পোর্টস']
+};
+
+function getMergedCatalogGames(){
+ const map=new Map();
+ DEF_USER_GAMES.forEach(dg=>map.set(dg.id,Object.assign({},dg)));
+ Object.entries(GAMES||{}).forEach(([id,g])=>{
+  if(!g)return;
+  const matchDef=Array.from(map.values()).find(x=>x.id===id||String(x.name||'').toLowerCase()===String(g.name||'').toLowerCase());
+  const key=matchDef?matchDef.id:id;
+  const prev=map.get(key)||{};
+  map.set(key,Object.assign({},prev,g,{id:key,isDefault:!!prev.isDefault,savedInDb:true}));
+ });
+ return Array.from(map.values()).sort((a,b)=>(Number(a.order||999)-Number(b.order||999))||String(a.name||'').localeCompare(String(b.name||'')));
+}
+function getMergedAllProviders(){
+ const map=new Map();
+ DEF_ALL_PROVIDERS.forEach(p=>map.set(p.id,Object.assign({},p)));
+ Object.entries(PROVIDERS||{}).forEach(([id,p])=>{
+  if(!p)return;
+  const prev=map.get(id)||{};
+  map.set(id,Object.assign({},prev,p,{id,isDefault:!!prev.isDefault,savedInDb:true}));
+ });
+ return Array.from(map.values()).sort((a,b)=>(Number(a.order||999)-Number(b.order||999))||String(a.name||'').localeCompare(String(b.name||'')));
+}
+function getMergedProviderGames(provId){
+ const prov=getMergedAllProviders().find(p=>p.id===provId)||{id:provId,category:'Slots',name:provId};
+ const baseNames=DEF_PROV_GB[provId]||DEF_PROV_FB[prov.category]||DEF_PROV_FB.Slots;
+ const map=new Map();
+ baseNames.forEach((nm,idx)=>{
+  const id=provId+'_'+idx;
+  map.set(id,{id,name:nm,order:idx,active:true,maintenance:false,isDefault:true});
+ });
+ const dbSet=(PROV_GAMES&&PROV_GAMES[provId])||{};
+ Object.entries(dbSet).forEach(([id,g])=>{
+  if(!g)return;
+  const prev=map.get(id)||{};
+  map.set(id,Object.assign({},prev,g,{id,isDefault:!!prev.isDefault,savedInDb:true}));
+ });
+ return Array.from(map.values()).sort((a,b)=>(Number(a.order||999)-Number(b.order||999)));
+}
+
+async function seedDefaultGamesCatalog(){
+ const curMap=GAMES||{};
+ const updates={};
+ let cnt=0;
+ DEF_USER_GAMES.forEach(dg=>{
+  const exists=Object.entries(curMap).some(([k,g])=>k===dg.id||(g&&String(g.name||'').toLowerCase()===dg.name.toLowerCase()));
+  if(!exists){updates[dg.id]=Object.assign({},dg,{updatedAt:TS});cnt++;}
+ });
+ if(!cnt){toast('সব ডিফল্ট জনপ্রিয় গেম ইতিমধ্যে সিঙ্ক করা আছে ✅');return}
+ try{await db.ref('games').update(updates);toast(cnt+' টি ডিফল্ট গেম ডাটাবেজে যোগ হয়েছে ✅')}catch(e){toast('ব্যর্থ: '+e.message)}
+}
+async function seedAllProvidersMaster(){
+ const curP=PROVIDERS||{};
+ const updates={};let cnt=0;
+ DEF_ALL_PROVIDERS.forEach(p=>{
+  if(!curP[p.id]){updates[p.id]=Object.assign({},p,{updatedAt:TS});cnt++;}
+ });
+ if(!cnt){toast('সব '+DEF_ALL_PROVIDERS.length+' টি প্রোভাইডার ইতিমধ্যে সিঙ্ক আছে ✅');return}
+ try{await db.ref('providers').update(updates);toast(cnt+' টি প্রোভাইডার সিঙ্ক হয়েছে ✅')}catch(e){toast('ব্যর্থ: '+e.message)}
+}
+async function seedProvGamesMaster(provId){
+ const prov=getMergedAllProviders().find(p=>p.id===provId);if(!prov)return;
+ const baseNames=DEF_PROV_GB[provId]||DEF_PROV_FB[prov.category]||DEF_PROV_FB.Slots;
+ const curPg=(PROV_GAMES&&PROV_GAMES[provId])||{};
+ const updates={};let cnt=0;
+ baseNames.forEach((nm,idx)=>{
+  const id=provId+'_'+idx;
+  if(!curPg[id]){updates[id]={id,name:nm,order:idx,active:true,maintenance:false,updatedAt:TS};cnt++;}
+ });
+ if(!cnt){toast('এই প্রোভাইডারের সব গেম সিঙ্ক আছে ✅');return}
+ try{await db.ref('provider_games/'+provId).update(updates);toast(cnt+' টি গেম সিঙ্ক হয়েছে ✅')}catch(e){toast('ব্যর্থ: '+e.message)}
+}
+
+async function saveGame(id){
+ const all=getMergedCatalogGames();
+ const g=id?(GAMES[id]||all.find(x=>x.id===id)||{}):{};
+ if(id){
+  GM_EDIT_GID=id;
+  draw();
+  setTimeout(()=>{
+   if($('gn'))$('gn').value=g.name||'';
+   if($('gc'))$('gc').value=g.category||'Popular Games';
+   if($('gicon'))$('gicon').value=g.icon||'🎮';
+   if($('gi'))$('gi').value=g.image||g.imageUrl||g.img||'';
+   if($('gu'))$('gu').value=g.url||g.gameUrl||'';
+   if($('gcode'))$('gcode').value=g.apiGameCode||g.gameCode||'';
+   if($('gprov'))$('gprov').value=g.provider||'';
+   if($('gh'))$('gh').value=g.healthUrl||'';
+   if($('gpop'))$('gpop').checked=g.popular!==undefined?!!g.popular:true;
+   if($('gint'))$('gint').checked=g.integrated===true;
+  },0);
+  return;
+ }
+ const name=($('gn')&&$('gn').value.trim())||'';
+ const cat=($('gc')&&$('gc').value.trim())||'Popular Games';
+ const icon=($('gicon')&&$('gicon').value.trim())||'🎮';
+ const img=($('gi')&&$('gi').value.trim())||'';
+ const url=($('gu')&&$('gu').value.trim())||'';
+ const apiCode=($('gcode')&&$('gcode').value.trim())||'';
+ const provider=($('gprov')&&$('gprov').value.trim())||'';
+ const hu=($('gh')&&$('gh').value.trim())||'';
+ const popular=$('gpop')?!!$('gpop').checked:true;
+ const integrated=$('gint')?!!$('gint').checked:false;
+ if(!name){toast('গেমের নাম লিখুন');return}
+ const k=GM_EDIT_GID||db.ref('games').push().key;
+ const prev=GAMES[k]||all.find(x=>x.id===k)||{};
+ const st=(prev.active===false||prev.status==='Inactive')?'Inactive':'Active';
+ const d={
+  id:k,name,category:cat,icon,image:img||'',imageUrl:img||'',img:img||'',
+  url:url||'',gameUrl:url||'',apiGameCode:apiCode||'',gameCode:apiCode||'',
+  provider:provider||'',popular,integrated,
+  status:st,active:st==='Active',isActive:st==='Active',
+  order:prev.order!=null?prev.order:all.length,
+  createdAt:prev.createdAt||TS,updatedAt:TS
+ };
+ if(hu)d.healthUrl=hu;else d.healthUrl=null;
+ try{
+  await db.ref('games/'+k).set(d);
+  GM_EDIT_GID='';
+  toast('গেম সংরক্ষিত হয়েছে ✅');
+  draw();
+ }catch(e){toast('ব্যর্থ: '+e.message)}
+}
+function cancelEditGameMaster(){GM_EDIT_GID='';draw()}
+async function gToggle(id){
+ const all=getMergedCatalogGames();
+ const g=GAMES[id]||all.find(x=>x.id===id)||{id,name:id,category:'Popular Games'};
+ const wasOn=(g.status!=='Inactive'&&g.active!==false);
+ const nextOn=!wasOn;
+ const payload=Object.assign({},g,{
+  id,status:nextOn?'Active':'Inactive',active:nextOn,isActive:nextOn,updatedAt:TS
+ });
+ try{await db.ref('games/'+id).update(payload);toast((g.name||id)+' — '+(nextOn?'চালু ✅':'বন্ধ ⛔'))}catch(e){toast('ব্যর্থ: '+e.message)}
+}
+async function toggleGamePopular(id){
+ const all=getMergedCatalogGames();
+ const g=GAMES[id]||all.find(x=>x.id===id)||{id,name:id};
+ const nxt=!(g.popular!==false&&g.popular!==0);
+ const payload=Object.assign({},g,{id,popular:nxt,updatedAt:TS});
+ try{await db.ref('games/'+id).update(payload);toast((g.name||id)+' Popular: '+(nxt?'ON ⭐':'OFF'))}catch(e){toast('ব্যর্থ: '+e.message)}
+}
 async function fSet(k,v){try{await db.ref('adminFeatures/'+k).set(v)}catch(e){toast('ব্যর্থ: '+e.message)}}
 async function fAll(v){const o={};FL.forEach(([k])=>o[k]=v);try{await db.ref('adminFeatures').set(o);toast(v?'সব ফিচার চালু ✅':'সব ফিচার বন্ধ ⛔')}catch(e){toast('ব্যর্থ: '+e.message)}}
-async function gInteg(id){const g=GAMES[id]||{};const n=g.integrated===true?false:true;try{await db.ref('games/'+id).update({integrated:n,updatedAt:TS});toast(n?'নিজস্ব গেম: টোকেন + প্রস্তুত সংকেত চালু ✅':'বাইরের গেম: টোকেন পাঠানো হবে না')}catch(e){toast('ব্যর্থ: '+e.message)}}
-async function gHealth(id){const g=GAMES[id]||{};const v=prompt('গেম সার্ভারের /health লিংক (খালি = বন্ধ):',g.healthUrl||'');if(v===null)return;try{await db.ref('games/'+id).update({healthUrl:v.trim()||null,updatedAt:TS});toast('সংরক্ষিত ✅')}catch(e){toast('ব্যর্থ: '+e.message)}}
-async function gToggle(id){const n=(GAMES[id].status||'Active')==='Active'?'Inactive':'Active';await db.ref('games/'+id).update({status:n,active:n==='Active',isActive:n==='Active',updatedAt:TS})}
-async function gDel(id){if(confirm('"'+(GAMES[id].name||id)+'" মুছে ফেলবেন? ইউজার প্যানেল থেকেও মুছে যাবে।'))await db.ref('games/'+id).remove()}
+async function gInteg(id){
+ const all=getMergedCatalogGames();
+ const g=GAMES[id]||all.find(x=>x.id===id)||{id,name:id};
+ const n=g.integrated===true?false:true;
+ try{await db.ref('games/'+id).update(Object.assign({},g,{id,integrated:n,updatedAt:TS}));toast(n?'নিজস্ব/টোকেন মোড চালু ✅':'বাইরের গেম/API মোড ✅')}catch(e){toast('ব্যর্থ: '+e.message)}
+}
+async function gHealth(id){
+ const all=getMergedCatalogGames();
+ const g=GAMES[id]||all.find(x=>x.id===id)||{id,name:id};
+ const v=prompt('গেম সার্ভারের /health লিংক (খালি = বন্ধ):',g.healthUrl||'');if(v===null)return;
+ try{await db.ref('games/'+id).update(Object.assign({},g,{id,healthUrl:v.trim()||null,updatedAt:TS}));toast('সংরক্ষিত ✅')}catch(e){toast('ব্যর্থ: '+e.message)}
+}
+async function gDel(id){
+ const all=getMergedCatalogGames();
+ const g=GAMES[id]||all.find(x=>x.id===id)||{id,name:id};
+ if(g.isDefault){
+  if(!confirm('"'+(g.name||id)+'" একটি ডিফল্ট গেম। এটি বন্ধ (Hide) করে দিতে চান?'))return;
+  try{await db.ref('games/'+id).update(Object.assign({},g,{id,status:'Inactive',active:false,isActive:false,updatedAt:TS}));toast('ডিফল্ট গেম বন্ধ করা হয়েছে ⛔')}catch(e){toast('ব্যর্থ: '+e.message)}
+  return;
+ }
+ if(confirm('"'+(g.name||id)+'" সম্পূর্ণ মুছে ফেলবেন? ইউজার প্যানেল থেকেও মুছে যাবে।'))await db.ref('games/'+id).remove();
+}
+
+function getCatCfgMap(){
+ const saved=(UPCFG_ALL.global&&UPCFG_ALL.global.gameCategories)||{};
+ const out={};
+ DEF_GAME_CATS.forEach(c=>{
+  const s=saved[c.key]||{};
+  out[c.key]={key:c.key,label:s.label||c.label,active:s.active!==false,order:s.order!=null?s.order:c.order};
+ });
+ return out;
+}
+async function toggleGameCatMaster(catKey){
+ const map=getCatCfgMap();const curItem=map[catKey];if(!curItem)return;
+ curItem.active=!curItem.active;
+ try{await db.ref('userPanelConfig/global/gameCategories').set(map);toast(catKey+' ক্যাটাগরি '+(curItem.active?'চালু ✅':'বন্ধ ⛔'))}catch(e){toast('ব্যর্থ: '+e.message)}
+}
+async function renameGameCatMaster(catKey){
+ const map=getCatCfgMap();const curItem=map[catKey];if(!curItem)return;
+ const lbl=prompt(catKey+' ক্যাটাগরির প্রদর্শিত নাম লিখুন:',curItem.label);if(lbl===null)return;
+ curItem.label=lbl.trim()||catKey;
+ try{await db.ref('userPanelConfig/global/gameCategories').set(map);toast('ক্যাটাগরি নাম আপডেট ✅')}catch(e){toast('ব্যর্থ: '+e.message)}
+}
+function getSportsCfgMap(){
+ const saved=(UPCFG_ALL.global&&UPCFG_ALL.global.sportsConfig)||{};
+ const out={};
+ DEF_SPORTS_LIST.forEach((sp,idx)=>{
+  const s=saved[sp.id]||{};
+  out[sp.id]={id:sp.id,icon:s.icon||sp.icon,name:s.name||sp.name,active:s.active!==false,externalUrl:s.externalUrl||'',apiCode:s.apiCode||'',order:idx};
+ });
+ return out;
+}
+async function toggleSportCatMaster(spId){
+ const map=getSportsCfgMap();if(!map[spId])return;
+ map[spId].active=!map[spId].active;
+ try{await db.ref('userPanelConfig/global/sportsConfig').set(map);toast(spId+' — '+(map[spId].active?'চালু ✅':'বন্ধ ⛔'))}catch(e){toast('ব্যর্থ: '+e.message)}
+}
+async function editSportApiMaster(spId){
+ const map=getSportsCfgMap();const curS=map[spId];if(!curS)return;
+ const u=prompt(spId+' স্পোর্টস লিংক/API URL (খালি রাখলে ডিফল্ট ম্যাচ লিস্ট দেখাবে):',curS.externalUrl||'');if(u===null)return;
+ const code=prompt(spId+' API Sports/Match Code (ঐচ্ছিক):',curS.apiCode||'');if(code===null)return;
+ curS.externalUrl=u.trim();curS.apiCode=code.trim();
+ try{await db.ref('userPanelConfig/global/sportsConfig').set(map);toast(spId+' আপডেট হয়েছে ✅')}catch(e){toast('ব্যর্থ: '+e.message)}
+}
+
+async function toggleProvMaster(id,field){
+ const all=getMergedAllProviders();
+ const base=PROVIDERS[id]||all.find(x=>x.id===id)||{id,name:id,category:'Slots',order:1,active:true,maintenance:false};
+ const nextVal=field==='active'?(base.active===false):!(base.maintenance===true);
+ const payload=Object.assign({},base,{id,[field]:nextVal,updatedAt:TS});
+ try{await db.ref('providers/'+id).update(payload);toast((base.name||id)+' আপডেট ✅')}catch(e){toast('ব্যর্থ: '+e.message)}
+}
+async function editProvMaster(id){
+ const all=getMergedAllProviders();
+ const base=PROVIDERS[id]||all.find(x=>x.id===id)||{id,name:id,category:'Slots',order:1,active:true,maintenance:false};
+ const logo=prompt((base.name||id)+' Logo URL:',base.logo||'');if(logo===null)return;
+ const ban=prompt((base.name||id)+' Banner URL:',base.banner||'');if(ban===null)return;
+ const apiPref=prompt((base.name||id)+' Provider API Code / Prefix (যেমন: jili, pgsoft):',base.apiCode||'');if(apiPref===null)return;
+ const payload=Object.assign({},base,{id,logo:logo.trim(),banner:ban.trim(),apiCode:apiPref.trim(),updatedAt:TS});
+ try{await db.ref('providers/'+id).update(payload);toast((base.name||id)+' সেভ ✅')}catch(e){toast('ব্যর্থ: '+e.message)}
+}
+async function toggleCatAllProvs(cat,val){
+ const list=getMergedAllProviders().filter(p=>cat==='All'||p.category===cat);
+ if(!list.length)return;
+ if(!confirm((cat==='All'?'সব':'ক্যাটাগরি '+cat+'-এর')+' '+list.length+' টি প্রোভাইডার '+(val?'চালু':'বন্ধ')+' করবেন?'))return;
+ const updates={};
+ list.forEach(p=>{updates[p.id]=Object.assign({},p,{active:val,updatedAt:TS})});
+ try{await db.ref('providers').update(updates);toast(list.length+' টি প্রোভাইডার '+(val?'চালু ✅':'বন্ধ ⛔'))}catch(e){toast('ব্যর্থ: '+e.message)}
+}
+
+function editProvGameMaster(provId,gameId){
+ const item=getMergedProviderGames(provId).find(g=>g.id===gameId);if(!item)return;
+ GM_PG_EDIT=gameId;draw();
+ setTimeout(()=>{
+  if($('pg-nm'))$('pg-nm').value=item.name||'';
+  if($('pg-code'))$('pg-code').value=item.gameCode||item.apiGameCode||'';
+  if($('pg-thumb'))$('pg-thumb').value=item.thumbnail||item.img||'';
+  if($('pg-url'))$('pg-url').value=item.url||'';
+  if($('pg-ord'))$('pg-ord').value=item.order!=null?item.order:0;
+ },0);
+}
+async function saveProvGameMaster(provId){
+ const nm=($('pg-nm')&&$('pg-nm').value.trim())||'';
+ const code=($('pg-code')&&$('pg-code').value.trim())||'';
+ const thumb=($('pg-thumb')&&$('pg-thumb').value.trim())||'';
+ const url=($('pg-url')&&$('pg-url').value.trim())||'';
+ const ord=parseInt(($('pg-ord')&&$('pg-ord').value)||'0')||0;
+ if(!nm){toast('গেমের নাম লিখুন');return}
+ const all=getMergedProviderGames(provId);
+ const gid=GM_PG_EDIT||(provId+'_'+Date.now().toString(36));
+ const prev=all.find(x=>x.id===gid)||{};
+ const d={id:gid,name:nm,gameCode:code,apiGameCode:code,thumbnail:thumb,url,order:ord,active:prev.active!==false,maintenance:!!prev.maintenance,updatedAt:TS};
+ try{await db.ref('provider_games/'+provId+'/'+gid).set(d);GM_PG_EDIT='';toast('প্রোভাইডার গেম সেভ ✅');draw()}catch(e){toast('ব্যর্থ: '+e.message)}
+}
+async function toggleProvGameMaster(provId,gid,field){
+ const item=getMergedProviderGames(provId).find(g=>g.id===gid);if(!item)return;
+ const nxt=field==='active'?(item.active===false):!(item.maintenance===true);
+ const payload=Object.assign({},item,{[field]:nxt,updatedAt:TS});
+ try{await db.ref('provider_games/'+provId+'/'+gid).update(payload);toast(item.name+' আপডেট ✅')}catch(e){toast('ব্যর্থ: '+e.message)}
+}
+async function delProvGameMaster(provId,gid){
+ const item=getMergedProviderGames(provId).find(g=>g.id===gid);if(!item)return;
+ if(item.isDefault){
+  if(!confirm('"'+item.name+'" ডিফল্ট গেম — এটি বন্ধ (OFF) করে রাখবেন?'))return;
+  await toggleProvGameMaster(provId,gid,'active');return;
+ }
+ if(!confirm('"'+item.name+'" মুছে ফেলবেন?'))return;
+ try{await db.ref('provider_games/'+provId+'/'+gid).remove();toast('গেম মুছে ফেলা হয়েছে')}catch(e){toast('ব্যর্থ: '+e.message)}
+}
+
+async function saveGameApiMaster(){
+ const cfg={
+  enabled:!!($('gapi-on')&&$('gapi-on').checked),
+  providerName:($('gapi-name')&&$('gapi-name').value.trim())||'Custom Game API',
+  mode:($('gapi-mode')&&$('gapi-mode').value)||'rest_post',
+  launchUrl:($('gapi-launch')&&$('gapi-launch').value.trim())||'',
+  baseUrl:($('gapi-base')&&$('gapi-base').value.trim())||'',
+  operatorCode:($('gapi-op')&&$('gapi-op').value.trim())||'',
+  apiKey:($('gapi-key')&&$('gapi-key').value.trim())||'',
+  apiSecret:($('gapi-sec')&&$('gapi-sec').value.trim())||'',
+  currency:($('gapi-curr')&&$('gapi-curr').value.trim())||'BDT',
+  lang:($('gapi-lang')&&$('gapi-lang').value.trim())||'bn',
+  openMode:($('gapi-open')&&$('gapi-open').value)||'iframe',
+  callbackUrl:($('gapi-cb')&&$('gapi-cb').value.trim())||'',
+  updatedAt:TS
+ };
+ if(cfg.enabled&&!cfg.launchUrl){toast('Game API চালু রাখতে Launch Endpoint / URL Template দিন');return}
+ try{
+  await db.ref('userPanelConfig/global/gameApi').set(cfg);
+  if(!UPCFG_ALL.global)UPCFG_ALL.global={};
+  UPCFG_ALL.global.gameApi=cfg;
+  toast('Game API কনফিগারেশন সেভ ও লাইভ হয়েছে ✅');
+ }catch(e){toast('সেভ ব্যর্থ: '+e.message)}
+}
+async function testGameApiMaster(){
+ const url=($('gapi-launch')&&$('gapi-launch').value.trim())||'';
+ const mode=($('gapi-mode')&&$('gapi-mode').value)||'rest_post';
+ const op=($('gapi-op')&&$('gapi-op').value.trim())||'';
+ const key=($('gapi-key')&&$('gapi-key').value.trim())||'';
+ const curr=($('gapi-curr')&&$('gapi-curr').value.trim())||'BDT';
+ const lang=($('gapi-lang')&&$('gapi-lang').value.trim())||'bn';
+ const out=$('gapi-test-out');
+ if(!url){toast('আগে Launch Endpoint / URL দিন');return}
+ if(out)out.textContent='⏳ API সংযোগ পরীক্ষা করা হচ্ছে...';
+ const testGame='aviator';
+ const resolved=url
+  .replace(/\{uid\}/g,'test_player').replace(/\{username\}/g,'test_player')
+  .replace(/\{gameCode\}/g,testGame).replace(/\{provider\}/g,'spribe')
+  .replace(/\{currency\}/g,curr).replace(/\{lang\}/g,lang)
+  .replace(/\{balance\}/g,'1000').replace(/\{operator\}/g,op).replace(/\{apiKey\}/g,key);
+ if(mode==='direct_iframe'){
+  if(out)out.innerHTML='✅ Direct Template তৈরি হয়েছে:<br><code style="word-break:break-all;color:var(--ok)">'+esc(resolved)+'</code>';
+  return;
+ }
+ try{
+  const headers={'Content-Type':'application/json'};
+  if(key){headers['X-API-Key']=key;headers['Authorization']='Bearer '+key;}
+  const res=await fetch(resolved,mode==='rest_post'?{method:'POST',headers,body:JSON.stringify({operatorCode:op,apiKey:key,uid:'test_player',username:'test_player',gameCode:testGame,provider:'spribe',currency:curr,lang,balance:1000})}:{method:'GET',headers});
+  const txt=await res.text();
+  if(out)out.innerHTML=(res.ok?'✅':'⚠️')+' HTTP '+res.status+': <code style="word-break:break-all">'+esc(txt.slice(0,260))+'</code>';
+ }catch(e){
+  if(out)out.innerHTML='⚠️ ব্রাউজার থেকে সরাসরি কল ব্লক/ত্রুটি ('+esc(e.message)+') — সার্ভার ব্যাকএন্ড URL দিলে লাইভ কাজ করবে।';
+ }
+}
+function renderMasterGamesTab(){
+ const sub=GM_SUB||'games';
+ const allGames=getMergedCatalogGames();
+ const activeGamesCnt=allGames.filter(g=>g.active!==false&&g.status!=='Inactive').length;
+ const allProvs=getMergedAllProviders();
+ const activeProvsCnt=allProvs.filter(p=>p.active!==false).length;
+ const gApi=(UPCFG_ALL.global&&UPCFG_ALL.global.gameApi)||{};
+ let body='';
+ if(sub==='api'){
+  body=`
+  <div class="cd" style="margin-bottom:12px">
+   <b style="font-size:16px;color:var(--gold)">🔌 Game API ইন্টিগ্রেশন ও লাইভ সাইট রানার</b>
+   <span>যেকোনো গেম অ্যাগ্রিগেটর বা প্রোভাইডারের Launch API এখানে সেট করলে ইউজার প্যানেলের সব গেম ও প্রোভাইডার গেম সরাসরি আসল API দিয়ে চালু হবে (ইন-অ্যাপ প্লেয়ার অথবা নতুন ট্যাবে)।</span>
+   <div style="display:flex;align-items:center;gap:12px;margin-top:10px;flex-wrap:wrap">
+    <label style="display:flex;align-items:center;gap:8px;cursor:pointer;font-weight:700"><input id="gapi-on" type="checkbox" ${gApi.enabled?'checked':''} style="width:auto"> ✅ Game API চালু (ON)</label>
+    <span class="pl ${gApi.enabled?'':'b'}">${gApi.enabled?'API সক্রিয়':'API বন্ধ (ডিফল্ট/URL মোড)'}</span>
+   </div>
+  </div>
+  <div class="cd" style="margin-bottom:12px">
+   <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(230px,1fr));gap:10px">
+    <div><small>API প্রোভাইডার / অ্যাগ্রিগেটর নাম</small><input id="gapi-name" placeholder="যেমন: JILI / Pragmatic / Custom Aggregator" value="${esc(gApi.providerName||'')}"></div>
+    <div><small>API সংযোগ ধরন</small><select id="gapi-mode">
+     <option value="rest_post"${(gApi.mode||'rest_post')==='rest_post'?' selected':''}>POST JSON Launch API (গেম URL ফেরত দেয়)</option>
+     <option value="rest_get"${gApi.mode==='rest_get'?' selected':''}>GET Query Launch API (গেম URL ফেরত দেয়)</option>
+     <option value="direct_iframe"${gApi.mode==='direct_iframe'?' selected':''}>Direct URL টেমপ্লেট (সরাসরি প্লেয়ার ওপেন)</option>
+    </select></div>
+    <div><small>Launch Endpoint / URL Template *</small><input id="gapi-launch" placeholder="https://api.example.com/launch?game={gameCode}&uid={uid}" value="${esc(gApi.launchUrl||'')}"></div>
+    <div><small>API Base / Seamless Callback URL (ঐচ্ছিক)</small><input id="gapi-base" placeholder="https://api.example.com" value="${esc(gApi.baseUrl||'')}"></div>
+    <div><small>Operator / Agent Code</small><input id="gapi-op" placeholder="Operator ID / Merchant Code" value="${esc(gApi.operatorCode||'')}"></div>
+    <div><small>API Key / Token</small><input id="gapi-key" placeholder="API Key" value="${esc(gApi.apiKey||'')}"></div>
+    <div><small>API Secret (ঐচ্ছিক)</small><input id="gapi-sec" type="password" placeholder="API Secret" value="${esc(gApi.apiSecret||'')}"></div>
+    <div><small>Callback / Return URL (ঐচ্ছিক)</small><input id="gapi-cb" placeholder="https://yourdomain.com/callback" value="${esc(gApi.callbackUrl||'')}"></div>
+    <div><small>Currency</small><input id="gapi-curr" placeholder="BDT" value="${esc(gApi.currency||'BDT')}"></div>
+    <div><small>Language</small><input id="gapi-lang" placeholder="bn" value="${esc(gApi.lang||'bn')}"></div>
+    <div><small>ইউজার প্যানেলে গেম কীভাবে খুলবে</small><select id="gapi-open">
+     <option value="iframe"${(gApi.openMode||'iframe')==='iframe'?' selected':''}>অ্যাপের ভেতরে গেম প্লেয়ার (Iframe + ব্যাক বাটন)</option>
+     <option value="newtab"${gApi.openMode==='newtab'?' selected':''}>নতুন ব্রাউজার ট্যাবে খুলুন</option>
+    </select></div>
+   </div>
+   <div style="font-size:12px;color:var(--mu);margin-top:10px;line-height:1.6">
+    টিপস: Launch URL-এ প্লেসহোল্ডার ব্যবহার করতে পারেন — <code>{uid}</code>, <code>{username}</code>, <code>{gameCode}</code>, <code>{provider}</code>, <code>{currency}</code>, <code>{lang}</code>, <code>{balance}</code>, <code>{operator}</code>। প্রতিটি গেম ও প্রোভাইডারের নিজস্ব <b>Game Code</b> সেট করা যাবে।
+   </div>
+   <div class="row" style="margin-top:12px;margin-bottom:0">
+    <button type="button" class="p" onclick="saveGameApiMaster()">💾 Game API সেভ ও চালু করুন</button>
+    <button type="button" onclick="testGameApiMaster()">🧪 API সংযোগ টেস্ট করুন</button>
+   </div>
+   <div id="gapi-test-out" style="margin-top:10px;font-size:12px;color:var(--mu)"></div>
+  </div>`;
+ }else if(sub==='categories'){
+  const catMap=getCatCfgMap(),spMap=getSportsCfgMap();
+  body=`
+  <div class="cd" style="margin-bottom:12px">
+   <b style="font-size:15px">📂 ইউজার প্যানেলের সব গেম ক্যাটাগরি (চালু / বন্ধ ও নাম পরিবর্তন)</b>
+   <span>এখান থেকে কোনো ক্যাটাগরি বন্ধ করলে ইউজার প্যানেলের গেম লবি, হোম ও সাইড মেনু থেকে সাথে সাথে লুকিয়ে যাবে।</span>
+   <div class="sc" style="margin-top:10px"><table><tr><th>ক্যাটাগরি ID</th><th>প্রদর্শিত নাম</th><th>স্ট্যাটাস</th><th>অ্যাকশন</th></tr>`+
+   Object.values(catMap).map(c=>`<tr><td><b>${esc(c.key)}</b></td><td>${esc(c.label)}</td><td><span class="pl ${c.active?'':'b'}">${c.active?'চালু (ON)':'বন্ধ (OFF)'}</span></td><td><button class="${c.active?'d':'p'}" onclick="toggleGameCatMaster('${esc(c.key)}')">${c.active?'বন্ধ করুন':'চালু করুন'}</button> <button onclick="renameGameCatMaster('${esc(c.key)}')">✏️ নাম</button></td></tr>`).join('')+`</table></div>
+  </div>
+  <div class="cd">
+   <b style="font-size:15px">🏏 স্পোর্টস সেকশন ও লাইভ স্পোর্টস API / লিংক (ON/OFF)</b>
+   <span>Sports ক্যাটাগরির ভেতরের খেলাগুলো এখান থেকে চালু/বন্ধ ও কাস্টম স্পোর্টসবুক লিংক/API কোড যুক্ত করুন।</span>
+   <div class="sc" style="margin-top:10px"><table><tr><th>আইকন ও নাম</th><th>API / এক্সটার্নাল লিংক</th><th>স্ট্যাটাস</th><th>অ্যাকশন</th></tr>`+
+   Object.values(spMap).map(sp=>`<tr><td>${esc(sp.icon)} <b>${esc(sp.name)}</b></td><td><small>${esc(sp.externalUrl||sp.apiCode||'ডিফল্ট লাইভ ম্যাচবোর্ড')}</small></td><td><span class="pl ${sp.active?'':'b'}">${sp.active?'চালু (ON)':'বন্ধ (OFF)'}</span></td><td><button class="${sp.active?'d':'p'}" onclick="toggleSportCatMaster('${esc(sp.id)}')">${sp.active?'বন্ধ করুন':'চালু করুন'}</button> <button onclick="editSportApiMaster('${esc(sp.id)}')">🔌 লিংক / API</button></td></tr>`).join('')+`</table></div>
+  </div>`;
+ }else if(sub==='providers'){
+  const cats=['All','Live Casino','Slots','Sports','Table Games','Fishing','Crash & Arcade'];
+  const q=GM_Q.toLowerCase();
+  const filtered=allProvs.filter(p=>(GM_PV_CAT==='All'||p.category===GM_PV_CAT)&&(!q||[p.name,p.category,p.id,p.apiCode||''].join(' ').toLowerCase().includes(q)));
+  body=`
+  <div class="cd" style="margin-bottom:12px">
+   <b style="font-size:15px">🏢 সব প্রোভাইডার ম্যানেজমেন্ট (${activeProvsCnt}/${allProvs.length} চালু)</b>
+   <div class="row" style="margin-top:10px">
+    <select onchange="GM_PV_CAT=this.value;draw()" style="max-width:210px">${cats.map(c=>`<option value="${esc(c)}"${GM_PV_CAT===c?' selected':''}>${esc(c==='All'?'সব ক্যাটাগরি':c)}</option>`).join('')}</select>
+    <input id="gmq" placeholder="প্রোভাইডার খুঁজুন..." value="${esc(GM_Q)}" oninput="GM_Q=this.value;draw();const el=$('gmq');if(el){el.focus();el.setSelectionRange(GM_Q.length,GM_Q.length)}">
+    <button type="button" class="p" onclick="seedAllProvidersMaster()">📥 সব প্রোভাইডার সিঙ্ক</button>
+    <button type="button" onclick="toggleCatAllProvs(GM_PV_CAT,true)">সব চালু</button>
+    <button type="button" class="d" onclick="toggleCatAllProvs(GM_PV_CAT,false)">সব বন্ধ</button>
+   </div>
+   <div class="sc"><table><tr><th>প্রোভাইডার</th><th>ক্যাটাগরি</th><th>API Code / অর্ডার</th><th>স্ট্যাটাস</th><th>অ্যাকশন</th></tr>`+
+   (filtered.map(p=>`<tr><td><b>${esc(p.name)}</b><br><small style="opacity:.6">${esc(p.id)}</small></td><td>${esc(p.category)}</td><td><small>${esc(p.apiCode||'—')} · #${p.order||0}</small></td><td><span class="pl ${p.active===false?'b':''}">${p.active===false?'বন্ধ':'চালু'}</span> ${p.maintenance?'<span class="pl y">Maint</span>':''}</td><td><button class="${p.active===false?'p':'d'}" onclick="toggleProvMaster('${esc(p.id)}','active')">${p.active===false?'চালু':'বন্ধ'}</button> <button onclick="toggleProvMaster('${esc(p.id)}','maintenance')">Maint</button> <button onclick="editProvMaster('${esc(p.id)}')">✏️ এডিট/API</button> <button onclick="GM_SUB='provgames';GM_SEL_PV='${esc(p.id)}';draw()">🎮 গেমস</button></td></tr>`).join('')||`<tr><td colspan="5" style="text-align:center;color:var(--mu)">কোনো প্রোভাইডার পাওয়া যায়নি</td></tr>`)+`</table></div>
+  </div>`;
+ }else if(sub==='provgames'){
+  const pvOpts=allProvs.map(p=>`<option value="${esc(p.id)}"${GM_SEL_PV===p.id?' selected':''}>${esc(p.name)} (${esc(p.category)})</option>`).join('');
+  const curPv=allProvs.find(p=>p.id===GM_SEL_PV)||allProvs[0];
+  if(curPv&&GM_SEL_PV!==curPv.id)GM_SEL_PV=curPv.id;
+  const pGames=curPv?getMergedProviderGames(curPv.id):[];
+  body=`
+  <div class="cd" style="margin-bottom:12px">
+   <b style="font-size:15px">🎮 প্রোভাইডারের ভেতরের সব গেমস (${curPv?esc(curPv.name):''})</b>
+   <span>যেকোনো প্রোভাইডার বেছে নিয়ে তার ভেতরের প্রতিটি গেম চালু/বন্ধ, Thumbnail ছবি, API Game Code ও Launch URL সেট করুন।</span>
+   <div class="row" style="margin-top:10px">
+    <select onchange="GM_SEL_PV=this.value;GM_PG_EDIT='';draw()" style="flex:1;min-width:220px">${pvOpts}</select>
+    ${curPv?`<button type="button" class="p" onclick="seedProvGamesMaster('${esc(curPv.id)}')">📥 ডিফল্ট গেম সিঙ্ক</button>`:''}
+   </div>
+   <div style="padding:10px;border:1px solid var(--border-subtle);border-radius:10px;margin:10px 0;background:var(--c-inner)">
+    <div style="font-weight:700;font-size:13px;margin-bottom:8px;color:var(--gold)">${GM_PG_EDIT?'✏️ প্রোভাইডার গেম এডিট করুন':'+ এই প্রোভাইডারে নতুন গেম যোগ করুন'}</div>
+    <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(170px,1fr));gap:8px">
+     <input id="pg-nm" placeholder="গেমের নাম (যেমন: Crazy Time)">
+     <input id="pg-code" placeholder="API Game Code (ঐচ্ছিক)">
+     <input id="pg-thumb" placeholder="ছবির URL (ঐচ্ছিক)">
+     <input id="pg-url" placeholder="সরাসরি গেম URL (ঐচ্ছিক)">
+     <input id="pg-ord" type="number" value="0" placeholder="অর্ডার">
+    </div>
+    <div class="row" style="margin-top:8px;margin-bottom:0">
+     <button type="button" class="p" onclick="saveProvGameMaster('${curPv?esc(curPv.id):''}')">${GM_PG_EDIT?'💾 আপডেট':'+ গেম যোগ করুন'}</button>
+     ${GM_PG_EDIT?`<button type="button" onclick="GM_PG_EDIT='';draw()">বাতিল</button>`:''}
+    </div>
+   </div>
+   <div class="sc"><table><tr><th>গেম</th><th>API Code / URL</th><th>স্ট্যাটাস</th><th>অ্যাকশন</th></tr>`+
+   (pGames.map(g=>`<tr><td><b>${esc(g.name)}</b><br><small style="opacity:.6">${esc(g.id)}</small></td><td><small>${esc(g.gameCode||g.apiGameCode||'ডিফল্ট কোড')}${g.url?' · 🔗 URL':''}</small></td><td><span class="pl ${g.active===false?'b':''}">${g.active===false?'বন্ধ':'চালু'}</span> ${g.maintenance?'<span class="pl y">Maint</span>':''}</td><td><button class="${g.active===false?'p':'d'}" onclick="toggleProvGameMaster('${esc(curPv.id)}','${esc(g.id)}','active')">${g.active===false?'চালু':'বন্ধ'}</button> <button onclick="toggleProvGameMaster('${esc(curPv.id)}','${esc(g.id)}','maintenance')">Maint</button> <button onclick="editProvGameMaster('${esc(curPv.id)}','${esc(g.id)}')">✏️ এডিট</button> <button class="d" onclick="delProvGameMaster('${esc(curPv.id)}','${esc(g.id)}')">${g.isDefault?'লুকান':'মুছুন'}</button></td></tr>`).join('')||`<tr><td colspan="4" style="text-align:center;color:var(--mu)">কোনো গেম নেই</td></tr>`)+`</table></div>
+  </div>`;
+ }else{
+  const cats=['All','Popular Games','Crash & Arcade','Live Casino','Slots','Table Games','Fishing','Sports'];
+  const q=GM_Q.toLowerCase();
+  const list=allGames.filter(g=>(GM_CAT_F==='All'||g.category===GM_CAT_F)&&(!q||[g.name,g.category,g.id,g.apiGameCode||''].join(' ').toLowerCase().includes(q)));
+  body=`
+  <div class="cd" style="margin-bottom:12px">
+   <div style="display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:8px;margin-bottom:8px">
+    <b style="font-size:15px">${GM_EDIT_GID?'✏️ গেম এডিট করুন':'+ নতুন জনপ্রিয় / ক্যাসিনো গেম যোগ করুন'}</b>
+    <button type="button" class="p" onclick="seedDefaultGamesCatalog()">📥 ইউজার প্যানেলের ২০টি ডিফল্ট গেম সিঙ্ক করুন</button>
+   </div>
+   <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:8px">
+    <input id="gn" placeholder="গেমের নাম (যেমন: Aviator)">
+    <select id="gc">${['Popular Games','Crash & Arcade','Live Casino','Slots','Table Games','Fishing','Sports'].map(c=>`<option value="${esc(c)}">${esc(c)}</option>`).join('')}</select>
+    <input id="gicon" placeholder="আইকন ইমোজি (যেমন: ✈️)" value="🎮">
+    <input id="gi" placeholder="ছবির লিংক (ঐচ্ছিক)">
+    <input id="gu" placeholder="সরাসরি গেম URL (অথবা API কোড দিন)">
+    <input id="gcode" placeholder="API Game Code (যেমন: aviator_01)">
+    <input id="gprov" placeholder="প্রোভাইডার নাম (যেমন: Spribe)">
+    <input id="gh" placeholder="সার্ভার /health লিংক (ঐচ্ছিক)">
+   </div>
+   <div class="row" style="margin-top:8px;margin-bottom:0;align-items:center">
+    <label style="display:flex;align-items:center;gap:6px;font-size:.85rem"><input id="gpop" type="checkbox" checked style="width:auto"> ⭐ Popular Games (হোম পেজে দেখাবে)</label>
+    <label style="display:flex;align-items:center;gap:6px;font-size:.85rem"><input id="gint" type="checkbox" style="width:auto"> নিজস্ব টোকেন মোড</label>
+    <button type="button" class="p" onclick="saveGame()">${GM_EDIT_GID?'💾 গেম আপডেট করুন':'+ নতুন গেম সেভ'}</button>
+    ${GM_EDIT_GID?`<button type="button" onclick="cancelEditGameMaster()">বাতিল</button>`:''}
+   </div>
+  </div>
+  <div class="cd">
+   <div class="row" style="align-items:center;margin-bottom:8px">
+    <select onchange="GM_CAT_F=this.value;draw()" style="max-width:200px">${cats.map(c=>`<option value="${esc(c)}"${GM_CAT_F===c?' selected':''}>${esc(c==='All'?'সব ক্যাটাগরি':c)}</option>`).join('')}</select>
+    <input id="gmq" placeholder="গেমের নাম বা কোড খুঁজুন..." value="${esc(GM_Q)}" oninput="GM_Q=this.value;draw();const el=$('gmq');if(el){el.focus();el.setSelectionRange(GM_Q.length,GM_Q.length)}">
+    <span class="pl">${activeGamesCnt} / ${allGames.length} চালু</span>
+   </div>
+   <div class="sc"><table><tr><th>গেম / ID</th><th>ক্যাটাগরি ও API কোড</th><th>হোম / ধরন</th><th>স্ট্যাটাস</th><th>অ্যাকশন</th></tr>`+
+   list.map(g=>{const on=g.status!=='Inactive'&&g.active!==false;return`<tr><td>${esc(g.icon||'🎮')} <b>${esc(g.name)}</b><br><small style="opacity:.6">${esc(g.id)}</small></td><td>${esc(g.category||'Popular Games')}<br><small style="color:var(--mu)">${esc(g.apiGameCode||g.gameCode||'')}${g.url?' · 🔗 URL':''}</small></td><td><button onclick="toggleGamePopular('${esc(g.id)}')" style="padding:3px 8px;font-size:11px">${g.popular!==false&&g.popular!==0?'⭐ Popular':'সাধারণ'}</button><br><small>${g.integrated===true?'টোকেন':'API/URL'}</small></td><td><span class="pl ${on?'':'b'}">${on?'চালু (ON)':'বন্ধ (OFF)'}</span></td><td><button class="${on?'d':'p'}" onclick="gToggle('${esc(g.id)}')">${on?'বন্ধ করুন':'চালু করুন'}</button> <button onclick="saveGame('${esc(g.id)}')">✏️ এডিট</button> <button onclick="gInteg('${esc(g.id)}')">🔌</button> <button onclick="gHealth('${esc(g.id)}')">🩺</button> <button class="d" onclick="gDel('${esc(g.id)}')">${g.isDefault?'লুকান':'মুছুন'}</button></td></tr>`}).join('')+`</table></div>
+  </div>`;
+ }
+ return `
+ <div class="cd" style="margin-bottom:12px">
+  <div style="display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:10px">
+   <div>
+    <b style="font-size:16px;color:var(--gold)">🎮 সম্পূর্ণ গেম, ক্যাটাগরি, প্রোভাইডার ও API ম্যানেজমেন্ট</b>
+    <span>ইউজার প্যানেলের প্রতিটি গেম, ক্যাটাগরি, স্পোর্টস ও ৮৬টি প্রোভাইডার এখান থেকে চালু/বন্ধ এবং Game API যুক্ত করে সাইট পরিচালনা করুন।</span>
+   </div>
+   <select id="gm-sub-sel" onchange="GM_SUB=this.value;GM_Q='';draw()" style="min-width:250px;font-weight:700">
+    <option value="games"${sub==='games'?' selected':''}>🌟 জনপ্রিয় ও ক্যাসিনো গেমস (${activeGamesCnt}/${allGames.length})</option>
+    <option value="categories"${sub==='categories'?' selected':''}>📂 ক্যাটাগরি ও স্পোর্টস ON/OFF</option>
+    <option value="providers"${sub==='providers'?' selected':''}>🏢 সব প্রোভাইডার (${activeProvsCnt}/${allProvs.length})</option>
+    <option value="provgames"${sub==='provgames'?' selected':''}>🎲 প্রোভাইডারের ভেতরের গেমস</option>
+    <option value="api"${sub==='api'?' selected':''}>🔌 Game API সেটআপ (সাইট রান)</option>
+   </select>
+  </div>
+ </div>`+body;
+}
 async function uAdjust(uid){const u=USERS[uid]||{},a=parseFloat(prompt(`${u.name||uid} (ব্যালেন্স ৳${u.balance||0})\nযোগ করতে +50, কাটতে -50 লিখুন:`,'50'));if(!a)return;const why=prompt('কারণ:','ম্যানুয়াল সমন্বয়');if(!why)return;
  // টাকা কাটলে সেই টাকা ইউজারের অ্যাডমিনের অ্যাকাউন্টে ফেরত যাবে
  let adm=null;
@@ -2003,7 +2707,27 @@ async function rejectAffReqMaster(id){
 
 function draw(){if(!started)return;
  const A=Object.entries(ADM),P=Object.entries(REQ).filter(([k,r])=>r.status==='pending'),AG=Object.entries(AGENTS),AGP=Object.entries(AGREQ).filter(([k,r])=>r.status==='pending'),AFP=Object.entries(AFFREQ).filter(([k,r])=>r.status==='pending');
- $('mb').textContent=$('s1').textContent=fmt(MB);$('s2').textContent=fmt(A.reduce((s,[k,a])=>s+(+a.balance||0),0));$('s3').textContent=A.length;$('s4').textContent=P.length;
+ const allocFund=A.reduce((s,[k,a])=>s+(+a.balance||0),0);
+ const fullBal='৳ '+Number(MB||0).toLocaleString('en-US',{minimumFractionDigits:2,maximumFractionDigits:2});
+ $('mb').textContent=fmt(MB);$('s1').textContent=fmt(MB);$('s2').textContent=fmt(allocFund);$('s3').textContent=A.length;$('s4').textContent=P.length;
+ if($('hero-mb'))$('hero-mb').textContent=fullBal;
+ if($('hero-m-alloc'))$('hero-m-alloc').textContent='৳ '+Number(allocFund).toLocaleString('en-US',{minimumFractionDigits:2,maximumFractionDigits:2});
+ if($('hero-m-active'))$('hero-m-active').textContent=A.filter(([,a])=>a.active!==false).length;
+ if($('s5'))$('s5').textContent=AG.length;
+ if($('s6'))$('s6').textContent=Object.keys(USERS).length;
+ if($('m-topbar-title'))$('m-topbar-title').textContent=M_TAB_TITLES[cur]||'Dashboard';
+ if($('m-content-area'))$('m-content-area').classList.toggle('m-is-home',cur==='admins');
+ document.querySelectorAll('.bottom-nav-btn').forEach(b=>b.classList.toggle('active',b.getAttribute('data-tab')===cur));
+ const rcEl=$('m-recent-cards');
+ if(rcEl){
+  const rec=Object.entries(LED).reverse().slice(0,4);
+  rcEl.innerHTML=rec.length?rec.map(([,l])=>{
+   const tp=String(l.type||'').toUpperCase(),isOut=tp.includes('RECLAIM')||tp.includes('WITHDRAW')||tp.includes('DEDUCT');
+   const amt=Number(l.amount||0).toLocaleString('en-US',{minimumFractionDigits:2,maximumFractionDigits:2});
+   const tm=l.createdAt?new Date(l.createdAt).toLocaleTimeString('bn-BD',{hour:'2-digit',minute:'2-digit'}):'';
+   return `<div class="tx-card-item" onclick="tab('led')"><div class="tx-card-ic ${isOut?'out':'in'}">${isOut?'↗':'↙'}</div><div class="tx-card-mid"><b>${esc(l.note||l.type||'Transaction')}</b><small>${esc(l.email||l.uid||'Master Ledger')}${tm?' · '+esc(tm):''}</small></div><div class="tx-card-right"><span class="tx-card-amt">৳ ${amt}</span><small style="font-size:.68rem;color:var(--text-muted)">${esc(l.type||'LEDGER')}</small></div></div>`;
+  }).join(''):'<div class="tx-card-item" style="justify-content:center;color:var(--text-muted);font-size:.84rem">কোনো সাম্প্রতিক লেনদেন নেই</div>';
+ }
  if($('nav-agent-pending'))$('nav-agent-pending').textContent=AGP.length;
  if($('nav-aff-pending'))$('nav-aff-pending').textContent=AFP.length;
  drawTn();['admins','agents','affiliates','reqs','led','games','userpanel','players','act','feat','promo','chat','tenants','guide'].forEach(t=>{const el=$('t-'+t);if(el)el.className=(t===cur||(t==='admins'&&cur==='admin'))?'on':''});let h='';
@@ -2145,8 +2869,7 @@ function draw(){if(!started)return;
   Object.entries(REQ).reverse().map(([k,r])=>`<tr><td>${esc(r.email)}</td><td>${fmt(r.amount)}</td><td>${esc(r.note)}</td><td>${r.createdAt?new Date(r.createdAt).toLocaleString('bn-BD'):''}</td><td><span class="pl ${r.status==='rejected'?'b':r.status==='pending'?'y':''}">${esc(r.status)}</span></td><td>${r.status==='pending'?`<button class="p" onclick="approve('${k}')">অনুমোদন</button> <button class="d" onclick="reject('${k}')">বাতিল</button>`:''}</td></tr>`).join('')+`</table></div>`}
  if(cur==='led'){h=`<div class="row"><button class="d" onclick="clearAdminTx()">🗑 সব লেনদেন মুছুন</button></div><div class="sc"><table><tr><th>সময়</th><th>ধরন</th><th>অ্যাডমিন</th><th>পরিমাণ</th><th>নোট</th></tr>`+
   Object.values(LED).reverse().map(l=>`<tr><td>${l.time?new Date(l.time).toLocaleString('bn-BD'):''}</td><td>${esc(l.type)}</td><td>${esc(l.email)}</td><td>${fmt(l.amount)}</td><td>${esc(l.note)}</td></tr>`).join('')+`</table></div>`}
- if(cur==='games'){h=`<div class="row"><input id="gn" placeholder="ক্যাসিনো গেমের নাম"><input id="gc" list="gcl" value="Popular Games" placeholder="ক্যাটাগরি" style="height:42px"><datalist id="gcl">${[...new Set(["Popular Games","Crash Games","Live Casino","Slot Games","Table Games",...Object.values(GAMES).map(x=>x.category).filter(Boolean)])].map(c=>`<option value="${esc(c)}">`).join('')}</datalist><input id="gi" placeholder="ছবির লিংক"><input id="gu" placeholder="গেমের লিংক"><input id="gh" placeholder="গেম সার্ভারের /health লিংক (ঐচ্ছিক, সার্ভার জাগাতে)"><label style="display:flex;align-items:center;gap:6px;font-size:.85rem"><input id="gint" type="checkbox" checked style="width:auto"> নিজস্ব গেম (টোকেন + প্রস্তুত সংকেত)</label><button class="p" onclick="saveGame()">+ নতুন গেম</button></div><div class="cd" style="margin-bottom:10px"><span>Pro Casino গেমস তালিকা — Popular, Crash, Live Casino, Slot & Table — ${Object.keys(GAMES).length} টি</span></div><div class="sc"><table><tr><th>নাম / গেম ID</th><th>ক্যাটাগরি</th><th>ধরন</th><th>স্ট্যাটাস</th><th>অ্যাকশন</th></tr>`+
-  Object.entries(GAMES).map(([k,g])=>`<tr><td>${esc(g.name)}<br><small style="opacity:.6">ID: ${esc(k)}</small></td><td>${esc(g.category)}</td><td>${g.integrated===true?'নিজস্ব':(g.integrated===false?'বাইরের':'পুরোনো (অটো)')}${g.healthUrl?' 🩺':''}</td><td><span class="pl ${(g.status||'Active')==='Active'?'':'b'}">${esc(g.status||'Active')}</span></td><td><button onclick="saveGame('${k}')">এডিট</button> <button onclick="gToggle('${k}')">চালু/বন্ধ</button> <button onclick="gInteg('${k}')">🔌 ধরন</button> <button onclick="gHealth('${k}')">🩺</button> <button class="d" onclick="gDel('${k}')">মুছুন</button></td></tr>`).join('')+`</table></div>`}
+ if(cur==='games'){h=renderMasterGamesTab()}
  if(cur==='players'){const q=Q.toLowerCase();const _orph=Object.keys(USERS).filter(k=>!ADM[k]&&!(USERS[k].adminUid&&ADM[USERS[k].adminUid])).length;h=(_orph?`<div class="cd" style="margin-bottom:10px;border:1px solid #ef4444"><b>⚠ ${_orph} জন ইউজারের কোনো অ্যাডমিন নেই</b><span>অ্যাডমিন না থাকলে সে ডিপোজিট/উইথড্র করতে পারবে না এবং কোনো অ্যাডমিন তাকে দেখবে না।</span><div class="row"><button class="p" onclick="assignAllOrphans()">সবাইকে একজন অ্যাডমিনের অধীনে দিন</button></div></div>`:'')+`<div class="row"><input id="pq" placeholder="নাম/ইমেইল/ফোন/UID/IP দিয়ে খুঁজুন" value="${esc(Q)}" oninput="Q=this.value;draw();const p=$('pq');p.focus();p.setSelectionRange(Q.length,Q.length)"></div><div class="sc"><table><tr><th>প্লেয়ার ও UID</th><th>ব্যালেন্স</th><th>বেট সংখ্যা ও (− / +)</th><th>IP ও ডিভাইস</th><th>রোল / স্ট্যাটাস</th><th>অ্যাকশন</th></tr>`+
   Object.entries(USERS).filter(([k,u])=>!q||[u.name,u.email,u.phone,u.username,u.lastIp,u.lastDevice,k].join(' ').toLowerCase().includes(q)).slice(0,200).map(([k,u])=>{
    const isAlreadyAdmin=!!ADM[k],bs=getPlayerBetStats(k),idInf=getPlayerIpAndDev(k);
@@ -2764,9 +3487,9 @@ function npmChatHtml(){
     document.querySelectorAll('.theme-toggle-btn').forEach(function(b){b.innerHTML=t==='light'?SUN:MOON;b.title=t==='light'?'ডার্ক থিমে যান':'লাইট থিমে যান'});
   };
   window.cycleTheme=function(){applyTheme((document.body.getAttribute('data-theme')||'dark')==='dark'?'light':'dark')};
-  window.toggleSidebar=function(){document.getElementById('sidebar').classList.toggle('open')};
+  window.toggleSidebar=function(forceState){var sb=document.getElementById('sidebar'),bd=document.getElementById('sidebar-backdrop');if(!sb)return;var next=(typeof forceState==='boolean')?forceState:!sb.classList.contains('open');sb.classList.toggle('open',next);if(bd)bd.classList.toggle('open',next);};
   applyTheme(document.body.getAttribute('data-theme')||'dark');
-  document.querySelectorAll('.nav-item button').forEach(function(b){b.addEventListener('click',function(){document.getElementById('sidebar').classList.remove('open')})});
+  document.querySelectorAll('.nav-item button').forEach(function(b){b.addEventListener('click',function(){window.toggleSidebar(false)})});
   var _d=draw;
   draw=function(){
     _d();

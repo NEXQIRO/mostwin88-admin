@@ -121,6 +121,9 @@ td:first-child{font-weight:650}
 .fgrp label{display:block;font-size:11px;color:var(--muted);margin-bottom:6px;font-weight:600}
 .fgrp input{width:100%;background:#0c0f13;border:1px solid var(--line);color:var(--text);border-radius:10px;padding:11px 13px;outline:none}
 .fgrp input:focus{border-color:var(--orange)}
+.pw-wrap{position:relative;display:flex;align-items:center}
+.pw-wrap input{padding-right:64px}
+.pw-eye{position:absolute;right:6px;top:50%;transform:translateY(-50%);background:#1c2128;color:var(--gold);border:1px solid var(--line);border-radius:8px;padding:5px 10px;font-size:11px;font-weight:700}
 .lerr{color:var(--red);font-size:12px;margin-bottom:10px;text-align:center;min-height:16px}
 
 /* Floating Live Chat FAB & Drawer (user.html Support Popup Style) */
@@ -239,7 +242,10 @@ body.light .chat-bar input{background:#0a1530!important;color:#EAF0FF!important;
   </div>
   <div class="fgrp">
    <label for="affLoginPass">পাসওয়ার্ড</label>
-   <input id="affLoginPass" type="password" autocomplete="current-password" placeholder="••••••••" required>
+   <div class="pw-wrap">
+    <input id="affLoginPass" type="password" autocomplete="current-password" placeholder="••••••••" required>
+    <button type="button" class="pw-eye" onclick="toggleAffPw(this)">দেখুন</button>
+   </div>
   </div>
   <div id="affLoginErr" class="lerr"></div>
   <button id="affLoginBtn" type="submit" class="btn btn-primary" style="width:100%;padding:12px">SECURE AFFILIATE LOGIN</button>
@@ -644,6 +650,23 @@ function attach(ref, cb) {
 }
 
 /* ==================== AUTH ==================== */
+function translateAffAuthErr(err) {
+  const code = (err && err.code) || '';
+  if (code === 'auth/invalid-credential' || code === 'auth/wrong-password' || code === 'auth/user-not-found' || code === 'auth/invalid-login-credentials') {
+    return 'ভুল ইমেইল/ইউজারনেম অথবা পাসওয়ার্ড! সঠিক তথ্য দিয়ে আবার চেষ্টা করুন।';
+  }
+  if (code === 'auth/invalid-email') return 'সঠিক ইমেইল ঠিকানা লিখুন।';
+  if (code === 'auth/too-many-requests') return 'অনেকবার ভুল চেষ্টার কারণে সাময়িকভাবে ব্লক হয়েছে। কিছুক্ষণ পর চেষ্টা করুন।';
+  if (code === 'auth/network-request-failed') return 'নেটওয়ার্ক সংযোগ সমস্যা। ইন্টারনেট চেক করে আবার চেষ্টা করুন।';
+  return sanitizeAffMsg((err && err.message) || err) || 'লগইন ব্যর্থ হয়েছে';
+}
+function toggleAffPw(btn) {
+  const p = document.getElementById('affLoginPass');
+  if (!p) return;
+  const show = p.type === 'password';
+  p.type = show ? 'text' : 'password';
+  if (btn) btn.textContent = show ? 'লুকান' : 'দেখুন';
+}
 async function affiliateLogin(e) {
   if (e) e.preventDefault();
   const raw = (document.getElementById('affLoginUser').value || '').trim();
@@ -663,7 +686,7 @@ async function affiliateLogin(e) {
     }
     await auth.signInWithEmailAndPassword(email, pass);
   } catch (err) {
-    errEl.textContent = sanitizeAffMsg(err.message) || 'লগইন ব্যর্থ হয়েছে';
+    errEl.textContent = translateAffAuthErr(err);
   } finally {
     btn.disabled = false;
   }
@@ -684,7 +707,7 @@ async function sendAffPasswordReset() {
     await auth.sendPasswordResetEmail(email);
     toast('পাসওয়ার্ড রিসেট ইমেইল পাঠানো হয়েছে: ' + email);
   } catch (e) {
-    toast('ব্যর্থ: ' + e.message);
+    toast('ব্যর্থ: ' + translateAffAuthErr(e));
   }
 }
 

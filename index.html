@@ -1574,6 +1574,343 @@
     .ua-chat-fab::after { content: ""; position: absolute; top: 3px; right: 3px; width: 11px; height: 11px; border-radius: 50%; background: #00E676; border: 2px solid #050B1A; animation: uaChatPulse 1.8s infinite; box-shadow: 0 0 8px #00E676 !important; }
     .ua-fab-badge { position: absolute; top: -4px; left: -4px; min-width: 20px; height: 20px; padding: 0 5px; border-radius: 20px; background: #ef4444; color: #fff; font-size: 10px; font-weight: 800; display: none; align-items: center; justify-content: center; border: 2px solid #050B1A; z-index: 2; }
     @media (max-width: 768px) { .ua-chat-fab { right: 14px; bottom: 78px; width: 54px; height: 54px; } }
+
+    /* ========================================================
+       OBSIDIAN & GOLD RESPONSIVE UI SYSTEM (Mobile App + PC Full Page)
+       ======================================================== */
+    .sidebar-backdrop {
+      display: none;
+      position: fixed;
+      inset: 0;
+      background: rgba(0, 0, 0, 0.65);
+      z-index: 98;
+      backdrop-filter: blur(2px);
+    }
+    .sidebar-backdrop.open { display: block; }
+
+    body[data-theme="dark"] {
+      --bg-base: #070709;
+      --bg-surface: #0D0E12;
+      --bg-card: #0E0F13;
+      --bg-card-hover: #15171D;
+      --bg-inner: #13151B;
+      --border-subtle: rgba(255, 255, 255, 0.08);
+      --border-color: rgba(255, 184, 0, 0.42);
+      --primary: #FFB800;
+      --primary-hover: #FFC933;
+      --c-base: #070709;
+      --c-surface: #0D0E12;
+      --c-inner: #13151B;
+      --c-line: rgba(255, 255, 255, 0.08);
+      --c-gold-line: rgba(255, 184, 0, 0.42);
+    }
+
+    .topbar {
+      background: rgba(11, 12, 16, 0.94);
+      border-bottom: 1px solid var(--border-subtle);
+      gap: 10px;
+    }
+    body[data-theme="light"] .topbar {
+      background: rgba(255, 255, 255, 0.96);
+    }
+    .topbar-left {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      min-width: 0;
+      flex: 1;
+    }
+    .topbar-page-title {
+      font-family: var(--font-display);
+      font-size: 1.15rem;
+      font-weight: 700;
+      color: var(--c-text);
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      letter-spacing: 0.3px;
+    }
+    .mobile-menu-btn {
+      display: none;
+      width: 38px;
+      height: 38px;
+      border-radius: 10px;
+      background: transparent;
+      border: 1px solid rgba(255, 184, 0, 0.25);
+      color: var(--primary);
+      cursor: pointer;
+      place-items: center;
+      flex-shrink: 0;
+    }
+    .mobile-menu-btn svg { width: 20px; height: 20px; fill: currentColor; }
+
+    .bal-pill {
+      display: inline-flex;
+      align-items: center;
+      gap: 7px;
+      padding: 4px 6px 4px 12px;
+      border-radius: 999px;
+      border: 1px solid rgba(255, 184, 0, 0.48);
+      background: rgba(255, 184, 0, 0.08);
+      color: var(--primary);
+      cursor: pointer;
+      user-select: none;
+      white-space: nowrap;
+      flex-shrink: 0;
+    }
+    .bal-pill b {
+      font-family: var(--font-display);
+      font-size: 0.92rem;
+      font-weight: 700;
+      color: var(--primary);
+    }
+    .bal-plus-dot {
+      width: 20px;
+      height: 20px;
+      border-radius: 50%;
+      background: var(--primary);
+      color: #09090B;
+      display: inline-grid;
+      place-items: center;
+      font-weight: 900;
+      font-size: 0.85rem;
+      line-height: 1;
+    }
+    .lang-mini-btn {
+      min-height: 34px;
+      padding: 4px 10px;
+      border-radius: 9px;
+      background: var(--c-inner);
+      border: 1px solid var(--border-subtle);
+      color: var(--primary);
+      font-weight: 700;
+      font-size: 0.78rem;
+      cursor: pointer;
+      white-space: nowrap;
+      flex-shrink: 0;
+    }
+
+    /* Hero Working Fund Card */
+    .hero-fund-card {
+      background: linear-gradient(135deg, rgba(255, 184, 0, 0.09) 0%, rgba(14, 15, 19, 0.98) 62%) !important;
+      border: 1px solid rgba(255, 184, 0, 0.36) !important;
+      border-radius: 16px;
+      padding: 16px 18px;
+      margin-bottom: 18px;
+      cursor: pointer;
+    }
+    body[data-theme="light"] .hero-fund-card {
+      background: linear-gradient(135deg, #FFF7E0 0%, #FFFFFF 65%) !important;
+      border-color: #D97706 !important;
+    }
+    .hero-fund-top {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      flex-wrap: wrap;
+    }
+    .hero-fund-lbl {
+      font-size: 0.72rem;
+      font-weight: 700;
+      letter-spacing: 0.9px;
+      text-transform: uppercase;
+      color: var(--text-muted);
+      margin-bottom: 4px;
+    }
+    .hero-fund-val {
+      font-family: var(--font-display);
+      font-size: 1.95rem;
+      font-weight: 800;
+      color: var(--primary);
+      line-height: 1.05;
+      white-space: nowrap;
+    }
+    .hero-fund-btn {
+      background: var(--primary);
+      color: #09090B;
+      border: 0;
+      border-radius: 11px;
+      padding: 10px 15px;
+      font-weight: 700;
+      font-size: 0.85rem;
+      display: inline-flex;
+      align-items: center;
+      gap: 7px;
+      cursor: pointer;
+      white-space: nowrap;
+      flex-shrink: 0;
+    }
+    .hero-fund-btn:hover { background: var(--primary-hover); }
+    .hero-fund-meta {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      gap: 6px 16px;
+      margin-top: 12px;
+      padding-top: 10px;
+      border-top: 1px solid rgba(255, 255, 255, 0.08);
+      font-size: 0.78rem;
+      font-weight: 600;
+    }
+    body[data-theme="light"] .hero-fund-meta { border-top-color: rgba(0, 0, 0, 0.08); }
+    .hero-meta-alloc { color: #38BDF8; }
+    .hero-meta-parent { color: #4ADE80; }
+
+    .sec-overline-row {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 10px;
+      margin: 4px 0 10px;
+    }
+    .sec-overline {
+      font-family: var(--font-display);
+      font-size: 0.76rem;
+      font-weight: 700;
+      letter-spacing: 0.9px;
+      text-transform: uppercase;
+      color: var(--text-muted);
+    }
+    .sec-overline-link {
+      background: none;
+      border: 0;
+      color: var(--primary);
+      font-size: 0.78rem;
+      font-weight: 700;
+      cursor: pointer;
+      padding: 2px 0;
+      white-space: nowrap;
+    }
+
+    /* Recent Transactions Mobile Card List */
+    .tx-cards-list {
+      display: none;
+      flex-direction: column;
+      gap: 10px;
+    }
+    .tx-card-item {
+      background: var(--bg-card);
+      border: 1px solid var(--border-subtle);
+      border-radius: 14px;
+      padding: 12px 14px;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+    .tx-card-ic {
+      width: 38px;
+      height: 38px;
+      border-radius: 50%;
+      display: grid;
+      place-items: center;
+      font-size: 16px;
+      font-weight: 800;
+      flex-shrink: 0;
+    }
+    .tx-card-ic.in { background: rgba(74, 222, 128, 0.14); color: #4ADE80; border: 1px solid rgba(74, 222, 128, 0.3); }
+    .tx-card-ic.out { background: rgba(248, 113, 113, 0.14); color: #F87171; border: 1px solid rgba(248, 113, 113, 0.3); }
+    .tx-card-mid {
+      flex: 1;
+      min-width: 0;
+    }
+    .tx-card-mid b {
+      display: block;
+      font-size: 0.88rem;
+      font-weight: 700;
+      color: var(--c-text);
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+    .tx-card-mid small {
+      display: block;
+      font-size: 0.74rem;
+      color: var(--text-muted);
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+    .tx-card-right {
+      text-align: right;
+      flex-shrink: 0;
+    }
+    .tx-card-amt {
+      display: block;
+      font-family: var(--font-display);
+      font-size: 0.96rem;
+      font-weight: 700;
+      color: var(--primary);
+      white-space: nowrap;
+    }
+
+    /* Bottom nav golden pill active indicator */
+    .bottom-nav {
+      background: #0A0B0E;
+      border-top: 1px solid rgba(255, 255, 255, 0.08);
+      height: auto;
+      min-height: 62px;
+      padding: 6px 4px max(6px, env(safe-area-inset-bottom));
+    }
+    body[data-theme="light"] .bottom-nav { background: #FFFFFF; border-top-color: #E6DECB; }
+    .bottom-nav-btn {
+      padding: 3px 2px;
+      gap: 3px;
+      font-size: 0.68rem;
+      color: #8E95A5;
+    }
+    .bottom-nav-ic {
+      display: inline-grid;
+      place-items: center;
+      padding: 4px 14px;
+      border-radius: 999px;
+      transition: background 0.18s ease, color 0.18s ease;
+    }
+    .bottom-nav-btn.active .bottom-nav-ic {
+      background: rgba(255, 184, 0, 0.18);
+      color: var(--primary);
+    }
+    .bottom-nav-btn.active { color: var(--primary); font-weight: 700; }
+    .bottom-nav-btn span { white-space: nowrap; overflow: hidden; text-overflow: ellipsis; max-width: 100%; }
+
+    /* PC Full-Page Auto-Detect (>= 960px) */
+    @media (min-width: 960px) {
+      .sidebar { transform: translateX(0) !important; }
+      .main-wrapper { margin-left: var(--sidebar-width); padding-bottom: 0; }
+      .content-area { max-width: 100%; padding: 22px 26px; }
+      .mobile-menu-btn { display: none !important; }
+      .bottom-nav { display: none !important; }
+      .stats-grid { grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)) !important; gap: 14px; }
+      .dash-notice-desktop { display: block; }
+      .hero-fund-val { font-size: 2.1rem; }
+    }
+
+    /* Mobile App Layout (<= 959px) matching reference screenshot */
+    @media (max-width: 959px) {
+      .sidebar { transform: translateX(-100%); z-index: 105; }
+      .sidebar.open { transform: translateX(0); }
+      .main-wrapper { margin-left: 0 !important; padding-bottom: 72px; }
+      .mobile-menu-btn { display: grid !important; }
+      .bottom-nav { display: flex !important; }
+      .content-area { padding: 12px 12px 20px; }
+      .topbar { padding: 0 12px; height: 58px; }
+      .topbar-actions { gap: 6px; }
+      #topbar-bal-label, #btn-sound-toggle, .topbar .theme-toggle-btn, #btn-topbar-master-chat { display: none !important; }
+      .stats-grid { grid-template-columns: repeat(2, minmax(0, 1fr)) !important; gap: 10px !important; margin-bottom: 16px; }
+      .stat-card { padding: 12px !important; gap: 10px !important; border-radius: 14px !important; }
+      .stat-icon { width: 38px !important; height: 38px !important; border-radius: 10px !important; }
+      .stat-icon svg { width: 19px !important; height: 19px !important; }
+      .stat-title { font-size: 0.65rem !important; text-transform: uppercase; letter-spacing: 0.45px; line-height: 1.25; margin-bottom: 3px; }
+      .stat-value { font-size: 1.18rem !important; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+      .dash-notice-desktop { display: none !important; }
+      .dash-fin-heading-desktop { display: none !important; }
+      .dash-recent-table-wrap { display: none !important; }
+      .tx-cards-list { display: flex !important; }
+      .dash-split-grid, .settings-split-grid, .form-row, .form-row-3 { grid-template-columns: 1fr !important; }
+      .hero-fund-val { font-size: 1.65rem; }
+      .hero-fund-btn { padding: 9px 13px; font-size: 0.8rem; }
+    }
 </style>
 </head>
 <body data-theme="dark">
@@ -1632,6 +1969,7 @@
 
   <!-- ==================== MAIN APPLICATION CONTAINER ==================== -->
   <div id="app-container">
+    <div class="sidebar-backdrop" id="sidebar-backdrop" onclick="toggleSidebar(false)"></div>
 
     <!-- SIDEBAR -->
     <aside class="sidebar" id="sidebar">
@@ -1754,47 +2092,47 @@
       
       <!-- TOPBAR -->
       <header class="topbar">
-
-        <!-- Admin Balance Pill (৳ 20,000) -->
-        <div class="bal" id="topbar-admin-balance" onclick="openAdminFundModal()" title="এডমিনের নিজস্ব লেনদেন তহবিল (ক্লিক করুন বিস্তারিত দেখতে বা ব্যালেন্স রিচার্জ করতে)" style="display: inline-flex; align-items: center; gap: 8px; cursor: pointer; user-select: none;">
-          <svg viewBox="0 0 24 24" style="width: 15px; height: 15px; fill: currentColor;"><path d="M21 18v1c0 1.1-.9 2-2 2H5c-1.11 0-2-.9-2-2V5c0-1.1.89-2 2-2h14c1.1 0 2 .9 2 2v1h-9c-1.11 0-2 .9-2 2v8c0 1.1.89 2 2 2h9zm-9-2h10V8H12v8zm4-2.5c-.83 0-1.5-.67-1.5-1.5s.67-1.5 1.5-1.5 1.5.67 1.5 1.5-.67 1.5-1.5 1.5z"/></svg>
-          <span style="font-size: 0.72rem; color: #A89F8A; font-weight: 500;">এডমিন ব্যালেন্স:</span>
-          <b id="topbar-admin-balance-val" style="color: #F59E0B; font-size: 0.95rem; font-family: var(--font-display); font-weight: 700;">৳ 0</b>
-          <span style="background: #F59E0B; color: #0A0A0A; border-radius: 999px; font-size: 0.65rem; padding: 1px 6px; font-weight: 700;">+ফান্ড</span>
+        <div class="topbar-left">
+          <button type="button" class="mobile-menu-btn" onclick="toggleSidebar()" aria-label="মেনু">
+            <svg viewBox="0 0 24 24"><path d="M3 18h18v-2H3v2zm0-5h18v-2H3v2zm0-7v2h18V6H3z"/></svg>
+          </button>
+          <span class="topbar-page-title" id="topbar-page-title">Dashboard</span>
         </div>
 
         <div class="topbar-actions">
-          <!-- PWA Install Button (Clean Topbar Integration) -->
+          <!-- Admin Balance Pill -->
+          <div class="bal-pill" id="topbar-admin-balance" onclick="openAdminFundModal()" title="এডমিনের নিজস্ব লেনদেন তহবিল">
+            <span id="topbar-bal-label" style="font-size: 0.72rem; color: var(--text-muted); font-weight: 500;">ব্যালেন্স:</span>
+            <b id="topbar-admin-balance-val">৳ 0</b>
+            <span class="bal-plus-dot">+</span>
+          </div>
+
+          <!-- PWA Install Button -->
           <button class="btn btn-warning btn-sm" id="topbar-pwa-install-btn" onclick="npTriggerInstall()" style="display:none; font-weight:700; align-items:center; gap:6px;">
             <svg viewBox="0 0 24 24" style="width:15px;height:15px;fill:currentColor;"><path d="M19.35 10.04C18.67 6.59 15.64 4 12 4 9.11 4 6.6 5.64 5.35 8.04 2.34 8.36 0 10.91 0 14c0 3.31 2.69 6 6 6h13c2.76 0 5-2.24 5-5 0-2.64-2.05-4.78-4.65-4.96zM17 13l-5 5-5-5h3V9h4v4h3z"/></svg>
-            <span>ইনস্টল করুন</span>
+            <span>ইনস্টল</span>
           </button>
 
-          <!-- Master Admin Direct Chat Button (Requirement 5) -->
+          <!-- Master Admin Direct Chat Button -->
           <button class="btn-icon" onclick="openMasterChatModal()" id="btn-topbar-master-chat" title="মাস্টার অ্যাডমিনের সাথে সরাসরি চ্যাট" style="position: relative;">
             <svg viewBox="0 0 24 24"><path d="M20 2H4c-1.1 0-2 .9-2 2v18l4-4h14c1.1 0 2-.9 2-2V4c0-1.1-.9-2-2-2zm0 14H6l-2 2V4h16v12z"/></svg>
-            <span id="master-chat-badge-dot" style="position: absolute; top: -3px; right: -3px; background: #ef4444; color: #fff; font-size: 0.65rem; font-weight: 800; border-radius: 10px; padding: 1px 5px; display: none; line-height: 1.2; box-shadow: 0 0 8px rgba(239,68,68,0.7);">0</span>
+            <span id="master-chat-badge-dot" style="position: absolute; top: -3px; right: -3px; background: #ef4444; color: #fff; font-size: 0.65rem; font-weight: 800; border-radius: 10px; padding: 1px 5px; display: none; line-height: 1.2;">0</span>
           </button>
 
-
-          <!-- Admin Notification Bell (Feature 3) -->
-          <button class="btn-icon" onclick="toggleAdminNotificationDrawer()" id="btn-admin-notif-bell" title="এডমিন ডিপোজিট ও উইথড্র রিকোয়েস্ট নোটিফিকেশন" style="position: relative;">
+          <!-- Admin Notification Bell -->
+          <button class="btn-icon" onclick="toggleAdminNotificationDrawer()" id="btn-admin-notif-bell" title="ডিপোজিট ও উইথড্র রিকোয়েস্ট নোটিফিকেশন" style="position: relative;">
             <svg viewBox="0 0 24 24"><path d="M12 22c1.1 0 2-.9 2-2h-4c0 1.1.9 2 2 2zm6-6v-5c0-3.07-1.63-5.64-4.5-6.32V4c0-.83-.67-1.5-1.5-1.5s-1.5.67-1.5 1.5v.68C7.64 5.36 6 7.92 6 11v5l-2 2v1h16v-1l-2-2zm-2 1H8v-6c0-2.48 1.51-4.5 4-4.5s4 2.02 4 4.5v6z"/></svg>
-            <span id="admin-notif-badge-counter" style="position: absolute; top: -4px; right: -4px; background: var(--accent); color: #fff; font-size: 0.68rem; font-weight: 800; border-radius: 10px; padding: 1px 6px; display: none; line-height: 1.2; box-shadow: 0 0 8px rgba(239,68,68,0.7);">0</span>
+            <span id="admin-notif-badge-counter" style="position: absolute; top: -4px; right: -4px; background: var(--accent); color: #fff; font-size: 0.66rem; font-weight: 800; border-radius: 10px; padding: 1px 5px; display: none; line-height: 1.2;">0</span>
           </button>
 
-          <!-- Sound Notification Toggle (Requirement 4) -->
-          <button class="btn btn-secondary btn-sm" onclick="toggleSoundNotification()" id="btn-sound-toggle" title="ডিপোজিট ও উইথড্র সাউন্ড নোটিফিকেশন অন/অফ">
+          <!-- Sound Notification Toggle -->
+          <button class="btn btn-secondary btn-sm" onclick="toggleSoundNotification()" id="btn-sound-toggle" title="সাউন্ড নোটিফিকেশন অন/অফ">
             <span id="sound-toggle-icon">🔊</span>
             <span id="sound-toggle-label">সাউন্ড অন</span>
           </button>
 
-
-
           <!-- Language Switcher -->
-          <button class="btn btn-secondary btn-sm" onclick="toggleLanguage()" id="lang-switch-btn">
-            🇧🇩 বাংলা
-          </button>
+          <button class="lang-mini-btn" onclick="toggleLanguage()" id="lang-switch-btn">BN</button>
 
           <!-- Theme Toggle -->
           <button class="btn-icon theme-toggle-btn" onclick="cycleTheme()" title="ডার্ক / লাইট থিম"><svg viewBox="0 0 24 24"><path d="M12 3c-4.97 0-9 4.03-9 9s4.03 9 9 9 9-4.03 9-9c0-.46-.04-.92-.1-1.36-.98 1.37-2.58 2.26-4.4 2.26-2.98 0-5.4-2.42-5.4-5.4 0-1.81.89-3.42 2.26-4.4-.44-.06-.9-.1-1.36-.1z"/></svg></button>
@@ -1806,100 +2144,113 @@
 
         <!-- ==================== 1. DASHBOARD ==================== -->
         <section id="view-dashboard" class="view-section active">
-          
-          <!-- Notice Broadcast Banner -->
-          <div class="card accent-border" style="margin-bottom: 20px; background: linear-gradient(90deg, #141c30, #1b2642);">
+
+          <!-- Hero Admin Working Fund Card -->
+          <div class="hero-fund-card" onclick="openAdminFundModal()" title="এডমিন ওয়ার্কিং ফান্ড">
+            <div class="hero-fund-top">
+              <div style="min-width:0;">
+                <div class="hero-fund-lbl">ADMIN WORKING FUND</div>
+                <div class="hero-fund-val" id="dashboard-admin-balance">৳ 0</div>
+              </div>
+              <button type="button" class="hero-fund-btn" onclick="event.stopPropagation();openAdminFundModal()">
+                <span style="display:inline-grid;place-items:center;width:18px;height:18px;border-radius:50%;background:#09090B;color:#FFB800;font-weight:900;font-size:13px;line-height:1;">+</span>
+                <span>Request Fund</span>
+              </button>
+            </div>
+            <div class="hero-fund-meta">
+              <span class="hero-meta-alloc">Allocated to Agents: <b id="hero-allocated-agents">৳ 0</b></span>
+              <span class="hero-meta-parent">Parent: Master Admin (Active)</span>
+            </div>
+          </div>
+
+          <!-- Desktop Notice Broadcast Banner -->
+          <div class="card accent-border dash-notice-desktop" style="margin-bottom: 18px;">
             <div style="display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 12px;">
               <div style="display: flex; align-items: center; gap: 12px;">
-                <span class="badge badge-live">PRO CASINO লাইভ কন্ট্রোল</span>
-                <span style="font-size: 0.95rem; font-weight: 600;" id="app-status-summary">
-                  🟢 ইউজার অ্যাপ সক্রিয় • Pro Casino সার্ভার ও সকল গেমস রানিং
+                <span class="badge badge-live">লাইভ সিস্টেম</span>
+                <span style="font-size: 0.92rem; font-weight: 600;" id="app-status-summary">
+                  🟢 ইউজার অ্যাপ সক্রিয় • সার্ভার ও সকল গেমস রানিং
                 </span>
               </div>
               <div style="display: flex; gap: 8px;">
-                <button class="btn btn-primary btn-sm" onclick="switchView('view-finance')">
-                  <svg viewBox="0 0 24 24"><path d="M19 3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zM9 17H7v-7h2v7zm4 0h-2V7h2v10zm4 0h-2v-4h2v4z"/></svg>
-                  আর্থিক রিপোর্ট
-                </button>
-                <button class="btn btn-outline btn-sm" onclick="switchView('view-notices')">
-                  <svg viewBox="0 0 24 24"><path d="M18 16v-5c0-3.07-1.63-5.64-4.5-6.32V4c0-.83-.67-1.5-1.5-1.5s-1.5.67-1.5 1.5v.68C7.64 5.36 6 7.92 6 11v5l-2 2v1h16v-1l-2-2z"/></svg>
-                  নোটিশ দিন
-                </button>
+                <button class="btn btn-primary btn-sm" onclick="switchView('view-finance')">আর্থিক রিপোর্ট</button>
+                <button class="btn btn-outline btn-sm" onclick="switchView('view-notices')">নোটিশ দিন</button>
               </div>
             </div>
           </div>
 
-          <!-- Statistics Grid -->
+          <!-- System Metrics Overview -->
+          <div class="sec-overline-row">
+            <div class="sec-overline">SYSTEM METRICS OVERVIEW</div>
+          </div>
           <div class="stats-grid">
-            <!-- 0. ADMIN OPERATIONAL WORKING FUND -->
-            <div class="stat-card" style="border: 1px solid var(--border-color); background: linear-gradient(135deg, rgba(245, 158, 11, 0.14), rgba(21, 19, 16, 0.95)); cursor: pointer;" onclick="openAdminFundModal()" title="এডমিনের নিজস্ব লেনদেন তহবিল">
+            <div class="stat-card" onclick="switchView('view-agents')" style="cursor:pointer;">
               <div class="stat-icon stat-gold">
-                <svg viewBox="0 0 24 24"><path d="M21 18v1c0 1.1-.9 2-2 2H5c-1.11 0-2-.9-2-2V5c0-1.1.89-2 2-2h14c1.1 0 2 .9 2 2v1h-9c-1.11 0-2 .9-2 2v8c0 1.1.89 2 2 2h9zm-9-2h10V8H12v8zm4-2.5c-.83 0-1.5-.67-1.5-1.5s.67-1.5 1.5-1.5 1.5.67 1.5 1.5-.67 1.5-1.5 1.5z"/></svg>
+                <svg viewBox="0 0 24 24"><path d="M12 1a9 9 0 00-9 9v7c0 1.66 1.34 3 3 3h3v-8H5v-2c0-3.87 3.13-7 7-7s7 3.13 7 7v2h-4v8h3c1.66 0 3-1.34 3-3v-7a9 9 0 00-9-9z"/></svg>
               </div>
               <div class="stat-info">
-                <div class="stat-title">এডমিন নিজস্ব লেনদেন তহবিল</div>
-                <div class="stat-value" id="dashboard-admin-balance" style="color:var(--primary);">৳ 0</div>
+                <div class="stat-title">Total Agents</div>
+                <div class="stat-value" id="stat-total-agents">0</div>
               </div>
-              <span class="ad" style="margin: 0;">+ ফান্ড</span>
             </div>
 
-            <div class="stat-card">
+            <div class="stat-card" onclick="switchView('view-affiliates')" style="cursor:pointer;">
               <div class="stat-icon stat-blue">
+                <svg viewBox="0 0 24 24"><path d="M18 16.08c-.76 0-1.44.3-1.96.77L8.91 12.7c.05-.23.09-.46.09-.7s-.04-.47-.09-.7l7.05-4.11c.54.5 1.25.81 2.04.81 1.66 0 3-1.34 3-3s-1.34-3-3-3-3 1.34-3 3c0 .24.04.47.09.7L8.04 9.81C7.5 9.31 6.79 9 6 9c-1.66 0-3 1.34-3 3s1.34 3 3 3c.79 0 1.5-.31 2.04-.81l7.12 4.16c-.05.21-.08.43-.08.65 0 1.61 1.31 2.92 2.92 2.92s2.92-1.31 2.92-2.92c0-1.61-1.31-2.92-2.92-2.92z"/></svg>
+              </div>
+              <div class="stat-info">
+                <div class="stat-title">Affiliates</div>
+                <div class="stat-value" id="stat-total-affiliates">0</div>
+              </div>
+            </div>
+
+            <div class="stat-card" onclick="switchView('view-users')" style="cursor:pointer;">
+              <div class="stat-icon stat-green">
                 <svg viewBox="0 0 24 24"><path d="M16 11c1.66 0 2.99-1.34 2.99-3S17.66 5 16 5c-1.66 0-3 1.34-3 3s1.34 3 3 3zm-8 0c1.66 0 2.99-1.34 2.99-3S9.66 5 8 5C6.34 5 5 6.34 5 8s1.34 3 3 3zm0 2c-2.33 0-7 1.17-7 3.5V19h14v-2.5c0-2.33-4.67-3.5-7-3.5zm8 0c-.29 0-.62.02-.97.05 1.16.84 1.97 1.97 1.97 3.45V19h6v-2.5c0-2.33-4.67-3.5-7-3.5z"/></svg>
               </div>
               <div class="stat-info">
-                <div class="stat-title">মোট নিবন্ধিত প্লেয়ার</div>
+                <div class="stat-title">Total Players</div>
                 <div class="stat-value" id="stat-total-users">0</div>
               </div>
             </div>
 
-            <div class="stat-card">
-              <div class="stat-icon stat-gold">
-                <svg viewBox="0 0 24 24"><path d="M21 6H3c-1.1 0-2 .9-2 2v8c0 1.1.9 2 2 2h18c1.1 0 2-.9 2-2V8c0-1.1-.9-2-2-2zm-10 7H8v3H6v-3H3v-2h3V8h2v3h3v2zm4.5 2c-.83 0-1.5-.67-1.5-1.5s.67-1.5 1.5-1.5 1.5.67 1.5 1.5-.67 1.5-1.5 1.5zm4-3c-.83 0-1.5-.67-1.5-1.5S18.67 9 19.5 9s1.5.67 1.5 1.5-.67 1.5-1.5 1.5z"/></svg>
-              </div>
-              <div class="stat-info">
-                <div class="stat-title">সক্রিয় ক্যাসিনো গেমস</div>
-                <div class="stat-value" id="stat-active-games">0</div>
-              </div>
-            </div>
-
-            <div class="stat-card">
+            <div class="stat-card" onclick="switchView('view-wallet');switchWalletTab('withdrawals')" style="cursor:pointer;">
               <div class="stat-icon stat-red">
-                <svg viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 14.5v-9l6 4.5-6 4.5z"/></svg>
+                <svg viewBox="0 0 24 24"><path d="M6 2v6h.01L6 8.01 10 12l-4 4 .01.01H6V22h12v-5.99h-.01L18 16l-4-4 4-3.99-.01-.01H18V2H6zm10 14.5V20H8v-3.5l4-4 4 4zm-4-5l-4-4V4h8v3.5l-4 4z"/></svg>
               </div>
               <div class="stat-info">
-                <div class="stat-title">চলমান লাইভ সেশন</div>
-                <div class="stat-value" id="stat-live-sessions">0</div>
-              </div>
-            </div>
-
-            <div class="stat-card">
-              <div class="stat-icon stat-green">
-                <svg viewBox="0 0 24 24"><path d="M9 16.2L4.8 12l-1.4 1.4L9 19 21 7l-1.4-1.4L9 16.2z"/></svg>
-              </div>
-              <div class="stat-info">
-                <div class="stat-title">মোট গেম সেশন</div>
-                <div class="stat-value" id="stat-total-sessions">0</div>
-              </div>
-            </div>
-
-            <div class="stat-card">
-              <div class="stat-icon stat-gold">
-                <svg viewBox="0 0 24 24"><path d="M11 15h2v2h-2zm0-8h2v6h-2zm1-5C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 18c-4.41 0-8-3.59-8-8s3.59-8 8-8 8 3.59 8 8-3.59 8-8 8z"/></svg>
-              </div>
-              <div class="stat-info">
-                <div class="stat-title">পেন্ডিং ডিপোজিট রিকোয়েস্ট</div>
-                <div class="stat-value" id="stat-pending-deposits" style="color:var(--primary);">0</div>
-              </div>
-            </div>
-
-            <div class="stat-card">
-              <div class="stat-icon stat-red">
-                <svg viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 15h-2v-2h2v2zm0-4h-2V7h2v6z"/></svg>
-              </div>
-              <div class="stat-info">
-                <div class="stat-title">পেন্ডিং উইথড্র রিকোয়েস্ট</div>
+                <div class="stat-title">Pending Withdraws</div>
                 <div class="stat-value" id="stat-pending-withdrawals" style="color:var(--accent);">0</div>
+              </div>
+            </div>
+
+            <div class="stat-card" onclick="switchView('view-wallet');switchWalletTab('deposits')" style="cursor:pointer;">
+              <div class="stat-icon stat-green">
+                <svg viewBox="0 0 24 24"><path d="M20 12l-1.41-1.41L13 16.17V4h-2v12.17l-5.58-5.59L4 12l8 8 8-8z"/></svg>
+              </div>
+              <div class="stat-info">
+                <div class="stat-title">Total Deposits</div>
+                <div class="stat-value" id="stat-successful-deposits-amt" style="color:var(--success);">৳ 0</div>
+              </div>
+            </div>
+
+            <div class="stat-card" onclick="switchView('view-wallet');switchWalletTab('withdrawals')" style="cursor:pointer;">
+              <div class="stat-icon stat-red">
+                <svg viewBox="0 0 24 24"><path d="M4 12l1.41 1.41L11 7.83V20h2V7.83l5.58 5.59L20 12l-8-8-8 8z"/></svg>
+              </div>
+              <div class="stat-info">
+                <div class="stat-title">Total Withdrawals</div>
+                <div class="stat-value" id="stat-successful-withdrawals-amt">৳ 0</div>
+              </div>
+            </div>
+
+            <div class="stat-card">
+              <div class="stat-icon stat-gold">
+                <svg viewBox="0 0 24 24"><path d="M11 15h2v2h-2zm0-8h2v6h-2zm1-5C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2z"/></svg>
+              </div>
+              <div class="stat-info">
+                <div class="stat-title">Pending Deposits</div>
+                <div class="stat-value" id="stat-pending-deposits" style="color:var(--primary);">0</div>
               </div>
             </div>
 
@@ -1908,68 +2259,33 @@
                 <svg viewBox="0 0 24 24"><path d="M16 6l2.29 2.29-4.88 4.88-4-4L2 16.59 3.41 18l6-6 4 4 6.3-6.29L22 12V6z"/></svg>
               </div>
               <div class="stat-info">
-                <div class="stat-title">ক্যাসিনো বেট / ইন (BDT)</div>
+                <div class="stat-title">Casino Bets / Payouts</div>
                 <div class="stat-value" id="stat-casino-bets">৳ 0</div>
               </div>
             </div>
-
-            <div class="stat-card">
-              <div class="stat-icon stat-green">
-                <svg viewBox="0 0 24 24"><path d="M11.8 10.9c-2.27-.59-3-1.2-3-2.15 0-1.09 1.01-1.85 2.7-1.85 1.78 0 2.44.85 2.5 2.1h2.21c-.07-1.72-1.12-3.3-3.21-3.81V3h-3v2.16c-1.94.42-3.5 1.68-3.5 3.61 0 2.31 1.91 3.46 4.7 4.13 2.5.6 3 1.48 3 2.41 0 .69-.49 1.79-2.7 1.79-2.06 0-2.87-.92-2.98-2.1h-2.2c.12 2.19 1.76 3.42 3.68 3.83V21h3v-2.15c1.95-.37 3.5-1.5 3.5-3.55 0-2.84-2.43-3.81-4.7-4.4z"/></svg>
-              </div>
-              <div class="stat-info">
-                <div class="stat-title">গেম পেআউট / উইন (BDT)</div>
-                <div class="stat-value" id="stat-casino-payouts">৳ 0</div>
-              </div>
-            </div>
           </div>
 
-          <!-- 4. FINANCIAL SUMMARY (Successful Deposits & Withdrawals Only) -->
-          <div style="margin-bottom: 24px;">
-            <div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 8px; margin-bottom: 12px;">
-              <div style="font-size: 0.95rem; font-weight: 700; color: #fff; display: flex; align-items: center; gap: 8px;">
-                <span style="color: var(--primary);">💰</span>
-                <span>আর্থিক সারসংক্ষেপ (Financial Summary - শুধুমাত্র সফল লেনদেনের মোট হিসাব)</span>
-              </div>
-              <button class="btn btn-outline btn-sm" onclick="switchView('view-finance')">
-                <svg viewBox="0 0 24 24" style="width:14px;height:14px;"><path d="M19 3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zM9 17H7v-7h2v7zm4 0h-2V7h2v10zm4 0h-2v-4h2v4z"/></svg>
-                <span>📊 পূর্ণাঙ্গ আর্থিক রিপোর্ট ও অ্যানালিটিক্স</span>
-              </button>
-            </div>
-            <div class="stats-grid" style="margin-bottom: 0;">
-              
-              <!-- Total Successful Deposits -->
-              <div class="stat-card" style="border-left: 4px solid var(--success); background: linear-gradient(135deg, rgba(16, 185, 129, 0.08), rgba(14, 19, 31, 0.95));">
-                <div class="stat-icon stat-green">
-                  <svg viewBox="0 0 24 24"><path d="M19 13h-6v6h-2v-6H5v-2h6V5h2v6h6v2z"/></svg>
-                </div>
-                <div class="stat-info">
-                  <div class="stat-title">মোট সফল ডিপোজিট (সফল প্রাপ্তি)</div>
-                  <div class="stat-value" id="stat-successful-deposits-amt" style="color: var(--success); font-size: 1.55rem;">৳ 0</div>
-                  <div style="font-size: 0.8rem; color: var(--text-muted); margin-top: 3px;" id="stat-successful-deposits-cnt">0 টি সফল লেনদেন</div>
-                </div>
-              </div>
-
-              <!-- Total Successful Withdrawals -->
-              <div class="stat-card" style="border-left: 4px solid var(--accent); background: linear-gradient(135deg, rgba(239, 68, 68, 0.08), rgba(14, 19, 31, 0.95));">
-                <div class="stat-icon stat-red">
-                  <svg viewBox="0 0 24 24"><path d="M19 9h-4V3H9v6H5l7 7 7-7zM5 18v2h14v-2H5z"/></svg>
-                </div>
-                <div class="stat-info">
-                  <div class="stat-title">মোট সফল উইথড্র (পরিশোধিত টাকা)</div>
-                  <div class="stat-value" id="stat-successful-withdrawals-amt" style="color: var(--accent); font-size: 1.55rem;">৳ 0</div>
-                  <div style="font-size: 0.8rem; color: var(--text-muted); margin-top: 3px;" id="stat-successful-withdrawals-cnt">0 টি সফল লেনদেন</div>
-                </div>
-              </div>
-
-            </div>
+          <div style="display:none;">
+            <span id="stat-active-games">0</span>
+            <span id="stat-live-sessions">0</span>
+            <span id="stat-total-sessions">0</span>
+            <span id="stat-casino-payouts">৳ 0</span>
+            <span id="stat-successful-deposits-cnt">0</span>
+            <span id="stat-successful-withdrawals-cnt">0</span>
           </div>
 
-          <!-- Activity & Quick Controls -->
+          <!-- Recent Transactions & Transfers -->
+          <div class="sec-overline-row">
+            <div class="sec-overline">RECENT TRANSACTIONS &amp; TRANSFERS</div>
+            <button type="button" class="sec-overline-link" onclick="switchView('view-wallet')">View Full Ledger</button>
+          </div>
+
+          <!-- Mobile Card List -->
+          <div class="tx-cards-list" id="dashboard-recent-cards"></div>
+
+          <!-- Desktop Split Grid (Table + Quick Controls) -->
           <div class="dash-split-grid">
-            
-            <!-- Recent Transactions / Joins -->
-            <div class="card">
+            <div class="card dash-recent-table-wrap">
               <div class="card-header">
                 <div class="card-title">
                   <svg viewBox="0 0 24 24"><path d="M19 3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm-5 14H7v-2h7v2zm3-4H7v-2h10v2zm0-4H7V7h10v2z"/></svg>
@@ -1988,9 +2304,7 @@
                       <th>সময়</th>
                     </tr>
                   </thead>
-                  <tbody id="dashboard-recent-tbody">
-                    <!-- Populated dynamically -->
-                  </tbody>
+                  <tbody id="dashboard-recent-tbody"></tbody>
                 </table>
               </div>
             </div>
@@ -3381,8 +3695,8 @@
           <div class="card accent-border" style="margin-bottom: 18px;">
             <div style="display:flex; align-items:center; justify-content:space-between; flex-wrap:wrap; gap:12px;">
               <div>
-                <h3 style="margin:0 0 4px; color:var(--primary); font-size:1.05rem;">📱 ইউজার প্যানেল (user.html) লাইভ কন্ট্রোল ও প্রোভাইডার</h3>
-                <p style="margin:0; font-size:0.82rem; color:var(--text-dim);">আপনার ইউজার প্যানেলের নোটিশ, ট্যাগলাইন, সাপোর্ট লিংক, পেমেন্ট নম্বর, স্লাইডার ও গেম প্রোভাইডার রিয়েল-টাইমে নিয়ন্ত্রণ করুন।</p>
+                <h3 style="margin:0 0 4px; color:var(--primary); font-size:1.05rem;">📱 ইউজার প্যানেল (user.html) লাইভ কন্ট্রোল</h3>
+                <p style="margin:0; font-size:0.82rem; color:var(--text-dim);">আপনার ইউজার প্যানেলের নোটিশ, ট্যাগলাইন, সাপোর্ট লিংক, পেমেন্ট নম্বর ও স্লাইডার রিয়েল-টাইমে নিয়ন্ত্রণ করুন।</p>
               </div>
               <div style="display:flex; gap:10px; flex-wrap:wrap; align-items:center;">
                 <a id="ua-up-open-link" href="user.html" target="_blank" class="btn btn-outline btn-sm">↗ ইউজার প্যানেল খুলুন</a>
@@ -3489,27 +3803,6 @@
             </details>
           </div>
 
-          <div class="card">
-            <div class="card-header"><div class="card-title"><span>🎰 গেম প্রোভাইডার কন্ট্রোল (Lobby Providers)</span></div></div>
-            <div class="form-row" style="margin-bottom:12px; align-items:flex-end;">
-              <div class="form-group"><label>প্রোভাইডার নাম</label><input type="text" id="ua-pv-nm" class="form-control" placeholder="যেমন: Evolution"></div>
-              <div class="form-group"><label>ক্যাটাগরি</label>
-                <select id="ua-pv-cat" class="form-control">
-                  <option>Live Casino</option><option>Slots</option><option>Sports</option><option>Table Games</option><option>Fishing</option><option>Crash &amp; Arcade</option>
-                </select>
-              </div>
-              <div class="form-group"><label>Logo URL (ঐচ্ছিক)</label><input type="text" id="ua-pv-logo" class="form-control" placeholder="https://..."></div>
-              <div class="form-group"><label>Banner URL (ঐচ্ছিক)</label><input type="text" id="ua-pv-ban" class="form-control" placeholder="https://..."></div>
-              <div class="form-group" style="max-width:90px;"><label>অর্ডার</label><input type="number" id="ua-pv-ord" class="form-control" value="1"></div>
-              <button type="button" class="btn btn-primary" onclick="saveProviderAdmin()">+ প্রোভাইডার সেভ</button>
-            </div>
-            <div class="table-container">
-              <table>
-                <thead><tr><th>প্রোভাইডার</th><th>ক্যাটাগরি</th><th>অর্ডার</th><th>স্ট্যাটাস</th><th>অ্যাকশন</th></tr></thead>
-                <tbody id="ua-providers-tbody"></tbody>
-              </table>
-            </div>
-          </div>
         </section>
 
       </main>
@@ -3584,24 +3877,24 @@
   <!-- MOBILE BOTTOM NAV -->
   <nav class="bottom-nav">
     <button class="bottom-nav-btn active" onclick="switchView('view-dashboard')">
-      <svg viewBox="0 0 24 24"><path d="M3 13h8V3H3v10zm0 8h8v-6H3v6zm10 0h8V11h-8v10zm0-18v6h8V3h-8z"/></svg>
-      <span>ড্যাশবোর্ড</span>
+      <span class="bottom-nav-ic"><svg viewBox="0 0 24 24"><path d="M3 13h8V3H3v10zm0 8h8v-6H3v6zm10 0h8V11h-8v10zm0-18v6h8V3h-8z"/></svg></span>
+      <span>Dashboard</span>
     </button>
     <button class="bottom-nav-btn" onclick="switchView('view-finance')">
-      <svg viewBox="0 0 24 24"><path d="M19 3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zM9 17H7v-7h2v7zm4 0h-2V7h2v10zm4 0h-2v-4h2v4z"/></svg>
-      <span>রিপোর্ট</span>
+      <span class="bottom-nav-ic"><svg viewBox="0 0 24 24"><path d="M21 18v1c0 1.1-.9 2-2 2H5c-1.11 0-2-.9-2-2V5c0-1.1.89-2 2-2h14c1.1 0 2 .9 2 2v1h-9c-1.11 0-2 .9-2 2v8c0 1.1.89 2 2 2h9zm-9-2h10V8H12v8zm4-2.5c-.83 0-1.5-.67-1.5-1.5s.67-1.5 1.5-1.5 1.5.67 1.5 1.5-.67 1.5-1.5 1.5z"/></svg></span>
+      <span>Fund Mgmt</span>
     </button>
-    <button class="bottom-nav-btn" onclick="switchView('view-wallet')">
-      <svg viewBox="0 0 24 24"><path d="M21 18v1c0 1.1-.9 2-2 2H5c-1.11 0-2-.9-2-2V5c0-1.1.89-2 2-2h14c1.1 0 2 .9 2 2v1h-9c-1.11 0-2 .9-2 2v8c0 1.1.89 2 2 2h9zm-9-2h10V8H12v8zm4-2.5c-.83 0-1.5-.67-1.5-1.5s.67-1.5 1.5-1.5 1.5.67 1.5 1.5-.67 1.5-1.5 1.5z"/></svg>
-      <span>ওয়ালেট</span>
+    <button class="bottom-nav-btn" onclick="switchView('view-agents')">
+      <span class="bottom-nav-ic"><svg viewBox="0 0 24 24"><path d="M12 1a9 9 0 00-9 9v7c0 1.66 1.34 3 3 3h3v-8H5v-2c0-3.87 3.13-7 7-7s7 3.13 7 7v2h-4v8h3c1.66 0 3-1.34 3-3v-7a9 9 0 00-9-9z"/></svg></span>
+      <span>Agents</span>
     </button>
-    <button class="bottom-nav-btn" onclick="switchView('view-users')">
-      <svg viewBox="0 0 24 24"><path d="M16 11c1.66 0 2.99-1.34 2.99-3S17.66 5 16 5c-1.66 0-3 1.34-3 3s1.34 3 3 3zm-8 0c1.66 0 2.99-1.34 2.99-3S9.66 5 8 5C6.34 5 5 6.34 5 8s1.34 3 3 3zm0 2c-2.33 0-7 1.17-7 3.5V19h14v-2.5c0-2.33-4.67-3.5-7-3.5zm8 0c-.29 0-.62.02-.97.05 1.16.84 1.97 1.97 1.97 3.45V19h6v-2.5c0-2.33-4.67-3.5-7-3.5z"/></svg>
-      <span>প্লেয়ার</span>
+    <button class="bottom-nav-btn" onclick="switchView('view-wallet');switchWalletTab('withdrawals')">
+      <span class="bottom-nav-ic"><svg viewBox="0 0 24 24"><path d="M19 14V6c0-1.1-.9-2-2-2H3c-1.1 0-2 .9-2 2v8c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2zm-9-1c-1.66 0-3-1.34-3-3s1.34-3 3-3 3 1.34 3 3-1.34 3-3 3zm13-6v11c0 1.1-.9 2-2 2H4v-2h17V7h2z"/></svg></span>
+      <span>Withdrawals</span>
     </button>
-    <button class="bottom-nav-btn" onclick="toggleSidebar()">
-      <svg viewBox="0 0 24 24"><path d="M3 18h18v-2H3v2zm0-5h18v-2H3v2zm0-7v2h18V6H3z"/></svg>
-      <span>মেন্যু</span>
+    <button class="bottom-nav-btn" onclick="switchView('view-settings')">
+      <span class="bottom-nav-ic"><svg viewBox="0 0 24 24"><path d="M19.14 12.94c.04-.3.06-.61.06-.94 0-.32-.02-.64-.07-.94l2.03-1.58c.18-.14.23-.41.12-.61l-1.92-3.32c-.12-.22-.37-.29-.59-.22l-2.39.96c-.5-.38-1.03-.7-1.62-.94l-.36-2.54c-.04-.24-.24-.41-.48-.41h-3.84c-.24 0-.43.17-.47.41l-.36 2.54c-.59.24-1.13.57-1.62.94l-2.39-.96c-.22-.08-.47 0-.59.22L2.74 8.87c-.12.21-.08.47.12.61l2.03 1.58c-.05.3-.09.63-.09.94s.02.64.07.94l-2.03 1.58c-.18.14-.23.41-.12.61l1.92 3.32c.12.22.37.29.59.22l2.39-.96c.5.38 1.03.7 1.62.94l.36 2.54c.05.24.24.41.48.41h3.84c.24 0 .44-.17.47-.41l.36-2.54c.59-.24 1.13-.56 1.62-.94l2.39.96c.22.08.47 0 .59-.22l1.92-3.32c.12-.22.07-.47-.12-.61l-2.01-1.58zM12 15.6c-1.98 0-3.6-1.62-3.6-3.6s1.62-3.6 3.6-3.6 3.6 1.62 3.6 3.6-1.62 3.6-3.6 3.6z"/></svg></span>
+      <span>Settings</span>
     </button>
   </nav>
 
@@ -4239,7 +4532,6 @@
       auditLogs: [],
       masterSlides: [],
       userPanelConfig: {},
-      providers: {},
       settings: {
         maintenance: false,
         allowRegistration: true,
@@ -4269,13 +4561,14 @@
 
     function updateAdminBalanceUI() {
       const bal = typeof STATE.adminBalance === 'number' ? STATE.adminBalance : 0;
-      const formatted = `৳ ${Math.round(bal).toLocaleString('en-US')}`;
+      const formattedShort = `৳${Math.round(bal).toLocaleString('en-US')}`;
+      const formattedFull = `৳ ${Number(bal || 0).toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`;
       const topbarEl = document.getElementById('topbar-admin-balance-val');
-      if (topbarEl) topbarEl.textContent = formatted;
+      if (topbarEl) topbarEl.textContent = formattedShort;
       const dashEl = document.getElementById('dashboard-admin-balance');
-      if (dashEl) dashEl.textContent = formatted;
+      if (dashEl) dashEl.textContent = formattedFull;
       const walletEl = document.getElementById('wallet-view-admin-balance');
-      if (walletEl) walletEl.textContent = formatted;
+      if (walletEl) walletEl.textContent = formattedShort;
     }
 
     async function setAdminBalance(newAmount, reason = 'Admin Balance Update') {
@@ -4630,10 +4923,6 @@
           renderBannersList();
         });
       }
-      db.ref('providers').on('value', (snap) => {
-        STATE.providers = snap.val() || {};
-        renderUserPanelProviders();
-      });
 
     }
 
@@ -5075,7 +5364,14 @@
       const totalCompletedWithdrawAmount = completedWithdrawals.reduce((acc, w) => acc + (parseFloat(w.amount) || 0), 0);
       const totalCompletedWithdrawCount = completedWithdrawals.length;
 
+      const totalAgents = (STATE.agents || []).length;
+      const totalAffiliates = (STATE.affiliates || []).length;
+      const allocatedToAgents = (STATE.agents || []).reduce((acc, a) => acc + (parseFloat(a && a.balance) || 0), 0);
+
       const setTxt = (id, val) => { const el = document.getElementById(id); if (el) el.innerText = val; };
+      setTxt('stat-total-agents', totalAgents);
+      setTxt('stat-total-affiliates', totalAffiliates);
+      setTxt('hero-allocated-agents', '৳ ' + allocatedToAgents.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 }));
       setTxt('stat-total-users', totalUsers);
       setTxt('stat-active-games', activeGames);
       setTxt('stat-live-sessions', liveSessions);
@@ -5086,9 +5382,9 @@
       setTxt('stat-casino-payouts', '৳ ' + Math.round(totalCasinoPayouts).toLocaleString('en-US'));
 
       // Update Financial Summary Cards
-      setTxt('stat-successful-deposits-amt', '৳ ' + totalApprovedDepositAmount.toLocaleString('en-US'));
+      setTxt('stat-successful-deposits-amt', '৳ ' + Math.round(totalApprovedDepositAmount).toLocaleString('en-US'));
       setTxt('stat-successful-deposits-cnt', totalApprovedDepositCount + ' টি সফল লেনদেন');
-      setTxt('stat-successful-withdrawals-amt', '৳ ' + totalCompletedWithdrawAmount.toLocaleString('en-US'));
+      setTxt('stat-successful-withdrawals-amt', '৳ ' + Math.round(totalCompletedWithdrawAmount).toLocaleString('en-US'));
       setTxt('stat-successful-withdrawals-cnt', totalCompletedWithdrawCount + ' টি সফল লেনদেন');
 
       const totalPending = pendingDeps + pendingWiths;
@@ -5106,29 +5402,57 @@
       const elReg = document.getElementById('quick-toggle-registration');
       if (elReg) elReg.checked = STATE.settings.allowRegistration !== false;
 
-      // Live Feed
+      // Live Feed (Table + Mobile Cards)
       const tbody = document.getElementById('dashboard-recent-tbody');
-      if (!tbody) return;
-      tbody.innerHTML = '';
-      const recentItems = [...STATE.deposits, ...STATE.withdrawals].slice(0, 5);
+      const cardsEl = document.getElementById('dashboard-recent-cards');
+      const recentItems = [...STATE.deposits, ...STATE.withdrawals]
+        .sort((a, b) => (b.createdAt || 0) - (a.createdAt || 0))
+        .slice(0, 6);
 
-      if (recentItems.length === 0) {
-        tbody.innerHTML = `<tr><td colspan="5" style="text-align:center; color:var(--text-dim); padding:20px;">কোনো সাম্প্রতিক রিকোয়েস্ট নেই</td></tr>`;
-        return;
+      if (tbody) {
+        if (recentItems.length === 0) {
+          tbody.innerHTML = `<tr><td colspan="5" style="text-align:center; color:var(--text-dim); padding:20px;">কোনো সাম্প্রতিক রিকোয়েস্ট নেই</td></tr>`;
+        } else {
+          tbody.innerHTML = recentItems.map(item => {
+            const isDep = !!item.senderNumber;
+            const stCls = ['Verified','Processing'].includes(item.status) ? wdStatusMeta(item.status).cls : item.status === 'Pending' ? 'badge-pending' : (item.status === 'Approved' || item.status === 'Completed') ? 'badge-approved' : 'badge-rejected';
+            const stLbl = ['Verified','Processing'].includes(item.status) ? wdStatusMeta(item.status).label : item.status;
+            return `
+              <tr>
+                <td><span class="badge ${isDep ? 'badge-upcoming' : 'badge-completed'}">${isDep ? 'ডিপোজিট' : 'উইথড্র'}</span></td>
+                <td><b>${escapeHtml(item.userName || 'Player')}</b></td>
+                <td><b>৳ ${item.amount}</b> (${escapeHtml(item.method || '')})</td>
+                <td><span class="badge ${stCls}">${escapeHtml(stLbl || '')}</span></td>
+                <td style="color:var(--text-dim); font-size:0.8rem;">${new Date(item.createdAt || Date.now()).toLocaleTimeString('bn-BD')}</td>
+              </tr>`;
+          }).join('');
+        }
       }
 
-      recentItems.forEach(item => {
-        const isDep = !!item.senderNumber;
-        tbody.innerHTML += `
-          <tr>
-            <td><span class="badge ${isDep ? 'badge-upcoming' : 'badge-completed'}">${isDep ? 'ডিপোজিট' : 'উইথড্র'}</span></td>
-            <td><b>${escapeHtml(item.userName || 'Player')}</b></td>
-            <td><b>৳ ${item.amount}</b> (${item.method})</td>
-            <td><span class="badge ${['Verified','Processing'].includes(item.status) ? wdStatusMeta(item.status).cls : item.status === 'Pending' ? 'badge-pending' : item.status === 'Approved' || item.status === 'Completed' ? 'badge-approved' : 'badge-rejected'}">${['Verified','Processing'].includes(item.status) ? wdStatusMeta(item.status).label : item.status}</span></td>
-            <td style="color:var(--text-dim); font-size:0.8rem;">${new Date(item.createdAt || Date.now()).toLocaleTimeString('bn-BD')}</td>
-          </tr>
-        `;
-      });
+      if (cardsEl) {
+        if (recentItems.length === 0) {
+          cardsEl.innerHTML = `<div class="tx-card-item" style="justify-content:center;color:var(--text-muted);font-size:0.84rem;">কোনো সাম্প্রতিক লেনদেন নেই</div>`;
+        } else {
+          cardsEl.innerHTML = recentItems.map(item => {
+            const isDep = !!item.senderNumber;
+            const amt = Number(item.amount || 0).toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+            const stTxt = item.status || 'Pending';
+            const timeTxt = new Date(item.createdAt || Date.now()).toLocaleTimeString('bn-BD', { hour: '2-digit', minute: '2-digit' });
+            return `
+              <div class="tx-card-item" onclick="switchView('view-wallet')">
+                <div class="tx-card-ic ${isDep ? 'in' : 'out'}">${isDep ? '↙' : '↗'}</div>
+                <div class="tx-card-mid">
+                  <b>${escapeHtml(item.userName || 'Player')} · ${isDep ? 'Deposit' : 'Withdraw'}</b>
+                  <small>${escapeHtml(item.method || 'Wallet')} · ${escapeHtml(timeTxt)} · ${escapeHtml(stTxt)}</small>
+                </div>
+                <div class="tx-card-right">
+                  <span class="tx-card-amt">৳ ${amt}</span>
+                  <small style="font-size:0.68rem;color:var(--text-muted);">${escapeHtml(stTxt)}</small>
+                </div>
+              </div>`;
+          }).join('');
+        }
+      }
     }
 
     // --- Popular & Crash Games Management (Firebase: games node) ---
@@ -8588,10 +8912,33 @@
     }
 
     // --- UI Navigation Helpers ---
+    const VIEW_TITLES = {
+      'view-dashboard': { bn: 'ড্যাশবোর্ড', en: 'Dashboard' },
+      'view-gameactivity': { bn: 'গেম ট্র্যাকার', en: 'Game Tracker' },
+      'view-users': { bn: 'প্লেয়ার / ইউজার', en: 'Players' },
+      'view-wallet': { bn: 'ওয়ালেট ও উইথড্র', en: 'Withdrawals & Wallet' },
+      'view-agents': { bn: 'এজেন্ট', en: 'Agents' },
+      'view-affiliates': { bn: 'অ্যাফিলিয়েট', en: 'Affiliates' },
+      'view-promotions': { bn: 'প্রোমোশন', en: 'Promotions' },
+      'view-finance': { bn: 'ফান্ড ও রিপোর্ট', en: 'Fund Management' },
+      'view-notices': { bn: 'নোটিশ', en: 'Notices' },
+      'view-notifications': { bn: 'নোটিফিকেশন', en: 'Notifications' },
+      'view-userpanel': { bn: 'ইউজার প্যানেল', en: 'User Panel' },
+      'view-settings': { bn: 'সেটিংস', en: 'Settings' },
+      'view-audit': { bn: 'অডিট লগ', en: 'Audit Log' }
+    };
+
+    function updateTopbarTitle() {
+      const el = document.getElementById('topbar-page-title');
+      if (!el) return;
+      const meta = VIEW_TITLES[STATE.currentView] || VIEW_TITLES['view-dashboard'];
+      el.textContent = (STATE.currentLanguage === 'en') ? meta.en : meta.bn;
+    }
+
     function switchView(viewId) {
       STATE.currentView = viewId;
       if (viewId === 'view-gameactivity') { try { loadGameActivity(); } catch (e) {} }
-      if (viewId === 'view-userpanel') { try { renderUserPanelControl(); renderUserPanelProviders(); } catch (e) {} }
+      if (viewId === 'view-userpanel') { try { renderUserPanelControl(); } catch (e) {} }
       document.querySelectorAll('.view-section').forEach(sec => sec.classList.remove('active'));
       const target = document.getElementById(viewId);
       if (target) target.classList.add('active');
@@ -8605,11 +8952,17 @@
         btn.classList.toggle('active', onclickAttr.includes(viewId));
       });
 
-      document.getElementById('sidebar').classList.remove('open');
+      updateTopbarTitle();
+      toggleSidebar(false);
     }
 
-    function toggleSidebar() {
-      document.getElementById('sidebar').classList.toggle('open');
+    function toggleSidebar(forceState) {
+      const sb = document.getElementById('sidebar');
+      const bd = document.getElementById('sidebar-backdrop');
+      if (!sb) return;
+      const next = (typeof forceState === 'boolean') ? forceState : !sb.classList.contains('open');
+      sb.classList.toggle('open', next);
+      if (bd) bd.classList.toggle('open', next);
     }
 
     function applyLanguage(lang) {
@@ -8618,8 +8971,9 @@
       const isBn = lang === 'bn';
       const switchBtn = document.getElementById('lang-switch-btn');
       if (switchBtn) {
-        switchBtn.innerText = isBn ? '🇧🇩 বাংলা' : '🇬🇧 English';
+        switchBtn.innerText = isBn ? 'BN' : 'EN';
       }
+      updateTopbarTitle();
 
       // 1. Navigation items
       const navMap = {
@@ -9723,7 +10077,7 @@
       "notifications":{ "view": "view-notifications" },
       "master_chat":  { "extraCss": ".npc-tab-master{display:none !important}" },
       "support_chat": { "fns": ["openChatThread"], "extraCss": ".npc-tab-agent,.npc-tab-aff,.npc-tab-players{display:none !important}" },
-      "userpanel_control": { "view": "view-userpanel", "fns": ["saveUserPanelConfigAdmin", "saveProviderAdmin", "toggleProviderAdminField", "deleteProviderAdmin"] },
+      "userpanel_control": { "view": "view-userpanel", "fns": ["saveUserPanelConfigAdmin"] },
       "settings":     { "view": "view-settings" },
       "audit":        { "view": "view-audit" },
       "u_ban":        { "fns": ["toggleUserStatus", "toggleUserStatusFromSecModal"] },
@@ -10676,29 +11030,6 @@
     renderUserPanelSlidesList();
   }
 
-  function renderUserPanelProviders() {
-    var tb = document.getElementById('ua-providers-tbody');
-    if (!tb) return;
-    var entries = Object.entries(STATE.providers || {});
-    if (!entries.length) {
-      tb.innerHTML = '<tr><td colspan="5" style="text-align:center;color:var(--text-dim);padding:18px;">ডিফল্ট সব প্রোভাইডার চালু আছে। পরিবর্তন বা নতুন যোগ করতে উপরের ফর্ম ব্যবহার করুন।</td></tr>';
-      return;
-    }
-    tb.innerHTML = entries.map(function (en) {
-      var id = en[0], p = en[1] || {};
-      return '<tr>' +
-        '<td><b>' + npcEsc(p.name || id) + '</b><br><small style="opacity:0.65;">' + npcEsc(id) + '</small></td>' +
-        '<td>' + npcEsc(p.category || '') + '</td>' +
-        '<td>' + (p.order || 0) + '</td>' +
-        '<td><span class="badge ' + (p.active === false ? 'badge-rejected' : 'badge-approved') + '">' + (p.active === false ? 'বন্ধ' : 'চালু') + '</span>' + (p.maintenance ? ' <span class="badge badge-pending">Maint</span>' : '') + '</td>' +
-        '<td style="display:flex;gap:6px;flex-wrap:wrap;">' +
-          '<button type="button" class="btn btn-secondary btn-sm" onclick="toggleProviderAdminField(\'' + npcEsc(id) + '\',\'active\')">' + (p.active === false ? 'চালু' : 'বন্ধ') + '</button>' +
-          '<button type="button" class="btn btn-outline btn-sm" onclick="toggleProviderAdminField(\'' + npcEsc(id) + '\',\'maintenance\')">Maint</button>' +
-          '<button type="button" class="btn btn-accent btn-sm" onclick="deleteProviderAdmin(\'' + npcEsc(id) + '\')">মুছুন</button>' +
-        '</td></tr>';
-    }).join('');
-  }
-
   async function saveUserPanelConfigAdmin() {
     var uid = npMyUid();
     if (!db || !uid) { showToast('অ্যাডমিন লগইন পাওয়া যায়নি', 'error'); return; }
@@ -10741,42 +11072,8 @@
     }
   }
 
-  async function saveProviderAdmin() {
-    if (!db) return;
-    var gv = function (id) { var el = document.getElementById(id); return el ? el.value.trim() : ''; };
-    var nm = gv('ua-pv-nm'), cat = gv('ua-pv-cat') || 'Slots', lg = gv('ua-pv-logo'), bn = gv('ua-pv-ban');
-    var ord = parseInt(gv('ua-pv-ord'), 10) || 1;
-    if (!nm) { showToast('প্রোভাইডারের নাম দিন', 'error'); return; }
-    var id = nm.toLowerCase().replace(/[^a-z0-9]+/g, '_') + '_' + cat.toLowerCase().replace(/[^a-z0-9]+/g, '_');
-    var d = { id: id, name: nm, category: cat, order: ord, active: true, maintenance: false, updatedAt: firebase.database.ServerValue.TIMESTAMP };
-    if (lg) d.logo = lg;
-    if (bn) d.banner = bn;
-    try {
-      await db.ref('providers/' + id).update(d);
-      ['ua-pv-nm', 'ua-pv-logo', 'ua-pv-ban'].forEach(function (i) { var el = document.getElementById(i); if (el) el.value = ''; });
-      showToast('প্রোভাইডার সেভ হয়েছে ✅', 'success');
-    } catch (e) { showToast('সেভ ব্যর্থ: ' + e.message, 'error'); }
-  }
-
-  async function toggleProviderAdminField(id, field) {
-    if (!db || !id) return;
-    var p = (STATE.providers && STATE.providers[id]) || {};
-    var curVal = field === 'active' ? (p.active !== false) : (!!p.maintenance);
-    try { await db.ref('providers/' + id + '/' + field).set(!curVal); } catch (e) { showToast('আপডেট ব্যর্থ: ' + e.message, 'error'); }
-  }
-
-  async function deleteProviderAdmin(id) {
-    if (!db || !id) return;
-    if (!confirm('প্রোভাইডার "' + id + '" মুছে ফেলবেন?')) return;
-    try { await db.ref('providers/' + id).remove(); showToast('প্রোভাইডার মুছে ফেলা হয়েছে', 'info'); } catch (e) { showToast('ব্যর্থ: ' + e.message, 'error'); }
-  }
-
   window.renderUserPanelControl = renderUserPanelControl;
-  window.renderUserPanelProviders = renderUserPanelProviders;
   window.saveUserPanelConfigAdmin = saveUserPanelConfigAdmin;
-  window.saveProviderAdmin = saveProviderAdmin;
-  window.toggleProviderAdminField = toggleProviderAdminField;
-  window.deleteProviderAdmin = deleteProviderAdmin;
 
   if (typeof window.playNotificationSound !== 'function') {
     window.playNotificationSound = function () {

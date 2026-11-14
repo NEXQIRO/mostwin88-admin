@@ -141,10 +141,15 @@ header{height:60px;background:rgba(18,27,44,.96);backdrop-filter:blur(12px);bord
 .reject-reason{margin-top:12px;padding:10px 12px;border-radius:12px;background:rgba(255,102,124,.12);border:1px solid rgba(255,102,124,.3);font-size:11.5px;line-height:1.5;color:#ffb0bc}
 .reject-reason b{display:block;font-size:9.5px;letter-spacing:1px;color:var(--red-light);margin-bottom:3px;font-weight:900}
 
-/* TABS & SEARCH */
+/* TABS, DROPDOWNS & SEARCH */
 .tabs{display:flex;gap:4px;background:#0d1626;border:1px solid #334460;border-radius:14px;padding:4px;margin:12px 0}
 .tab{flex:1;padding:10px 2px;border:0;background:none;color:var(--muted);border-radius:10px;font-size:11px;font-weight:700}
 .tab.active{background:linear-gradient(135deg,#d92776,#ff6aa2);color:#fff;font-weight:900;box-shadow:0 4px 14px rgba(240,68,137,.35)}
+.filter-select{width:100%;height:46px;padding:0 14px;background:#0f1827;border:1px solid #334460;border-radius:12px;color:#fff;outline:none;font-size:13px;font-weight:700;margin:10px 0 4px;cursor:pointer}
+.filter-select:focus{border-color:var(--pink);box-shadow:0 0 0 2px rgba(240,68,137,.25)}
+.pw-wrap{position:relative;display:flex;align-items:center;margin-bottom:14px}
+.pw-wrap input{margin-bottom:0!important;padding-right:64px}
+.pw-eye{position:absolute;right:6px;top:50%;transform:translateY(-50%);background:#1c2940;color:var(--gold);border:1px solid #354664;border-radius:8px;padding:5px 10px;font-size:11px;font-weight:700}
 .search{width:100%;height:46px;padding:0 14px;background:#0f1827;border:1px solid #334460;border-radius:12px;color:#fff;outline:none;font-size:13px;margin:10px 0 12px}
 .search:focus{border-color:var(--pink);box-shadow:0 0 0 2px rgba(240,68,137,.25)}
 .empty{text-align:center;padding:36px 16px;background:linear-gradient(150deg,#18253b,#121c2e);border:1px dashed #3a4c6a;border-radius:18px;color:var(--muted);font-size:12px}
@@ -155,9 +160,7 @@ header{height:60px;background:rgba(18,27,44,.96);backdrop-filter:blur(12px);bord
 .report-heading{display:flex;align-items:center;justify-content:space-between;padding-bottom:12px;border-bottom:1px solid var(--line)}
 .report-heading b{display:block;color:var(--gold2);font-size:13px;letter-spacing:1px}
 .report-heading small{display:block;color:var(--muted);font-size:10px;margin-top:4px}
-.rseg{display:grid;grid-template-columns:repeat(4,1fr);gap:4px;background:#0a1322;border:1px solid #34445e;border-radius:14px;padding:4px;margin-top:14px}
-.rseg button{border:0;background:none;color:#9eacc1;padding:10px 2px;border-radius:10px;font-size:11px;font-weight:800}
-.rseg button.on{background:linear-gradient(135deg,#ffd23f,#d49a1d);color:#1c1300;box-shadow:0 4px 12px rgba(255,210,63,.3)}
+.rseg{margin-top:14px}
 .rdate{display:flex;gap:8px;margin:12px 0 6px}
 .rdate button{width:44px;border:1px solid #43536d;background:#0d1727;color:#fff;border-radius:12px;font-size:20px}
 .rdate input,.rrange input{flex:1;width:100%;height:44px;border:1px solid #43536d;border-radius:12px;background:#0d1727;color:#fff;padding:0 12px;font-size:13px;outline:none;color-scheme:dark}
@@ -286,6 +289,7 @@ body.light .headbtn{background:#eef2f8;color:#172033;border-color:#d7dfeb}
 body.light .stat,body.light .card,body.light .quick button,body.light .menu,body.light .profile,body.light .balance-request-form,body.light .search{background:#fff;color:#172033;border-color:#d7dfeb}
 body.light .stat h2,body.light .amount,body.light .detail b,body.light .walletrow b,body.light .quick button{color:#172033}
 body.light .tabs{background:#e5eaf2;border-color:#cbd5e1}body.light .tab{color:#58677d}
+body.light .filter-select{background:#fff;color:#172033;border-color:#d7dfeb}
 body.light .subtitle,body.light .detail span,body.light .walletrow span{color:#64748b}
 body.light .dlg{background:#fff;color:#172033;border-color:#d7dfeb}
 body.light .dlg-info,body.light .dlg-field select,body.light .dlg-field textarea,body.light .dlg-field input{background:#f5f7fb;color:#172033;border-color:#d7dfeb}
@@ -359,7 +363,10 @@ body.light .chat-bar input{background:#0a1530;color:#EAF0FF;border-color:rgba(25
    <label for="agentLoginId">Agent Email বা Username</label>
    <input id="agentLoginId" type="text" value="" placeholder="এজেন্ট ইমেইল বা ইউজারনেম লিখুন" required autocomplete="username">
    <label for="agentLoginPassword">পাসওয়ার্ড (Password)</label>
-   <input id="agentLoginPassword" type="password" value="" placeholder="আপনার পাসওয়ার্ড লিখুন" required autocomplete="current-password">
+   <div class="pw-wrap">
+    <input id="agentLoginPassword" type="password" value="" placeholder="আপনার পাসওয়ার্ড লিখুন" required autocomplete="current-password">
+    <button type="button" class="pw-eye" onclick="toggleAgentPw(this)">দেখুন</button>
+   </div>
    <button class="primary" id="btnAgentLogin" type="submit">AGENT LOGIN →</button>
   </form>
   <div class="warning">🔒 শুধুমাত্র Master Admin বা User Admin কর্তৃক অনুমোদিত ও সক্রিয় Agent অ্যাকাউন্ট দিয়েই লগইন করা যাবে।</div>
@@ -459,12 +466,12 @@ body.light .chat-bar input{background:#0a1530;color:#EAF0FF;border-color:rgba(25
 <section class="page" id="deposit">
  <div class="title">Deposit Verification</div>
  <div class="subtitle">Player Deposit Request যাচাই করুন ও অনুমোদন/বাতিল করুন।</div>
- <div class="tabs" id="depositTabs">
-  <button class="tab active" onclick="setFilter('deposit','Pending',this)">Pending (<span id="depTabPending">0</span>)</button>
-  <button class="tab" onclick="setFilter('deposit','Approved',this)">Approved (<span id="depTabApproved">0</span>)</button>
-  <button class="tab" onclick="setFilter('deposit','Rejected',this)">Rejected (<span id="depTabRejected">0</span>)</button>
-  <button class="tab" onclick="setFilter('deposit','All',this)">All (<span id="depTabAll">0</span>)</button>
- </div>
+ <select class="filter-select" id="depositFilterSelect" aria-label="Deposit Status Filter" onchange="setFilter('deposit', this.value)">
+  <option value="Pending" id="optDepPending">Pending (0)</option>
+  <option value="Approved" id="optDepApproved">Approved (0)</option>
+  <option value="Rejected" id="optDepRejected">Rejected (0)</option>
+  <option value="All" id="optDepAll">All (0)</option>
+ </select>
  <input class="search" id="depositSearch" placeholder="Search ID / Player / TRX / Method / Sender" oninput="renderDeposits()">
  <div id="depositList"></div>
 </section>
@@ -473,11 +480,11 @@ body.light .chat-bar input{background:#0a1530;color:#EAF0FF;border-color:rgba(25
 <section class="page" id="withdraw">
  <div class="title">Assigned Withdrawals</div>
  <div class="subtitle">Admin কর্তৃক আপনার জন্য Assign করা Cashout Payments।</div>
- <div class="tabs" id="withdrawTabs">
-  <button class="tab active" onclick="setFilter('withdraw','Assigned',this)">Assigned (<span id="wdTabAssigned">0</span>)</button>
-  <button class="tab" onclick="setFilter('withdraw','Completed',this)">Completed (<span id="wdTabCompleted">0</span>)</button>
-  <button class="tab" onclick="setFilter('withdraw','All',this)">All (<span id="wdTabAll">0</span>)</button>
- </div>
+ <select class="filter-select" id="withdrawFilterSelect" aria-label="Withdraw Status Filter" onchange="setFilter('withdraw', this.value)">
+  <option value="Assigned" id="optWdAssigned">Assigned (0)</option>
+  <option value="Completed" id="optWdCompleted">Completed (0)</option>
+  <option value="All" id="optWdAll">All (0)</option>
+ </select>
  <input class="search" id="withdrawSearch" placeholder="Search ID / Player / Method / Number" oninput="renderWithdrawals()">
  <div id="withdrawList"></div>
 </section>
@@ -489,10 +496,12 @@ body.light .chat-bar input{background:#0a1530;color:#EAF0FF;border-color:rgba(25
  <div class="report-card">
   <div class="report-heading"><div><b>TRANSACTION ANALYTICS</b><small>Daily · Weekly · Monthly · Custom (১ মাস পর্যন্ত)</small></div><span style="font-size:24px">📊</span></div>
   <div class="rseg" id="reportSeg">
-   <button type="button" class="on" data-m="daily" onclick="setReportMode('daily')">Daily</button>
-   <button type="button" data-m="weekly" onclick="setReportMode('weekly')">Weekly</button>
-   <button type="button" data-m="monthly" onclick="setReportMode('monthly')">Monthly</button>
-   <button type="button" data-m="range" onclick="setReportMode('range')">Custom</button>
+   <select id="reportModeSelect" class="filter-select" aria-label="Report Mode" onchange="setReportMode(this.value)">
+    <option value="daily">Daily</option>
+    <option value="weekly">Weekly</option>
+    <option value="monthly">Monthly</option>
+    <option value="range">Custom Range</option>
+   </select>
   </div>
   <div class="rdate" id="dateRow"><button type="button" onclick="shiftReport(-1)">‹</button><input id="reportDate" type="date" onchange="renderTransactionReport()"><button type="button" onclick="shiftReport(1)">›</button></div>
   <div class="rrange hidden" id="rangeRow"><div><label for="reportFrom">শুরুর তারিখ</label><input id="reportFrom" type="date" onchange="renderTransactionReport()"></div><div><label for="reportTo">শেষ তারিখ</label><input id="reportTo" type="date" onchange="renderTransactionReport()"></div></div>
@@ -746,6 +755,23 @@ function sanitizeAgentMsg(v) {
     .replace(/ফায়ারবেস|ফায়ারবেস|গিটহাব|রেন্ডার/g, 'সার্ভার')
     .trim();
 }
+function translateAgentAuthErr(err) {
+  const code = (err && err.code) || '';
+  if (code === 'auth/invalid-credential' || code === 'auth/wrong-password' || code === 'auth/user-not-found' || code === 'auth/invalid-login-credentials') {
+    return 'ভুল এজেন্ট ইমেইল/ইউজারনেম অথবা পাসওয়ার্ড! সঠিক তথ্য দিয়ে আবার চেষ্টা করুন।';
+  }
+  if (code === 'auth/invalid-email') return 'সঠিক ইমেইল ঠিকানা লিখুন।';
+  if (code === 'auth/too-many-requests') return 'অনেকবার ভুল চেষ্টার কারণে সাময়িকভাবে ব্লক হয়েছে। কিছুক্ষণ পর চেষ্টা করুন।';
+  if (code === 'auth/network-request-failed') return 'নেটওয়ার্ক সংযোগ সমস্যা। ইন্টারনেট চেক করে আবার চেষ্টা করুন।';
+  return sanitizeAgentMsg((err && err.message) || err) || 'লগইন ব্যর্থ হয়েছে।';
+}
+function toggleAgentPw(btn) {
+  const p = document.getElementById('agentLoginPassword');
+  if (!p) return;
+  const show = p.type === 'password';
+  p.type = show ? 'text' : 'password';
+  if (btn) btn.textContent = show ? 'লুকান' : 'দেখুন';
+}
 function showLoginError(msg) {
   const el = document.getElementById('loginError');
   if (!el) return;
@@ -783,7 +809,7 @@ async function agentLogin(event) {
       return;
     }
   } catch (err) {
-    showLoginError('লগইন ব্যর্থ: ' + (err.message || err));
+    showLoginError(translateAgentAuthErr(err));
   } finally {
     btn.disabled = false;
     btn.textContent = 'AGENT LOGIN →';
@@ -1028,7 +1054,8 @@ function getCombinedAgentHistory() {
 
 function setReportMode(m) {
   reportMode = m;
-  document.querySelectorAll('#reportSeg button').forEach(b => b.classList.toggle('on', b.dataset.m === m));
+  const rSel = document.getElementById('reportModeSelect');
+  if (rSel && rSel.value !== m) rSel.value = m;
   document.getElementById('rangeRow').classList.toggle('hidden', m !== 'range');
   document.getElementById('dateRow').classList.toggle('hidden', m === 'range');
   renderTransactionReport();
@@ -1122,12 +1149,21 @@ function go(id, btn) {
 }
 
 function setFilter(type, status, btn) {
-  if (type === 'deposit') depFilter = status;
-  else wdFilter = status;
-  btn.parentElement.querySelectorAll('.tab').forEach(x => x.classList.remove('active'));
-  btn.classList.add('active');
-  if (type === 'deposit') renderDeposits();
-  else renderWithdrawals();
+  if (type === 'deposit') {
+    depFilter = status;
+    const ds = document.getElementById('depositFilterSelect');
+    if (ds && ds.value !== status) ds.value = status;
+    renderDeposits();
+  } else {
+    wdFilter = status;
+    const ws = document.getElementById('withdrawFilterSelect');
+    if (ws && ws.value !== status) ws.value = status;
+    renderWithdrawals();
+  }
+  if (btn && btn.parentElement) {
+    btn.parentElement.querySelectorAll('.tab').forEach(x => x.classList.remove('active'));
+    btn.classList.add('active');
+  }
 }
 
 function renderDeposits() {
@@ -1686,14 +1722,15 @@ function updateStats() {
   document.getElementById('withdrawCount').textContent = wCount;
   document.getElementById('completedCount').textContent = cCount;
 
-  const dtP = document.getElementById('depTabPending'); if (dtP) dtP.textContent = pCount;
-  const dtA = document.getElementById('depTabApproved'); if (dtA) dtA.textContent = aCount;
-  const dtR = document.getElementById('depTabRejected'); if (dtR) dtR.textContent = rCount;
-  const dtAll = document.getElementById('depTabAll'); if (dtAll) dtAll.textContent = deposits.length;
+  const setOpt = (id, label) => { const el = document.getElementById(id); if (el) el.textContent = label; };
+  setOpt('optDepPending', 'Pending (' + pCount + ')');
+  setOpt('optDepApproved', 'Approved (' + aCount + ')');
+  setOpt('optDepRejected', 'Rejected (' + rCount + ')');
+  setOpt('optDepAll', 'All (' + deposits.length + ')');
 
-  const wtA = document.getElementById('wdTabAssigned'); if (wtA) wtA.textContent = wCount;
-  const wtC = document.getElementById('wdTabCompleted'); if (wtC) wtC.textContent = cCount;
-  const wtAll = document.getElementById('wdTabAll'); if (wtAll) wtAll.textContent = withdrawals.length;
+  setOpt('optWdAssigned', 'Assigned (' + wCount + ')');
+  setOpt('optWdCompleted', 'Completed (' + cCount + ')');
+  setOpt('optWdAll', 'All (' + withdrawals.length + ')');
 }
 
 function toast(m) {
