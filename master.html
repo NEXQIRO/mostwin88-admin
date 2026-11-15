@@ -551,7 +551,7 @@ body[data-theme="light"] .bottom-nav{background:#FFFFFF;border-top-color:#E6DECB
         <li class="nav-item"><button id="t-players" onclick="tab('players')"><svg viewBox="0 0 24 24"><path d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z"/></svg><span class="nav-label">প্লেয়ার</span></button></li>
         <li class="nav-item"><button id="t-act" onclick="tab('act')"><svg viewBox="0 0 24 24"><path d="M19 3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zM9 17H7v-7h2v7zm4 0h-2V7h2v10zm4 0h-2v-4h2v4z"/></svg><span class="nav-label">গেম অ্যাক্টিভিটি</span></button></li>
         <li class="nav-item"><button id="t-feat" onclick="tab('feat')"><svg viewBox="0 0 24 24"><path d="M19.14 12.94c.04-.3.06-.61.06-.94 0-.32-.02-.64-.07-.94l2.03-1.58c.18-.14.23-.41.12-.61l-1.92-3.32c-.12-.22-.37-.29-.59-.22l-2.39.96c-.5-.38-1.03-.7-1.62-.94l-.36-2.54c-.04-.24-.24-.41-.48-.41h-3.84c-.24 0-.43.17-.47.41l-.36 2.54c-.59.24-1.13.57-1.62.94l-2.39-.96c-.22-.08-.47 0-.59.22L2.74 8.87c-.12.21-.08.47.12.61l2.03 1.58c-.05.3-.09.63-.09.94s.02.64.07.94l-2.03 1.58c-.18.14-.23.41-.12.61l1.92 3.32c.12.22.37.29.59.22l2.39-.96c.5.38 1.03.7 1.62.94l.36 2.54c.05.24.24.41.48.41h3.84c.24 0 .44-.17.47-.41l.36-2.54c.59-.24 1.13-.56 1.62-.94l2.39.96c.22.08.47 0 .59-.22l1.92-3.32c.12-.22.07-.47-.12-.61l-2.01-1.58zM12 15.6c-1.98 0-3.6-1.62-3.6-3.6s1.62-3.6 3.6-3.6 3.6 1.62 3.6 3.6-1.62 3.6-3.6 3.6z"/></svg><span class="nav-label">ফিচার কন্ট্রোল</span></button></li>
-        <li class="nav-item"><button id="t-chat" onclick="tab('chat')"><svg viewBox="0 0 24 24"><path d="M20 2H4c-1.1 0-2 .9-2 2v18l4-4h14c1.1 0 2-.9 2-2V4c0-1.1-.9-2-2-2zm0 14H6l-2 2V4h16v12z"/></svg><span class="nav-label">অ্যাডমিন চ্যাট</span><span class="nav-badge" id="nav-chat-unread" style="display:none;background:var(--red,#ef4444);color:#fff">0</span></button></li>
+        <li class="nav-item"><button id="t-chat" onclick="toggleSidebar(false);switchMasterPopupChannel('admins');toggleMasterFloatingChat(true)"><svg viewBox="0 0 24 24"><path d="M20 2H4c-1.1 0-2 .9-2 2v18l4-4h14c1.1 0 2-.9 2-2V4c0-1.1-.9-2-2-2zm0 14H6l-2 2V4h16v12z"/></svg><span class="nav-label">অ্যাডমিন চ্যাট</span><span class="nav-badge" id="nav-chat-unread" style="display:none;background:var(--red,#ef4444);color:#fff">0</span></button></li>
         <li class="nav-item"><button id="t-promo" onclick="tab('promo')"><svg viewBox="0 0 24 24"><path d="M20 6h-2.18c.11-.31.18-.65.18-1 0-1.66-1.34-3-3-3-1.05 0-1.96.54-2.5 1.35l-.5.67-.5-.68C10.96 2.54 10.05 2 9 2 7.34 2 6 3.34 6 5c0 .35.07.69.18 1H4c-1.11 0-1.99.89-1.99 2L2 19c0 1.11.89 2 2 2h16c1.11 0 2-.89 2-2V8c0-1.11-.89-2-2-2zm-5-2c.55 0 1 .45 1 1s-.45 1-1 1-1-.45-1-1 .45-1 1-1zM9 4c.55 0 1 .45 1 1s-.45 1-1 1-1-.45-1-1 .45-1 1-1z"/></svg><span class="nav-label">ডিপোজিট প্রোমো</span></button></li>
         <li class="nav-item"><button id="t-tenants" onclick="tab('tenants')"><svg viewBox="0 0 24 24"><path d="M12 2L1 7l11 5 9-4.09V17h2V7L12 2zm0 13.09L4.27 11.5 2 12.53l10 4.55 10-4.55-2.27-1.03L12 15.09zm0 4.54l-7.73-3.51L2 17.16l10 4.55 10-4.55-2.27-1.04L12 19.63z"/></svg><span class="nav-label">প্রজেক্টসমূহ</span></button></li>
         <li class="nav-item"><button id="t-guide" onclick="tab('guide')"><svg viewBox="0 0 24 24"><path d="M21 5c-1.11-.35-2.33-.5-3.5-.5-1.95 0-4.05.4-5.5 1.5-1.45-1.1-3.55-1.5-5.5-1.5S2.45 4.9 1 6v14.65c0 .25.25.5.5.5.1 0 .15-.05.25-.05C3.1 20.45 5.05 20 6.5 20c1.95 0 4.05.4 5.5 1.5 1.35-.85 3.8-1.5 5.5-1.5 1.65 0 3.35.3 4.75 1.05.1.05.15.05.25.05.25 0 .5-.25.5-.5V6c-.6-.45-1.25-.75-2-1zm0 13.5c-1.1-.35-2.3-.5-3.5-.5-1.7 0-4.15.65-5.5 1.5V8c1.35-.85 3.8-1.5 5.5-1.5 1.2 0 2.4.15 3.5.5v11.5z"/></svg><span class="nav-label">গাইড</span></button></li>
@@ -635,7 +635,6 @@ body[data-theme="light"] .bottom-nav{background:#FFFFFF;border-top-color:#E6DECB
         <div class="mcp-ht"><b>MOSTWIN88</b><small><i class="mcp-cdot"></i><span>Master Support Center</span></small></div>
       </div>
       <div class="mcp-hacts">
-        <button type="button" class="mcp-exp" onclick="toggleMasterFloatingChat(false);tab('chat')">↗ প্যানেল</button>
         <button type="button" class="mcp-close" onclick="toggleMasterFloatingChat(false)" aria-label="Close">✕</button>
       </div>
     </div>
@@ -825,20 +824,14 @@ let GLOBAL_CHAT_LISTENERS = {};
 function selectChatAdmin(uid) {
   SEL_CHAT_ADMIN = uid;
   attachActiveAdminChat(uid);
-  draw();
-  setTimeout(() => {
-    const b = $('master-chat-body');
-    if (b) b.scrollTop = b.scrollHeight;
-    const inp = $('master-chat-reply-input');
-    if (inp) inp.focus();
-  }, 100);
+  if (M_POPUP_OPEN) renderMasterChatPopup();
 }
 
 function openChatWithAdmin(uid) {
   SEL_CHAT_ADMIN = uid;
-  cur = 'chat';
+  MCHAT_SUB = 'admins';
   attachActiveAdminChat(uid);
-  draw();
+  toggleMasterFloatingChat(true);
 }
 
 function attachActiveAdminChat(uid) {
@@ -849,18 +842,11 @@ function attachActiveAdminChat(uid) {
   if (!uid) return;
   // Mark read for master
   db.ref('master_admin_chats/' + uid + '/meta/unreadForMaster').set(false).catch(() => {});
-  
+
   ACTIVE_CHAT_UNSUB = db.ref('master_admin_chats/' + uid + '/messages').limitToLast(120);
   ACTIVE_CHAT_UNSUB.on('value', snap => {
     const val = snap.val() || {};
     ACTIVE_CHAT_MSGS = Object.entries(val).map(([id, d]) => ({ id, ...d })).sort((a,b) => (a.timestamp||0) - (b.timestamp||0));
-    if (cur === 'chat' && SEL_CHAT_ADMIN === uid) {
-      draw();
-      setTimeout(() => {
-        const b = $('master-chat-body');
-        if (b) b.scrollTop = b.scrollHeight;
-      }, 50);
-    }
     if (M_POPUP_OPEN && MCHAT_SUB === 'admins' && SEL_CHAT_ADMIN === uid) {
       db.ref('master_admin_chats/' + uid + '/meta/unreadForMaster').set(false).catch(() => {});
       renderMasterChatPopup();
@@ -868,59 +854,31 @@ function attachActiveAdminChat(uid) {
   });
 }
 
-async function sendMasterChatReply(e) {
-  if (e) e.preventDefault();
-  const inp = $('master-chat-reply-input');
-  if (!inp) return;
-  const text = inp.value.trim();
-  if (!text || !SEL_CHAT_ADMIN) return;
-
-  const uid = SEL_CHAT_ADMIN;
-  try {
-    await db.ref('master_admin_chats/' + uid + '/messages').push({
-      sender: 'MASTER',
-      senderName: 'Master Administrator',
-      senderEmail: (auth.currentUser && auth.currentUser.email) || 'Master',
-      text: text,
-      timestamp: TS,
-      read: false
-    });
-    await db.ref('master_admin_chats/' + uid + '/meta').update({
-      lastMessage: text,
-      lastTimestamp: TS,
-      lastSender: 'MASTER',
-      unreadForMaster: false,
-      unreadForAdmin: true
-    });
-    inp.value = '';
-    inp.focus();
-  } catch (err) {
-    toast('মেসেজ পাঠানো ব্যর্থ: ' + err.message);
+function updateMasterChatUnreadBadges() {
+  const admUnr = Object.values(CHAT_METAS).filter(m => m && m.unreadForMaster === true).length;
+  const plUnr = Object.values(PLAYER_CHATS || {}).filter(c => c && c.unreadForMaster === true).length;
+  const totalUnread = admUnr + plUnr;
+  const unreadTxt = totalUnread > 9 ? '9+' : String(totalUnread);
+  const unreadEl = $('nav-chat-unread');
+  if (unreadEl) {
+    unreadEl.textContent = unreadTxt;
+    unreadEl.style.display = totalUnread > 0 ? 'inline-block' : 'none';
+  }
+  const fabBadge = $('m-fab-chat-badge');
+  if (fabBadge) {
+    fabBadge.textContent = unreadTxt;
+    fabBadge.style.display = totalUnread > 0 ? 'flex' : 'none';
   }
 }
 
 function initMasterChatGlobalListener() {
   db.ref('master_admin_chats').on('value', snap => {
     const val = snap.val() || {};
-    let totalUnread = 0;
     CHAT_METAS = {};
     Object.entries(val).forEach(([uid, data]) => {
-      const meta = data.meta || {};
-      CHAT_METAS[uid] = meta;
-      if (meta.unreadForMaster === true) totalUnread++;
+      CHAT_METAS[uid] = data.meta || {};
     });
-    const unreadEl = $('nav-chat-unread');
-    const unreadTxt = totalUnread > 9 ? '9+' : String(totalUnread);
-    if (unreadEl) {
-      unreadEl.textContent = unreadTxt;
-      unreadEl.style.display = totalUnread > 0 ? 'inline-block' : 'none';
-    }
-    const fabBadge = $('m-fab-chat-badge');
-    if (fabBadge) {
-      fabBadge.textContent = unreadTxt;
-      fabBadge.style.display = totalUnread > 0 ? 'flex' : 'none';
-    }
-    if (cur === 'chat') draw();
+    updateMasterChatUnreadBadges();
     if (M_POPUP_OPEN) renderMasterChatPopup();
   });
 }
@@ -1006,7 +964,7 @@ function delTenant(id){if(!confirm('এই প্রজেক্ট তালি
  localStorage.setItem('np_tenants',JSON.stringify(getTenants().filter(x=>x.id!==id)));if(TID===id)switchTenant('main');drawTn();draw()}
 bindAuth();
 const M_TAB_TITLES={admins:'Dashboard',admin:'Admin Details',agents:'Agents',affiliates:'Affiliates',reqs:'Requests',led:'Ledger',games:'Games',userpanel:'User Panel',players:'Players',act:'Activity',feat:'Settings',promo:'Promotions',chat:'Support Chat',tenants:'Projects',guide:'Guide'};
-function tab(t){cur=t;if(t==='act')loadAct();try{toggleSidebar(false)}catch(e){}draw();window.scrollTo(0,0)}
+function tab(t){if(t==='chat'){try{toggleSidebar(false)}catch(e){}toggleMasterFloatingChat(true);return}cur=t;if(t==='act')loadAct();try{toggleSidebar(false)}catch(e){}draw();window.scrollTo(0,0)}
 async function loadAct(){
  try{
   const [s1,s2]=await Promise.all([
@@ -3055,7 +3013,7 @@ attachAll=function(){
  _attachAllUP();
  on(db.ref('userPanelConfig'),s=>{UPCFG_ALL=s.val()||{global:{},byAdmin:{}};if(!UPCFG_ALL.global)UPCFG_ALL.global={};if(!UPCFG_ALL.byAdmin)UPCFG_ALL.byAdmin={};schedDraw()});
  on(db.ref('providers'),s=>{PROVIDERS=s.val()||{};schedDraw()});
- on(db.ref('supportChats'),s=>{PLAYER_CHATS=s.val()||{};const pc=Object.values(PLAYER_CHATS).filter(c=>c&&c.unreadForMaster).length;const ac=Object.values(CHAT_METAS).filter(m=>m&&m.unreadForMaster).length;const tot=pc+ac;const b=$('nav-chat-unread'),fb=$('m-fab-chat-badge');const txt=tot>9?'9+':String(tot);if(b){b.textContent=txt;b.style.display=tot>0?'inline-block':'none'}if(fb){fb.textContent=txt;fb.style.display=tot>0?'flex':'none'}if(cur==='chat')schedDraw();if(M_POPUP_OPEN)renderMasterChatPopup()});
+ on(db.ref('supportChats'),s=>{PLAYER_CHATS=s.val()||{};updateMasterChatUnreadBadges();if(M_POPUP_OPEN)renderMasterChatPopup()});
 };
 
 async function syncAllAffiliateCodes(){
@@ -3642,19 +3600,9 @@ function selectPlayerChat(uid){
  if(PLAYER_CHAT_UNSUB){try{PLAYER_CHAT_UNSUB.off()}catch(e){}PLAYER_CHAT_UNSUB=null}
  db.ref('supportChats/'+uid+'/unreadForMaster').set(false).catch(()=>{});
  PLAYER_CHAT_UNSUB=db.ref('supportMessages/'+uid).limitToLast(120);
- PLAYER_CHAT_UNSUB.on('value',s=>{const v=s.val()||{};PLAYER_CHAT_MSGS=Object.entries(v).map(([id,d])=>({id,...d})).sort((a,b)=>(a.timestamp||0)-(b.timestamp||0));if(cur==='chat'&&MCHAT_SUB==='players')draw();if(M_POPUP_OPEN&&MCHAT_SUB==='players'&&SEL_PLAYER_CHAT===uid){db.ref('supportChats/'+uid+'/unreadForMaster').set(false).catch(()=>{});renderMasterChatPopup()}});
- draw();
+ PLAYER_CHAT_UNSUB.on('value',s=>{const v=s.val()||{};PLAYER_CHAT_MSGS=Object.entries(v).map(([id,d])=>({id,...d})).sort((a,b)=>(a.timestamp||0)-(b.timestamp||0));if(M_POPUP_OPEN&&MCHAT_SUB==='players'&&SEL_PLAYER_CHAT===uid){db.ref('supportChats/'+uid+'/unreadForMaster').set(false).catch(()=>{});renderMasterChatPopup()}});
  if(M_POPUP_OPEN)renderMasterChatPopup();
 }
-async function sendMasterPlayerReply(e){
- if(e)e.preventDefault();
- const inp=$('master-chat-reply-input');if(!inp)return;
- const text=inp.value.trim();if(!text||!SEL_PLAYER_CHAT)return;
- await db.ref('supportMessages/'+SEL_PLAYER_CHAT).push({sender:'MASTER',senderName:'Support Officer',text,timestamp:Date.now()});
- await db.ref('supportChats/'+SEL_PLAYER_CHAT).update({lastMessage:text,lastSender:'MASTER',unreadForMaster:false,unreadForAdmin:false,updatedAt:Date.now()});
- inp.value='';inp.focus();
-}
-
 /* ===== Floating Master Support Popup (user.html Style) ===== */
 let M_POPUP_OPEN=false;
 function toggleMasterFloatingChat(force){
@@ -3666,9 +3614,11 @@ function toggleMasterFloatingChat(force){
   if(MCHAT_SUB==='players'){
    const rows=Object.entries(PLAYER_CHATS).map(([u,c])=>({u,ts:+c.updatedAt||0,unread:c.unreadForMaster===true})).sort((a,b)=>(b.unread-a.unread)||(b.ts-a.ts));
    if((!SEL_PLAYER_CHAT||!PLAYER_CHATS[SEL_PLAYER_CHAT])&&rows.length)selectPlayerChat(rows[0].u);
+   else if(SEL_PLAYER_CHAT&&PLAYER_CHATS[SEL_PLAYER_CHAT])db.ref('supportChats/'+SEL_PLAYER_CHAT+'/unreadForMaster').set(false).catch(()=>{});
   }else{
    const rows=npmRows();
    if((!SEL_CHAT_ADMIN||!rows.some(r=>r.u===SEL_CHAT_ADMIN))&&rows.length){SEL_CHAT_ADMIN=rows[0].u;attachActiveAdminChat(SEL_CHAT_ADMIN)}
+   else if(SEL_CHAT_ADMIN){db.ref('master_admin_chats/'+SEL_CHAT_ADMIN+'/meta/unreadForMaster').set(false).catch(()=>{});if(!ACTIVE_CHAT_UNSUB)attachActiveAdminChat(SEL_CHAT_ADMIN)}
   }
   renderMasterChatPopup();
   setTimeout(()=>{const inp=$('mPopupReplyInput');if(inp)inp.focus();const mb=$('mPopupMsgs');if(mb)mb.scrollTop=mb.scrollHeight},100);
@@ -3679,9 +3629,11 @@ function switchMasterPopupChannel(ch){
  if(MCHAT_SUB==='players'){
   const rows=Object.entries(PLAYER_CHATS).map(([u,c])=>({u,ts:+c.updatedAt||0,unread:c.unreadForMaster===true})).sort((a,b)=>(b.unread-a.unread)||(b.ts-a.ts));
   if((!SEL_PLAYER_CHAT||!PLAYER_CHATS[SEL_PLAYER_CHAT])&&rows.length)selectPlayerChat(rows[0].u);
+  else if(SEL_PLAYER_CHAT&&PLAYER_CHATS[SEL_PLAYER_CHAT]&&M_POPUP_OPEN)db.ref('supportChats/'+SEL_PLAYER_CHAT+'/unreadForMaster').set(false).catch(()=>{});
  }else{
   const rows=npmRows();
   if((!SEL_CHAT_ADMIN||!rows.some(r=>r.u===SEL_CHAT_ADMIN))&&rows.length){SEL_CHAT_ADMIN=rows[0].u;attachActiveAdminChat(SEL_CHAT_ADMIN)}
+  else if(SEL_CHAT_ADMIN&&M_POPUP_OPEN){db.ref('master_admin_chats/'+SEL_CHAT_ADMIN+'/meta/unreadForMaster').set(false).catch(()=>{});if(!ACTIVE_CHAT_UNSUB)attachActiveAdminChat(SEL_CHAT_ADMIN)}
  }
  renderMasterChatPopup();
 }
@@ -3737,7 +3689,7 @@ async function sendMasterPopupReply(e){
  }
 }
 
-/* ===== অ্যাডমিন ও প্লেয়ার লাইভ চ্যাট (user.html Support Popup theme) ===== */
+/* ===== চ্যাট সহায়ক হেল্পার (Floating Popup এর জন্য) ===== */
 function npmTime(ts){return ts?new Date(+ts).toLocaleTimeString('bn-BD',{hour:'2-digit',minute:'2-digit'}):''}
 function npmInit(n){return esc((String(n||'?').trim().charAt(0)||'?').toUpperCase())}
 function npmRows(){
@@ -3746,63 +3698,12 @@ function npmRows(){
  Object.keys(CHAT_METAS).forEach(u=>{if(seen[u])return;const m=CHAT_METAS[u]||{};rows.push({u,name:m.adminName||m.adminEmail||u,email:m.adminEmail||'',last:m.lastMessage||'',ts:+m.lastTimestamp||0,unread:m.unreadForMaster===true})});
  rows.sort((a,b)=>(b.unread-a.unread)||(b.ts-a.ts)||String(a.name).localeCompare(String(b.name)));
  return rows}
-function npmBack(){
- SEL_CHAT_ADMIN='';SEL_PLAYER_CHAT='';
- if(ACTIVE_CHAT_UNSUB){try{ACTIVE_CHAT_UNSUB.off()}catch(e){}ACTIVE_CHAT_UNSUB=null}
- if(PLAYER_CHAT_UNSUB){try{PLAYER_CHAT_UNSUB.off()}catch(e){}PLAYER_CHAT_UNSUB=null}
- ACTIVE_CHAT_MSGS=[];PLAYER_CHAT_MSGS=[];draw()}
-function npmChatHtml(){
- const admUnr=Object.values(CHAT_METAS).filter(m=>m&&m.unreadForMaster).length;
- const plUnr=Object.values(PLAYER_CHATS).filter(c=>c&&c.unreadForMaster).length;
- const subTabs=`<div class="row" style="margin-bottom:10px;align-items:center"><select onchange="MCHAT_SUB=this.value;draw()" style="min-width:240px;max-width:360px"><option value="admins"${MCHAT_SUB==='admins'?' selected':''}>👑 ইউজার অ্যাডমিন চ্যাট (${admUnr})</option><option value="players"${MCHAT_SUB==='players'?' selected':''}>🎧 প্লেয়ার লাইভ সাপোর্ট (${plUnr})</option></select></div>`;
- if(MCHAT_SUB==='players'){
-  const rows=Object.entries(PLAYER_CHATS).map(([u,c])=>({u,name:c.userName||(USERS[u]&&USERS[u].name)||u,sub:c.phone||(USERS[u]&&USERS[u].phone)||'',last:c.lastMessage||'',ts:+c.updatedAt||0,unread:c.unreadForMaster===true})).sort((a,b)=>(b.unread-a.unread)||(b.ts-a.ts));
-  const sel=SEL_PLAYER_CHAT,row=rows.find(r=>r.u===sel);
-  const list=rows.length?rows.map(r=>`<button type="button" class="npm-row${r.u===sel?' sel':''}" onclick="selectPlayerChat('${esc(r.u)}')"><span class="npm-av">${npmInit(r.name)}</span><span class="npm-ri"><b>${esc(r.name)}</b><small>${esc(r.last||r.sub||'')}</small></span><span class="npm-rm">${r.ts?esc(npmTime(r.ts)):''}${r.unread?'<i class="npm-unread"></i>':''}</span></button>`).join(''):`<div class="npm-empty">কোনো প্লেয়ার সাপোর্ট চ্যাট নেই</div>`;
-  let conv;
-  if(sel&&row){
-   const msgs=PLAYER_CHAT_MSGS.map(m=>{const t=esc(npmTime(m.timestamp)),b=`<div class="npm-b">${esc(m.text)}<span class="npm-t">${t}</span></div>`;return String(m.sender||'').toUpperCase()!=='USER'?`<div class="npm-m me">${b}</div>`:`<div class="npm-m"><span class="npm-av sm">${npmInit(row.name)}</span>${b}</div>`}).join('');
-   conv=`<div class="npm-head"><button type="button" class="npm-back" onclick="npmBack()">‹</button><div class="npm-logo">MW</div><div class="npm-hi"><b>${esc(row.name)}</b><small>${esc(row.sub||'Player Support')}</small></div></div>
-   <div class="npm-notice">🔒 রিয়েলটাইম এনক্রিপ্টেড প্লেয়ার সাপোর্ট চ্যাট</div>
-   <div class="npm-body" id="master-chat-body"><div class="npm-div"><span>MOSTWIN88 • PLAYER SUPPORT</span></div>${msgs}</div>
-   <form class="npm-bar" onsubmit="sendMasterPlayerReply(event)"><textarea id="master-chat-reply-input" rows="1" maxlength="1000" autocomplete="off" placeholder="প্লেয়ারকে উত্তর দিন..." onkeydown="if(event.key==='Enter'&&!event.shiftKey&&!event.isComposing){event.preventDefault();sendMasterPlayerReply()}"></textarea><button type="submit" aria-label="পাঠান">➤</button></form>`;
-  }else{
-   conv=`<div class="npm-head"><div class="npm-logo">MW</div><div class="npm-hi"><b>Player Support Desk</b><small>প্লেয়ারদের লাইভ সাপোর্ট</small></div></div><div class="npm-phb">বাম পাশ থেকে প্লেয়ার সিলেক্ট করে লাইভ উত্তর দিন 💬</div>`;
-  }
-  return subTabs+`<div class="npm${sel&&row?' has-sel':''}"><div class="npm-list"><div class="npm-head"><div class="npm-logo">MW</div><div class="npm-hi"><b>প্লেয়ার সাপোর্ট</b><small>${rows.length} টি চ্যাট</small></div></div><div class="npm-rows">${list}</div></div><div class="npm-conv">${conv}</div></div>`;
- }
- const rows=npmRows(),sel=SEL_CHAT_ADMIN,row=rows.find(r=>r.u===sel);
- const list=rows.length?rows.map(r=>`<button type="button" class="npm-row${r.u===sel?' sel':''}" onclick="selectChatAdmin('${esc(r.u)}')"><span class="npm-av">${npmInit(r.name)}</span><span class="npm-ri"><b>${esc(r.name)}</b><small>${esc(r.last||r.email||'')}</small></span><span class="npm-rm">${r.ts?esc(npmTime(r.ts)):''}${r.unread?'<i class="npm-unread"></i>':''}</span></button>`).join(''):`<div class="npm-empty">কোনো অ্যাডমিন নেই</div>`;
- let conv;
- if(sel&&row){
-  const msgs=ACTIVE_CHAT_MSGS.map(m=>{const t=esc(npmTime(m.timestamp)),b=`<div class="npm-b">${esc(m.text)}<span class="npm-t">${t}</span></div>`;return m.sender==='MASTER'?`<div class="npm-m me">${b}</div>`:`<div class="npm-m"><span class="npm-av sm">${npmInit(row.name)}</span>${b}</div>`}).join('');
-  conv=`<div class="npm-head"><button type="button" class="npm-back" onclick="npmBack()" aria-label="ফিরে যান">‹</button><div class="npm-logo">MW</div><div class="npm-hi"><b>MOSTWIN88</b><small>Admin Support Desk</small></div></div>
-  <div class="npm-officer"><span class="npm-av">${npmInit(row.name)}</span><div class="npm-oi"><b>${esc(row.name)} <span style="color:#4aa8ff">✓</span></b><small>● ${esc(row.email||'User Admin')}</small></div></div>
-  <div class="npm-notice">🔒 রিয়েলটাইম এনক্রিপ্টেড অ্যাডমিন সাপোর্ট চ্যাট</div>
-  <div class="npm-body" id="master-chat-body"><div class="npm-div"><span>MOSTWIN88 • SUPPORT</span></div>${msgs}</div>
-  <form class="npm-bar" onsubmit="sendMasterChatReply(event)"><textarea id="master-chat-reply-input" rows="1" maxlength="1000" autocomplete="off" placeholder="রিপ্লাই লিখুন..." onkeydown="if(event.key==='Enter'&&!event.shiftKey&&!event.isComposing){event.preventDefault();sendMasterChatReply()}"></textarea><button type="submit" aria-label="পাঠান">➤</button></form>`;
- }else{
-  conv=`<div class="npm-head"><div class="npm-logo">MW</div><div class="npm-hi"><b>MOSTWIN88</b><small>Admin Support Desk</small></div></div><div class="npm-phb">বাম পাশ থেকে User Admin সিলেক্ট করে লাইভ চ্যাট করুন 💬</div>`}
- return subTabs+`<div class="npm${sel&&row?' has-sel':''}"><div class="npm-list"><div class="npm-head"><div class="npm-logo">MW</div><div class="npm-hi"><b>ইউজার অ্যাডমিন</b><small>${rows.length} জন</small></div></div><div class="npm-rows">${list}</div></div><div class="npm-conv">${conv}</div></div>`}
 (function(){
- const _d=draw,CLR={};
+ const _d=draw;
  draw=function(){
-  let val='',had=false,pos=null,scr=null;
-  if(cur==='chat'){
-   const ta=$('master-chat-reply-input');
-   if(ta){val=ta.value;had=document.activeElement===ta;pos=[ta.selectionStart,ta.selectionEnd]}
-   const b=$('master-chat-body');
-   if(b)scr={top:b.scrollTop,end:b.scrollHeight-b.scrollTop-b.clientHeight<80}}
+  if(cur==='chat')cur='admins';
   _d();
   if(started&&cur==='userpanel'){userpanelDraw();return}
-  if(cur!=='chat'||!started)return;
-  $('v').innerHTML=npmChatHtml();
-  const ta=$('master-chat-reply-input'),b=$('master-chat-body');
-  if(ta&&val){ta.value=val;if(had){ta.focus();try{ta.setSelectionRange(pos[0],pos[1])}catch(e){}}}
-  else if(ta&&had)ta.focus();
-  if(b){if(!scr||scr.end)b.scrollTop=b.scrollHeight;else b.scrollTop=scr.top}
-  const s=SEL_CHAT_ADMIN;
-  if(MCHAT_SUB==='admins'&&s&&(CHAT_METAS[s]||{}).unreadForMaster===true&&Date.now()-(CLR[s]||0)>3000){CLR[s]=Date.now();db.ref('master_admin_chats/'+s+'/meta/unreadForMaster').set(false).catch(()=>{})}
  };
 })();
 </script>
