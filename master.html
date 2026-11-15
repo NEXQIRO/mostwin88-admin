@@ -2224,6 +2224,11 @@ const RULES_TXT=`{
             ".write": "auth != null && auth.uid == $adminUid && root.child('admins').child(auth.uid).exists() && root.child('admins').child(auth.uid).child('active').val() != false && root.child('adminSettings').child('userAdminOn').val() != false && root.child('depositPromotions').child($promoId).child('adminCanToggle').val() == true",
             ".validate": "newData.isBoolean()"
           }
+        },
+        "adminOverrides": {
+          "$adminUid": {
+            ".write": "auth != null && auth.uid == $adminUid && root.child('admins').child(auth.uid).exists() && root.child('admins').child(auth.uid).child('active').val() != false && root.child('adminSettings').child('userAdminOn').val() != false && root.child('admins').child(auth.uid).child('features').child('up_promos').val() != false"
+          }
         }
       }
     },
@@ -2323,6 +2328,7 @@ function admBonRow(u){
 async function saveBonus(){
  const on=$('bnOn').value==='1',mx=parseFloat($('bnMax').value)||100,mt=parseFloat($('bnMinT').value)||1;
  const tiers=parseTiers($('bnTiers').value);
+ const nowTs=Date.now();
  try{
   await db.ref('adminSettings/depositBonus').set({
    enabled:on,
@@ -2330,7 +2336,7 @@ async function saveBonus(){
    minTurnoverPercent:mt,
    tiers:tiers,
    depositBonusTiers:tiers,
-   updatedAt:TS
+   updatedAt:nowTs
   });
   const firstTier = tiers.length ? tiers[0] : { bonusPercent: 10, turnoverMultiplier: 1 };
   await db.ref('settings').update({
@@ -2338,9 +2344,9 @@ async function saveBonus(){
    depositBonusPercent:firstTier.bonusPercent,
    turnoverMultiplier:firstTier.turnoverMultiplier,
    depositBonusTiers:tiers,
-   updatedAt:TS
+   updatedAt:nowTs
   });
-  try{await db.ref('adminAuditLogs').push({admin:auth.currentUser.email,action:'MASTER_TIER_PROMOTIONS_SET',target:TNAME,details:`on=${on}, tiers=${tiers.length}`,timestamp:Date.now()})}catch(e){}
+  try{await db.ref('adminAuditLogs').push({admin:auth.currentUser.email,action:'MASTER_TIER_PROMOTIONS_SET',target:TNAME,details:`on=${on}, tiers=${tiers.length}`,timestamp:nowTs})}catch(e){}
   toast('মাস্টার ডিপোজিট প্রমোশন ও টার্নওভার সেটিংস সফলভাবে সেভ হয়েছে ✅ (সকল ইউজার অ্যাডমিনে প্রয়োগ করা হয়েছে)');
  }catch(e){toast('ব্যর্থ: '+e.message)}
 }
@@ -2998,12 +3004,13 @@ async function pSave(){
  const s=f.start?new Date(f.start).getTime():0,e=f.end?new Date(f.end).getTime():0;
  if(s&&e&&e<=s)return toast('শেষ তারিখ শুরুর পরে হতে হবে');
  const id=PEDIT||db.ref('depositPromotions').push().key;
- const o={name:n,minDeposit:mn,maxDeposit:mx,bonusType:bt,bonusValue:bv,turnoverMultiplier:tm,active:f.act!==false,startAt:s,endAt:e,adminCanToggle:!!f.tg,updatedAt:TS};
- if(!PEDIT)o.createdAt=TS;
+ const nowTs=Date.now();
+ const o={name:n,minDeposit:mn,maxDeposit:mx,bonusType:bt,bonusValue:bv,turnoverMultiplier:tm,active:f.act!==false,startAt:s,endAt:e,adminCanToggle:!!f.tg,updatedAt:nowTs};
+ if(!PEDIT)o.createdAt=nowTs;
  try{await db.ref('depositPromotions/'+id).update(o);pLog(PEDIT?'PROMO_UPDATE':'PROMO_CREATE',id,n);PF={};PEDIT='';toast('অফার সেভ হয়েছে ✅');draw()}catch(er){toast('ব্যর্থ: '+er.message)}}
 function pEdit(k){const p=PROMO[k];if(!p)return;PEDIT=k;PF={name:p.name,min:p.minDeposit,max:p.maxDeposit,bt:p.bonusType,bv:p.bonusValue,tm:p.turnoverMultiplier,start:pLoc(p.startAt),end:pLoc(p.endAt),act:p.active,tg:p.adminCanToggle};draw();scrollTo(0,0)}
 function pCancel(){PF={};PEDIT='';draw()}
-async function pToggle(k){const p=PROMO[k];if(!p)return;try{await db.ref('depositPromotions/'+k+'/active').set(!p.active);pLog('PROMO_TOGGLE',k,(!p.active)?'ON':'OFF')}catch(e){toast('ব্যর্থ: '+e.message)}}
+async function pToggle(k){const p=PROMO[k];if(!p)return;try{await db.ref('depositPromotions/'+k).update({active:!p.active,updatedAt:Date.now()});pLog('PROMO_TOGGLE',k,(!p.active)?'ON':'OFF')}catch(e){toast('ব্যর্থ: '+e.message)}}
 async function pDel(k){const p=PROMO[k];if(!p||!confirm('"'+p.name+'" অফারটি ডিলিট করবেন? (আগে দেওয়া বোনাস/টার্নওভার অপরিবর্তিত থাকবে)'))return;try{await db.ref('depositPromotions/'+k).remove();pLog('PROMO_DELETE',k,p.name);toast('অফার ডিলিট হয়েছে')}catch(e){toast('ব্যর্থ: '+e.message)}}
 
 /* ===== USER PANEL CONTROL, PROVIDERS CRUD & PLAYER LIVE SUPPORT CHAT ===== */
@@ -3076,24 +3083,71 @@ const UP_FEAT_DEFS=[
  ['biometric','ফিঙ্গারপ্রিন্ট / পাসকি লক','Biometric']
 ];
 function upCurData(){return UP_SCOPE==='global'?(UPCFG_ALL.global||{}):((UPCFG_ALL.byAdmin&&UPCFG_ALL.byAdmin[UP_SCOPE])||{})}
+function upAdminWins(g,a,metaKey,hasVal){
+ if(!hasVal)return false;
+ const gFm=(g&&g.fieldMeta)||{},aFm=(a&&a.fieldMeta)||{};
+ const gT=Number(gFm[metaKey]||0),aT=Number(aFm[metaKey]||0);
+ if(gT>0&&aT>0)return aT>=gT;
+ if(gT>0&&aT===0)return false;
+ if(gT===0&&aT>0)return true;
+ return Number((a&&a.updatedAt)||0)>=Number((g&&g.updatedAt)||0);
+}
 function upEffData(){
  if(UP_SCOPE==='global')return Object.assign({},UPCFG_ALL.global||{});
  const g=UPCFG_ALL.global||{},a=(UPCFG_ALL.byAdmin&&UPCFG_ALL.byAdmin[UP_SCOPE])||{};
- return Object.assign({},g,a,{
-  limits:Object.assign({},g.limits||{},a.limits||{}),
-  features:Object.assign({},g.features||{},a.features||{}),
-  footer:Object.assign({},UP_DEFAULT_FOOTER,g.footer||{},a.footer||{})
+ const out=Object.assign({},g);
+ ['tagline','notice','partnerNotice','agentSupportNote','affiliatePromoText','maintenanceMessage','vipLevels','banners','sideBanners','promos','slides'].forEach(k=>{
+  const has=Array.isArray(a[k])?a[k].length>0:(a[k]!==undefined&&a[k]!==null&&a[k]!=='');
+  if(upAdminWins(g,a,k,has))out[k]=a[k];
  });
+ ['maintenanceMode','allowRegistration','dailyBonusEnabled','dailyBonusAmount','referralBonusPercent'].forEach(k=>{
+  if(upAdminWins(g,a,k,a[k]!==undefined&&a[k]!==null))out[k]=a[k];
+ });
+ const gLim=g.limits||{},aLim=a.limits||{},lim=Object.assign({},gLim);
+ Object.keys(aLim).forEach(k=>{if(upAdminWins(g,a,'lim_'+k,aLim[k]!==undefined)||(!upAdminWins(g,a,'limits',false)&&upAdminWins(g,a,'limits',aLim[k]!==undefined)))lim[k]=aLim[k];});
+ out.limits=lim;
+ const gFt=g.features||{},aFt=a.features||{},fts=Object.assign({},gFt);
+ Object.keys(aFt).forEach(k=>{if(upAdminWins(g,a,'feat_'+k,aFt[k]!==undefined))fts[k]=aFt[k];});
+ out.features=fts;
+ const gCh=g.chat||{},aCh=a.chat||{},ch=Object.assign({},gCh);
+ Object.keys(aCh).forEach(k=>{
+  const has=Array.isArray(aCh[k])?aCh[k].length>0:!!aCh[k];
+  if(upAdminWins(g,a,'chat_'+k,has))ch[k]=aCh[k];
+ });
+ out.chat=ch;
+ out.footer=upAdminWins(g,a,'footer',a.footer&&typeof a.footer==='object')?Object.assign({},UP_DEFAULT_FOOTER,g.footer||{},a.footer||{}):Object.assign({},UP_DEFAULT_FOOTER,g.footer||{});
+ out.payments=Object.assign({},g.payments||{},a.payments||{});
+ return out;
 }
 function upGetSlides(){const d=upCurData()||{};return Array.isArray(d.slides)?d.slides.map(s=>Object.assign({},s)):[]}
-function upGetArr(field,def){const d=upCurData()||{},g=UPCFG_ALL.global||{};const src=Array.isArray(d[field])&&d[field].length?d[field]:(UP_SCOPE==='global'?def:(Array.isArray(g[field])&&g[field].length?g[field]:def));return src.map(x=>Object.assign({},x))}
+function upGetArr(field,def){
+ const d=upCurData()||{},g=UPCFG_ALL.global||{};
+ const hasA=Array.isArray(d[field])&&d[field].length>0;
+ const hasG=Array.isArray(g[field])&&g[field].length>0;
+ let src;
+ if(UP_SCOPE==='global'){src=hasG?g[field]:def;}
+ else{src=upAdminWins(g,d,field,hasA)?d[field]:(hasG?g[field]:def);}
+ return src.map(x=>Object.assign({},x));
+}
 async function upPersistField(field,val){
  const scope=UP_SCOPE||'global';
  const base=scope==='global'?'userPanelConfig/global':'userPanelConfig/byAdmin/'+scope;
- await db.ref(base+'/'+field).set(val);
- await db.ref(base+'/updatedAt').set(TS).catch(()=>{});
- if(scope==='global'){if(!UPCFG_ALL.global)UPCFG_ALL.global={};UPCFG_ALL.global[field]=val}
- else{if(!UPCFG_ALL.byAdmin)UPCFG_ALL.byAdmin={};if(!UPCFG_ALL.byAdmin[scope])UPCFG_ALL.byAdmin[scope]={};UPCFG_ALL.byAdmin[scope][field]=val}
+ const nowTs=Date.now();
+ const upd={};
+ upd[field]=val;
+ upd['fieldMeta/'+field]=nowTs;
+ upd.updatedAt=nowTs;
+ await db.ref(base).update(upd);
+ if(scope==='global'){
+  if(!UPCFG_ALL.global)UPCFG_ALL.global={};
+  if(!UPCFG_ALL.global.fieldMeta)UPCFG_ALL.global.fieldMeta={};
+  UPCFG_ALL.global[field]=val;UPCFG_ALL.global.fieldMeta[field]=nowTs;UPCFG_ALL.global.updatedAt=nowTs;
+ }else{
+  if(!UPCFG_ALL.byAdmin)UPCFG_ALL.byAdmin={};
+  if(!UPCFG_ALL.byAdmin[scope])UPCFG_ALL.byAdmin[scope]={};
+  if(!UPCFG_ALL.byAdmin[scope].fieldMeta)UPCFG_ALL.byAdmin[scope].fieldMeta={};
+  UPCFG_ALL.byAdmin[scope][field]=val;UPCFG_ALL.byAdmin[scope].fieldMeta[field]=nowTs;UPCFG_ALL.byAdmin[scope].updatedAt=nowTs;
+ }
 }
 async function upPersistSlides(slides){
  await upPersistField('slides',slides);
@@ -3264,11 +3318,14 @@ async function upFooterDelItem(sec,idx){
 async function saveUserPanelConfigMaster(){
  const scope=UP_SCOPE||'global';
  const path=scope==='global'?'userPanelConfig/global':'userPanelConfig/byAdmin/'+scope;
- let curCfg=JSON.parse(JSON.stringify(upCurData()||{}));
+ const prev=JSON.parse(JSON.stringify(upCurData()||{}));
+ const prevFm=Object.assign({},prev.fieldMeta||{});
+ const curCfg=JSON.parse(JSON.stringify(prev));
  curCfg.tagline=($('up-tag')&&$('up-tag').value.trim())||'PLAY BIG, WIN BIGGER';
  curCfg.notice=($('up-notice')&&$('up-notice').value.trim())||'';
  curCfg.maintenanceMode=!!($('up-maint')&&$('up-maint').checked);
  curCfg.maintenanceMessage=($('up-maint-msg')&&$('up-maint-msg').value.trim())||'';
+ curCfg.allowRegistration=$('up-allow-reg')?$('up-allow-reg').checked:true;
  curCfg.partnerNotice=($('up-partner-notice')&&$('up-partner-notice').value.trim())||'';
  curCfg.agentSupportNote=($('up-agent-note')&&$('up-agent-note').value.trim())||'';
  curCfg.affiliatePromoText=($('up-aff-promo')&&$('up-aff-promo').value.trim())||'';
@@ -3320,12 +3377,23 @@ async function saveUserPanelConfigMaster(){
   if(!curCfg.footer||typeof curCfg.footer!=='object')curCfg.footer=Object.assign({},UP_DEFAULT_FOOTER);
   if($('up-resp-note'))curCfg.footer.responsibleNote=$('up-resp-note').value.trim()||UP_DEFAULT_FOOTER.responsibleNote;
   if($('up-copyright'))curCfg.footer.copyright=$('up-copyright').value.trim()||UP_DEFAULT_FOOTER.copyright;
-  curCfg.updatedAt=TS;
+  const nowTs=Date.now();
+  const neq=(a,b)=>JSON.stringify(a===undefined?null:a)!==JSON.stringify(b===undefined?null:b);
+  ['tagline','notice','maintenanceMode','maintenanceMessage','allowRegistration','partnerNotice','agentSupportNote','affiliatePromoText','dailyBonusEnabled','dailyBonusAmount','referralBonusPercent','limits','features','vipLevels','chat','payments','slides','banners','sideBanners','footer'].forEach(k=>{
+   if(neq(curCfg[k],prev[k]))prevFm[k]=nowTs;
+  });
+  Object.keys(curCfg.limits||{}).forEach(k=>{if(neq(curCfg.limits[k],prev.limits&&prev.limits[k]))prevFm['lim_'+k]=nowTs;});
+  Object.keys(curCfg.features||{}).forEach(k=>{if(neq(curCfg.features[k],prev.features&&prev.features[k]))prevFm['feat_'+k]=nowTs;});
+  Object.keys(curCfg.chat||{}).forEach(k=>{if(neq(curCfg.chat[k],prev.chat&&prev.chat[k]))prevFm['chat_'+k]=nowTs;});
+  curCfg.fieldMeta=prevFm;
+  curCfg.updatedAt=nowTs;
   await db.ref(path).set(curCfg);
   if(scope==='global'){
    await db.ref('settings').update({
     maintenanceMode:curCfg.maintenanceMode,
+    maintenance:curCfg.maintenanceMode,
     maintenanceMessage:curCfg.maintenanceMessage,
+    allowRegistration:curCfg.allowRegistration,
     minDeposit:curCfg.limits.minDeposit,
     maxDeposit:curCfg.limits.maxDeposit,
     minWithdraw:curCfg.limits.minWithdraw,
@@ -3337,8 +3405,21 @@ async function saveUserPanelConfigMaster(){
     telegram:curCfg.chat.telegram
    }).catch(()=>{});
   }
-  toast('ইউজার প্যানেল কনফিগ সংরক্ষিত ✅ ('+(scope==='global'?'Global':'Admin')+')');
+  toast('ইউজার প্যানেল কনফিগ সংরক্ষিত ✅ ('+(scope==='global'?'সব User Admin-এর ইউজার/এজেন্ট/অ্যাফিলিয়েটে লাইভ':'নির্দিষ্ট Admin-এর জন্য')+')');
  }catch(e){if(e&&e.message)toast('সেভ ব্যর্থ: '+e.message)}
+}
+async function forceSyncGlobalCms(){
+ if(UP_SCOPE!=='global')return;
+ if(!confirm('বর্তমান Global কনফিগারেশনের সব সেটিংস কি সকল User Admin-এর ইউজার, এজেন্ট ও অ্যাফিলিয়েটের ওপর প্রয়োগ (override) করবেন?'))return;
+ const cur=JSON.parse(JSON.stringify(UPCFG_ALL.global||{}));
+ const nowTs=Date.now();
+ const fm=Object.assign({},cur.fieldMeta||{});
+ ['tagline','notice','maintenanceMode','maintenanceMessage','allowRegistration','partnerNotice','agentSupportNote','affiliatePromoText','dailyBonusEnabled','dailyBonusAmount','referralBonusPercent','limits','features','vipLevels','chat','slides','banners','sideBanners','footer'].forEach(k=>{fm[k]=nowTs;});
+ Object.keys(cur.limits||{}).forEach(k=>{fm['lim_'+k]=nowTs;});
+ UP_FEAT_DEFS.forEach(([k])=>{fm['feat_'+k]=nowTs;});
+ ['whatsapp','telegram','officers'].forEach(k=>{fm['chat_'+k]=nowTs;});
+ cur.fieldMeta=fm;cur.updatedAt=nowTs;
+ try{await db.ref('userPanelConfig/global').set(cur);toast('🌐 সকল ইউজার প্যানেলে Global কনফিগ প্রয়োগ হয়েছে ✅');}catch(e){toast('ব্যর্থ: '+e.message)}
 }
 async function saveProviderMaster(editId){
  const nm=$('pv-nm').value.trim(),cat=$('pv-cat').value,lg=$('pv-logo').value.trim(),bn=$('pv-ban').value.trim(),ord=parseInt($('pv-ord').value)||1;
@@ -3425,6 +3506,7 @@ function userpanelDraw(){
     <option value="global"${UP_SCOPE==='global'?' selected':''}>🌐 Global (সকল ইউজার প্যানেল, এজেন্ট ও অ্যাফিলিয়েট)</option>${admOpts}
    </select>
    <button class="p" onclick="saveUserPanelConfigMaster()">💾 সব পরিবর্তন সেভ ও পাবলিশ করুন</button>
+   ${UP_SCOPE==='global'?`<button type="button" onclick="forceSyncGlobalCms()" title="সব User Admin-এর কাস্টম সেটিংসের ওপর বর্তমান Global মান প্রয়োগ করুন">🌐 সবার ওপর ফোর্স পুশ</button>`:''}
    <a href="user.html" target="_blank" style="padding:8px 14px;border:1px solid var(--border-color);border-radius:10px;color:var(--primary);text-decoration:none;font-weight:700">↗ ইউজার প্যানেল খুলুন</a>
   </div>
  </div>
@@ -3453,13 +3535,14 @@ function userpanelDraw(){
   <div class="cd">
    <b style="font-size:15px">📢 ২. ব্র্যান্ড, নোটিশ, ডাউনলাইন ঘোষণা ও মেইনটেন্যান্স</b>
    <div style="display:flex;flex-direction:column;gap:8px;margin-top:10px">
-    <input id="up-tag" placeholder="ট্যাগলাইন (যেমন: PLAY BIG, WIN BIGGER)" value="${esc(d.tagline||eff.tagline||'PLAY BIG, WIN BIGGER')}">
-    <textarea id="up-notice" rows="2" placeholder="ইউজার প্যানেল হোম চলমান নোটিশ (Marquee)">${esc(d.notice||'')}</textarea>
-    <textarea id="up-partner-notice" rows="2" placeholder="এজেন্ট ও অ্যাফিলিয়েট ডাউনলাইন ঘোষণা (লাইভ নোটিশ)">${esc(d.partnerNotice||'')}</textarea>
-    <input id="up-agent-note" placeholder="শুধু এজেন্টদের জন্য বিশেষ নির্দেশনা (ঐচ্ছিক)" value="${esc(d.agentSupportNote||'')}">
-    <input id="up-aff-promo" placeholder="শুধু অ্যাফিলিয়েটদের জন্য প্রোমো/কমিশন বার্তা (ঐচ্ছিক)" value="${esc(d.affiliatePromoText||'')}">
-    <label style="display:flex;align-items:center;gap:8px"><input id="up-maint" type="checkbox" ${d.maintenanceMode?'checked':''}> ইউজার প্যানেল মেইনটেন্যান্স মোড (সাইট সাময়িক বন্ধ)</label>
-    <input id="up-maint-msg" placeholder="মেইনটেন্যান্স মেসেজ" value="${esc(d.maintenanceMessage||'')}">
+    <input id="up-tag" placeholder="ট্যাগলাইন (যেমন: PLAY BIG, WIN BIGGER)" value="${esc(eff.tagline||'PLAY BIG, WIN BIGGER')}">
+    <textarea id="up-notice" rows="2" placeholder="ইউজার প্যানেল হোম চলমান নোটিশ (Marquee)">${esc(eff.notice||'')}</textarea>
+    <textarea id="up-partner-notice" rows="2" placeholder="এজেন্ট ও অ্যাফিলিয়েট ডাউনলাইন ঘোষণা (লাইভ নোটিশ)">${esc(eff.partnerNotice||'')}</textarea>
+    <input id="up-agent-note" placeholder="শুধু এজেন্টদের জন্য বিশেষ নির্দেশনা (ঐচ্ছিক)" value="${esc(eff.agentSupportNote||'')}">
+    <input id="up-aff-promo" placeholder="শুধু অ্যাফিলিয়েটদের জন্য প্রোমো/কমিশন বার্তা (ঐচ্ছিক)" value="${esc(eff.affiliatePromoText||'')}">
+    <label style="display:flex;align-items:center;gap:8px"><input id="up-maint" type="checkbox" ${eff.maintenanceMode?'checked':''}> ইউজার প্যানেল মেইনটেন্যান্স মোড (সাইট সাময়িক বন্ধ)</label>
+    <input id="up-maint-msg" placeholder="মেইনটেন্যান্স মেসেজ" value="${esc(eff.maintenanceMessage||'')}">
+    <label style="display:flex;align-items:center;gap:8px"><input id="up-allow-reg" type="checkbox" ${eff.allowRegistration!==false?'checked':''}> নতুন প্লেয়ার রেজিস্ট্রেশন (Sign Up) চালু</label>
    </div>
   </div>
   <div class="cd">

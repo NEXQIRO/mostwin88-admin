@@ -4689,28 +4689,40 @@
       _balRef.on('value', (s) => { STATE.adminBalance = parseFloat(s.val()) || 0; updateAdminBalanceUI(); });
       db.ref(`admins/${uid}`).on('value', (s) => {
         const a = s.val() || {};
-        if (typeof a.bonusPercent !== 'undefined') {
-          STATE.settings.depositBonusPercent = parseFloat(a.bonusPercent) || 0;
-        }
-        if (typeof a.turnoverPercent !== 'undefined') {
-          STATE.settings.turnoverMultiplier = parseFloat(a.turnoverPercent) || 1;
-        }
-        if (typeof a.bonusEnabled !== 'undefined') {
-          STATE.settings.depositBonusEnabled = a.bonusEnabled;
-        }
-        if (a.depositBonusTiers || a.tiers) {
-          STATE.settings.depositBonusTiers = a.depositBonusTiers || a.tiers;
+        STATE._myAdminBon = a;
+        const g = STATE._masterBon || {};
+        const aTs = Number(a.bonusUpdatedAt || a.updatedAt || 0);
+        const gTs = Number(g.updatedAt || 0);
+        if (gTs > aTs && gTs > 0) {
+          if (g.enabled !== undefined) STATE.settings.depositBonusEnabled = g.enabled;
+          if (g.tiers || g.depositBonusTiers) {
+            STATE.settings.depositBonusTiers = g.tiers || g.depositBonusTiers;
+            STATE.settings.customAdminTiers = false;
+          }
+        } else {
+          if (typeof a.bonusPercent !== 'undefined') STATE.settings.depositBonusPercent = parseFloat(a.bonusPercent) || 0;
+          if (typeof a.turnoverPercent !== 'undefined') STATE.settings.turnoverMultiplier = parseFloat(a.turnoverPercent) || 1;
+          if (typeof a.bonusEnabled !== 'undefined') STATE.settings.depositBonusEnabled = a.bonusEnabled;
+          if (a.depositBonusTiers || a.tiers) {
+            STATE.settings.depositBonusTiers = a.depositBonusTiers || a.tiers;
+            STATE.settings.customAdminTiers = true;
+          }
         }
         try { updateBonusTurnoverSummaryUI(); } catch (e) {}
       });
       db.ref('adminSettings/depositBonus').on('value', (s) => {
         const g = s.val() || {};
-        if (g.enabled !== undefined && STATE.settings.depositBonusEnabled === undefined) {
-          STATE.settings.depositBonusEnabled = g.enabled;
-        }
-        if ((g.tiers || g.depositBonusTiers) && !STATE.settings.customAdminTiers) {
-          if (!STATE.settings.depositBonusTiers) {
+        STATE._masterBon = g;
+        const a = STATE._myAdminBon || {};
+        const aTs = Number(a.bonusUpdatedAt || a.updatedAt || 0);
+        const gTs = Number(g.updatedAt || 0);
+        if (gTs > aTs || !a.depositBonusTiers) {
+          if (g.enabled !== undefined && (gTs > aTs || STATE.settings.depositBonusEnabled === undefined)) {
+            STATE.settings.depositBonusEnabled = g.enabled;
+          }
+          if ((g.tiers || g.depositBonusTiers) && (gTs > aTs || !STATE.settings.customAdminTiers)) {
             STATE.settings.depositBonusTiers = g.tiers || g.depositBonusTiers;
+            STATE.settings.customAdminTiers = false;
           }
         }
         try { updateBonusTurnoverSummaryUI(); } catch (e) {}
@@ -4960,11 +4972,14 @@
         console.warn('Device registry listener notice:', err);
       });
 
-      // 8. Notices
+      // 8. Notices (Strictly Master global + current User Admin's own notices)
       db.ref('notices').on('value', (snap) => {
         if (snap.exists()) {
           const val = snap.val();
-          STATE.notices = Object.keys(val).map(k => ({ id: k, ...val[k] })).reverse();
+          const me = npMyUid();
+          STATE.notices = Object.keys(val).map(k => ({ id: k, ...val[k] }))
+            .filter(n => !n.adminUid || (me && n.adminUid === me))
+            .reverse();
         } else {
           STATE.notices = [];
         }
@@ -4976,6 +4991,7 @@
         if (snap.exists()) {
           STATE.settings = { ...STATE.settings, ...snap.val() };
           renderSettings();
+          try { renderDashboard(); } catch (e) {}
         }
       });
 
@@ -5018,11 +5034,14 @@
         renderFinanceDashboard();
       });
 
-      // 11. Notifications (Firebase Node: notifications)
+      // 11. Notifications (Strictly Master global + current User Admin's own notifications)
       db.ref('notifications').on('value', (snap) => {
         if (snap.exists()) {
           const val = snap.val();
-          STATE.notifications = Object.keys(val).map(k => ({ id: k, ...val[k] })).reverse();
+          const me = npMyUid();
+          STATE.notifications = Object.keys(val).map(k => ({ id: k, ...val[k] }))
+            .filter(n => !n.adminUid || (me && n.adminUid === me))
+            .reverse();
         } else {
           STATE.notifications = [];
         }
@@ -5036,6 +5055,7 @@
         STATE.masterSlides = Array.isArray(g.slides) ? g.slides : [];
         renderUserPanelControl();
         renderBannersList();
+        try { renderSettings(); renderDashboard(); } catch (e) {}
       });
       const myUpUid = npMyUid();
       if (myUpUid) {
@@ -5043,6 +5063,7 @@
           STATE.userPanelConfig = snap.val() || {};
           renderUserPanelControl();
           renderBannersList();
+          try { renderSettings(); renderDashboard(); } catch (e) {}
         });
       }
 
@@ -5520,11 +5541,14 @@
       const optW = document.getElementById('opt-wallet-withdrawals');
       if (optW) optW.textContent = `📤 উইথড্র রিকোয়েস্ট (${pendingWiths})`;
 
-      // Quick Toggles
+      // Quick Toggles (Resolved per-admin / Master fieldMeta)
+      const effDashCfg = (typeof window.uaEffCfg === 'function') ? window.uaEffCfg() : {};
+      const isMaintDash = effDashCfg.maintenanceMode !== undefined ? !!effDashCfg.maintenanceMode : !!(STATE.settings.maintenanceMode || STATE.settings.maintenance);
+      const isRegDash = effDashCfg.allowRegistration !== undefined ? (effDashCfg.allowRegistration !== false) : (STATE.settings.allowRegistration !== false);
       const elMaint = document.getElementById('quick-toggle-maintenance');
-      if (elMaint) elMaint.checked = !!STATE.settings.maintenance;
+      if (elMaint) elMaint.checked = isMaintDash;
       const elReg = document.getElementById('quick-toggle-registration');
-      if (elReg) elReg.checked = STATE.settings.allowRegistration !== false;
+      if (elReg) elReg.checked = isRegDash;
 
       // Live Feed (Table + Mobile Cards)
       const tbody = document.getElementById('dashboard-recent-tbody');
@@ -5846,6 +5870,7 @@
     }
 
     async function seedDefaultGamesOnly() {
+      showToast('এটি শুধু MASTER ADMINISTRATOR করতে পারবেন।', 'error'); return;
       if (!confirm('৫টি জনপ্রিয় ডেমো গেম (Aviator, JetX, Mines, Plinko, Crash Fire) কি ডাটাবেসে যুক্ত করতে চান? এরপর আপনি যেকোনোটি এডিট বা ডিলিট করতে পারবেন।')) return;
       if (!db) return;
 
@@ -6945,20 +6970,24 @@
     // --- Notices ---
     function renderNotices() {
       const tbody = document.getElementById('notices-table-tbody');
-      tbody.innerHTML = STATE.notices.map(n => `
+      const me = npMyUid();
+      tbody.innerHTML = STATE.notices.map(n => {
+        const isMine = !!me && n.adminUid === me;
+        const srcBadge = isMine
+          ? '<span class="badge badge-upcoming" style="margin-left:4px;">আমার</span>'
+          : '<span class="badge badge-approved" style="margin-left:4px;">🔒 Master</span>';
+        return `
         <tr>
-          <td><span class="badge ${n.type === 'TICKER' ? 'badge-upcoming' : n.type === 'POPUP' ? 'badge-live' : 'badge-completed'}">${n.type}</span></td>
+          <td><span class="badge ${n.type === 'TICKER' ? 'badge-upcoming' : n.type === 'POPUP' ? 'badge-live' : 'badge-completed'}">${n.type}</span>${srcBadge}</td>
           <td><b style="color:var(--primary);">${escapeHtml(n.title)}</b></td>
           <td style="max-width:350px;">${escapeHtml(n.body)}</td>
           <td><span class="badge badge-approved">${n.status || 'Active'}</span></td>
           <td style="color:var(--text-dim); font-size:0.8rem;">${n.createdAt || 'সম্প্রতি'}</td>
           <td style="text-align: right;">
-            <button class="btn btn-secondary btn-sm" onclick="deleteNotice('${n.id}')" style="color:var(--accent);">
-              ডিলিট
-            </button>
+            ${isMine ? `<button class="btn btn-secondary btn-sm" onclick="deleteNotice('${n.id}')" style="color:var(--accent);">ডিলিট</button>` : '<span style="font-size:0.75rem;color:var(--text-dim);">Master গ্লোবাল</span>'}
           </td>
-        </tr>
-      `).join('');
+        </tr>`;
+      }).join('');
     }
 
     function updateNoticePreview() {
@@ -7084,22 +7113,25 @@
       const type = document.getElementById('notice-type').value;
       const title = document.getElementById('notice-title').value.trim();
       const body = document.getElementById('notice-body').value.trim();
+      const me = npMyUid();
 
-      if (!title || !body || !db) return;
+      if (!title || !body || !db || !me) return;
 
       try {
         const newKey = db.ref('notices').push().key;
         await db.ref(`notices/${newKey}`).set({
           id: newKey,
+          adminUid: me,
           type,
           title,
           body,
           status: 'Active',
+          timestamp: Date.now(),
           createdAt: new Date().toLocaleString('bn-BD')
         });
 
         recordAuditLog('NOTICE_PUBLISHED', newKey, `Type: ${type}, Title: ${title}`);
-        showToast('বাংলা নোটিশ সফলভাবে পাবলিশ হয়েছে!', 'success');
+        showToast('বাংলা নোটিশ শুধু আপনার ইউজার প্যানেলের জন্য পাবলিশ হয়েছে!', 'success');
         document.getElementById('notice-publish-form').reset();
         updateNoticePreview();
       } catch (err) {
@@ -7108,6 +7140,12 @@
     }
 
     async function deleteNotice(id) {
+      const n = STATE.notices.find(x => x.id === id);
+      const me = npMyUid();
+      if (!n || !me || n.adminUid !== me) {
+        showToast('Master বা অন্য অ্যাডমিনের নোটিশ মুছে ফেলা যাবে না', 'error');
+        return;
+      }
       if (confirm('এই নোটিশটি মুছে ফেলতে চান?') && db) {
         try {
           await db.ref(`notices/${id}`).remove();
@@ -7223,9 +7261,12 @@
       btn.innerHTML = `<span class="spinner-sm"></span> পাঠানো হচ্ছে...`;
 
       try {
+        const me = npMyUid();
+        if (!me) { showToast('অ্যাডমিন লগইন পাওয়া যায়নি', 'error'); return; }
         const notifKey = db.ref('notifications').push().key;
         const newNotif = {
           id: notifKey,
+          adminUid: me,
           target: targetUid,
           targetType: target,
           recipientLabel,
@@ -7234,13 +7275,13 @@
           message,
           sender: STATE.adminUser.email || 'Admin',
           createdAt: new Date().toLocaleString('bn-BD'),
-          timestamp: firebase.database.ServerValue.TIMESTAMP
+          timestamp: Date.now()
         };
 
         await db.ref(`notifications/${notifKey}`).set(newNotif);
         recordAuditLog('NOTIFICATION_SENT', notifKey, `Sent "${title}" to ${recipientLabel}`);
 
-        showToast(`✅ "${title}" নোটিফিকেশনটি সফলভাবে প্রেরিত হয়েছে!`, 'success');
+        showToast(`✅ "${title}" নোটিফিকেশনটি শুধু আপনার ইউজারদের জন্য পাঠানো হয়েছে!`, 'success');
         document.getElementById('notification-send-form').reset();
         document.getElementById('notif-user-select-wrap').style.display = 'none';
         updateNotifPreview();
@@ -7267,11 +7308,13 @@
         return;
       }
 
+      const me = npMyUid();
       tbody.innerHTML = STATE.notifications.map(n => {
         const catBadge = (n.category === 'CASINO' || n.category === 'TOURNAMENT') ? 'badge-live' : n.category === 'WALLET' ? 'badge-approved' : n.category === 'URGENT' ? 'badge-rejected' : 'badge-upcoming';
         const isBroadcast = n.target === 'ALL' || !n.target || n.targetType === 'ALL';
+        const isMine = !!me && n.adminUid === me;
         const recipientDisplay = isBroadcast
-          ? `<span class="badge badge-upcoming">📢 সকল ইউজার (All)</span>`
+          ? `<span class="badge badge-upcoming">${isMine ? '📢 আমার সকল ইউজার' : '🌐 Master গ্লোবাল'}</span>`
           : `<span class="badge badge-approved">👤 ${escapeHtml(n.recipientLabel || n.target)}</span>`;
 
         return `
@@ -7283,9 +7326,7 @@
             <td style="font-size:0.8rem; color:var(--text-dim);">${escapeHtml(n.sender || 'Admin')}</td>
             <td style="font-size:0.8rem; color:var(--text-dim); white-space:nowrap;">${n.createdAt || 'সম্প্রতি'}</td>
             <td style="text-align: right;">
-              <button class="btn btn-secondary btn-sm" onclick="deleteNotification('${n.id}')" style="color:var(--accent);">
-                ডিলিট
-              </button>
+              ${isMine ? `<button class="btn btn-secondary btn-sm" onclick="deleteNotification('${n.id}')" style="color:var(--accent);">ডিলিট</button>` : '<span style="font-size:0.75rem;color:var(--text-dim);">Master</span>'}
             </td>
           </tr>
         `;
@@ -7293,6 +7334,12 @@
     }
 
     async function deleteNotification(id) {
+      const n = STATE.notifications.find(x => x.id === id);
+      const me = npMyUid();
+      if (!n || !me || n.adminUid !== me) {
+        showToast('Master বা অন্য অ্যাডমিনের নোটিফিকেশন মুছে ফেলা যাবে না', 'error');
+        return;
+      }
       if (!confirm('আপনি কি নিশ্চিত যে এই নোটিফিকেশনটি মুছে ফেলতে চান?')) return;
       if (!db || !id) return;
 
@@ -7323,25 +7370,32 @@
 
     // --- Settings, Payment Logos & HTML Ad ---
     function renderSettings() {
-      document.getElementById('setting-bkash').value = STATE.settings.bkashNumber || '01712-345678';
-      document.getElementById('setting-nagad').value = STATE.settings.nagadNumber || '01812-345678';
-      document.getElementById('setting-rocket').value = STATE.settings.rocketNumber || '01912-3456780';
+      const eff = (typeof window.uaEffCfg === 'function') ? window.uaEffCfg() : {};
+      const myOwn = STATE.userPanelConfig || {};
+      const pay = myOwn.payments || eff.payments || {};
+      const ch = eff.chat || {};
+      const lim = eff.limits || {};
+      const had = eff.htmlAd || {};
+      document.getElementById('setting-bkash').value = pay.bkashNumber || STATE.settings.bkashNumber || '01712-345678';
+      document.getElementById('setting-nagad').value = pay.nagadNumber || STATE.settings.nagadNumber || '01812-345678';
+      document.getElementById('setting-rocket').value = pay.rocketNumber || STATE.settings.rocketNumber || '01912-3456780';
 
       if (document.getElementById('setting-bkash-logo')) {
-        document.getElementById('setting-bkash-logo').value = STATE.settings.bkashLogo || 'https://i.postimg.cc/K4hz9m0W/Whats-App-Image-2026-10-23-at-4-14-08-PM.jpg';
+        document.getElementById('setting-bkash-logo').value = pay.bkashLogo || STATE.settings.bkashLogo || 'https://i.postimg.cc/K4hz9m0W/Whats-App-Image-2026-10-23-at-4-14-08-PM.jpg';
       }
       if (document.getElementById('setting-nagad-logo')) {
-        document.getElementById('setting-nagad-logo').value = STATE.settings.nagadLogo || 'https://i.postimg.cc/QtVHC4B2/Whats-App-Image-2026-10-23-at-4-14-08-PM-%281%29.jpg';
+        document.getElementById('setting-nagad-logo').value = pay.nagadLogo || STATE.settings.nagadLogo || 'https://i.postimg.cc/QtVHC4B2/Whats-App-Image-2026-10-23-at-4-14-08-PM-%281%29.jpg';
       }
       if (document.getElementById('setting-rocket-logo')) {
-        document.getElementById('setting-rocket-logo').value = STATE.settings.rocketLogo || 'https://i.postimg.cc/BnGLpByx/Whats-App-Image-2026-10-23-at-4-14-08-PM-%282%29.jpg';
+        document.getElementById('setting-rocket-logo').value = pay.rocketLogo || STATE.settings.rocketLogo || 'https://i.postimg.cc/BnGLpByx/Whats-App-Image-2026-10-23-at-4-14-08-PM-%282%29.jpg';
       }
 
       if (document.getElementById('setting-html-ad')) {
-        document.getElementById('setting-html-ad').value = STATE.settings.htmlAdCode || '';
+        document.getElementById('setting-html-ad').value = (had.code !== undefined ? had.code : STATE.settings.htmlAdCode) || '';
       }
-      if (STATE.settings.adConfig) {
-        const cfg = STATE.settings.adConfig;
+      const adCfgSrc = had.config || STATE.settings.adConfig;
+      if (adCfgSrc) {
+        const cfg = adCfgSrc;
         if (document.getElementById('setting-ad-enabled')) {
           document.getElementById('setting-ad-enabled').checked = (cfg.enabled !== false);
           updateAdStatusLabel();
@@ -7366,14 +7420,14 @@
       renderAdPreview();
 
       if (document.getElementById('setting-support-phone')) {
-        document.getElementById('setting-support-phone').value = STATE.settings.supportPhone || '';
+        document.getElementById('setting-support-phone').value = ch.supportPhone || STATE.settings.supportPhone || '';
       }
-      document.getElementById('setting-min-deposit').value = STATE.settings.minDeposit || 50;
-      document.getElementById('setting-min-withdraw').value = STATE.settings.minWithdraw || 100;
-      document.getElementById('setting-whatsapp').value = STATE.settings.whatsapp || '+8801712345678';
-      document.getElementById('setting-telegram').value = STATE.settings.telegram || 'https://t.me/mostwin88';
-      document.getElementById('setting-youtube').value = STATE.settings.youtube || 'https://youtube.com/@mostwin88';
-      document.getElementById('setting-facebook').value = STATE.settings.facebook || 'https://facebook.com/mostwin88';
+      document.getElementById('setting-min-deposit').value = lim.minDeposit != null ? lim.minDeposit : (STATE.settings.minDeposit || 500);
+      document.getElementById('setting-min-withdraw').value = lim.minWithdraw != null ? lim.minWithdraw : (STATE.settings.minWithdraw || 500);
+      document.getElementById('setting-whatsapp').value = ch.whatsapp || STATE.settings.whatsapp || '+8801712345678';
+      document.getElementById('setting-telegram').value = ch.telegram || STATE.settings.telegram || 'https://t.me/mostwin88';
+      document.getElementById('setting-youtube').value = ch.youtube || STATE.settings.youtube || 'https://youtube.com/@mostwin88';
+      document.getElementById('setting-facebook').value = ch.facebook || STATE.settings.facebook || 'https://facebook.com/mostwin88';
 
       // Load Bonus & Turnover Settings
       if (document.getElementById('setting-bonus-enabled')) {
@@ -7502,44 +7556,33 @@
       const tiersPayload = (parsedTiers && parsedTiers.length > 0) ? parsedTiers : null;
 
       try {
-        const adminUid = STATE.adminUser ? STATE.adminUser.uid : (auth.currentUser ? auth.currentUser.uid : null);
-        
-        // 1. Direct update to settings node (avoiding empty array update errors)
-        const settingsPayload = {
-          depositBonusEnabled: Boolean(depositBonusEnabled),
-          depositBonusPercent: Number(depositBonusPercent) || 0,
-          minDepositForBonus: Number(minDepositForBonus) || 0,
-          maxBonusAmount: Number(maxBonusAmount) || 0,
-          turnoverMultiplier: Number(turnoverMultiplier) || 1,
-          turnoverBase: String(turnoverBase || 'deposit_plus_bonus'),
-          enforceTurnover: Boolean(enforceTurnover)
+        const adminUid = npMyUid() || (STATE.adminUser ? STATE.adminUser.uid : (auth.currentUser ? auth.currentUser.uid : null));
+        if (!adminUid) { showToast('অ্যাডমিন লগইন পাওয়া যায়নি', 'error'); return; }
+        const nowTs = Date.now();
+        const adminPayload = {
+          bonusPercent: Number(depositBonusPercent) || 0,
+          turnoverPercent: Number(turnoverMultiplier) || 1,
+          bonusEnabled: Boolean(depositBonusEnabled),
+          depositBonusTiers: tiersPayload || null,
+          bonusUpdatedAt: nowTs,
+          updatedAt: nowTs
         };
-        if (tiersPayload) {
-          settingsPayload.depositBonusTiers = tiersPayload;
-        } else {
-          settingsPayload.depositBonusTiers = null;
-        }
-
-        await db.ref('settings').update(settingsPayload);
-
-        // 2. Safely sync to admins profile node if UID available
-        if (adminUid) {
-          try {
-            const adminPayload = {
-              bonusPercent: Number(depositBonusPercent) || 0,
-              turnoverPercent: Number(turnoverMultiplier) || 1,
-              bonusEnabled: Boolean(depositBonusEnabled)
-            };
-            if (tiersPayload) {
-              adminPayload.depositBonusTiers = tiersPayload;
-            } else {
-              adminPayload.depositBonusTiers = null;
-            }
-            await db.ref('admins/' + adminUid).update(adminPayload);
-          } catch (adminErr) {
-            console.warn('Admin profile bonus sync notice:', adminErr);
-          }
-        }
+        await db.ref('admins/' + adminUid).update(adminPayload);
+        await db.ref('userPanelConfig/byAdmin/' + adminUid).update({
+          depositBonus: {
+            enabled: Boolean(depositBonusEnabled),
+            bonusPercent: Number(depositBonusPercent) || 0,
+            minDepositForBonus: Number(minDepositForBonus) || 0,
+            maxBonusAmount: Number(maxBonusAmount) || 0,
+            turnoverMultiplier: Number(turnoverMultiplier) || 1,
+            turnoverBase: String(turnoverBase || 'deposit_plus_bonus'),
+            enforceTurnover: Boolean(enforceTurnover),
+            tiers: tiersPayload || null,
+            updatedAt: nowTs
+          },
+          'fieldMeta/depositBonus': nowTs,
+          updatedAt: nowTs
+        }).catch(() => {});
 
         STATE.settings = {
           ...STATE.settings,
@@ -7554,8 +7597,8 @@
           customAdminTiers: true
         };
         updateBonusTurnoverSummaryUI();
-        recordAuditLog('SETTINGS_BONUS_UPDATE', 'SETTINGS', `Bonus: ${depositBonusEnabled ? 'ON' : 'OFF'} (${depositBonusPercent}%), Turnover: ${turnoverMultiplier}x, Tiers: ${parsedTiers.length}`);
-        showToast('🎁 ডিপোজিট বোনাস ও টার্নওভার সেটিংস সফলভাবে সেভ হয়েছে!', 'success');
+        recordAuditLog('SETTINGS_BONUS_UPDATE', 'ADMIN_SCOPED', `Bonus: ${depositBonusEnabled ? 'ON' : 'OFF'} (${depositBonusPercent}%), Turnover: ${turnoverMultiplier}x, Tiers: ${parsedTiers.length}`);
+        showToast('🎁 ডিপোজিট বোনাস ও টার্নওভার শুধু আপনার ইউজারদের জন্য সেভ হয়েছে!', 'success');
       } catch (err) {
         showToast('সেটিংস সেভ করতে ব্যর্থ: ' + err.message, 'error');
       }
@@ -7576,30 +7619,31 @@
 
       try {
         const me = npMyUid();
-        if (me) {
-          await db.ref('userPanelConfig/byAdmin/' + me + '/payments').update({
-            bkashNumber,
-            nagadNumber,
-            rocketNumber,
-            bkashLogo,
-            nagadLogo,
-            rocketLogo
-          });
-          await db.ref('settings').update({ minDeposit, minWithdraw }).catch(() => {});
-        } else {
-          await db.ref('settings').update({
-            bkashNumber,
-            nagadNumber,
-            rocketNumber,
-            bkashLogo,
-            nagadLogo,
-            rocketLogo,
-            minDeposit,
-            minWithdraw
-          });
+        if (!me) { showToast('অ্যাডমিন লগইন পাওয়া যায়নি', 'error'); return; }
+        const nowTs = Date.now();
+        const upd = {
+          'payments/bkashNumber': bkashNumber,
+          'payments/nagadNumber': nagadNumber,
+          'payments/rocketNumber': rocketNumber,
+          'payments/bkashLogo': bkashLogo,
+          'payments/nagadLogo': nagadLogo,
+          'payments/rocketLogo': rocketLogo,
+          'fieldMeta/payments': nowTs,
+          updatedAt: nowTs
+        };
+        if (!isNaN(minDeposit) && minDeposit > 0) {
+          upd['limits/minDeposit'] = minDeposit;
+          upd['fieldMeta/lim_minDeposit'] = nowTs;
+          upd['fieldMeta/limits'] = nowTs;
         }
-        recordAuditLog('SETTINGS_PAYMENT_UPDATE', 'PAYMENT_CONFIG', 'Deposit numbers, logos & limits updated');
-        showToast('পেমেন্ট নাম্বার ও লোগো শুধু আপনার ইউজার প্যানেলের জন্য সেভ হয়েছে!', 'success');
+        if (!isNaN(minWithdraw) && minWithdraw > 0) {
+          upd['limits/minWithdraw'] = minWithdraw;
+          upd['fieldMeta/lim_minWithdraw'] = nowTs;
+          upd['fieldMeta/limits'] = nowTs;
+        }
+        await db.ref('userPanelConfig/byAdmin/' + me).update(upd);
+        recordAuditLog('SETTINGS_PAYMENT_UPDATE', 'PAYMENT_CONFIG', 'Deposit numbers, logos & limits updated for admin panel');
+        showToast('পেমেন্ট নাম্বার, লোগো ও লিমিট শুধু আপনার ইউজার, এজেন্ট ও অ্যাফিলিয়েটের জন্য সেভ হয়েছে!', 'success');
       } catch (err) {
         showToast('সেভ ব্যর্থ: ' + err.message, 'error');
       }
@@ -7616,15 +7660,25 @@
       const facebook = document.getElementById('setting-facebook').value.trim();
 
       try {
-        await db.ref('settings').update({
-          supportPhone,
-          whatsapp,
-          telegram,
-          youtube,
-          facebook
+        const me = npMyUid();
+        if (!me) { showToast('অ্যাডমিন লগইন পাওয়া যায়নি', 'error'); return; }
+        const nowTs = Date.now();
+        await db.ref('userPanelConfig/byAdmin/' + me).update({
+          'chat/supportPhone': supportPhone,
+          'chat/whatsapp': whatsapp,
+          'chat/telegram': telegram,
+          'chat/youtube': youtube,
+          'chat/facebook': facebook,
+          'fieldMeta/chat_supportPhone': nowTs,
+          'fieldMeta/chat_whatsapp': nowTs,
+          'fieldMeta/chat_telegram': nowTs,
+          'fieldMeta/chat_youtube': nowTs,
+          'fieldMeta/chat_facebook': nowTs,
+          'fieldMeta/chat': nowTs,
+          updatedAt: nowTs
         });
-        recordAuditLog('SETTINGS_SOCIAL_UPDATE', 'CONTACTS_CONFIG', `Support mobile (${supportPhone}) & contacts updated`);
-        showToast('সাপোর্ট মোবাইল নম্বর ও তথ্য সফলভাবে সেভ হয়েছে!', 'success');
+        recordAuditLog('SETTINGS_SOCIAL_UPDATE', 'CONTACTS_CONFIG', `Support mobile (${supportPhone}) & contacts updated for admin panel`);
+        showToast('সাপোর্ট ও সোশ্যাল তথ্য শুধু আপনার ইউজার, এজেন্ট ও অ্যাফিলিয়েটের জন্য সেভ হয়েছে!', 'success');
       } catch (err) {
         showToast('সেভ ব্যর্থ: ' + err.message, 'error');
       }
@@ -7776,17 +7830,18 @@
       };
 
       try {
-        const updates = {};
-        // Keep existing legacy path for 100% backward compatibility:
-        updates['settings/htmlAdCode'] = htmlAdCode;
-        updates['settings/adConfig'] = adConfig;
+        const me = npMyUid();
+        if (!me) { showToast('অ্যাডমিন লগইন পাওয়া যায়নি', 'error'); return; }
+        const nowTs = Date.now();
+        adConfig.updatedAt = nowTs;
+        await db.ref('userPanelConfig/byAdmin/' + me).update({
+          htmlAd: { code: htmlAdCode, config: adConfig, updatedAt: nowTs },
+          'fieldMeta/htmlAd': nowTs,
+          updatedAt: nowTs
+        });
 
-        await db.ref().update(updates);
-        STATE.settings.htmlAdCode = htmlAdCode;
-        STATE.settings.adConfig = adConfig;
-
-        recordAuditLog('HTML_AD_UPDATE', 'SETTINGS', `Ad updated: ${adType}, Size: ${adSize}, Enabled: ${enabled}`);
-        showToast(STATE.currentLanguage === 'bn' ? '✅ HTML বিজ্ঞাপন সেটিংস সফলভাবে সংরক্ষিত হয়েছে!' : '✅ HTML Ad settings saved successfully!', 'success');
+        recordAuditLog('HTML_AD_UPDATE', 'ADMIN_SCOPED', `Ad updated: ${adType}, Size: ${adSize}, Enabled: ${enabled}`);
+        showToast(STATE.currentLanguage === 'bn' ? '✅ HTML বিজ্ঞাপন শুধু আপনার ইউজারদের জন্য সংরক্ষিত হয়েছে!' : '✅ HTML Ad settings saved for your users!', 'success');
         renderAdPreview();
       } catch (err) {
         showToast(STATE.currentLanguage === 'bn' ? 'বিজ্ঞাপন সেভ ব্যর্থ: ' + err.message : 'Save failed: ' + err.message, 'error');
@@ -7801,10 +7856,16 @@
 
       if (!db) return;
       try {
-        const updates = {};
-        updates['settings/htmlAdCode'] = '';
-        updates['settings/adConfig/enabled'] = false;
-        await db.ref().update(updates);
+        const me = npMyUid();
+        if (!me) return;
+        const nowTs = Date.now();
+        await db.ref('userPanelConfig/byAdmin/' + me).update({
+          'htmlAd/code': '',
+          'htmlAd/config/enabled': false,
+          'htmlAd/updatedAt': nowTs,
+          'fieldMeta/htmlAd': nowTs,
+          updatedAt: nowTs
+        });
 
         if (document.getElementById('setting-html-ad')) {
           document.getElementById('setting-html-ad').value = '';
@@ -7813,8 +7874,7 @@
           document.getElementById('setting-ad-enabled').checked = false;
           updateAdStatusLabel();
         }
-        STATE.settings.htmlAdCode = '';
-        recordAuditLog('HTML_AD_DELETED', 'SETTINGS', 'Ad code removed by admin');
+        recordAuditLog('HTML_AD_DELETED', 'ADMIN_SCOPED', 'Ad code removed by admin');
         showToast(STATE.currentLanguage === 'bn' ? 'বিজ্ঞাপন কোড সফলভাবে মুছে ফেলা হয়েছে!' : 'Ad code deleted successfully!', 'info');
         renderAdPreview();
       } catch (err) {
@@ -7880,10 +7940,17 @@
       const uid = npMyUid();
       if (!db || !uid) throw new Error('Admin login missing');
       const cleanList = (Array.isArray(nextList) ? nextList : []).filter(s => s && !s.locked && !s.masterLockedId);
-      await db.ref('userPanelConfig/byAdmin/' + uid + '/slides').set(cleanList);
-      await db.ref('userPanelConfig/byAdmin/' + uid + '/updatedAt').set(firebase.database.ServerValue.TIMESTAMP).catch(() => {});
+      const nowTs = Date.now();
+      await db.ref('userPanelConfig/byAdmin/' + uid).update({
+        slides: cleanList,
+        'fieldMeta/slides': nowTs,
+        updatedAt: nowTs
+      });
       if (!STATE.userPanelConfig) STATE.userPanelConfig = {};
+      if (!STATE.userPanelConfig.fieldMeta) STATE.userPanelConfig.fieldMeta = {};
       STATE.userPanelConfig.slides = cleanList;
+      STATE.userPanelConfig.fieldMeta.slides = nowTs;
+      STATE.userPanelConfig.updatedAt = nowTs;
       const ta = document.getElementById('ua-up-slides');
       if (ta) ta.value = JSON.stringify(cleanList, null, 2);
       renderUserPanelSlidesList();
@@ -7905,14 +7972,7 @@
     }
 
     async function handleDeleteBanner(id) {
-      if (!confirm('আপনি কি নিশ্চিত যে এই স্লাইডার ছবিটি মুছে ফেলতে চান?')) return;
-      if (!db || !id) return;
-      try {
-        await db.ref(`banners/${id}`).remove();
-        showToast('স্লাইডার ছবিটি সফলভাবে মুছে ফেলা হয়েছে!', 'success');
-      } catch (err) {
-        showToast('ব্যানার মুছতে সমস্যা: ' + err.message, 'error');
-      }
+      showToast('Master গ্লোবাল ব্যানার শুধু MASTER ADMINISTRATOR মুছতে পারবেন। আপনার নিজের স্লাইডার উপরে তালিকা থেকে ডিলিট করুন।', 'error');
     }
 
     async function handleAddBanner() {
@@ -7948,29 +8008,42 @@
     }
 
     async function toggleMaintenanceMode(checked) {
-      if (!db) return;
+      const me = npMyUid();
+      if (!db || !me) return;
       try {
-        await db.ref('settings/maintenance').set(checked);
+        const nowTs = Date.now();
+        await db.ref('userPanelConfig/byAdmin/' + me).update({
+          maintenanceMode: Boolean(checked),
+          'fieldMeta/maintenanceMode': nowTs,
+          updatedAt: nowTs
+        });
         const statusText = document.getElementById('app-status-summary');
-        if (checked) {
-          statusText.innerHTML = '🔴 <b>রক্ষণাবেক্ষণ মোড চালু</b> • ইউজার অ্যাপ লক করা আছে';
-          showToast('রক্ষণাবেক্ষণ মোড চালু হয়েছে', 'error');
-        } else {
-          statusText.innerHTML = '🟢 ইউজার অ্যাপ সক্রিয় • Pro Casino সার্ভার ও সকল গেমস রানিং';
-          showToast('ইউজার অ্যাপ পুনরায় সক্রিয় করা হয়েছে', 'success');
+        if (statusText) {
+          if (checked) {
+            statusText.innerHTML = '🔴 <b>রক্ষণাবেক্ষণ মোড চালু</b> • শুধু আপনার ইউজার প্যানেল লক করা আছে';
+          } else {
+            statusText.innerHTML = '🟢 ইউজার অ্যাপ সক্রিয় • Pro Casino সার্ভার ও সকল গেমস রানিং';
+          }
         }
-        recordAuditLog('MAINTENANCE_TOGGLE', 'APP_SETTINGS', `Maintenance: ${checked}`);
+        showToast(checked ? 'রক্ষণাবেক্ষণ মোড শুধু আপনার ইউজারদের জন্য চালু হয়েছে' : 'আপনার ইউজার অ্যাপ পুনরায় সক্রিয় করা হয়েছে', checked ? 'error' : 'success');
+        recordAuditLog('MAINTENANCE_TOGGLE', me, `Maintenance: ${checked}`);
       } catch (err) {
         showToast('টগল ব্যর্থ: ' + err.message, 'error');
       }
     }
 
     async function toggleRegistration(checked) {
-      if (!db) return;
+      const me = npMyUid();
+      if (!db || !me) return;
       try {
-        await db.ref('settings/allowRegistration').set(checked);
-        recordAuditLog('REGISTRATION_TOGGLE', 'APP_SETTINGS', `Registration: ${checked}`);
-        showToast(checked ? 'নতুন প্লেয়ার রেজিস্ট্রেশন উন্মুক্ত' : 'নতুন রেজিস্ট্রেশন বন্ধ করা হয়েছে', 'info');
+        const nowTs = Date.now();
+        await db.ref('userPanelConfig/byAdmin/' + me).update({
+          allowRegistration: Boolean(checked),
+          'fieldMeta/allowRegistration': nowTs,
+          updatedAt: nowTs
+        });
+        recordAuditLog('REGISTRATION_TOGGLE', me, `Registration: ${checked}`);
+        showToast(checked ? 'আপনার লিংকে নতুন প্লেয়ার রেজিস্ট্রেশন উন্মুক্ত' : 'আপনার লিংকে নতুন রেজিস্ট্রেশন বন্ধ করা হয়েছে', 'info');
       } catch (err) {
         showToast('টগল ব্যর্থ: ' + err.message, 'error');
       }
@@ -8010,6 +8083,7 @@
 
     // --- Database Seeder ---
     async function seedDatabaseWithDefaults() {
+      showToast('ডিফল্ট গ্লোবাল ডাটাবেস সিড শুধু MASTER ADMINISTRATOR করতে পারবেন।', 'error'); return;
       if (!confirm('আপনি কি নিশ্চিত যে আপনার লাইভ ডাটাবেসে ডিফল্ট Pro Casino গেমস, বাংলা নোটিশ ও সেটিংস যুক্ত করতে চান?')) return;
       if (!db) {
         showToast('সার্ভার সংযোগ সক্রিয় নয়', 'error');
@@ -10358,9 +10432,18 @@
   if (typeof FEATURE_MAP !== 'undefined') FEATURE_MAP.promotions = { view: 'view-promotions' };
   function calc(p, a) { var b = p.bonusType === 'fixed' ? (+p.bonusValue || 0) : Math.round(a * (+p.bonusValue || 0) / 100); return { b: b, t: Math.round((a + b) * (+p.turnoverMultiplier || 0)) }; }
   function dt(ms) { return ms ? new Date(+ms).toLocaleString() : '—'; }
-  function me() { return (STATE.adminUser && STATE.adminUser.uid) || ''; }
+  function me() { return (typeof npMyUid === 'function' && npMyUid()) || (STATE.adminUser && STATE.adminUser.uid) || ''; }
+  function resolvePromo(p) {
+    if (!p || typeof p !== 'object') return p;
+    var uid = me(), ov = (uid && p.adminOverrides && p.adminOverrides[uid]) ? p.adminOverrides[uid] : null;
+    var masterTs = Number(p.updatedAt || p.createdAt || 0);
+    if (ov && typeof ov === 'object' && Number(ov.updatedAt || 0) >= masterTs) {
+      return Object.assign({}, p, ov, { _hasAdminOverride: true });
+    }
+    return p;
+  }
   window.npPromoPreviewText = function (dep) {
-    var p = FP[dep.promoId];
+    var p = resolvePromo(FP[dep.promoId]);
     if (!p) return '\n\n🎁 প্রোমো অফার পাওয়া যায়নি — বোনাস যোগ হবে না।';
     var c = calc(p, parseFloat(dep.amount) || 0);
     return '\n\n🎁 প্রোমো: ' + p.name + '\nবোনাস (সার্ভার যোগ করবে): +৳' + c.b + '\nপ্রোমো টার্নওভার: ৳' + c.t + ' (প্লেয়ারের ১ম গেম শুরুর ১০ মিনিট পর সক্রিয়)\n(উপরের টার্নওভার ৳০ প্রোমো ডিপোজিটে ধরা হয় না)';
@@ -10380,7 +10463,7 @@
   }
   window.npPromoClose = function () { var m = document.getElementById('modal-promo-edit'); if (m) m.remove(); };
   window.npPromoEdit = function (id) {
-    var p = FP[id]; if (!p) { showToast('অফারটি পাওয়া যায়নি', 'error'); return; }
+    var p = resolvePromo(FP[id]); if (!p) { showToast('অফারটি পাওয়া যায়নি', 'error'); return; }
     npPromoClose();
     var isFixed = p.bonusType === 'fixed';
     var m = document.createElement('div');
@@ -10400,7 +10483,7 @@
             '<div class="form-group"><label>শুরুর সময় (ফাঁকা = সীমাহীন)</label><input type="datetime-local" id="pe-start" class="form-control"></div>' +
             '<div class="form-group"><label>শেষের সময় (ফাঁকা = সীমাহীন)</label><input type="datetime-local" id="pe-end" class="form-control"></div>' +
           '</div>' +
-          '<small style="display:block;margin-top:10px;color:var(--text-dim)">⚠️ এই অফারটি Master থেকে আসা, পরিবর্তন সেভ করলে অফারের মূল তথ্যই বদলে যাবে।</small>' +
+          '<small style="display:block;margin-top:10px;color:var(--text-dim)">ℹ️ এই পরিবর্তন শুধু আপনার ইউজার, এজেন্ট ও অ্যাফিলিয়েটদের জন্য প্রযোজ্য হবে (অন্য অ্যাডমিনের প্যানেল অপরিবর্তিত থাকবে)। Master অফার আপডেট করলে সবার প্যানেলে নতুন তথ্য চলে আসবে।</small>' +
         '</div>' +
         '<div class="modal-footer" style="padding:14px 20px;display:flex;gap:8px;justify-content:flex-end;border-top:1px solid var(--border-subtle)">' +
           '<button type="button" class="btn btn-secondary" onclick="npPromoClose()">বাতিল</button>' +
@@ -10418,6 +10501,8 @@
   };
   window.npPromoSave = async function (e, id) {
     e.preventDefault();
+    var uid = me();
+    if (!uid) { showToast('অ্যাডমিন লগইন পাওয়া যায়নি', 'error'); return; }
     var name = document.getElementById('pe-name').value.trim();
     var mn = parseFloat(document.getElementById('pe-min').value), mx = parseFloat(document.getElementById('pe-max').value);
     var bt = document.getElementById('pe-type').value, bv = parseFloat(document.getElementById('pe-bonus').value), tm = parseFloat(document.getElementById('pe-turn').value);
@@ -10428,12 +10513,12 @@
     if (mn > mx) { showToast('ন্যূনতম ডিপোজিট সর্বোচ্চের চেয়ে বেশি হতে পারে না', 'error'); return; }
     if (sa && ea && ea <= sa) { showToast('শেষের সময় শুরুর সময়ের পরে হতে হবে', 'error'); return; }
     try {
-      await db.ref('depositPromotions/' + id).update({
+      await db.ref('depositPromotions/' + id + '/adminOverrides/' + uid).set({
         name: name, minDeposit: mn, maxDeposit: mx, bonusType: bt, bonusValue: bv, turnoverMultiplier: tm,
-        startAt: sa, endAt: ea, updatedBy: me(), updatedAt: Date.now()
+        startAt: sa, endAt: ea, updatedBy: uid, updatedAt: Date.now()
       });
       recordAuditLog('PROMO_ADMIN_EDIT', id, name + ' | ' + mn + '-' + mx + ' | ' + (bt === 'fixed' ? '৳' + bv : bv + '%') + ' | ' + tm + 'x');
-      showToast('অফার সফলভাবে আপডেট হয়েছে', 'success');
+      showToast('অফার শুধু আপনার ইউজার, এজেন্ট ও অ্যাফিলিয়েটদের জন্য আপডেট হয়েছে ✅', 'success');
       npPromoClose();
     } catch (err) { showToast('সেভ ব্যর্থ: ' + err.message, 'error'); }
   };
@@ -10441,11 +10526,11 @@
     var el = document.getElementById('promo-admin-root'); if (!el) return;
     var uid = me();
     var offers = Object.keys(FP).sort(function (a, b) { return (+FP[b].createdAt || 0) - (+FP[a].createdAt || 0); }).map(function (k) {
-      var p = FP[k], off = !!(p.adminOff && p.adminOff[uid] === true), can = p.adminCanToggle === true;
-      return '<tr><td><b>' + escapeHtml(p.name) + '</b></td><td>৳' + p.minDeposit + ' – ৳' + p.maxDeposit + '</td><td>' + (p.bonusType === 'fixed' ? '৳' + p.bonusValue : p.bonusValue + '%') + '</td><td>' + p.turnoverMultiplier + 'x</td><td>' + dt(p.startAt) + '<br>' + dt(p.endAt) + '</td><td><span class="badge ' + (p.active ? 'badge-approved' : 'badge-pending') + '">Master: ' + (p.active ? 'Active' : 'Inactive') + '</span></td><td>' + (can ? '<button class="btn btn-sm ' + (off ? 'btn-success' : 'btn-outline') + '" onclick="npPromoToggle(\'' + k + '\',' + (off ? 'false' : 'true') + ')">' + (off ? 'চালু করুন' : 'বন্ধ করুন') + '</button> <small>' + (off ? 'এখন বন্ধ' : 'এখন চালু') + '</small>' : '') + ' <button class="btn btn-sm btn-primary" onclick="npPromoEdit(\'' + k + '\')">✏️ এডিট</button></td></tr>';
+      var rawP = FP[k], p = resolvePromo(rawP), off = !!(rawP.adminOff && rawP.adminOff[uid] === true), can = rawP.adminCanToggle === true;
+      return '<tr><td><b>' + escapeHtml(p.name) + '</b>' + (p._hasAdminOverride ? ' <span class="badge badge-upcoming">কাস্টম</span>' : '') + '</td><td>৳' + p.minDeposit + ' – ৳' + p.maxDeposit + '</td><td>' + (p.bonusType === 'fixed' ? '৳' + p.bonusValue : p.bonusValue + '%') + '</td><td>' + p.turnoverMultiplier + 'x</td><td>' + dt(p.startAt) + '<br>' + dt(p.endAt) + '</td><td><span class="badge ' + (rawP.active ? 'badge-approved' : 'badge-pending') + '">Master: ' + (rawP.active ? 'Active' : 'Inactive') + '</span></td><td>' + (can ? '<button class="btn btn-sm ' + (off ? 'btn-success' : 'btn-outline') + '" onclick="npPromoToggle(\'' + k + '\',' + (off ? 'false' : 'true') + ')">' + (off ? 'চালু করুন' : 'বন্ধ করুন') + '</button> <small>' + (off ? 'এখন বন্ধ' : 'এখন চালু') + '</small>' : '') + ' <button class="btn btn-sm btn-primary" onclick="npPromoEdit(\'' + k + '\')">✏️ এডিট</button></td></tr>';
     }).join('') || '<tr><td colspan="7">কোনো অফার নেই</td></tr>';
     var deps = DEPS.map(function (d) {
-      var p = FP[d.promoId], c = CLM[d.id], st = String(d.status || ''), pend = st.toLowerCase() === 'pending', amt = parseFloat(d.amount) || 0, x = p ? calc(p, amt) : null;
+      var p = resolvePromo(FP[d.promoId]), c = CLM[d.id], st = String(d.status || ''), pend = st.toLowerCase() === 'pending', amt = parseFloat(d.amount) || 0, x = p ? calc(p, amt) : null;
       var bonus = d.promoBonus !== undefined ? d.promoBonus : (x ? x.b : '—'), to = d.promoTurnover !== undefined ? d.promoTurnover : (x ? x.t : '—');
       var ts = c ? (c.status + ' (' + Math.min(+c.done || 0, +c.turnover || 0) + '/' + c.turnover + ')' + (c.status === 'pending' && c.activateAt ? ' • ' + new Date(+c.activateAt).toLocaleTimeString() + '-এ সক্রিয়' : '')) : (d.promoState || (pend ? 'অনুমোদনের অপেক্ষায়' : '—'));
       return '<tr><td>' + escapeHtml(d.userName || d.uid) + '</td><td>৳' + amt + '</td><td>' + escapeHtml(d.promoName || (p && p.name) || '') + '</td><td>৳' + bonus + '</td><td>৳' + to + '</td><td>' + escapeHtml(ts) + (d.promoNote ? ' — ' + escapeHtml(d.promoNote) : '') + '</td><td>' + escapeHtml(st) + '</td><td>' + (pend ? '<button class="btn btn-sm btn-success" onclick="approveDeposit(\'' + d.id + '\')">Approve</button> <button class="btn btn-sm btn-outline" onclick="rejectDeposit(\'' + d.id + '\')">Reject</button>' : '') + '</td></tr>';
@@ -10457,7 +10542,7 @@
     var nop = function () {};
     db.ref('depositPromotions').on('value', function (s) { FP = s.val() || {}; render(); }, nop);
     db.ref('promoTurnover').on('value', function (s) { CLM = {}; var v = s.val() || {}; Object.keys(v).forEach(function (u) { Object.keys(v[u] || {}).forEach(function (id) { CLM[id] = v[u][id]; }); }); render(); }, nop);
-    db.ref('depositRequests').limitToLast(150).on('value', function (s) { DEPS = []; s.forEach(function (c) { var v = c.val() || {}; if (v.promoId) DEPS.unshift(Object.assign({ id: c.key }, v)); }); render(); }, nop);
+    db.ref('depositRequests').limitToLast(150).on('value', function (s) { DEPS = []; s.forEach(function (c) { var v = c.val() || {}; if (v.promoId && (typeof npOwns !== 'function' || npOwns(v.uid, v.adminUid))) DEPS.unshift(Object.assign({ id: c.key }, v)); }); render(); }, nop);
   };
 })();
 </script>
@@ -11140,25 +11225,74 @@
   ];
   var uaEditOfferIdx = -1, uaEditSideIdx = -1, uaEditPromoIdx = -1;
 
+  function uaAdminWins(g, a, metaKey, hasVal) {
+    if (!hasVal) return false;
+    var gFm = (g && g.fieldMeta) || {}, aFm = (a && a.fieldMeta) || {};
+    var gT = Number(gFm[metaKey] || 0), aT = Number(aFm[metaKey] || 0);
+    if (gT > 0 && aT > 0) return aT >= gT;
+    if (gT > 0 && aT === 0) return false;
+    if (gT === 0 && aT > 0) return true;
+    return Number((a && a.updatedAt) || 0) >= Number((g && g.updatedAt) || 0);
+  }
   function uaEffCfg() {
     var g = STATE.globalUserPanelConfig || {}, a = STATE.userPanelConfig || {};
-    return Object.assign({}, g, a, {
-      limits: Object.assign({}, g.limits || {}, a.limits || {}),
-      features: Object.assign({}, g.features || {}, a.features || {}),
-      footer: Object.assign({}, UA_DEFAULT_FOOTER, g.footer || {}, a.footer || {})
+    var out = Object.assign({}, g);
+    ['tagline', 'notice', 'partnerNotice', 'agentSupportNote', 'affiliatePromoText', 'maintenanceMessage', 'vipLevels', 'banners', 'sideBanners', 'promos', 'slides', 'htmlAd', 'depositBonus'].forEach(function (k) {
+      var has = Array.isArray(a[k]) ? a[k].length > 0 : (a[k] !== undefined && a[k] !== null && a[k] !== '');
+      if (uaAdminWins(g, a, k, has)) out[k] = a[k];
     });
+    ['maintenanceMode', 'allowRegistration', 'dailyBonusEnabled', 'dailyBonusAmount', 'referralBonusPercent'].forEach(function (k) {
+      if (uaAdminWins(g, a, k, a[k] !== undefined && a[k] !== null)) out[k] = a[k];
+    });
+    var gLim = g.limits || {}, aLim = a.limits || {}, lim = Object.assign({}, gLim);
+    Object.keys(aLim).forEach(function (k) {
+      if (uaAdminWins(g, a, 'lim_' + k, aLim[k] !== undefined) || (!((a.fieldMeta || {})['lim_' + k]) && uaAdminWins(g, a, 'limits', aLim[k] !== undefined))) {
+        lim[k] = aLim[k];
+      }
+    });
+    out.limits = lim;
+    var gFt = g.features || {}, aFt = a.features || {}, fts = Object.assign({}, gFt);
+    Object.keys(aFt).forEach(function (k) {
+      if (uaAdminWins(g, a, 'feat_' + k, aFt[k] !== undefined) || (!((a.fieldMeta || {})['feat_' + k]) && uaAdminWins(g, a, 'features', aFt[k] !== undefined))) {
+        fts[k] = aFt[k];
+      }
+    });
+    out.features = fts;
+    var gCh = g.chat || {}, aCh = a.chat || {}, ch = Object.assign({}, gCh);
+    Object.keys(aCh).forEach(function (k) {
+      var has = Array.isArray(aCh[k]) ? aCh[k].length > 0 : !!aCh[k];
+      if (uaAdminWins(g, a, 'chat_' + k, has) || (!((a.fieldMeta || {})['chat_' + k]) && uaAdminWins(g, a, 'chat', has))) {
+        ch[k] = aCh[k];
+      }
+    });
+    out.chat = ch;
+    out.footer = uaAdminWins(g, a, 'footer', a.footer && typeof a.footer === 'object')
+      ? Object.assign({}, UA_DEFAULT_FOOTER, g.footer || {}, a.footer || {})
+      : Object.assign({}, UA_DEFAULT_FOOTER, g.footer || {});
+    out.payments = Object.assign({}, g.payments || {}, a.payments || {});
+    return out;
   }
+  window.uaEffCfg = uaEffCfg;
   function uaGetArr(field, def) {
     var a = STATE.userPanelConfig || {}, g = STATE.globalUserPanelConfig || {};
-    var src = (Array.isArray(a[field]) && a[field].length) ? a[field] : ((Array.isArray(g[field]) && g[field].length) ? g[field] : def);
+    var hasA = Array.isArray(a[field]) && a[field].length > 0;
+    var hasG = Array.isArray(g[field]) && g[field].length > 0;
+    var src = uaAdminWins(g, a, field, hasA) ? a[field] : (hasG ? g[field] : def);
     return src.map(function (x) { return Object.assign({}, x); });
   }
   async function uaPersistField(field, val) {
     var uid = npMyUid(); if (!db || !uid) throw new Error('Admin login missing');
-    await db.ref('userPanelConfig/byAdmin/' + uid + '/' + field).set(val);
-    await db.ref('userPanelConfig/byAdmin/' + uid + '/updatedAt').set(firebase.database.ServerValue.TIMESTAMP).catch(function () {});
+    var nowTs = Date.now();
+    var upd = {};
+    upd[field] = val;
+    upd['fieldMeta/' + field] = nowTs;
+    upd.updatedAt = nowTs;
+    await db.ref('userPanelConfig/byAdmin/' + uid).update(upd);
     if (!STATE.userPanelConfig) STATE.userPanelConfig = {};
+    if (!STATE.userPanelConfig.fieldMeta) STATE.userPanelConfig.fieldMeta = {};
     STATE.userPanelConfig[field] = val;
+    STATE.userPanelConfig.fieldMeta[field] = nowTs;
+    STATE.userPanelConfig.updatedAt = nowTs;
   }
 
   function renderUaBannerLists() {
@@ -11336,18 +11470,18 @@
 
   function renderUserPanelControl() {
     var d = STATE.userPanelConfig || {}, eff = uaEffCfg();
-    var pay = d.payments || {}, ch = d.chat || {}, lim = eff.limits || {}, feats = eff.features || {}, fData = eff.footer || UA_DEFAULT_FOOTER;
+    var pay = d.payments || {}, ch = eff.chat || {}, lim = eff.limits || {}, feats = eff.features || {}, fData = eff.footer || UA_DEFAULT_FOOTER;
     var sv = function (id, val) { var el = document.getElementById(id); if (el) el.value = val != null ? val : ''; };
     var openLink = document.getElementById('ua-up-open-link');
     if (openLink && npMyUid()) openLink.href = 'user.html?admin=' + encodeURIComponent(npMyUid());
-    sv('ua-up-tag', d.tagline || eff.tagline || 'PLAY BIG, WIN BIGGER');
-    sv('ua-up-notice', d.notice || '');
-    sv('ua-up-partner-notice', d.partnerNotice || '');
-    sv('ua-up-agent-note', d.agentSupportNote || '');
-    sv('ua-up-aff-promo', d.affiliatePromoText || '');
+    sv('ua-up-tag', eff.tagline || 'PLAY BIG, WIN BIGGER');
+    sv('ua-up-notice', eff.notice || '');
+    sv('ua-up-partner-notice', eff.partnerNotice || '');
+    sv('ua-up-agent-note', eff.agentSupportNote || '');
+    sv('ua-up-aff-promo', eff.affiliatePromoText || '');
     var mt = document.getElementById('ua-up-maint');
-    if (mt) mt.checked = !!d.maintenanceMode;
-    sv('ua-up-maint-msg', d.maintenanceMessage || '');
+    if (mt) mt.checked = !!eff.maintenanceMode;
+    sv('ua-up-maint-msg', eff.maintenanceMessage || '');
     sv('ua-up-wa', ch.whatsapp || '');
     sv('ua-up-tg', ch.telegram || '');
     sv('ua-up-officers', Array.isArray(ch.officers) ? ch.officers.join('\n') : '');
@@ -11386,31 +11520,58 @@
     if (!db || !uid) { showToast('অ্যাডমিন লগইন পাওয়া যায়নি', 'error'); return; }
     var gv = function (id) { var el = document.getElementById(id); return el ? el.value.trim() : ''; };
     var can = function (k) { return typeof featureOn !== 'function' || featureOn(k); };
-    var cfg = JSON.parse(JSON.stringify(STATE.userPanelConfig || {}));
+    var prevEff = uaEffCfg();
+    var prevOwn = STATE.userPanelConfig || {};
+    var neq = function (a, b) { return JSON.stringify(a === undefined ? null : a) !== JSON.stringify(b === undefined ? null : b); };
+    var nowTs = Date.now();
+    var upd = {};
+    var setIfChanged = function (field, nextVal, prevVal, metaKey) {
+      if (neq(nextVal, prevVal)) {
+        upd[field] = nextVal;
+        upd['fieldMeta/' + (metaKey || field)] = nowTs;
+      }
+    };
     if (can('up_brand_notice')) {
-      cfg.tagline = gv('ua-up-tag') || 'PLAY BIG, WIN BIGGER';
-      cfg.notice = gv('ua-up-notice');
-      cfg.maintenanceMode = !!(document.getElementById('ua-up-maint') && document.getElementById('ua-up-maint').checked);
-      cfg.maintenanceMessage = gv('ua-up-maint-msg');
+      setIfChanged('tagline', gv('ua-up-tag') || 'PLAY BIG, WIN BIGGER', prevEff.tagline || 'PLAY BIG, WIN BIGGER');
+      setIfChanged('notice', gv('ua-up-notice'), prevEff.notice || '');
+      setIfChanged('maintenanceMode', !!(document.getElementById('ua-up-maint') && document.getElementById('ua-up-maint').checked), !!prevEff.maintenanceMode);
+      setIfChanged('maintenanceMessage', gv('ua-up-maint-msg'), prevEff.maintenanceMessage || '');
     }
     if (can('up_partner_notice')) {
-      cfg.partnerNotice = gv('ua-up-partner-notice');
-      cfg.agentSupportNote = gv('ua-up-agent-note');
-      cfg.affiliatePromoText = gv('ua-up-aff-promo');
+      setIfChanged('partnerNotice', gv('ua-up-partner-notice'), prevEff.partnerNotice || '');
+      setIfChanged('agentSupportNote', gv('ua-up-agent-note'), prevEff.agentSupportNote || '');
+      setIfChanged('affiliatePromoText', gv('ua-up-aff-promo'), prevEff.affiliatePromoText || '');
     }
     if (can('up_limits')) {
-      cfg.limits = {
+      var nextLim = {
         minDeposit: Math.max(1, parseFloat(gv('ua-up-min-dep')) || 500),
         maxDeposit: Math.max(10, parseFloat(gv('ua-up-max-dep')) || 50000),
         minWithdraw: Math.max(1, parseFloat(gv('ua-up-min-wd')) || 500),
         maxWithdraw: Math.max(10, parseFloat(gv('ua-up-max-wd')) || 25000)
       };
-      cfg.chat = {
+      var pLim = prevEff.limits || {};
+      ['minDeposit', 'maxDeposit', 'minWithdraw', 'maxWithdraw'].forEach(function (k) {
+        if (neq(nextLim[k], pLim[k])) {
+          upd['limits/' + k] = nextLim[k];
+          upd['fieldMeta/lim_' + k] = nowTs;
+          upd['fieldMeta/limits'] = nowTs;
+        }
+      });
+      var nextChat = {
         whatsapp: gv('ua-up-wa'),
         telegram: gv('ua-up-tg'),
         officers: gv('ua-up-officers').split('\n').map(function (x) { return x.trim(); }).filter(Boolean)
       };
-      cfg.payments = {
+      var pChat = prevEff.chat || {};
+      ['whatsapp', 'telegram', 'officers'].forEach(function (k) {
+        var pv = k === 'officers' ? (Array.isArray(pChat.officers) ? pChat.officers : []) : (pChat[k] || '');
+        if (neq(nextChat[k], pv)) {
+          upd['chat/' + k] = nextChat[k];
+          upd['fieldMeta/chat_' + k] = nowTs;
+          upd['fieldMeta/chat'] = nowTs;
+        }
+      });
+      var nextPay = {
         bkashNumber: gv('ua-up-bk'),
         nagadNumber: gv('ua-up-ng'),
         rocketNumber: gv('ua-up-rk'),
@@ -11418,24 +11579,43 @@
         bankDetails: gv('ua-up-bnk'),
         usdtAddress: gv('ua-up-usdt')
       };
+      if (neq(nextPay, prevOwn.payments || {})) {
+        upd.payments = nextPay;
+        upd['fieldMeta/payments'] = nowTs;
+      }
     }
     if (can('up_sections')) {
-      var feats = {};
-      UA_FEAT_DEFS.forEach(function (it) { var el = document.getElementById('ua-up-feat-' + it[0]); if (el) feats[it[0]] = el.checked; });
-      cfg.features = feats;
+      var pFts = prevEff.features || {};
+      UA_FEAT_DEFS.forEach(function (it) {
+        var el = document.getElementById('ua-up-feat-' + it[0]);
+        if (!el) return;
+        var prevB = pFts[it[0]] !== false;
+        if (el.checked !== prevB) {
+          upd['features/' + it[0]] = el.checked;
+          upd['fieldMeta/feat_' + it[0]] = nowTs;
+          upd['fieldMeta/features'] = nowTs;
+        }
+      });
     }
     if (can('up_promos')) {
       var dy = document.getElementById('ua-up-daily-on');
-      cfg.dailyBonusEnabled = dy ? dy.checked : true;
-      cfg.dailyBonusAmount = Math.max(0, parseFloat(gv('ua-up-daily-amt')) || 50);
-      cfg.referralBonusPercent = Math.max(0, Math.min(100, parseFloat(gv('ua-up-ref-pct')) || 20));
+      setIfChanged('dailyBonusEnabled', dy ? dy.checked : true, prevEff.dailyBonusEnabled !== false);
+      setIfChanged('dailyBonusAmount', Math.max(0, parseFloat(gv('ua-up-daily-amt')) || 50), Number(prevEff.dailyBonusAmount != null ? prevEff.dailyBonusAmount : 50));
+      setIfChanged('referralBonusPercent', Math.max(0, Math.min(100, parseFloat(gv('ua-up-ref-pct')) || 20)), Number(prevEff.referralBonusPercent != null ? prevEff.referralBonusPercent : 20));
       var vips = [];
       for (var i = 0; i < 5; i++) {
         var nm = gv('ua-vip-nm-' + i); if (!nm) continue;
         var xp = Math.max(0, parseFloat(gv('ua-vip-xp-' + i)) || 0), cb = Math.max(0, parseFloat(gv('ua-vip-cb-' + i)) || 0);
         vips.push({ ic: gv('ua-vip-ic-' + i) || '⭐', name: nm, minXp: xp, cashback: cb, desc: gv('ua-vip-ds-' + i) || (xp.toLocaleString() + ' pts · ' + cb + '% cashback') });
       }
-      if (vips.length) { vips.sort(function (a, b) { return a.minXp - b.minXp; }); cfg.vipLevels = vips; }
+      if (vips.length) {
+        vips.sort(function (a, b) { return a.minXp - b.minXp; });
+        var pVips = (Array.isArray(prevEff.vipLevels) && prevEff.vipLevels.length) ? prevEff.vipLevels : UA_DEFAULT_VIP;
+        if (neq(vips, pVips)) {
+          upd.vipLevels = vips;
+          upd['fieldMeta/vipLevels'] = nowTs;
+        }
+      }
     }
     var parseJsonField = function (id) {
       var raw = gv(id);
@@ -11445,22 +11625,38 @@
     try {
       if (can('up_slides')) {
         var sl = parseJsonField('ua-up-slides');
-        if (Array.isArray(sl)) cfg.slides = sl.filter(function (s) { return s && !s.locked && !s.masterLockedId; });
+        if (Array.isArray(sl)) {
+          var cleanSl = sl.filter(function (s) { return s && !s.locked && !s.masterLockedId; });
+          if (neq(cleanSl, prevOwn.slides || [])) {
+            upd.slides = cleanSl;
+            upd['fieldMeta/slides'] = nowTs;
+          }
+        }
       }
       if (can('up_offers')) {
-        var of = parseJsonField('ua-up-offers'); if (of) cfg.banners = of;
-        var sb = parseJsonField('ua-up-sidebans'); if (sb) cfg.sideBanners = sb;
+        var of = parseJsonField('ua-up-offers');
+        if (of && neq(of, prevOwn.banners || null)) { upd.banners = of; upd['fieldMeta/banners'] = nowTs; }
+        var sb = parseJsonField('ua-up-sidebans');
+        if (sb && neq(sb, prevOwn.sideBanners || null)) { upd.sideBanners = sb; upd['fieldMeta/sideBanners'] = nowTs; }
       }
       if (can('up_footer')) {
-        var ft = parseJsonField('ua-up-footer'); if (ft) cfg.footer = ft;
-        if (!cfg.footer || typeof cfg.footer !== 'object') cfg.footer = Object.assign({}, UA_DEFAULT_FOOTER);
-        if (document.getElementById('ua-up-resp-note')) cfg.footer.responsibleNote = gv('ua-up-resp-note') || UA_DEFAULT_FOOTER.responsibleNote;
-        if (document.getElementById('ua-up-copyright')) cfg.footer.copyright = gv('ua-up-copyright') || UA_DEFAULT_FOOTER.copyright;
+        var ft = parseJsonField('ua-up-footer');
+        var nextFooter = ft ? Object.assign({}, prevEff.footer || UA_DEFAULT_FOOTER, ft) : JSON.parse(JSON.stringify(prevEff.footer || UA_DEFAULT_FOOTER));
+        if (document.getElementById('ua-up-resp-note')) nextFooter.responsibleNote = gv('ua-up-resp-note') || UA_DEFAULT_FOOTER.responsibleNote;
+        if (document.getElementById('ua-up-copyright')) nextFooter.copyright = gv('ua-up-copyright') || UA_DEFAULT_FOOTER.copyright;
+        if (neq(nextFooter, prevEff.footer || UA_DEFAULT_FOOTER)) {
+          upd.footer = nextFooter;
+          upd['fieldMeta/footer'] = nowTs;
+        }
       }
-      cfg.updatedAt = firebase.database.ServerValue.TIMESTAMP;
-      await db.ref('userPanelConfig/byAdmin/' + uid).set(cfg);
-      recordAuditLog('USERPANEL_CMS_SAVED', uid, 'Updated userPanelConfig/byAdmin/' + uid);
-      showToast('ইউজার প্যানেল কনফিগারেশন সেভ ও লাইভ পাবলিশ হয়েছে ✅', 'success');
+      if (Object.keys(upd).length === 0) {
+        showToast('কোনো নতুন পরিবর্তন পাওয়া যায়নি', 'info');
+        return;
+      }
+      upd.updatedAt = nowTs;
+      await db.ref('userPanelConfig/byAdmin/' + uid).update(upd);
+      recordAuditLog('USERPANEL_CMS_SAVED', uid, 'Updated scoped userPanelConfig/byAdmin/' + uid + ' (' + Object.keys(upd).length + ' keys)');
+      showToast('পরিবর্তন শুধু আপনার ইউজার, এজেন্ট ও অ্যাফিলিয়েটের জন্য সেভ ও লাইভ হয়েছে ✅', 'success');
     } catch (e) {
       showToast('সেভ ব্যর্থ: ' + e.message, 'error');
     }

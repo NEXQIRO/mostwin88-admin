@@ -707,6 +707,7 @@ let adminCms = {};
 let depositPromotions = {};
 let boundParentAdminId = '';
 let parentAdminCmsRef = null;
+let rawNotifications = [];
 let notifications = [];
 let readNotifIds = {};
 try { readNotifIds = JSON.parse(localStorage.getItem('mw_agent_read_notifs') || '{}'); } catch (e) {}
@@ -950,6 +951,7 @@ function startLiveAgentSync() {
     }).catch(() => {});
     applyAgentScopeFilters();
     bindParentAdminCms(agentProfile.parentAdminId || '');
+    refreshAgentNotifications();
     applyAgentCms();
     renderDeposits();
     renderWallet();
@@ -1009,12 +1011,10 @@ function startLiveAgentSync() {
   });
 
   // 7. Notifications, Settings & Admin/Master CMS Sync
-  attachListener(db.ref('notifications').limitToLast(40), snap => {
+  attachListener(db.ref('notifications').limitToLast(60), snap => {
     const val = snap.val() || {};
-    notifications = Object.entries(val).map(([k, v]) => ({ id: k, ...v }))
-      .filter(n => !n.targetUid || n.targetUid === currentAgentUid || n.target === 'ALL' || n.target === 'AGENTS')
-      .sort((a, b) => (b.timestamp || 0) - (a.timestamp || 0));
-    updateNotificationBadge();
+    rawNotifications = Object.entries(val).map(([k, v]) => ({ id: k, ...v }));
+    refreshAgentNotifications();
   });
 
   attachListener(db.ref('settings'), snap => {
@@ -1066,22 +1066,97 @@ function bindParentAdminCms(adminId) {
   });
 }
 
+function refreshAgentNotifications() {
+  const myAdm = (agentProfile && agentProfile.parentAdminId) || '';
+  notifications = (rawNotifications || []).filter(n => {
+    if (!n) return false;
+    if (n.adminUid && (!myAdm || n.adminUid !== myAdm)) return false;
+    if (n.targetUid) return n.targetUid === currentAgentUid;
+    if (n.target) return ['ALL', 'all', 'AGENTS', currentAgentUid].includes(n.target);
+    return true;
+  }).sort((a, b) => (b.timestamp || b.createdAt || 0) - (a.timestamp || a.createdAt || 0));
+  updateNotificationBadge();
+}
+
+function agentCmsAdminWins(g, a, metaKey, hasVal) {
+  if (!hasVal) return false;
+  const gFm = (g && g.fieldMeta) || {};
+  const aFm = (a && a.fieldMeta) || {};
+  const gT = Number(gFm[metaKey] || 0);
+  const aT = Number(aFm[metaKey] || 0);
+  if (gT > 0 && aT > 0) return aT >= gT;
+  if (gT > 0 && aT === 0) return false;
+  if (gT === 0 && aT > 0) return true;
+  return Number((a && a.updatedAt) || 0) >= Number((g && g.updatedAt) || 0);
+}
+
+function resolveAgentPromo(p, admUid) {
+  if (!p || typeof p !== 'object') return p;
+  const ov = (admUid && p.adminOverrides && p.adminOverrides[admUid]) ? p.adminOverrides[admUid] : null;
+  const masterTs = Number(p.updatedAt || p.createdAt || 0);
+  if (ov && typeof ov === 'object' && Number(ov.updatedAt || 0) >= masterTs) {
+    return Object.assign({}, p, ov);
+  }
+  return p;
+}
+
 function mergedAgentCms() {
   const g = globalCms || {};
   const a = adminCms || {};
-  return Object.assign({}, g, a, {
-    limits: Object.assign({}, {
+  const gFm = g.fieldMeta || {};
+  const aFm = a.fieldMeta || {};
+  const subKey = (spec, parent) => (gFm[spec] || aFm[spec]) ? spec : parent;
+
+  const out = {
+    tagline: 'PLAY BIG, WIN BIGGER',
+    notice: '',
+    partnerNotice: '',
+    agentSupportNote: '',
+    affiliatePromoText: '',
+    maintenanceMode: !!globalSettings.maintenanceMode,
+    maintenanceMessage: globalSettings.maintenanceMessage || '',
+    limits: {
       minDeposit: Number(globalSettings.minDeposit || 500),
       maxDeposit: Number(globalSettings.maxDeposit || 50000),
       minWithdraw: Number(globalSettings.minWithdraw || 500),
       maxWithdraw: Number(globalSettings.maxWithdraw || 25000)
-    }, g.limits || {}, a.limits || {}),
-    chat: Object.assign({}, {
+    },
+    chat: {
       whatsapp: globalSettings.whatsapp || '',
       telegram: globalSettings.telegram || ''
-    }, g.chat || {}, a.chat || {}),
-    features: Object.assign({}, g.features || {}, a.features || {})
+    },
+    features: {}
+  };
+
+  ['tagline', 'notice', 'partnerNotice', 'agentSupportNote', 'affiliatePromoText', 'maintenanceMessage'].forEach(k => {
+    if (g[k]) out[k] = g[k];
+    if (agentCmsAdminWins(g, a, k, !!a[k])) out[k] = a[k];
   });
+  if (typeof g.maintenanceMode === 'boolean') out.maintenanceMode = g.maintenanceMode;
+  if (agentCmsAdminWins(g, a, 'maintenanceMode', typeof a.maintenanceMode === 'boolean')) out.maintenanceMode = a.maintenanceMode;
+
+  const gLim = (g.limits && typeof g.limits === 'object') ? g.limits : {};
+  const aLim = (a.limits && typeof a.limits === 'object') ? a.limits : {};
+  Array.from(new Set([...Object.keys(out.limits), ...Object.keys(gLim), ...Object.keys(aLim)])).forEach(k => {
+    if (gLim[k] != null && gLim[k] !== '') out.limits[k] = Number(gLim[k]);
+    if (agentCmsAdminWins(g, a, subKey('lim_' + k, 'limits'), aLim[k] != null && aLim[k] !== '')) out.limits[k] = Number(aLim[k]);
+  });
+
+  const gChat = (g.chat && typeof g.chat === 'object') ? g.chat : {};
+  const aChat = (a.chat && typeof a.chat === 'object') ? a.chat : {};
+  Array.from(new Set([...Object.keys(out.chat), ...Object.keys(gChat), ...Object.keys(aChat)])).forEach(k => {
+    if (gChat[k] !== undefined && gChat[k] !== '') out.chat[k] = gChat[k];
+    if (agentCmsAdminWins(g, a, subKey('chat_' + k, 'chat'), aChat[k] !== undefined && aChat[k] !== '')) out.chat[k] = aChat[k];
+  });
+
+  const gFeat = (g.features && typeof g.features === 'object') ? g.features : {};
+  const aFeat = (a.features && typeof a.features === 'object') ? a.features : {};
+  Array.from(new Set([...Object.keys(gFeat), ...Object.keys(aFeat)])).forEach(k => {
+    if (typeof gFeat[k] === 'boolean') out.features[k] = gFeat[k];
+    if (agentCmsAdminWins(g, a, subKey('feat_' + k, 'features'), typeof aFeat[k] === 'boolean')) out.features[k] = aFeat[k];
+  });
+
+  return out;
 }
 
 function applyAgentCms() {
@@ -1096,13 +1171,14 @@ function applyAgentCms() {
   const myAdm = (agentProfile && agentProfile.parentAdminId) || '';
   const lim = cfg.limits || {};
   const nowMs = Date.now();
-  const activePromos = Object.entries(depositPromotions || {}).map(([id, p]) => Object.assign({ id }, p || {}))
-    .filter(p => p.active && (!p.startAt || nowMs >= Number(p.startAt)) && (!p.endAt || nowMs <= Number(p.endAt)) && (!myAdm || !p.adminOff || !p.adminOff[myAdm]));
+  const activePromos = Object.entries(depositPromotions || {})
+    .map(([id, p]) => resolveAgentPromo(Object.assign({ id }, p || {}), myAdm))
+    .filter(p => p && p.active && (!p.startAt || nowMs >= Number(p.startAt)) && (!p.endAt || nowMs <= Number(p.endAt)) && (!myAdm || !p.adminOff || !p.adminOff[myAdm]));
 
   const ban = document.getElementById('agentCmsBanner');
   if (ban) {
     const parts = [];
-    if (cfg.maintenanceMode || globalSettings.maintenanceMode) {
+    if (cfg.maintenanceMode) {
       parts.push(`<div style="color:#ff8198;font-weight:800;margin-bottom:4px">🛠 প্লেয়ার প্যানেল মেইনটেন্যান্স চালু: ${escapeRequestText(cfg.maintenanceMessage || globalSettings.maintenanceMessage || 'সার্ভার রক্ষণাবেক্ষণ চলছে')}</div>`);
     }
     if (cfg.partnerNotice) {

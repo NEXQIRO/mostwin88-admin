@@ -595,6 +595,7 @@ let ALL_USERS = {};
 let ALL_DEPS = {};
 let ALL_WDS = {};
 let ALL_GTX = {};
+let RAW_NOTIFS = [];
 let NOTIFS = [];
 let COMM_REQS = [];
 let CAMPAIGNS = [];
@@ -799,6 +800,7 @@ function startLiveSync() {
     renderCampaigns();
     renderAll();
     bindParentAdminCms(v.parentAdminId || '');
+    refreshAffNotifications();
     applyAffCms();
   });
 
@@ -814,10 +816,8 @@ function startLiveSync() {
 
   attach(db.ref('notifications'), snap => {
     const val = snap.val() || {};
-    NOTIFS = Object.entries(val).map(([k, n]) => ({ id: k, ...n }))
-      .filter(n => !n.target || n.target === 'ALL' || n.target === 'AFFILIATES' || n.target === MY_UID || n.targetUid === MY_UID)
-      .sort((a, b) => (b.timestamp || 0) - (a.timestamp || 0));
-    renderNotifications();
+    RAW_NOTIFS = Object.entries(val).map(([k, n]) => ({ id: k, ...n }));
+    refreshAffNotifications();
   });
 
   attach(db.ref('affiliateCommissionRequests').orderByChild('affiliateUid').equalTo(MY_UID), snap => {
@@ -855,22 +855,102 @@ function bindParentAdminCms(adminId) {
   });
 }
 
+function refreshAffNotifications() {
+  const myAdm = (MY_PROF && MY_PROF.parentAdminId) || '';
+  NOTIFS = (RAW_NOTIFS || []).filter(n => {
+    if (!n) return false;
+    if (n.adminUid && (!myAdm || n.adminUid !== myAdm)) return false;
+    if (n.targetUid) return n.targetUid === MY_UID;
+    if (n.target) return ['ALL', 'all', 'AFFILIATES', MY_UID].includes(n.target);
+    return true;
+  }).sort((a, b) => (b.timestamp || b.createdAt || 0) - (a.timestamp || a.createdAt || 0));
+  renderNotifications();
+}
+
+function affCmsAdminWins(g, a, metaKey, hasVal) {
+  if (!hasVal) return false;
+  const gFm = (g && g.fieldMeta) || {};
+  const aFm = (a && a.fieldMeta) || {};
+  const gT = Number(gFm[metaKey] || 0);
+  const aT = Number(aFm[metaKey] || 0);
+  if (gT > 0 && aT > 0) return aT >= gT;
+  if (gT > 0 && aT === 0) return false;
+  if (gT === 0 && aT > 0) return true;
+  return Number((a && a.updatedAt) || 0) >= Number((g && g.updatedAt) || 0);
+}
+
+function resolveAffPromo(p, admUid) {
+  if (!p || typeof p !== 'object') return p;
+  const ov = (admUid && p.adminOverrides && p.adminOverrides[admUid]) ? p.adminOverrides[admUid] : null;
+  const masterTs = Number(p.updatedAt || p.createdAt || 0);
+  if (ov && typeof ov === 'object' && Number(ov.updatedAt || 0) >= masterTs) {
+    return Object.assign({}, p, ov);
+  }
+  return p;
+}
+
 function mergedAffCms() {
   const g = GLOBAL_CMS || {};
   const a = ADMIN_CMS || {};
-  return Object.assign({}, g, a, {
-    limits: Object.assign({}, {
+  const gFm = g.fieldMeta || {};
+  const aFm = a.fieldMeta || {};
+  const subKey = (spec, parent) => (gFm[spec] || aFm[spec]) ? spec : parent;
+
+  const out = {
+    tagline: 'PLAY BIG, WIN BIGGER',
+    notice: '',
+    partnerNotice: '',
+    affiliatePromoText: '',
+    maintenanceMode: !!GLOBAL_SETTINGS.maintenanceMode,
+    maintenanceMessage: GLOBAL_SETTINGS.maintenanceMessage || '',
+    dailyBonusAmount: 50,
+    referralBonusPercent: 20,
+    limits: {
       minDeposit: Number(GLOBAL_SETTINGS.minDeposit || 500),
       maxDeposit: Number(GLOBAL_SETTINGS.maxDeposit || 50000),
       minWithdraw: Number(GLOBAL_SETTINGS.minWithdraw || 500),
       maxWithdraw: Number(GLOBAL_SETTINGS.maxWithdraw || 25000)
-    }, g.limits || {}, a.limits || {}),
-    chat: Object.assign({}, {
+    },
+    chat: {
       whatsapp: GLOBAL_SETTINGS.whatsapp || '',
       telegram: GLOBAL_SETTINGS.telegram || ''
-    }, g.chat || {}, a.chat || {}),
-    features: Object.assign({}, g.features || {}, a.features || {})
+    },
+    features: {}
+  };
+
+  ['tagline', 'notice', 'partnerNotice', 'affiliatePromoText', 'maintenanceMessage'].forEach(k => {
+    if (g[k]) out[k] = g[k];
+    if (affCmsAdminWins(g, a, k, !!a[k])) out[k] = a[k];
   });
+  if (typeof g.maintenanceMode === 'boolean') out.maintenanceMode = g.maintenanceMode;
+  if (affCmsAdminWins(g, a, 'maintenanceMode', typeof a.maintenanceMode === 'boolean')) out.maintenanceMode = a.maintenanceMode;
+  if (g.dailyBonusAmount != null && !isNaN(Number(g.dailyBonusAmount))) out.dailyBonusAmount = Number(g.dailyBonusAmount);
+  if (affCmsAdminWins(g, a, 'dailyBonusAmount', a.dailyBonusAmount != null && !isNaN(Number(a.dailyBonusAmount)))) out.dailyBonusAmount = Number(a.dailyBonusAmount);
+  if (g.referralBonusPercent != null && !isNaN(Number(g.referralBonusPercent))) out.referralBonusPercent = Number(g.referralBonusPercent);
+  if (affCmsAdminWins(g, a, 'referralBonusPercent', a.referralBonusPercent != null && !isNaN(Number(a.referralBonusPercent)))) out.referralBonusPercent = Number(a.referralBonusPercent);
+
+  const gLim = (g.limits && typeof g.limits === 'object') ? g.limits : {};
+  const aLim = (a.limits && typeof a.limits === 'object') ? a.limits : {};
+  Array.from(new Set([...Object.keys(out.limits), ...Object.keys(gLim), ...Object.keys(aLim)])).forEach(k => {
+    if (gLim[k] != null && gLim[k] !== '') out.limits[k] = Number(gLim[k]);
+    if (affCmsAdminWins(g, a, subKey('lim_' + k, 'limits'), aLim[k] != null && aLim[k] !== '')) out.limits[k] = Number(aLim[k]);
+  });
+
+  const gChat = (g.chat && typeof g.chat === 'object') ? g.chat : {};
+  const aChat = (a.chat && typeof a.chat === 'object') ? a.chat : {};
+  Array.from(new Set([...Object.keys(out.chat), ...Object.keys(gChat), ...Object.keys(aChat)])).forEach(k => {
+    if (gChat[k] !== undefined && gChat[k] !== '') out.chat[k] = gChat[k];
+    if (affCmsAdminWins(g, a, subKey('chat_' + k, 'chat'), aChat[k] !== undefined && aChat[k] !== '')) out.chat[k] = aChat[k];
+  });
+
+  const gFeat = (g.features && typeof g.features === 'object') ? g.features : {};
+  const aFeat = (a.features && typeof a.features === 'object') ? a.features : {};
+  Array.from(new Set([...Object.keys(gFeat), ...Object.keys(aFeat)])).forEach(k => {
+    if (typeof gFeat[k] === 'boolean') out.features[k] = gFeat[k];
+    if (affCmsAdminWins(g, a, subKey('feat_' + k, 'features'), typeof aFeat[k] === 'boolean')) out.features[k] = aFeat[k];
+  });
+
+  return out;
 }
 
 function applyAffCms() {
@@ -884,8 +964,9 @@ function applyAffCms() {
   const myAdm = (MY_PROF && MY_PROF.parentAdminId) || '';
   const lim = cfg.limits || {};
   const nowMs = Date.now();
-  const activePromos = Object.entries(DEPOSIT_PROMOS || {}).map(([id, p]) => Object.assign({ id }, p || {}))
-    .filter(p => p.active && (!p.startAt || nowMs >= Number(p.startAt)) && (!p.endAt || nowMs <= Number(p.endAt)) && (!myAdm || !p.adminOff || !p.adminOff[myAdm]));
+  const activePromos = Object.entries(DEPOSIT_PROMOS || {})
+    .map(([id, p]) => resolveAffPromo(Object.assign({ id }, p || {}), myAdm))
+    .filter(p => p && p.active && (!p.startAt || nowMs >= Number(p.startAt)) && (!p.endAt || nowMs <= Number(p.endAt)) && (!myAdm || !p.adminOff || !p.adminOff[myAdm]));
 
   const dailyAmt = Number(cfg.dailyBonusAmount != null ? cfg.dailyBonusAmount : 50);
   const refPct = Number(cfg.referralBonusPercent != null ? cfg.referralBonusPercent : 20);
@@ -893,7 +974,7 @@ function applyAffCms() {
   const ban = document.getElementById('affCmsBanner');
   if (ban) {
     const lines = [];
-    if (cfg.maintenanceMode || GLOBAL_SETTINGS.maintenanceMode) {
+    if (cfg.maintenanceMode) {
       lines.push(`<div style="color:var(--red);font-weight:700;margin-bottom:4px">🛠 Player Maintenance Active: ${esc(cfg.maintenanceMessage || GLOBAL_SETTINGS.maintenanceMessage || 'Server maintenance in progress')}</div>`);
     }
     if (cfg.partnerNotice) {

@@ -736,11 +736,12 @@ let LIVE_SETTINGS = {};
 let LIVE_GLOBAL_CMS = {};
 let LIVE_ADMIN_CMS = {};
 let LIVE_GLOBAL_BANNERS = null;
-let LIVE_GLOBAL_NOTICES = null;
+let LIVE_RAW_NOTICES = [];
 let LIVE_GLOBAL_GAMES = null;
 let LIVE_DEPOSIT_PROMOS = {};
 let LIVE_PROMO_TURNOVER = {};
 let LIVE_ADMIN_LINKS = {};
+let LIVE_RAW_NOTIFS = [];
 let LIVE_NOTIFS = [];
 let LIVE_NOTIF_READS = {};
 let LIVE_DEPOSITS = [];
@@ -804,8 +805,37 @@ function isGameCatEnabled(catName) {
   return true;
 }
 
+function cmsAdminWins(g, a, metaKey, hasVal) {
+  if (!hasVal) return false;
+  const gFm = (g && g.fieldMeta) || {};
+  const aFm = (a && a.fieldMeta) || {};
+  const gT = Number(gFm[metaKey] || 0);
+  const aT = Number(aFm[metaKey] || 0);
+  if (gT > 0 && aT > 0) return aT >= gT;
+  if (gT > 0 && aT === 0) return false;
+  if (gT === 0 && aT > 0) return true;
+  return Number((a && a.updatedAt) || 0) >= Number((g && g.updatedAt) || 0);
+}
+
+function resolvePromoForAdmin(p, admUid) {
+  if (!p || typeof p !== 'object') return p;
+  const ov = (admUid && p.adminOverrides && p.adminOverrides[admUid]) ? p.adminOverrides[admUid] : null;
+  const masterTs = Number(p.updatedAt || p.createdAt || 0);
+  if (ov && typeof ov === 'object' && Number(ov.updatedAt || 0) >= masterTs) {
+    return Object.assign({}, p, ov);
+  }
+  return p;
+}
+
 function rebuildMergedConfig() {
   const base = JSON.parse(JSON.stringify(DEFAULT_CFG));
+  const playerAdminUid = (typeof getPlayerAdminUid === 'function') ? getPlayerAdminUid() : '';
+  const g = (LIVE_GLOBAL_CMS && typeof LIVE_GLOBAL_CMS === 'object') ? LIVE_GLOBAL_CMS : {};
+  const a = (playerAdminUid && LIVE_ADMIN_CMS && typeof LIVE_ADMIN_CMS === 'object') ? LIVE_ADMIN_CMS : {};
+  const gFm = g.fieldMeta || {};
+  const aFm = a.fieldMeta || {};
+  const subKey = (spec, parent) => (gFm[spec] || aFm[spec]) ? spec : parent;
+
   const gSlug = t => String(t || '').toLowerCase().replace(/[^a-z0-9]+/g, '_').replace(/^_|_$/g, '');
   if (LIVE_GLOBAL_BANNERS && LIVE_GLOBAL_BANNERS.length) {
     base.slides = LIVE_GLOBAL_BANNERS.map((b, i) => ({
@@ -817,8 +847,32 @@ function rebuildMergedConfig() {
       go: b.go || 'promo'
     }));
   }
-  if (LIVE_GLOBAL_NOTICES && LIVE_GLOBAL_NOTICES.length) {
-    base.notice = LIVE_GLOBAL_NOTICES.map(n => n.text || n.title || n).filter(Boolean).join('  ★  ');
+
+  /* Notices resolution: Master global notices vs Admin scoped notices by latest timestamp */
+  const rawNotices = Array.isArray(LIVE_RAW_NOTICES) ? LIVE_RAW_NOTICES : [];
+  const masterNotices = rawNotices.filter(n => n && n.active !== false && n.status !== 'Inactive' && !n.adminUid);
+  const adminNotices = playerAdminUid ? rawNotices.filter(n => n && n.active !== false && n.status !== 'Inactive' && n.adminUid === playerAdminUid) : [];
+  const maxMasterDocTs = masterNotices.reduce((mx, n) => Math.max(mx, Number(n.timestamp || n.createdAt || 0)), 0);
+  const maxAdminDocTs = adminNotices.reduce((mx, n) => Math.max(mx, Number(n.timestamp || n.createdAt || 0)), 0);
+  const gCmsNoticeTs = Number(gFm.notice || (g.notice ? (g.updatedAt || 0) : 0));
+  const aCmsNoticeTs = Number(aFm.notice || (a.notice ? (a.updatedAt || 0) : 0));
+  const masterNoticeText = (masterNotices.length && (!g.notice || maxMasterDocTs >= gCmsNoticeTs))
+    ? masterNotices.map(n => n.body || n.text || n.title || '').filter(Boolean).join('  ★  ')
+    : (g.notice || '');
+  const masterEffectiveNoticeTs = Math.max(maxMasterDocTs, gCmsNoticeTs);
+  let adminNoticeText = '';
+  let adminEffectiveNoticeTs = 0;
+  if (adminNotices.length && maxAdminDocTs >= aCmsNoticeTs) {
+    adminNoticeText = adminNotices.map(n => n.body || n.text || n.title || '').filter(Boolean).join('  ★  ');
+    adminEffectiveNoticeTs = maxAdminDocTs;
+  } else if (a.notice) {
+    adminNoticeText = a.notice;
+    adminEffectiveNoticeTs = aCmsNoticeTs;
+  }
+  if (adminNoticeText && (masterEffectiveNoticeTs === 0 || adminEffectiveNoticeTs >= masterEffectiveNoticeTs)) {
+    base.notice = adminNoticeText;
+  } else if (masterNoticeText) {
+    base.notice = masterNoticeText;
   }
 
   /* Canonical merge: DEFAULT_CFG.games + Master Admin DB overrides/additions */
@@ -828,65 +882,33 @@ function rebuildMergedConfig() {
     gMap.set(id, Object.assign({ id, order: k, active: true, status: 'Active' }, dg));
   });
   if (LIVE_GLOBAL_GAMES && LIVE_GLOBAL_GAMES.length) {
-    LIVE_GLOBAL_GAMES.forEach((g, k) => {
-      if (!g) return;
-      const gName = g.name || g.title || g.n || '';
-      const defMatch = Array.from(gMap.values()).find(x => x.id === g.id || (gName && String(x.n || '').toLowerCase() === String(gName).toLowerCase()));
-      const key = defMatch ? defMatch.id : (g.id || g.key || ('g_' + k));
+    LIVE_GLOBAL_GAMES.forEach((gm, k) => {
+      if (!gm) return;
+      const gName = gm.name || gm.title || gm.n || '';
+      const defMatch = Array.from(gMap.values()).find(x => x.id === gm.id || (gName && String(x.n || '').toLowerCase() === String(gName).toLowerCase()));
+      const key = defMatch ? defMatch.id : (gm.id || gm.key || ('g_' + k));
       const prev = gMap.get(key) || {};
-      const isOff = g.active === false || g.status === 'Inactive' || g.isActive === false;
+      const isOff = gm.active === false || gm.status === 'Inactive' || gm.isActive === false;
       gMap.set(key, {
         id: key,
-        i: g.icon || g.i || prev.i || '🎮',
+        i: gm.icon || gm.i || prev.i || '🎮',
         n: gName || prev.n || 'Casino Game',
-        u: g.url || g.gameUrl || g.u || prev.u || '',
-        img: g.img || g.image || g.imageUrl || g.thumbnail || g.thumb || prev.img || '',
-        pop: g.popular !== undefined ? (g.popular ? 1 : 0) : (g.pop !== undefined ? (g.pop ? 1 : 0) : (prev.pop !== undefined ? prev.pop : (k < 8 ? 1 : 0))),
-        c: g.category || g.c || prev.c || 'Popular Games',
-        apiGameCode: g.apiGameCode || g.gameCode || prev.apiGameCode || '',
-        provider: g.provider || prev.provider || 'Casino',
-        integrated: g.integrated === true,
-        healthUrl: g.healthUrl || prev.healthUrl || '',
-        order: g.order != null ? Number(g.order) : (prev.order != null ? prev.order : (100 + k)),
+        u: gm.url || gm.gameUrl || gm.u || prev.u || '',
+        img: gm.img || gm.image || gm.imageUrl || gm.thumbnail || gm.thumb || prev.img || '',
+        pop: gm.popular !== undefined ? (gm.popular ? 1 : 0) : (gm.pop !== undefined ? (gm.pop ? 1 : 0) : (prev.pop !== undefined ? prev.pop : (k < 8 ? 1 : 0))),
+        c: gm.category || gm.c || prev.c || 'Popular Games',
+        apiGameCode: gm.apiGameCode || gm.gameCode || prev.apiGameCode || '',
+        provider: gm.provider || prev.provider || 'Casino',
+        integrated: gm.integrated === true,
+        healthUrl: gm.healthUrl || prev.healthUrl || '',
+        order: gm.order != null ? Number(gm.order) : (prev.order != null ? prev.order : (100 + k)),
         active: !isOff
       });
     });
   }
   base.games = Array.from(gMap.values())
-    .sort((a, b) => Number(a.order || 999) - Number(b.order || 999))
-    .filter(g => g.active !== false);
-
-  const applyLayer = layer => {
-    if (!layer || typeof layer !== 'object') return;
-    if (layer.tagline) base.tagline = layer.tagline;
-    if (layer.notice) base.notice = layer.notice;
-    if (Array.isArray(layer.banners) && layer.banners.length) base.banners = layer.banners;
-    if (Array.isArray(layer.sideBanners) && layer.sideBanners.length) base.sideBanners = layer.sideBanners;
-    if (Array.isArray(layer.promos) && layer.promos.length) base.promos = layer.promos;
-    if (typeof layer.dailyBonusEnabled === 'boolean') base.dailyBonusEnabled = layer.dailyBonusEnabled;
-    if (layer.dailyBonusAmount != null && !isNaN(Number(layer.dailyBonusAmount))) base.dailyBonusAmount = Number(layer.dailyBonusAmount);
-    if (layer.referralBonusPercent != null && !isNaN(Number(layer.referralBonusPercent))) base.referralBonusPercent = Number(layer.referralBonusPercent);
-    if (Array.isArray(layer.vipLevels) && layer.vipLevels.length) base.vipLevels = layer.vipLevels;
-    if (layer.limits && typeof layer.limits === 'object') {
-      base.limits = Object.assign({}, base.limits, layer.limits);
-    }
-    if (Array.isArray(layer.games) && layer.games.length) base.games = layer.games;
-    if (layer.chat && typeof layer.chat === 'object') {
-      base.chat = Object.assign({}, base.chat, layer.chat);
-      if (Array.isArray(layer.chat.officers) && layer.chat.officers.length) base.chat.officers = layer.chat.officers;
-    }
-    if (layer.footer && typeof layer.footer === 'object') {
-      base.footer = Object.assign({}, base.footer, layer.footer);
-    }
-    if (layer.features && typeof layer.features === 'object') {
-      base.features = Object.assign({}, base.features, layer.features);
-    }
-    if (layer.providerBanners) base.providerBanners = Object.assign({}, base.providerBanners, layer.providerBanners);
-    if (layer.providerLogos) base.providerLogos = Object.assign({}, base.providerLogos, layer.providerLogos);
-    if (layer.gameCategories && typeof layer.gameCategories === 'object') base.gameCategories = Object.assign({}, base.gameCategories, layer.gameCategories);
-    if (layer.sportsConfig && typeof layer.sportsConfig === 'object') base.sportsConfig = Object.assign({}, base.sportsConfig, layer.sportsConfig);
-    if (layer.gameApi && typeof layer.gameApi === 'object') base.gameApi = Object.assign({}, base.gameApi, layer.gameApi);
-  };
+    .sort((a1, b1) => Number(a1.order || 999) - Number(b1.order || 999))
+    .filter(gm => gm.active !== false);
 
   if (LIVE_SETTINGS.whatsapp) base.chat.whatsapp = LIVE_SETTINGS.whatsapp.startsWith('http') ? LIVE_SETTINGS.whatsapp : ('https://wa.me/' + String(LIVE_SETTINGS.whatsapp).replace(/\D/g, ''));
   if (LIVE_SETTINGS.telegram) base.chat.telegram = LIVE_SETTINGS.telegram.startsWith('http') ? LIVE_SETTINGS.telegram : ('https://t.me/' + String(LIVE_SETTINGS.telegram).replace(/^@/, ''));
@@ -894,30 +916,99 @@ function rebuildMergedConfig() {
   if (LIVE_SETTINGS.maxDeposit) base.limits.maxDeposit = Number(LIVE_SETTINGS.maxDeposit);
   if (LIVE_SETTINGS.minWithdraw) base.limits.minWithdraw = Number(LIVE_SETTINGS.minWithdraw);
   if (LIVE_SETTINGS.maxWithdraw) base.limits.maxWithdraw = Number(LIVE_SETTINGS.maxWithdraw);
+  base.allowRegistration = LIVE_SETTINGS.allowRegistration !== false;
 
-  applyLayer(LIVE_GLOBAL_CMS);
-  applyLayer(LIVE_ADMIN_CMS);
-  if (LIVE_GLOBAL_CMS && LIVE_GLOBAL_CMS.gameApi) base.gameApi = Object.assign({}, LIVE_GLOBAL_CMS.gameApi);
-  if (LIVE_GLOBAL_CMS && LIVE_GLOBAL_CMS.gameCategories) base.gameCategories = Object.assign({}, LIVE_GLOBAL_CMS.gameCategories);
-  if (LIVE_GLOBAL_CMS && LIVE_GLOBAL_CMS.sportsConfig) base.sportsConfig = Object.assign({}, LIVE_GLOBAL_CMS.sportsConfig);
+  /* Apply Global (Master) CMS then resolve per-field User Admin overrides via fieldMeta */
+  if (g.tagline) base.tagline = g.tagline;
+  if (cmsAdminWins(g, a, 'tagline', !!a.tagline)) base.tagline = a.tagline;
+
+  if (Array.isArray(g.banners) && g.banners.length) base.banners = g.banners;
+  if (cmsAdminWins(g, a, 'banners', Array.isArray(a.banners) && a.banners.length > 0)) base.banners = a.banners;
+
+  if (Array.isArray(g.sideBanners) && g.sideBanners.length) base.sideBanners = g.sideBanners;
+  if (cmsAdminWins(g, a, 'sideBanners', Array.isArray(a.sideBanners) && a.sideBanners.length > 0)) base.sideBanners = a.sideBanners;
+
+  if (Array.isArray(g.promos) && g.promos.length) base.promos = g.promos;
+  if (cmsAdminWins(g, a, 'promos', Array.isArray(a.promos) && a.promos.length > 0)) base.promos = a.promos;
+
+  if (typeof g.dailyBonusEnabled === 'boolean') base.dailyBonusEnabled = g.dailyBonusEnabled;
+  if (cmsAdminWins(g, a, 'dailyBonusEnabled', typeof a.dailyBonusEnabled === 'boolean')) base.dailyBonusEnabled = a.dailyBonusEnabled;
+
+  if (g.dailyBonusAmount != null && !isNaN(Number(g.dailyBonusAmount))) base.dailyBonusAmount = Number(g.dailyBonusAmount);
+  if (cmsAdminWins(g, a, 'dailyBonusAmount', a.dailyBonusAmount != null && !isNaN(Number(a.dailyBonusAmount)))) base.dailyBonusAmount = Number(a.dailyBonusAmount);
+
+  if (g.referralBonusPercent != null && !isNaN(Number(g.referralBonusPercent))) base.referralBonusPercent = Number(g.referralBonusPercent);
+  if (cmsAdminWins(g, a, 'referralBonusPercent', a.referralBonusPercent != null && !isNaN(Number(a.referralBonusPercent)))) base.referralBonusPercent = Number(a.referralBonusPercent);
+
+  if (Array.isArray(g.vipLevels) && g.vipLevels.length) base.vipLevels = g.vipLevels;
+  if (cmsAdminWins(g, a, 'vipLevels', Array.isArray(a.vipLevels) && a.vipLevels.length > 0)) base.vipLevels = a.vipLevels;
+
+  if (Array.isArray(g.games) && g.games.length) base.games = g.games;
+  if (cmsAdminWins(g, a, 'games', Array.isArray(a.games) && a.games.length > 0)) base.games = a.games;
+
+  if (typeof g.allowRegistration === 'boolean') base.allowRegistration = g.allowRegistration;
+  if (cmsAdminWins(g, a, 'allowRegistration', typeof a.allowRegistration === 'boolean')) base.allowRegistration = a.allowRegistration;
+
+  const gLim = (g.limits && typeof g.limits === 'object') ? g.limits : {};
+  const aLim = (a.limits && typeof a.limits === 'object') ? a.limits : {};
+  Array.from(new Set([...Object.keys(base.limits), ...Object.keys(gLim), ...Object.keys(aLim)])).forEach(k => {
+    if (gLim[k] != null && gLim[k] !== '' && !isNaN(Number(gLim[k]))) base.limits[k] = Number(gLim[k]);
+    if (cmsAdminWins(g, a, subKey('lim_' + k, 'limits'), aLim[k] != null && aLim[k] !== '' && !isNaN(Number(aLim[k])))) {
+      base.limits[k] = Number(aLim[k]);
+    }
+  });
+
+  const gChat = (g.chat && typeof g.chat === 'object') ? g.chat : {};
+  const aChat = (a.chat && typeof a.chat === 'object') ? a.chat : {};
+  Array.from(new Set([...Object.keys(base.chat), ...Object.keys(gChat), ...Object.keys(aChat)])).forEach(k => {
+    if (k === 'officers') return;
+    if (gChat[k] !== undefined && gChat[k] !== '') base.chat[k] = gChat[k];
+    if (cmsAdminWins(g, a, subKey('chat_' + k, 'chat'), aChat[k] !== undefined && aChat[k] !== '')) {
+      base.chat[k] = aChat[k];
+    }
+  });
+  if (Array.isArray(gChat.officers) && gChat.officers.length) base.chat.officers = gChat.officers;
+  if (cmsAdminWins(g, a, subKey('chat_officers', 'chat'), Array.isArray(aChat.officers) && aChat.officers.length > 0)) {
+    base.chat.officers = aChat.officers;
+  }
+
+  if (g.footer && typeof g.footer === 'object') base.footer = Object.assign({}, base.footer, g.footer);
+  if (cmsAdminWins(g, a, 'footer', !!(a.footer && typeof a.footer === 'object'))) {
+    base.footer = Object.assign({}, base.footer, a.footer);
+  }
+
+  const gFeat = (g.features && typeof g.features === 'object') ? g.features : {};
+  const aFeat = (a.features && typeof a.features === 'object') ? a.features : {};
+  Array.from(new Set([...Object.keys(base.features), ...Object.keys(gFeat), ...Object.keys(aFeat)])).forEach(k => {
+    if (typeof gFeat[k] === 'boolean') base.features[k] = gFeat[k];
+    if (cmsAdminWins(g, a, subKey('feat_' + k, 'features'), typeof aFeat[k] === 'boolean')) {
+      base.features[k] = aFeat[k];
+    }
+  });
+
+  if (g.providerBanners) base.providerBanners = Object.assign({}, base.providerBanners, g.providerBanners);
+  if (g.providerLogos) base.providerLogos = Object.assign({}, base.providerLogos, g.providerLogos);
+  if (g.gameCategories && typeof g.gameCategories === 'object') base.gameCategories = Object.assign({}, g.gameCategories);
+  if (g.sportsConfig && typeof g.sportsConfig === 'object') base.sportsConfig = Object.assign({}, g.sportsConfig);
+  if (g.gameApi && typeof g.gameApi === 'object') base.gameApi = Object.assign({}, g.gameApi);
 
   /* Hide games belonging to turned-off categories */
   const catsCfg = base.gameCategories || {};
-  base.games = (base.games || []).filter(g => {
-    const c = g.c || '';
+  base.games = (base.games || []).filter(gm => {
+    const c = gm.c || '';
     if (c && catsCfg[c] && catsCfg[c].active === false) return false;
-    return g.active !== false;
+    return gm.active !== false;
   });
 
-  /* Merge Master-locked slides + User Admin slides (locked Master slides cannot be deleted or replaced by User Admin) */
-  const globalSlides = (LIVE_GLOBAL_CMS && Array.isArray(LIVE_GLOBAL_CMS.slides)) ? LIVE_GLOBAL_CMS.slides.filter(Boolean) : [];
+  /* Merge Master-locked slides + timestamp-resolved User Admin vs unlocked Master slides */
+  const globalSlides = (g && Array.isArray(g.slides)) ? g.slides.filter(Boolean) : [];
   const lockedMasterSlides = globalSlides.filter(s => s && s.locked === true);
   const unlockedGlobalSlides = globalSlides.filter(s => s && s.locked !== true);
-  const adminSlides = (LIVE_ADMIN_CMS && Array.isArray(LIVE_ADMIN_CMS.slides))
-    ? LIVE_ADMIN_CMS.slides.filter(s => s && !s.locked && !s.masterLockedId)
+  const adminSlides = (a && Array.isArray(a.slides))
+    ? a.slides.filter(s => s && !s.locked && !s.masterLockedId)
     : [];
 
-  if (adminSlides.length) {
+  if (cmsAdminWins(g, a, 'slides', adminSlides.length > 0)) {
     base.slides = [...lockedMasterSlides, ...adminSlides];
   } else if (globalSlides.length) {
     base.slides = [...lockedMasterSlides, ...unlockedGlobalSlides];
@@ -934,15 +1025,14 @@ function rebuildMergedConfig() {
   Object.keys(DEFAULT_M).forEach(k => { M[k] = DEFAULT_M[k].slice(); });
   ACTIVE_AGENT_BY_METHOD = {};
 
-  const playerAdminUid = (typeof getPlayerAdminUid === 'function') ? getPlayerAdminUid() : '';
   const payLayer = playerAdminUid
-    ? ((LIVE_ADMIN_CMS && LIVE_ADMIN_CMS.payments) || {})
-    : ((LIVE_GLOBAL_CMS && LIVE_GLOBAL_CMS.payments) || {});
-  const logoLayer = (LIVE_ADMIN_CMS && LIVE_ADMIN_CMS.payments) || (LIVE_GLOBAL_CMS && LIVE_GLOBAL_CMS.payments) || {};
+    ? ((a && a.payments) || {})
+    : ((g && g.payments) || {});
+  const logoLayer = (a && a.payments) || (g && g.payments) || {};
   const setNum = (k, field, logoField) => {
     const n = String(payLayer[field] || '').trim();
     if (n) M[k][0] = n;
-    const lg = logoLayer[logoField] || LIVE_SETTINGS[logoField];
+    const lg = logoLayer[logoField] || ((g && g.payments && g.payments[logoField]) || '') || LIVE_SETTINGS[logoField];
     if (lg) M[k][2] = lg;
   };
   setNum('bKash', 'bkashNumber', 'bkashLogo');
@@ -960,7 +1050,7 @@ function rebuildMergedConfig() {
           const wAdm = w.parentAdminId || w.adminUid || '';
           return w.active !== false && w.enabled === true && w.numbers && typeof w.numbers === 'object' && !!wAdm && wAdm === playerAdminUid;
         })
-        .sort((a, b) => Number(b.updatedAt || 0) - Number(a.updatedAt || 0))
+        .sort((ab, bb) => Number(bb.updatedAt || 0) - Number(ab.updatedAt || 0))
     : [];
 
   ['bKash', 'Nagad', 'Rocket', 'Upay'].forEach(method => {
@@ -981,13 +1071,15 @@ function rebuildMergedConfig() {
   });
   if (typeof window.mwFitLogos === 'function') window.mwFitLogos();
 
-  /* Maintenance check */
-  const maint = !!(LIVE_SETTINGS.maintenanceMode || (LIVE_GLOBAL_CMS && LIVE_GLOBAL_CMS.maintenanceMode) || (LIVE_ADMIN_CMS && LIVE_ADMIN_CMS.maintenanceMode));
+  /* Maintenance check with Master / User Admin timestamp precedence */
+  const gMaint = g.maintenanceMode !== undefined ? !!g.maintenanceMode : !!LIVE_SETTINGS.maintenanceMode;
+  const maint = cmsAdminWins(g, a, 'maintenanceMode', a.maintenanceMode !== undefined) ? !!a.maintenanceMode : gMaint;
+  const gMaintMsg = g.maintenanceMessage || LIVE_SETTINGS.maintenanceMessage || '';
+  const maintMsg = cmsAdminWins(g, a, 'maintenanceMessage', !!(a.maintenanceMessage && String(a.maintenanceMessage).trim())) ? a.maintenanceMessage : gMaintMsg;
   const mo = document.getElementById('maintOverlay');
   if (mo) {
     mo.classList.toggle('o', maint);
     const mt = document.getElementById('maintText');
-    const maintMsg = (LIVE_ADMIN_CMS && LIVE_ADMIN_CMS.maintenanceMessage) || (LIVE_GLOBAL_CMS && LIVE_GLOBAL_CMS.maintenanceMessage) || LIVE_SETTINGS.maintenanceMessage;
     if (mt && maintMsg) mt.textContent = maintMsg;
   }
 
@@ -1101,7 +1193,7 @@ if (fbDb) {
   });
   fbDb.ref('notices').on('value', s => {
     const v = s.val();
-    LIVE_GLOBAL_NOTICES = v ? Object.values(v).filter(n => n && n.active !== false) : null;
+    LIVE_RAW_NOTICES = v ? Object.values(v).filter(n => n && n.active !== false) : [];
     rebuildMergedConfig();
   });
   fbDb.ref('games').on('value', s => {
@@ -1218,6 +1310,7 @@ function bindUserListeners(uid) {
     S.responsibleGaming = Object.assign({dailyLimit:false,sessionReminder:true,selfExclusion:false}, u.responsibleGaming || {});
     bindAdminCmsListener(getPlayerAdminUid());
     rebuildMergedConfig();
+    rebuildUserNotifications(uid);
     updBal();
     if (window.mwUpdateHeaderUser) window.mwUpdateHeaderUser();
     if (['wallet', 'dep', 'wd', 'vip', 'bonus', 'promo', 'home'].includes(cur) && !pe && !vk) {
@@ -1261,13 +1354,8 @@ function bindUserListeners(uid) {
 
   sub(fbDb.ref('notifications'), s => {
     const v = s.val() || {};
-    LIVE_NOTIFS = Object.entries(v).map(([id, n]) => Object.assign({id}, n || {})).filter(n => {
-      if (n.targetUid && n.targetUid !== uid) return false;
-      if (n.adminUid && S.adminUid && n.adminUid !== S.adminUid && n.target !== 'all') return false;
-      return true;
-    }).sort((a,b) => (b.createdAt||b.timestamp||0)-(a.createdAt||a.timestamp||0));
-    updateNotifBadge();
-    if (cur === 'notif') go('notif');
+    LIVE_RAW_NOTIFS = Object.entries(v).map(([id, n]) => Object.assign({id}, n || {}));
+    rebuildUserNotifications(uid);
   });
 
   sub(fbDb.ref('userNotificationReads/' + uid), s => {
@@ -1291,6 +1379,20 @@ function bindUserListeners(uid) {
   }
 }
 
+function rebuildUserNotifications(uid) {
+  const targetUid = uid || (typeof S !== 'undefined' && S.uid) || '';
+  const myAdm = getPlayerAdminUid();
+  LIVE_NOTIFS = (LIVE_RAW_NOTIFS || []).filter(n => {
+    if (!n) return false;
+    if (n.targetUid && n.targetUid !== targetUid) return false;
+    if (n.target && !['ALL', 'all', 'PLAYERS', targetUid].includes(n.target)) return false;
+    if (n.adminUid && (!myAdm || n.adminUid !== myAdm)) return false;
+    return true;
+  }).sort((a, b) => (b.createdAt || b.timestamp || 0) - (a.createdAt || a.timestamp || 0));
+  updateNotifBadge();
+  if (typeof cur !== 'undefined' && cur === 'notif') go('notif');
+}
+
 function unbindUserListeners() {
   userRefs.forEach(r => { try { r.off(); } catch (e) {} });
   userRefs = [];
@@ -1299,6 +1401,7 @@ function unbindUserListeners() {
   LIVE_WITHDRAWALS = [];
   LIVE_TRANSACTIONS = [];
   LIVE_GAME_TX = [];
+  LIVE_RAW_NOTIFS = [];
   LIVE_NOTIFS = [];
   LIVE_NOTIF_READS = {};
   LIVE_PROMO_TURNOVER = {};
@@ -1339,8 +1442,11 @@ function getPlayerAdminUid() {
 function getActiveDepositPromos() {
   const t = Date.now();
   const adm = getPlayerAdminUid();
-  return Object.entries(LIVE_DEPOSIT_PROMOS || {}).map(([id, p]) => Object.assign({id}, p || {})).filter(p => {
-    if (!p.active) return false;
+  return Object.entries(LIVE_DEPOSIT_PROMOS || {}).map(([id, p]) => {
+    const resolved = resolvePromoForAdmin(Object.assign({ id }, p || {}), adm);
+    return resolved;
+  }).filter(p => {
+    if (!p || !p.active) return false;
     if (p.startAt && t < Number(p.startAt)) return false;
     if (p.endAt && t > Number(p.endAt)) return false;
     if (adm && p.adminOff && p.adminOff[adm]) return false;
@@ -3282,6 +3388,12 @@ if (ibBtn) ibBtn.onclick = () => { if (typeof window.mwTriggerInstall === 'funct
       const gUser = res.user;
       const snap = await fbDb.ref('users/' + gUser.uid).once('value');
       if (!snap.exists()) {
+        if (CFG && CFG.allowRegistration === false) {
+          try { await fbAuth.signOut(); } catch (err) {}
+          setBusy(false);
+          if (E) E.textContent = 'Registration is currently disabled.';
+          return;
+        }
         await provisionUserRecord(gUser, { name: clean(gUser.displayName), email: gUser.email, ref: LS('mw_ref') || '' });
       }
       setBusy(false);
@@ -3383,6 +3495,10 @@ if (ibBtn) ibBtn.onclick = () => { if (typeof window.mwTriggerInstall === 'funct
         + '<div class="ar2"><label class="ck"><input type="checkbox" id="al_rm" checked> Remember me</label><a class="al" data-a="forgot" style="margin-top:12px">Forgot password?</a></div>'
         + '<div class="ae big" id="amErr"></div><button class="btn bgold" id="amGo" type="submit">Login</button><div class="am-alt">New here? <a data-m="signup">Create an account</a></div>';
     } else if (mode === 'signup') {
+      if (CFG && CFG.allowRegistration === false) {
+        F.innerHTML = '<div class="ae big" style="margin:12px 0;font-size:13px">নতুন প্লেয়ার রেজিস্ট্রেশন সাময়িকভাবে বন্ধ রয়েছে। আপনার অ্যাকাউন্ট থাকলে লগইন করুন।</div><button class="btn bgold" type="button" data-m="login">Login</button>';
+        return;
+      }
       const stepHead = `<div class="su-steps"><span>Step <b>${suStep}</b> of 2</span><span>${suStep === 1 ? 'Username, Country &amp; Number' : 'Complete Registration'}</span></div><div class="su-bars"><i class="on"></i><i class="${suStep === 2 ? 'on' : ''}"></i></div>`;
       if (suStep === 1) {
         const curCountry = suDraft.country || 'Bangladesh';
@@ -3481,6 +3597,11 @@ if (ibBtn) ibBtn.onclick = () => { if (typeof window.mwTriggerInstall === 'funct
         setBusy(false);
         q('#amErr').textContent = translateUserAuthErr(e);
       }
+      return;
+    }
+
+    if (mode === 'signup' && CFG && CFG.allowRegistration === false) {
+      if (q('#amErr')) q('#amErr').textContent = 'Registration is currently disabled.';
       return;
     }
 
