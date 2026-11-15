@@ -219,7 +219,7 @@
     .lo svg{position:absolute;left:0;top:0;width:100%;height:100%;display:block;overflow:visible;transform:scale(1.12);transform-origin:50% 50%}
     .lo-r{transform-box:view-box;transform-origin:50px 50px;animation:loSpin 6s cubic-bezier(.2,.7,.2,1) infinite}
     @keyframes loSpin{0%,25%{transform:rotate(0deg)}70%,100%{transform:rotate(1440deg)}}
-    .tag{display:block;white-space:nowrap;font-weight:700;color:#ffd23f;font-size:calc(var(--fs)*.17);margin-top:.55em;overflow:visible;letter-spacing:.4px}
+    .tag{display:inline-block;width:auto;white-space:nowrap;font-weight:700;color:#ffd23f;font-size:calc(var(--fs)*.17);margin-top:.55em;overflow:visible;letter-spacing:0}
     body[data-theme="light"] .logo .w,body[data-theme="light"] .logo .r{color:#1C1917}
     body[data-theme="light"] .lo circle[stroke="#fff"]{stroke:#1C1917}
     body[data-theme="light"] .lo circle[stroke*="255,255,255"]{stroke:rgba(28,25,23,.3)}
@@ -5299,6 +5299,7 @@
       document.getElementById('sidebar-email').innerText = email;
       document.getElementById('sidebar-avatar').innerText = email.charAt(0).toUpperCase();
       document.getElementById('login-overlay').style.display = 'none';
+      if (typeof window.mwFitLogos === 'function') setTimeout(window.mwFitLogos, 40);
       const fab = document.getElementById('uaLiveChatFab');
       if (fab) fab.style.display = 'flex';
 
@@ -5323,6 +5324,7 @@
       const fab = document.getElementById('uaLiveChatFab');
       if (fab) fab.style.display = 'none';
       document.getElementById('login-overlay').style.display = 'flex';
+      if (typeof window.mwFitLogos === 'function') setTimeout(window.mwFitLogos, 40);
       document.getElementById('sidebar-email').innerText = '';
     }
 
@@ -8982,6 +8984,7 @@
       const next = (typeof forceState === 'boolean') ? forceState : !sb.classList.contains('open');
       sb.classList.toggle('open', next);
       if (bd) bd.classList.toggle('open', next);
+      if (next && typeof window.mwFitLogos === 'function') setTimeout(window.mwFitLogos, 60);
     }
 
     function applyLanguage(lang) {
@@ -8993,6 +8996,7 @@
         switchBtn.innerText = isBn ? 'BN' : 'EN';
       }
       updateTopbarTitle();
+      if (typeof window.mwFitLogos === 'function') requestAnimationFrame(window.mwFitLogos);
 
       // 1. Navigation items
       const navMap = {
@@ -11090,17 +11094,42 @@
     const w=document.getElementById(wrapId), t=document.getElementById(tagId);
     if(!w||!t) return;
     const lm=w.querySelector('.lm'); if(!lm) return;
-    const lw=lm.getBoundingClientRect().width;
-    if(!lw) return;
+    const mRect=lm.getBoundingClientRect();
+    if(mRect.width<=0) return;
+    const fs=parseFloat(getComputedStyle(lm).fontSize)||24;
+    const bleed=fs*0.025;
+    const W=mRect.width-2*bleed;
+    if(W<=0) return;
+    if(!t.dataset.baseFs) t.dataset.baseFs=parseFloat(getComputedStyle(t).fontSize)||8;
+    const baseFs=parseFloat(t.dataset.baseFs)||8;
+    t.style.fontSize=baseFs+'px';
     t.style.letterSpacing='0px';
-    const base=t.getBoundingClientRect().width;
-    const n=Math.max(1,t.textContent.trim().length-1);
-    const sp=Math.max(0,(lw-base)/n);
-    t.style.letterSpacing=sp.toFixed(2)+'px';
+    t.style.width='auto';
+    t.style.display='inline-block';
+    t.style.position='relative';
+    t.style.left='0px';
+    t.style.marginLeft='0px';
+    t.style.marginRight='0px';
+    let base=t.getBoundingClientRect().width;
+    if(base>W&&base>0){
+      const adjFs=Math.max(5.2,baseFs*(W/base)*0.98);
+      t.style.fontSize=adjFs.toFixed(2)+'px';
+      base=t.getBoundingClientRect().width;
+    }
+    const chars=Array.from(t.textContent.trim()).length;
+    if(chars>1&&base>0){
+      const sp=Math.max(-0.5,(W-base)/(chars-1));
+      t.style.letterSpacing=sp.toFixed(3)+'px';
+      t.style.marginRight=(-sp).toFixed(3)+'px';
+    }
+    const dx=(mRect.left+bleed)-t.getBoundingClientRect().left;
+    t.style.left=dx.toFixed(2)+'px';
   }
   function fitAll(){fitLogo('uLoginLogoWrap','uLoginTag');fitLogo('uBrandLogoWrap','uBrandTag');}
+  window.mwFitLogos=fitAll;
   window.addEventListener('load',()=>setTimeout(fitAll,60));
   window.addEventListener('resize',fitAll);
+  window.addEventListener('mw:view',()=>requestAnimationFrame(fitAll));
   if(document.fonts&&document.fonts.ready)document.fonts.ready.then(fitAll);
   setTimeout(fitAll,250);
 })();

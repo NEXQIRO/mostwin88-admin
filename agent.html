@@ -717,29 +717,42 @@ function fitLogo(wrapId, tagId) {
   if (!wrap || !tag) return;
   const m = wrap.querySelector('.lm');
   if (!m) return;
+  const mRect = m.getBoundingClientRect();
+  if (mRect.width <= 0) return;
   const fs = parseFloat(getComputedStyle(m).fontSize) || 24;
-  const b = fs * 0.035;
-  const W = m.getBoundingClientRect().width - 2 * b;
+  const bleed = fs * 0.025;
+  const W = mRect.width - 2 * bleed;
   if (W <= 0) return;
+  if (!tag.dataset.baseFs) tag.dataset.baseFs = parseFloat(getComputedStyle(tag).fontSize) || 8;
+  const baseFs = parseFloat(tag.dataset.baseFs) || 8;
+  tag.style.fontSize = baseFs + 'px';
   tag.style.letterSpacing = '0px';
   tag.style.width = 'auto';
   tag.style.display = 'inline-block';
-  tag.style.marginRight = '0';
-  tag.style.marginLeft = b + 'px';
-  const w0 = tag.getBoundingClientRect().width;
-  const n = tag.textContent.length;
-  if (n > 1 && w0 > 0) {
-    const ls = (W - w0) / (n - 1);
-    tag.style.letterSpacing = ls + 'px';
-    tag.style.marginRight = (-ls) + 'px';
-    tag.style.display = 'block';
-    tag.style.width = W + 'px';
+  tag.style.position = 'relative';
+  tag.style.left = '0px';
+  tag.style.marginLeft = '0px';
+  tag.style.marginRight = '0px';
+  let w0 = tag.getBoundingClientRect().width;
+  if (w0 > W && w0 > 0) {
+    const adjFs = Math.max(5.2, baseFs * (W / w0) * 0.98);
+    tag.style.fontSize = adjFs.toFixed(2) + 'px';
+    w0 = tag.getBoundingClientRect().width;
   }
+  const chars = Array.from(tag.textContent.trim()).length;
+  if (chars > 1 && w0 > 0) {
+    const ls = Math.max(-0.5, (W - w0) / (chars - 1));
+    tag.style.letterSpacing = ls.toFixed(3) + 'px';
+    tag.style.marginRight = (-ls).toFixed(3) + 'px';
+  }
+  const dx = (mRect.left + bleed) - tag.getBoundingClientRect().left;
+  tag.style.left = dx.toFixed(2) + 'px';
 }
 function fitAllLogos() {
   fitLogo('loginLogoWrap', 'loginTag');
   fitLogo('headerLogoWrap', 'headerTag');
 }
+window.mwFitLogos = fitAllLogos;
 window.addEventListener('load', fitAllLogos);
 window.addEventListener('resize', fitAllLogos);
 if (document.fonts && document.fonts.ready) document.fonts.ready.then(fitAllLogos);
@@ -1314,13 +1327,21 @@ function confirmDialog() {
 
 function depositAction(id, status) {
   const d = deposits.find(x => x.id === id); if (!d || d.status !== 'Pending') return;
+  const amt = Number(d.amount) || 0;
+  const ok = status === 'Approved';
+  if (ok && getAgentAvailable() < amt) {
+    toast('পর্যাপ্ত এজেন্ট ব্যালেন্স নেই! ডিপোজিট অনুমোদন করতে আগে Admin থেকে ব্যালেন্স নিন।');
+    go('wallet');
+    return;
+  }
   const pl = usersMap[d.uid] || {};
   const pName = d.playerName || pl.name || pl.username || d.uid;
-  const ok = status === 'Approved';
+  const rows = [['Request ID', d.id], ['Player', pName], ['Method', d.method || 'bKash'], ['TRX ID', d.trxId || d.trx || 'N/A'], ['Amount', formatTaka(amt)]];
+  if (ok) rows.push(['আপনার Wallet থেকে কাটা হবে', '-' + formatTaka(amt)]);
   openDialog({
     kind: ok ? 'ok' : 'bad',
     title: ok ? 'ডিপোজিট অনুমোদন করবেন?' : 'ডিপোজিট বাতিল করবেন?',
-    info: [['Request ID', d.id], ['Player', pName], ['Method', d.method || 'bKash'], ['TRX ID', d.trxId || d.trx || 'N/A'], ['Amount', formatTaka(d.amount)]],
+    info: rows,
     reasons: ok ? null : REJECT_REASONS,
     confirmText: ok ? '✓ অনুমোদন করুন' : '✕ বাতিল করুন',
     onConfirm: r => applyDeposit(d, status, r)
@@ -1345,34 +1366,55 @@ async function applyDeposit(d, status, reason) {
     const pName = fresh.playerName || pl.name || 'Player';
 
     if (status === 'Approved') {
-      // Credit player's live balance atomically
-      const balTx = await db.ref(`users/${fresh.uid}/balance`).transaction(cur => (Number(cur) || 0) + amt);
-      if (!balTx.committed) throw new Error('প্লেয়ার ব্যালেন্স আপডেট ব্যর্থ হয়েছে');
-      const newBal = balTx.snapshot.val();
+      // First atomically verify & deduct from agent operational balance
+      const agentBalTx = await db.ref(`agents/${currentAgentUid}/balance`).transaction(cur => {
+        const c = Number(cur) || 0;
+        if (c < amt) return undefined;
+        return c - amt;
+      });
+      if (!agentBalTx.committed) {
+        await lockRef.remove().catch(() => {});
+        toast('পর্যাপ্ত এজেন্ট ব্যালেন্স নেই! Admin থেকে ব্যালেন্স নিন।');
+        go('wallet');
+        return;
+      }
 
-      const trxKey = db.ref('transactions').push().key;
-      const updates = {};
-      updates[`depositRequests/${d.id}/status`] = 'Approved';
-      updates[`depositRequests/${d.id}/approvedAt`] = TS;
-      updates[`depositRequests/${d.id}/approvedByAgent`] = currentAgentUid;
-      updates[`depositRequests/${d.id}/assignedAgentId`] = currentAgentUid;
-      updates[`depositRequests/${d.id}/approvalLock`] = null;
-      updates[`transactions/${trxKey}`] = {
-        trxId: trxKey,
-        refId: d.id,
-        uid: fresh.uid,
-        playerName: pName,
-        agentUid: currentAgentUid,
-        adminUid: fresh.adminUid || (agentProfile && agentProfile.parentAdminId) || '',
-        type: 'DEPOSIT',
-        amount: amt,
-        afterBal: newBal,
-        method: fresh.method || 'bKash',
-        paymentRef: fresh.trxId || fresh.trx || '',
-        timestamp: TS,
-        note: `Verified & Approved by Agent ${agentProfile.name || currentAgentUid}`
-      };
-      await db.ref().update(updates);
+      let balTx;
+      try {
+        // Credit player's live balance atomically
+        balTx = await db.ref(`users/${fresh.uid}/balance`).transaction(cur => (Number(cur) || 0) + amt);
+        if (!balTx.committed) throw new Error('প্লেয়ার ব্যালেন্স আপডেট ব্যর্থ হয়েছে');
+        const newBal = balTx.snapshot.val();
+
+        const trxKey = db.ref('transactions').push().key;
+        const updates = {};
+        updates[`depositRequests/${d.id}/status`] = 'Approved';
+        updates[`depositRequests/${d.id}/approvedAt`] = TS;
+        updates[`depositRequests/${d.id}/approvedByAgent`] = currentAgentUid;
+        updates[`depositRequests/${d.id}/assignedAgentId`] = currentAgentUid;
+        updates[`depositRequests/${d.id}/approvalLock`] = null;
+        updates[`transactions/${trxKey}`] = {
+          trxId: trxKey,
+          refId: d.id,
+          uid: fresh.uid,
+          playerName: pName,
+          agentUid: currentAgentUid,
+          adminUid: fresh.adminUid || (agentProfile && agentProfile.parentAdminId) || '',
+          type: 'DEPOSIT',
+          amount: amt,
+          afterBal: newBal,
+          method: fresh.method || 'bKash',
+          paymentRef: fresh.trxId || fresh.trx || '',
+          timestamp: TS,
+          note: `Verified & Approved by Agent ${agentProfile.name || currentAgentUid} (Agent Wallet -${amt})`
+        };
+        await db.ref().update(updates);
+      } catch (innerErr) {
+        // Roll back agent balance deduction if crediting player/saving failed
+        await db.ref(`agents/${currentAgentUid}/balance`).transaction(cur => (Number(cur) || 0) + amt).catch(() => {});
+        throw innerErr;
+      }
+
       await db.ref(`agents/${currentAgentUid}/totalProcessedDeposits`).transaction(v => (Number(v) || 0) + amt).catch(() => {});
       await db.ref('notifications').push({
         title: 'ডিপোজিট অনুমোদিত হয়েছে',
@@ -1385,10 +1427,10 @@ async function applyDeposit(d, status, reason) {
         admin: agentProfile.email || currentAgentUid,
         action: 'AGENT_DEPOSIT_APPROVE',
         target: fresh.uid,
-        details: `Deposit ${d.id} approved by agent (৳${amt})`,
+        details: `Deposit ${d.id} approved by agent (৳${amt}, deducted from agent wallet)`,
         timestamp: Date.now()
       }).catch(() => {});
-      toast('ডিপোজিট অনুমোদিত হয়েছে ও প্লেয়ারের ব্যালেন্সে যোগ হয়েছে ✓');
+      toast('ডিপোজিট অনুমোদিত হয়েছে ও আপনার Wallet থেকে ' + formatTaka(amt) + ' কাটা হয়েছে ✓');
     } else {
       await db.ref(`depositRequests/${d.id}`).update({
         status: 'Rejected',
@@ -1424,17 +1466,12 @@ function completeWithdrawal(id) {
   const w = withdrawals.find(x => x.id === id);
   if (!w || !isWithdrawalAssigned(w)) return;
   const amt = Number(w.amount) || 0;
-  if (getAgentAvailable() < amt) {
-    toast('পর্যাপ্ত Balance নেই! Admin-এর কাছে Balance Request পাঠান।');
-    go('wallet');
-    return;
-  }
   const pl = usersMap[w.uid] || {};
   const pName = w.playerName || pl.name || pl.username || w.uid;
   openDialog({
     kind: 'ok',
     title: 'উইথড্র পেমেন্ট সম্পন্ন করবেন?',
-    info: [['Request ID', w.id], ['Player', pName], ['Method', w.method || 'bKash'], ['Number', w.receiverNumber || w.accountNumber || w.number || 'N/A'], ['Wallet থেকে কাটা হবে', formatTaka(amt)]],
+    info: [['Request ID', w.id], ['Player', pName], ['Method', w.method || 'bKash'], ['Number', w.receiverNumber || w.accountNumber || w.number || 'N/A'], ['আপনার Wallet-এ যোগ হবে', '+' + formatTaka(amt)]],
     needsTrx: true,
     reasons: null,
     confirmText: '✓ পেমেন্ট সম্পন্ন করুন',
@@ -1457,43 +1494,45 @@ async function doCompleteWithdrawal(w, trxRef) {
       return;
     }
 
-    // Atomically deduct from agent operational balance
-    const balTx = await db.ref(`agents/${currentAgentUid}/balance`).transaction(cur => {
-      const c = Number(cur) || 0;
-      if (c < amt) return undefined;
-      return c - amt;
-    });
+    // Atomically credit withdrawal amount to agent wallet balance
+    const balTx = await db.ref(`agents/${currentAgentUid}/balance`).transaction(cur => (Number(cur) || 0) + amt);
     if (!balTx.committed) {
       await lockRef.remove().catch(() => {});
-      toast('পর্যাপ্ত এজেন্ট ব্যালেন্স নেই!');
+      toast('এজেন্ট ব্যালেন্স আপডেট ব্যর্থ হয়েছে!');
       return;
     }
 
-    const pl = usersMap[fresh.uid] || {};
-    const pName = fresh.playerName || pl.name || 'Player';
-    const trxKey = db.ref('transactions').push().key;
-    const updates = {};
-    updates[`withdrawalRequests/${w.id}/status`] = 'Completed';
-    updates[`withdrawalRequests/${w.id}/paymentRef`] = trxRef;
-    updates[`withdrawalRequests/${w.id}/processedAt`] = TS;
-    updates[`withdrawalRequests/${w.id}/statusUpdatedAt`] = TS;
-    updates[`withdrawalRequests/${w.id}/completedByAgent`] = currentAgentUid;
-    updates[`withdrawalRequests/${w.id}/actionLock`] = null;
-    updates[`transactions/${trxKey}`] = {
-      trxId: trxKey,
-      refId: w.id,
-      uid: fresh.uid,
-      playerName: pName,
-      agentUid: currentAgentUid,
-      adminUid: fresh.adminUid || (agentProfile && agentProfile.parentAdminId) || '',
-      type: 'WITHDRAWAL',
-      amount: amt,
-      method: fresh.method || 'bKash',
-      paymentRef: trxRef,
-      timestamp: TS,
-      note: `Withdrawal Paid by Agent ${agentProfile.name || currentAgentUid} (Trx: ${trxRef})`
-    };
-    await db.ref().update(updates);
+    try {
+      const pl = usersMap[fresh.uid] || {};
+      const pName = fresh.playerName || pl.name || 'Player';
+      const trxKey = db.ref('transactions').push().key;
+      const updates = {};
+      updates[`withdrawalRequests/${w.id}/status`] = 'Completed';
+      updates[`withdrawalRequests/${w.id}/paymentRef`] = trxRef;
+      updates[`withdrawalRequests/${w.id}/processedAt`] = TS;
+      updates[`withdrawalRequests/${w.id}/statusUpdatedAt`] = TS;
+      updates[`withdrawalRequests/${w.id}/completedByAgent`] = currentAgentUid;
+      updates[`withdrawalRequests/${w.id}/actionLock`] = null;
+      updates[`transactions/${trxKey}`] = {
+        trxId: trxKey,
+        refId: w.id,
+        uid: fresh.uid,
+        playerName: pName,
+        agentUid: currentAgentUid,
+        adminUid: fresh.adminUid || (agentProfile && agentProfile.parentAdminId) || '',
+        type: 'WITHDRAWAL',
+        amount: amt,
+        method: fresh.method || 'bKash',
+        paymentRef: trxRef,
+        timestamp: TS,
+        note: `Withdrawal Paid by Agent ${agentProfile.name || currentAgentUid} (Agent Wallet +${amt}, Trx: ${trxRef})`
+      };
+      await db.ref().update(updates);
+    } catch (innerErr) {
+      await db.ref(`agents/${currentAgentUid}/balance`).transaction(cur => Math.max(0, (Number(cur) || 0) - amt)).catch(() => {});
+      throw innerErr;
+    }
+
     await db.ref(`agents/${currentAgentUid}/totalProcessedWithdrawals`).transaction(v => (Number(v) || 0) + amt).catch(() => {});
     await db.ref('notifications').push({
       title: 'উইথড্র পেমেন্ট সম্পন্ন',
@@ -1506,10 +1545,10 @@ async function doCompleteWithdrawal(w, trxRef) {
       admin: agentProfile.email || currentAgentUid,
       action: 'AGENT_WITHDRAW_COMPLETE',
       target: fresh.uid,
-      details: `Withdrawal ${w.id} paid by agent (৳${amt}, Trx: ${trxRef})`,
+      details: `Withdrawal ${w.id} paid by agent (৳${amt} credited to agent wallet, Trx: ${trxRef})`,
       timestamp: Date.now()
     }).catch(() => {});
-    toast('Payment Complete হয়েছে এবং আপনার Wallet থেকে টাকা সমন্বয় করা হয়েছে ✓');
+    toast('Payment Complete হয়েছে এবং আপনার Wallet-এ ' + formatTaka(amt) + ' যোগ হয়েছে ✓');
   } catch (err) {
     await lockRef.remove().catch(() => {});
     toast('ত্রুটি: ' + (err.message || err));
