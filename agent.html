@@ -34,15 +34,15 @@ button{cursor:pointer}
 .hidden{display:none!important}
 
 /* EXACT MOSTWIN88 ANIMATED LOGO */
-.logo{--fs:42px;display:block;width:max-content;text-align:left;margin:0 auto 14px}
-.logo.sm{--fs:22px;margin:0}
+.logo{--fs:42px;display:flex;flex-direction:column;align-items:flex-start;width:max-content;white-space:normal;text-align:left;margin:0 auto 14px}
+.logo.sm{--fs:22px;display:inline-flex;margin:0}
 .lm{display:block;width:max-content;white-space:nowrap;font-weight:900;letter-spacing:.5px;line-height:1;font-size:var(--fs);color:#ffd23f}
 .w,.r{color:#fff}
 .lo{display:inline-block;position:relative;width:.76em;height:.76em;margin:0 .035em;vertical-align:baseline;overflow:visible;filter:drop-shadow(0 0 .04em #ffffff77)}
 .lo svg{position:absolute;left:0;top:0;width:100%;height:100%;display:block;overflow:visible;transform:scale(1.12);transform-origin:50% 50%}
 .lo-r{transform-box:view-box;transform-origin:50px 50px;animation:loSpin 6s cubic-bezier(.2,.7,.2,1) infinite}
 @keyframes loSpin{0%,25%{transform:rotate(0deg)}70%,100%{transform:rotate(1440deg)}}
-.tag{display:block;white-space:nowrap;font-weight:700;color:#ffd23f;font-size:calc(var(--fs)*.17);margin-top:.55em;overflow:visible}
+.tag{display:block;width:max-content;white-space:nowrap;font-weight:700;color:#ffd23f;font-size:calc(var(--fs)*.17);margin-top:.55em;overflow:visible;line-height:1.15}
 @media (prefers-reduced-motion:reduce){.lo-r{animation:none}}
 
 /* LOGIN */
@@ -727,15 +727,15 @@ function fitLogo(wrapId, tagId) {
   const baseFs = parseFloat(tag.dataset.baseFs) || 8;
   tag.style.fontSize = baseFs + 'px';
   tag.style.letterSpacing = '0px';
-  tag.style.width = 'auto';
-  tag.style.display = 'inline-block';
+  tag.style.width = 'max-content';
+  tag.style.display = 'block';
   tag.style.position = 'relative';
   tag.style.left = '0px';
   tag.style.marginLeft = '0px';
   tag.style.marginRight = '0px';
   let w0 = tag.getBoundingClientRect().width;
   if (w0 > W && w0 > 0) {
-    const adjFs = Math.max(5.2, baseFs * (W / w0) * 0.98);
+    const adjFs = Math.max(5.0, baseFs * (W / w0) * 0.98);
     tag.style.fontSize = adjFs.toFixed(2) + 'px';
     w0 = tag.getBoundingClientRect().width;
   }
@@ -745,7 +745,7 @@ function fitLogo(wrapId, tagId) {
     tag.style.letterSpacing = ls.toFixed(3) + 'px';
     tag.style.marginRight = (-ls).toFixed(3) + 'px';
   }
-  const dx = (mRect.left + bleed) - tag.getBoundingClientRect().left;
+  const dx = Math.max(-8, Math.min(8, (mRect.left + bleed) - tag.getBoundingClientRect().left));
   tag.style.left = dx.toFixed(2) + 'px';
 }
 function fitAllLogos() {

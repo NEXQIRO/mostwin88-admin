@@ -145,7 +145,7 @@ header{padding-left:10px;padding-right:10px}.ib,.av{width:38px;height:38px;font-
 .nbt{flex:1;overflow:hidden;white-space:nowrap;-webkit-mask-image:linear-gradient(90deg,transparent,#000 4%,#000 96%,transparent);mask-image:linear-gradient(90deg,transparent,#000 4%,#000 96%,transparent)}
 .nbt span{display:inline-block;padding-left:100%;animation:mq 25s linear infinite;color:var(--gold);font-weight:600;font-size:13px}
 @keyframes mq{to{transform:translateX(-100%)}}
-@media(max-width:899px){header{display:flex;gap:8px;padding-left:10px;padding-right:10px}header .av{display:none}header .logo{min-width:0;max-width:calc(100vw - 172px);overflow:visible;flex:0 1 auto;text-align:left;white-space:nowrap;font-size:clamp(14px,4.2vw,20px)}header .logo small{letter-spacing:0}.hr{margin-left:auto;gap:6px;align-items:center;flex-shrink:0}.hbal{order:2;padding:3px 10px;min-height:38px;border-radius:12px}.hbal .em{display:none}.hbal b{font-size:13px}}
+@media(max-width:899px){header{display:flex;gap:8px;padding-left:10px;padding-right:10px}header .av{display:none}header .logo{min-width:0;max-width:calc(100vw - 172px);overflow:visible;flex:0 1 auto;text-align:left;white-space:normal;align-items:flex-start;font-size:clamp(14px,4.2vw,20px)}header .logo small{letter-spacing:0}.hr{margin-left:auto;gap:6px;align-items:center;flex-shrink:0}.hbal{order:2;padding:3px 10px;min-height:38px;border-radius:12px}.hbal .em{display:none}.hbal b{font-size:13px}}
 @media(min-width:900px){header .av{display:grid}}
 @media(prefers-reduced-motion:reduce){.nbt span{padding-left:0}}
 .av img{width:100%;height:100%;border-radius:50%;object-fit:cover}
@@ -289,12 +289,12 @@ h2{margin:2px 0 10px;letter-spacing:.2px}
 /* ===== Scrollbar + Logo + Wordmark ===== */
 html,body,aside,main,#m{scrollbar-width:none;-ms-overflow-style:none}
 html::-webkit-scrollbar,body::-webkit-scrollbar,aside::-webkit-scrollbar,main::-webkit-scrollbar,#m::-webkit-scrollbar{display:none;width:0;height:0}
-.logo{filter:none!important;text-shadow:none!important;-webkit-font-smoothing:antialiased;text-rendering:geometricPrecision;display:inline-block;width:max-content;text-align:left;letter-spacing:.5px}
-.logo.lg2{display:block;width:max-content;margin:0 auto 14px;padding:4px 0 2px;text-align:left}
-.logo .lm{display:inline-block;width:max-content;white-space:nowrap;text-shadow:none;-webkit-text-stroke:0;background:none;color:#ffd23f;-webkit-text-fill-color:#ffd23f}
+.logo{filter:none!important;text-shadow:none!important;-webkit-font-smoothing:antialiased;text-rendering:geometricPrecision;display:inline-flex;flex-direction:column;align-items:flex-start;width:max-content;white-space:normal;text-align:left;letter-spacing:.5px;line-height:1.05}
+.logo.lg2{display:flex;flex-direction:column;align-items:flex-start;width:max-content;margin:0 auto 14px;padding:4px 0 2px;text-align:left}
+.logo .lm{display:block;width:max-content;white-space:nowrap;text-shadow:none;-webkit-text-stroke:0;background:none;color:#ffd23f;-webkit-text-fill-color:#ffd23f;line-height:1}
 .logo .w,.logo .r,.logo .lm .w,.logo .lm .r{color:#fff!important;-webkit-text-fill-color:#fff!important}
-.logo small{display:inline-block;white-space:nowrap;font-size:8px;font-weight:700;color:#ffd23f;-webkit-text-fill-color:#ffd23f;letter-spacing:0;margin-top:3px;overflow:visible}
-.logo.lg2 small{margin-top:4px}
+.logo small{display:block;width:max-content;white-space:nowrap;font-size:8px;font-weight:700;color:#ffd23f;-webkit-text-fill-color:#ffd23f;letter-spacing:0;margin-top:4px;overflow:visible;line-height:1.15}
+.logo.lg2 small{margin-top:5px}
 .lo{display:inline-block;position:relative;width:.76em;height:.76em;margin:0 .035em;vertical-align:baseline;overflow:visible;filter:drop-shadow(0 0 2px #ffffff55)}
 .lo svg{position:absolute;left:0;top:0;width:100%;height:100%;display:block;overflow:visible;transform:scale(1.12);transform-origin:50% 50%}
 .lo-r{transform-box:view-box;transform-origin:50px 50px}
@@ -310,9 +310,9 @@ html::-webkit-scrollbar,body::-webkit-scrollbar,aside::-webkit-scrollbar,main::-
 .pv-sp{flex:1 0 76px;padding:10px 4px 8px;border-radius:16px;border:1px solid rgba(255,210,63,.4);background:var(--gl);text-align:center;cursor:pointer;color:var(--t);font:inherit}
 .pv-sp:active{transform:scale(.96)}
 .pv-sp b{display:block;font-size:26px;line-height:1.1;font-weight:400}.pv-sp span{display:block;font-size:11px;margin-top:4px}
-.pv-tabs{gap:8px;padding:6px 6px 10px;margin-top:0}
+.pv-tabs{gap:8px;padding:4px 2px 10px;margin-top:0}
 .pv-tab{flex:none;padding:8px 15px;border-radius:20px;border:1px solid var(--bd);background:var(--gl);color:var(--m);font:inherit;font-size:13px;cursor:pointer}
-.pv-tabs .pv-tab{flex:0 0 auto;justify-content:center;height:42px;padding:0 15px;border-radius:999px;border:1px solid #1f2c4a;background:#0e1830;color:#c9d3ea;font-size:14px;font-weight:600;display:inline-flex;align-items:center;white-space:nowrap;transition:.2s}
+.pv-tabs .pv-tab{flex:0 0 auto;justify-content:center;height:38px;padding:0 15px;border-radius:999px;border:1px solid #1f2c4a;background:#0e1830;color:#c9d3ea;font-size:13px;font-weight:600;display:inline-flex;align-items:center;white-space:nowrap;transition:.2s}
 .pv-tabs .pv-tab.on{background:#F7C04A;color:#10131c;font-weight:800;border-color:#F7C04A;box-shadow:0 0 0 2px #070d1c,0 0 0 3px #fff}
 .pv-grid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:8px;margin-top:12px}
 .pv-grid.pv-games{grid-template-columns:repeat(3,minmax(0,1fr));gap:10px}
@@ -348,7 +348,7 @@ html::-webkit-scrollbar,body::-webkit-scrollbar,aside::-webkit-scrollbar,main::-
 .pv-sl{position:absolute;inset:0;opacity:0;transition:opacity .8s}.pv-sl.on{opacity:1}
 .pv-cap{position:absolute;left:0;right:0;bottom:0;padding:26px 14px 12px;font-size:18px;font-weight:700;color:#fff;background:linear-gradient(transparent,rgba(0,0,0,.75));text-shadow:0 2px 6px rgba(0,0,0,.6)}
 .pv-dots{position:absolute;right:12px;bottom:14px;display:flex;gap:6px}.pv-dots i{width:7px;height:7px;border-radius:50%;background:rgba(255,255,255,.4);cursor:pointer;transition:.3s}.pv-dots i.on{width:20px;border-radius:4px;background:var(--gold)}
-.pv-home{margin:2px 0 18px}.pv-lobby{font-size:22px;font-weight:800;margin:6px 2px 10px;display:block;color:#fff;letter-spacing:.2px}
+.pv-home{margin:0 0 18px;display:block}.pv-lobby{font-size:20px;font-weight:800;margin:8px 2px 6px;display:block;color:#fff;letter-spacing:.2px;line-height:1.25}
 .pc i.pci{width:100%;height:96px;border-radius:12px;background-size:cover;background-position:center;filter:none;font-size:0}
 .pv-ban .pv-sl.pv-noc .pv-cap{display:none}
 
@@ -1448,7 +1448,7 @@ function bns(d, a) {
 
 const sl = x => x.img
   ? `<div class="sl sl-img" style="background:#0b1d52" onclick="go('${esc(x.go || 'promo')}')"><img class="sl-pic" src="${imgUrl(x.img)}" alt="${esc(x.d || 'Promotion')}"></div>`
-  : `<div class="sl ${esc(x.c || 's1')}"><h3>${String(x.t || '').replace('{name}', esc(S.name))}</h3><p>${esc(x.d || '')}</p><button class="btn bgold sm" onclick="go('${esc(x.go || 'games')}')">Play Now →</button><div class="art">${esc(x.a || '🎰')}</div></div>`;
+  : `<div class="sl ${esc(x.c || 's1')}"><h3>${String(x.t || '').replace('{name}', esc(S.name || 'Player'))}</h3><p>${esc(x.d || '')}</p><button class="btn bgold sm" onclick="go('${esc(x.go || 'games')}')">Play Now →</button><div class="art">${esc(x.a || '🎰')}</div></div>`;
 
 const NAV = [['🏠','Home','home'],['🎮','Games','games'],['👑','VIP','vip'],['🎁','Promo','promo'],['☰','More','more']];
 const MENU = [
@@ -1572,7 +1572,7 @@ const V = {
     const pgSig = sigHash(popGames);
     return `<div class="hm"><div class="mn"><div class="car-wrap"><div class="car" id="car" data-sig="${slidesSig}">${slides.map(sl).join('')}</div><div class="dots" id="dots">${slides.map((_,i)=>`<i class="${i?'':'a'}"></i>`).join('')}</div></div><div class="nb"><span>📢</span><div class="nbt"><span style="animation-duration:${Math.max(14,notice.length*.26)}s">${esc(notice)}</span></div></div>
 <div id="pgSec" class="${(!popOn||!popGames.length)?'mw-cat-hide':''}"><h2>Popular Games <span class="ar"><button class="ib" onclick="pgs(-1)" aria-label="Previous">‹</button><button class="ib" onclick="pgs(1)" aria-label="Next">›</button></span></h2><div class="pg" id="pg" data-sig="${pgSig}" onmouseenter="pgp=1" onmouseleave="pgp=0" ontouchstart="pgp=1" ontouchend="pgp=0">${popGames.map((g,k)=>`<button class="pc" style="--h:${k*47+200}" onclick="play('${esc(g[1])}')"><span class="hot">HOT</span>${g[4]?`<i class="pci" style="background-image:url('${imgUrl(g[4])}')"></i>`:`<i>${g[0]}</i>`}<b>${esc(g[1])}</b><u>Play Now</u></button>`).join('')}</div></div>
-<h2 class="pv-lobby" style="margin-bottom:6px">Game Lobby</h2>${window.homeGames?homeGames():''}
+<h2 class="pv-lobby">Game Lobby</h2><div id="pvHomeWrap">${window.homeGames?homeGames():''}</div>
 <h2>Special Offers <span class="ar"><button class="ib" onclick="bns(-1)" aria-label="Previous">‹</button><button class="ib" onclick="bns(1)" aria-label="Next">›</button></span></h2><div class="pg bn" id="bn" data-sig="${offersSig}" onmouseenter="bnp=1" onmouseleave="bnp=0" ontouchstart="bnp=1" ontouchend="bnp=0">${offers.map(b=>b.img?`<button class="bs" style="background:#0b1d52 url('${imgUrl(b.img)}') center/cover" onclick="go('${esc(b.go||'promo')}')" aria-label="Offer"></button>`:`<button class="bs" style="--h:${b.h||265};--h2:${b.h2||300}" onclick="go('${esc(b.go||'promo')}')"><span class="ba">${esc(b.a||'🎁')}</span><div><b>${esc(b.t)}</b><small>${esc(b.d||'')}</small><u>${esc(b.b||'Learn More')} →</u></div></button>`).join('')}</div></div>
 <div class="dk"><div class="card" style="text-align:center;border-color:#ffd23f99;box-shadow:0 0 22px #ffd23f33"><div style="font-size:46px">👑</div><h2 style="justify-content:center;font-size:22px;color:var(--gold)">VIP CLUB</h2><div class="sub">Your VIP Level: <b style="color:var(--gold)">${esc(S.lvl)}</b></div><div class="bar"><i style="width:${pct}%"></i></div>✔ Higher Rewards<br>✔ Exclusive Bonuses<br>✔ Priority Support<br><br><button class="btn bgold sm" onclick="go('vip')">Upgrade Now →</button></div><div class="card"><h2>📊 Betting Summary</h2>${betSummaryTotals().map(x=>`<div class="tx"><div style="flex:1">${x[0]}</div><b>${f(x[1])}</b></div>`).join('')}<br><button class="btn out sm" style="width:100%" onclick="go('bets')">View Details</button></div><div class="sbs">${sides.map(b=>b.img?`<button class="bs" style="background:#0b1d52 url('${imgUrl(b.img)}') center/cover" onclick="go('${esc(b.go||'promo')}')" aria-label="Offer"></button>`:`<button class="bs" style="--h:${b.h||265};--h2:${b.h2||300}" onclick="go('${esc(b.go||'promo')}')"><span class="ba">${esc(b.a||'🎁')}</span><div><b>${esc(b.t)}</b><small>${esc(b.d||'')}</small><u>${esc(b.b||'Learn More')} →</u></div></button>`).join('')}</div></div></div>`;
   },
@@ -2395,7 +2395,7 @@ if (ibBtn) ibBtn.onclick = () => { if (typeof window.mwTriggerInstall === 'funct
   if (lcf) {
     lcf.addEventListener("submit", e => {
       e.preventDefault();
-      if (!S.uid) return toast('Please login to send live messages to support');
+      if (!S.uid) { if (window.openAuth) openAuth('login'); return toast('Please login to send live messages to support'); }
       const inp = gId("liveChatInput");
       const txt = inp ? inp.value.trim() : '';
       if (!txt) return;
@@ -2534,15 +2534,15 @@ if (ibBtn) ibBtn.onclick = () => { if (typeof window.mwTriggerInstall === 'funct
       var baseFs = parseFloat(t.dataset.baseFs) || 8;
       t.style.fontSize = baseFs + 'px';
       t.style.letterSpacing = '0px';
-      t.style.width = 'auto';
-      t.style.display = 'inline-block';
+      t.style.width = 'max-content';
+      t.style.display = 'block';
       t.style.position = 'relative';
       t.style.left = '0px';
       t.style.marginLeft = '0px';
       t.style.marginRight = '0px';
       var w0 = t.getBoundingClientRect().width;
       if (w0 > W && w0 > 0) {
-        var adjFs = Math.max(5.2, baseFs * (W / w0) * 0.98);
+        var adjFs = Math.max(5.0, baseFs * (W / w0) * 0.98);
         t.style.fontSize = adjFs.toFixed(2) + 'px';
         w0 = t.getBoundingClientRect().width;
       }
@@ -2552,7 +2552,7 @@ if (ibBtn) ibBtn.onclick = () => { if (typeof window.mwTriggerInstall === 'funct
         t.style.letterSpacing = ls.toFixed(3) + 'px';
         t.style.marginRight = (-ls).toFixed(3) + 'px';
       }
-      var dx = (mRect.left + bleed) - t.getBoundingClientRect().left;
+      var dx = Math.max(-8, Math.min(8, (mRect.left + bleed) - t.getBoundingClientRect().left));
       t.style.left = dx.toFixed(2) + 'px';
     });
   }
@@ -2568,7 +2568,7 @@ if (ibBtn) ibBtn.onclick = () => { if (typeof window.mwTriggerInstall === 'funct
 /* ===== PV: PROVIDERS, GAMES & SPORTS (LIVE FIREBASE RTDB) ===== */
 (() => {
   const BANNER_MS = 10000;
-  const BASE_CATS = ["All","Slots","Live Casino","Sports","Table Games","Fishing","Crash & Arcade"];
+  const BASE_CATS = ["All","Slots","Live Casino","Crash & Arcade","Sports","Table Games","Fishing"];
   const CAT_LABEL = {All:"All Games"};
   const BASE_SPORTS = [["🏏","ক্রিকেট"],["⚽","ফুটবল"],["🎾","টেনিস"],["🏀","বাস্কেটবল"],["🤼","কাবাডি"],["🎮","ই-স্পোর্টস"]];
   const catOn = c => c === "All" || (typeof isGameCatEnabled !== "function") || isGameCatEnabled(c);
@@ -2683,7 +2683,7 @@ if (ibBtn) ibBtn.onclick = () => { if (typeof window.mwTriggerInstall === 'funct
     const n0 = cols("pvList") * 2, shown = st.showAll ? all : all.slice(0, n0);
     return shown.map(card).join("") + (all.length > n0 ? `<button class="pv-more" onclick="pvMore()">${st.showAll?"কম দেখুন ▲":"আরও দেখুন ("+(all.length-n0)+" টি) ▼"}</button>` : "");
   }
-  const tabs = () => `<select id="pvCatSel" class="mw-sel" aria-label="Game Category" onchange="pvTab(this.value)">${activeCats().map(c => `<option value="${E(c)}" ${c==st.cat?"selected":""}>${E(catTitle(c))}</option>`).join("")}</select>`;
+  const tabs = () => `<div class="pv-tabs" role="tablist" aria-label="Game Categories">${activeCats().map(c => `<button type="button" class="pv-tab ${c===st.cat?"on":""}" role="tab" aria-selected="${c===st.cat?"true":"false"}" onclick="pvTab('${E(c)}')">${E(catTitle(c))}</button>`).join("")}</div>`;
   const spWrap = () => (st.cat === "Sports" && catOn("Sports")) ? sportsRow() : "";
   window.drawList = function() {
     if (!catOn(st.cat)) st.cat = "All";
@@ -2728,7 +2728,10 @@ if (ibBtn) ibBtn.onclick = () => { if (typeof window.mwTriggerInstall === 'funct
     g.innerHTML = banner(st.games, p) + gamesHtml(p, st.games);
   }
   function loadGames(p) {
+    st.games = baseGamesFor(p);
+    drawGames(p);
     if (st.ref) { st.ref.off(); st.ref = null; }
+    if (!fbDb) return;
     st.ref = fbDb.ref("provider_games/" + p.id);
     st.ref.on("value", s => {
       st.rawDbGames = s.val();
@@ -2775,6 +2778,7 @@ if (ibBtn) ibBtn.onclick = () => { if (typeof window.mwTriggerInstall === 'funct
     const spCfg = (typeof CFG !== "undefined" && CFG.sportsConfig && CFG.sportsConfig[n]) || null;
     if (spCfg && spCfg.active === false) return toast(n + " সাময়িকভাবে বন্ধ আছে");
     if (spCfg && spCfg.externalUrl) {
+      if (!S.uid) return window.openAuth ? openAuth('login') : toast('Login to play sports');
       window.launchGameSession({ name: n, url: spCfg.externalUrl, gameCode: spCfg.apiCode || n, provider: "Sportsbook" });
       return;
     }
@@ -2843,11 +2847,21 @@ if (ibBtn) ibBtn.onclick = () => { if (typeof window.mwTriggerInstall === 'funct
       const p = st.providers.find(x => x.id === st.cur);
       if (p) drawGames(p);
     }
+  }, () => {
+    if (!st.providers || !st.providers.length) st.providers = BASE_PROVIDERS;
+    window._mwProviders = st.providers;
+    drawList();
   });
 
   window._mwProviders = st.providers;
   let rz; addEventListener("resize", () => { clearTimeout(rz); rz = setTimeout(() => { if (q$("#pvList") || q$("#pvHome")) drawList(); }, 150); });
-  { const o = q$("#m .hg"); if (o) o.outerHTML = window.homeGames(); }
+  {
+    const hw = q$("#pvHomeWrap");
+    if (hw && !hw.querySelector("#pvList")) {
+      hw.innerHTML = cr(window.homeGames());
+    }
+    if (q$("#pvList") || q$("#pvTabs")) drawList();
+  }
 })();
 </script>
 
@@ -3472,7 +3486,7 @@ if (ibBtn) ibBtn.onclick = () => { if (typeof window.mwTriggerInstall === 'funct
         else { nav(); updBal(); hdr(); }
         if (urlRefCode && !refPrompted) {
           refPrompted = true;
-          setTimeout(() => openAuth('signup'), 450);
+          toast('Referral code ' + urlRefCode + ' saved — login or sign up to play');
         }
       }
     });
@@ -3482,7 +3496,7 @@ if (ibBtn) ibBtn.onclick = () => { if (typeof window.mwTriggerInstall === 'funct
     if (!document.querySelector('#m .screen')) go('home');
     if (urlRefCode && !refPrompted) {
       refPrompted = true;
-      setTimeout(() => openAuth('signup'), 450);
+      toast('Referral code ' + urlRefCode + ' saved — login or sign up to play');
     }
   }
 })();
