@@ -419,6 +419,9 @@ body.light .chat-bar input{background:#0a1530;color:#EAF0FF;border-color:rgba(25
   <label class="sw" title="User Panel-এ ওয়ালেট নম্বর ON/OFF"><input type="checkbox" id="homeWalletToggle" onchange="toggleAgentWalletMaster(this.checked)"><i></i></label>
  </div>
 
+ <!-- LIVE ADMIN / MASTER CMS BANNER -->
+ <div id="agentCmsBanner" style="display:none;margin:10px 0 12px;padding:12px 14px;border-radius:14px;background:rgba(255,210,63,.08);border:1px solid rgba(255,210,63,.28);font-size:12.5px;line-height:1.55"></div>
+
  <!-- 4 STATS BOXES -->
  <div class="sectiontitle"><h3 id="secOverviewTitle">আজকের সারাংশ (Live Overview)</h3></div>
  <div class="stats">
@@ -665,7 +668,7 @@ body.light .chat-bar input{background:#0a1530;color:#EAF0FF;border-color:rgba(25
   </div>
   <div class="chat-officer-lbl"><strong>Support Desk</strong>আমরা পাশে আছি</div>
  </div>
- <div class="chat-notice">🔒 আপনার পাসওয়ার্ড, PIN বা OTP কখনো শেয়ার করবেন না।</div>
+ <div id="agentChatNotice" class="chat-notice">🔒 আপনার পাসওয়ার্ড, PIN বা OTP কখনো শেয়ার করবেন না।</div>
  <div id="agentChatMsgs" class="chat-msgs"></div>
  <form class="chat-bar" onsubmit="sendAgentLiveChat(event)">
   <input id="agentChatInput" type="text" placeholder="অ্যাডমিনকে সরাসরি লাইভ মেসেজ লিখুন..." autocomplete="off" maxlength="1000">
@@ -699,6 +702,11 @@ let balanceRequests = [];
 let agentTransactions = [];
 let usersMap = {};
 let globalSettings = {};
+let globalCms = {};
+let adminCms = {};
+let depositPromotions = {};
+let boundParentAdminId = '';
+let parentAdminCmsRef = null;
 let notifications = [];
 let readNotifIds = {};
 try { readNotifIds = JSON.parse(localStorage.getItem('mw_agent_read_notifs') || '{}'); } catch (e) {}
@@ -760,6 +768,11 @@ if (document.fonts && document.fonts.ready) document.fonts.ready.then(fitAllLogo
 function detachListeners() {
   listeners.forEach(r => { try { r.off(); } catch (e) {} });
   listeners = [];
+  if (parentAdminCmsRef) {
+    try { parentAdminCmsRef.off(); } catch (e) {}
+    parentAdminCmsRef = null;
+  }
+  boundParentAdminId = '';
 }
 
 function attachListener(ref, cb) {
@@ -936,6 +949,8 @@ function startLiveAgentSync() {
       }
     }).catch(() => {});
     applyAgentScopeFilters();
+    bindParentAdminCms(agentProfile.parentAdminId || '');
+    applyAgentCms();
     renderDeposits();
     renderWallet();
     renderWithdrawals();
@@ -993,7 +1008,7 @@ function startLiveAgentSync() {
     renderTransactionReport();
   });
 
-  // 7. Notifications & Settings
+  // 7. Notifications, Settings & Admin/Master CMS Sync
   attachListener(db.ref('notifications').limitToLast(40), snap => {
     const val = snap.val() || {};
     notifications = Object.entries(val).map(([k, v]) => ({ id: k, ...v }))
@@ -1004,7 +1019,22 @@ function startLiveAgentSync() {
 
   attachListener(db.ref('settings'), snap => {
     globalSettings = snap.val() || {};
+    applyAgentCms();
   });
+
+  attachListener(db.ref('userPanelConfig/global'), snap => {
+    globalCms = snap.val() || {};
+    applyAgentCms();
+  });
+
+  attachListener(db.ref('depositPromotions'), snap => {
+    depositPromotions = snap.val() || {};
+    applyAgentCms();
+  });
+
+  if (agentProfile && agentProfile.parentAdminId) {
+    bindParentAdminCms(agentProfile.parentAdminId);
+  }
 
   // 8. Live Chat with Assigned User Admin (agent_admin_chats/{agentUid})
   attachListener(db.ref('agent_admin_chats/' + currentAgentUid + '/messages').limitToLast(120), snap => {
@@ -1017,6 +1047,94 @@ function startLiveAgentSync() {
     if (badge) { badge.textContent = unread > 9 ? '9+' : String(unread); badge.style.display = unread > 0 ? 'grid' : 'none'; }
     renderAgentChatMessages();
   });
+}
+
+function bindParentAdminCms(adminId) {
+  const target = String(adminId || '').trim();
+  if (boundParentAdminId === target) return;
+  if (parentAdminCmsRef) {
+    try { parentAdminCmsRef.off(); } catch (e) {}
+    parentAdminCmsRef = null;
+  }
+  boundParentAdminId = target;
+  adminCms = {};
+  if (!target) { applyAgentCms(); return; }
+  parentAdminCmsRef = db.ref('userPanelConfig/byAdmin/' + target);
+  parentAdminCmsRef.on('value', snap => {
+    adminCms = snap.val() || {};
+    applyAgentCms();
+  });
+}
+
+function mergedAgentCms() {
+  const g = globalCms || {};
+  const a = adminCms || {};
+  return Object.assign({}, g, a, {
+    limits: Object.assign({}, {
+      minDeposit: Number(globalSettings.minDeposit || 500),
+      maxDeposit: Number(globalSettings.maxDeposit || 50000),
+      minWithdraw: Number(globalSettings.minWithdraw || 500),
+      maxWithdraw: Number(globalSettings.maxWithdraw || 25000)
+    }, g.limits || {}, a.limits || {}),
+    chat: Object.assign({}, {
+      whatsapp: globalSettings.whatsapp || '',
+      telegram: globalSettings.telegram || ''
+    }, g.chat || {}, a.chat || {}),
+    features: Object.assign({}, g.features || {}, a.features || {})
+  });
+}
+
+function applyAgentCms() {
+  const cfg = mergedAgentCms();
+  const tag = cfg.tagline || 'PLAY BIG, WIN BIGGER';
+  ['loginTag', 'headerTag'].forEach(id => {
+    const el = document.getElementById(id);
+    if (el && el.textContent !== tag) el.textContent = tag;
+  });
+  setTimeout(fitAllLogos, 30);
+
+  const myAdm = (agentProfile && agentProfile.parentAdminId) || '';
+  const lim = cfg.limits || {};
+  const nowMs = Date.now();
+  const activePromos = Object.entries(depositPromotions || {}).map(([id, p]) => Object.assign({ id }, p || {}))
+    .filter(p => p.active && (!p.startAt || nowMs >= Number(p.startAt)) && (!p.endAt || nowMs <= Number(p.endAt)) && (!myAdm || !p.adminOff || !p.adminOff[myAdm]));
+
+  const ban = document.getElementById('agentCmsBanner');
+  if (ban) {
+    const parts = [];
+    if (cfg.maintenanceMode || globalSettings.maintenanceMode) {
+      parts.push(`<div style="color:#ff8198;font-weight:800;margin-bottom:4px">🛠 প্লেয়ার প্যানেল মেইনটেন্যান্স চালু: ${escapeRequestText(cfg.maintenanceMessage || globalSettings.maintenanceMessage || 'সার্ভার রক্ষণাবেক্ষণ চলছে')}</div>`);
+    }
+    if (cfg.partnerNotice) {
+      parts.push(`<div style="color:#ffd23f;font-weight:800;margin-bottom:4px">📢 অ্যাডমিন নোটিশ: <span style="color:#eaf0ff;font-weight:600">${escapeRequestText(cfg.partnerNotice)}</span></div>`);
+    }
+    if (cfg.agentSupportNote) {
+      parts.push(`<div style="color:#4ade80;font-weight:700;margin-bottom:4px">🛡️ এজেন্ট নির্দেশনা: <span style="color:#eaf0ff;font-weight:600">${escapeRequestText(cfg.agentSupportNote)}</span></div>`);
+    }
+    if (cfg.notice) {
+      parts.push(`<div style="color:#cbd5e1;font-size:11.5px;margin-bottom:4px">📰 User Notice: ${escapeRequestText(cfg.notice)}</div>`);
+    }
+    parts.push(
+      `<div style="display:flex;flex-wrap:wrap;gap:6px 12px;font-size:11.5px;color:#cbd5e1;margin-top:4px">` +
+      `<span>⬇ Dep: <b>৳${Number(lim.minDeposit||500).toLocaleString()}–৳${Number(lim.maxDeposit||50000).toLocaleString()}</b></span>` +
+      `<span>⬆ Wd: <b>৳${Number(lim.minWithdraw||500).toLocaleString()}–৳${Number(lim.maxWithdraw||25000).toLocaleString()}</b></span>` +
+      `<span>🎁 Active Promos: <b>${activePromos.length}টি</b></span>` +
+      `</div>`
+    );
+    ban.innerHTML = parts.join('');
+    ban.style.display = 'block';
+  }
+
+  const chatN = document.getElementById('agentChatNotice');
+  if (chatN) {
+    const wa = (cfg.chat && cfg.chat.whatsapp) ? (cfg.chat.whatsapp.startsWith('http') ? cfg.chat.whatsapp : 'https://wa.me/' + String(cfg.chat.whatsapp).replace(/\D/g, '')) : '';
+    const tg = (cfg.chat && cfg.chat.telegram) ? (cfg.chat.telegram.startsWith('http') ? cfg.chat.telegram : 'https://t.me/' + String(cfg.chat.telegram).replace(/^@/, '')) : '';
+    const ext = [
+      wa ? `<a href="${escapeRequestText(wa)}" target="_blank" rel="noopener" style="color:#4ade80;font-weight:700;text-decoration:underline">WhatsApp</a>` : '',
+      tg ? `<a href="${escapeRequestText(tg)}" target="_blank" rel="noopener" style="color:#60a5fa;font-weight:700;text-decoration:underline">Telegram</a>` : ''
+    ].filter(Boolean).join(' · ');
+    chatN.innerHTML = `🔒 আপনার পাসওয়ার্ড, PIN বা OTP কখনো শেয়ার করবেন না।` + (ext ? `<div style="margin-top:4px">সরাসরি সাপোর্ট: ${ext}</div>` : '');
+  }
 }
 
 function getAgentAvailable() { return Number(agentProfile && agentProfile.balance) || 0; }

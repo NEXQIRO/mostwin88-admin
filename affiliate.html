@@ -315,6 +315,7 @@ body.light .chat-bar input{background:#0a1530!important;color:#EAF0FF!important;
     <button class="btn" onclick="exportCsv()">⇩ Export CSV</button>
    </div>
   </div>
+  <div id="affCmsBanner" class="card" style="display:none;margin-bottom:16px;border-color:rgba(231,184,91,.38);background:linear-gradient(135deg,rgba(231,184,91,.1),transparent)"></div>
   <div class="grid">
    <div class="card"><div class="stat-top">Total Referral Clicks <span class="stat-icon">↗</span></div><div class="stat-value" id="statClicks">0</div><div class="stat-foot" id="statClicksSub"><span class="up">Live</span> link visits</div></div>
    <div class="card"><div class="stat-top">Registered Players <span class="stat-icon">♙</span></div><div class="stat-value" id="statRegistered">0</div><div class="stat-foot" id="statRegisteredSub">Under your code</div></div>
@@ -396,6 +397,7 @@ body.light .chat-bar input{background:#0a1530!important;color:#EAF0FF!important;
     <div><small style="color:var(--muted)">Link status</small><h2 id="linkStatStatus" style="color:var(--green)">Active</h2></div>
    </div>
   </div>
+  <div id="affPromoOffersCard" class="card simple-card" style="display:none;margin-top:16px"></div>
  </section>
 
  <!-- MY REFERRALS + DEPOSIT/WITHDRAWAL ACTIVITY + IP SECURITY -->
@@ -483,6 +485,7 @@ body.light .chat-bar input{background:#0a1530!important;color:#EAF0FF!important;
     <input id="inlineChatInput" style="flex:1;min-width:220px" placeholder="অ্যাডমিনকে সরাসরি লাইভ মেসেজ লিখুন..." autocomplete="off">
     <button type="submit" class="btn btn-primary">Send Live Message</button>
    </form>
+   <div id="affSupportExtLinks" style="display:none;margin-top:12px;padding-top:12px;border-top:1px solid var(--line);font-size:13px"></div>
   </div>
  </section>
 
@@ -597,6 +600,12 @@ let COMM_REQS = [];
 let CAMPAIGNS = [];
 let CHAT_MSGS = [];
 let LIVE_LISTENERS = [];
+let GLOBAL_CMS = {};
+let ADMIN_CMS = {};
+let GLOBAL_SETTINGS = {};
+let DEPOSIT_PROMOS = {};
+let BOUND_CMS_ADMIN = '';
+let PARENT_CMS_REF = null;
 let LIVE_CHAT_OPEN = false;
 let UNREAD_CHAT = 0;
 
@@ -650,6 +659,11 @@ applyTheme(storage.get('theme', 'dark'));
 function detachListeners() {
   LIVE_LISTENERS.forEach(r => { try { r.off(); } catch (e) {} });
   LIVE_LISTENERS = [];
+  if (PARENT_CMS_REF) {
+    try { PARENT_CMS_REF.off(); } catch (e) {}
+    PARENT_CMS_REF = null;
+  }
+  BOUND_CMS_ADMIN = '';
 }
 function attach(ref, cb) {
   ref.on('value', cb, err => console.warn('RTDB listener:', err && err.message));
@@ -784,6 +798,8 @@ function startLiveSync() {
     renderProfile();
     renderCampaigns();
     renderAll();
+    bindParentAdminCms(v.parentAdminId || '');
+    applyAffCms();
   });
 
   db.ref('affiliates/' + MY_UID + '/lastSeen').set(Date.now()).catch(() => {});
@@ -792,6 +808,9 @@ function startLiveSync() {
   attach(db.ref('depositRequests'), snap => { ALL_DEPS = snap.val() || {}; renderAll(); });
   attach(db.ref('withdrawalRequests'), snap => { ALL_WDS = snap.val() || {}; renderAll(); });
   attach(db.ref('game_transactions').limitToLast(1500), snap => { ALL_GTX = snap.val() || {}; renderAll(); });
+  attach(db.ref('settings'), snap => { GLOBAL_SETTINGS = snap.val() || {}; applyAffCms(); });
+  attach(db.ref('userPanelConfig/global'), snap => { GLOBAL_CMS = snap.val() || {}; applyAffCms(); });
+  attach(db.ref('depositPromotions'), snap => { DEPOSIT_PROMOS = snap.val() || {}; applyAffCms(); });
 
   attach(db.ref('notifications'), snap => {
     const val = snap.val() || {};
@@ -817,6 +836,114 @@ function startLiveSync() {
     updateChatBadges();
     renderChatMessages();
   });
+}
+
+function bindParentAdminCms(adminId) {
+  const target = String(adminId || '').trim();
+  if (BOUND_CMS_ADMIN === target) return;
+  if (PARENT_CMS_REF) {
+    try { PARENT_CMS_REF.off(); } catch (e) {}
+    PARENT_CMS_REF = null;
+  }
+  BOUND_CMS_ADMIN = target;
+  ADMIN_CMS = {};
+  if (!target) { applyAffCms(); return; }
+  PARENT_CMS_REF = db.ref('userPanelConfig/byAdmin/' + target);
+  PARENT_CMS_REF.on('value', snap => {
+    ADMIN_CMS = snap.val() || {};
+    applyAffCms();
+  });
+}
+
+function mergedAffCms() {
+  const g = GLOBAL_CMS || {};
+  const a = ADMIN_CMS || {};
+  return Object.assign({}, g, a, {
+    limits: Object.assign({}, {
+      minDeposit: Number(GLOBAL_SETTINGS.minDeposit || 500),
+      maxDeposit: Number(GLOBAL_SETTINGS.maxDeposit || 50000),
+      minWithdraw: Number(GLOBAL_SETTINGS.minWithdraw || 500),
+      maxWithdraw: Number(GLOBAL_SETTINGS.maxWithdraw || 25000)
+    }, g.limits || {}, a.limits || {}),
+    chat: Object.assign({}, {
+      whatsapp: GLOBAL_SETTINGS.whatsapp || '',
+      telegram: GLOBAL_SETTINGS.telegram || ''
+    }, g.chat || {}, a.chat || {}),
+    features: Object.assign({}, g.features || {}, a.features || {})
+  });
+}
+
+function applyAffCms() {
+  const cfg = mergedAffCms();
+  const tag = cfg.tagline || 'PLAY BIG, WIN BIGGER';
+  document.querySelectorAll('.brand-mark .tagline').forEach(el => {
+    if (el.textContent !== tag) el.textContent = tag;
+  });
+  if (typeof window.mwFitLogos === 'function') setTimeout(window.mwFitLogos, 30);
+
+  const myAdm = (MY_PROF && MY_PROF.parentAdminId) || '';
+  const lim = cfg.limits || {};
+  const nowMs = Date.now();
+  const activePromos = Object.entries(DEPOSIT_PROMOS || {}).map(([id, p]) => Object.assign({ id }, p || {}))
+    .filter(p => p.active && (!p.startAt || nowMs >= Number(p.startAt)) && (!p.endAt || nowMs <= Number(p.endAt)) && (!myAdm || !p.adminOff || !p.adminOff[myAdm]));
+
+  const dailyAmt = Number(cfg.dailyBonusAmount != null ? cfg.dailyBonusAmount : 50);
+  const refPct = Number(cfg.referralBonusPercent != null ? cfg.referralBonusPercent : 20);
+
+  const ban = document.getElementById('affCmsBanner');
+  if (ban) {
+    const lines = [];
+    if (cfg.maintenanceMode || GLOBAL_SETTINGS.maintenanceMode) {
+      lines.push(`<div style="color:var(--red);font-weight:700;margin-bottom:4px">🛠 Player Maintenance Active: ${esc(cfg.maintenanceMessage || GLOBAL_SETTINGS.maintenanceMessage || 'Server maintenance in progress')}</div>`);
+    }
+    if (cfg.partnerNotice) {
+      lines.push(`<div style="color:var(--gold);font-weight:700;margin-bottom:4px">📢 Admin Announcement: <span style="color:var(--text);font-weight:500">${esc(cfg.partnerNotice)}</span></div>`);
+    }
+    if (cfg.affiliatePromoText) {
+      lines.push(`<div style="color:var(--green);font-weight:700;margin-bottom:4px">🎯 Promo Brief: <span style="color:var(--text);font-weight:500">${esc(cfg.affiliatePromoText)}</span></div>`);
+    }
+    if (cfg.notice) {
+      lines.push(`<div style="color:var(--muted);font-size:12px;margin-bottom:6px">📰 User Ticker: ${esc(cfg.notice)}</div>`);
+    }
+    lines.push(
+      `<div style="display:flex;flex-wrap:wrap;gap:8px 16px;font-size:12px;color:var(--muted)">` +
+      `<span>🎁 Player Daily Bonus: <b style="color:var(--gold)">৳${dailyAmt}</b></span>` +
+      `<span>🤝 Referral Bonus: <b style="color:var(--gold)">${refPct}%</b></span>` +
+      `<span>⬇ Deposit: <b>৳${Number(lim.minDeposit||500).toLocaleString()}–৳${Number(lim.maxDeposit||50000).toLocaleString()}</b></span>` +
+      `<span>💎 Active Deposit Offers: <b style="color:var(--green)">${activePromos.length}</b></span>` +
+      `</div>`
+    );
+    ban.innerHTML = lines.join('');
+    ban.style.display = 'block';
+  }
+
+  const offerBox = document.getElementById('affPromoOffersCard');
+  if (offerBox) {
+    if (activePromos.length || cfg.affiliatePromoText) {
+      offerBox.innerHTML = `<h2 style="margin-top:0">🎁 Active Player Offers to Promote</h2>` +
+        (cfg.affiliatePromoText ? `<p style="color:var(--gold);font-weight:600">${esc(cfg.affiliatePromoText)}</p>` : '') +
+        (activePromos.length ? `<div style="display:grid;gap:8px">` + activePromos.map(p => `<div style="padding:10px 12px;border:1px solid var(--line);border-radius:10px;display:flex;justify-content:space-between;align-items:center;gap:10px;flex-wrap:wrap"><div><b>${esc(p.name)}</b><br><small style="color:var(--muted)">Min Deposit ৳${Number(p.minDeposit||0).toLocaleString()}${p.turnoverMultiplier?' · '+p.turnoverMultiplier+'x turnover':''}</small></div><span class="status">${esc(p.bonusType==='percent'?p.bonusValue+'% Bonus':'৳'+p.bonusValue+' Bonus')}</span></div>`).join('') + `</div>` : `<p style="color:var(--muted)">No special deposit bonus campaigns active right now.</p>`);
+      offerBox.style.display = 'block';
+    } else {
+      offerBox.style.display = 'none';
+    }
+  }
+
+  const extBox = document.getElementById('affSupportExtLinks');
+  if (extBox) {
+    const wa = (cfg.chat && cfg.chat.whatsapp) ? (cfg.chat.whatsapp.startsWith('http') ? cfg.chat.whatsapp : 'https://wa.me/' + String(cfg.chat.whatsapp).replace(/\D/g, '')) : '';
+    const tg = (cfg.chat && cfg.chat.telegram) ? (cfg.chat.telegram.startsWith('http') ? cfg.chat.telegram : 'https://t.me/' + String(cfg.chat.telegram).replace(/^@/, '')) : '';
+    const btns = [
+      wa ? `<a class="btn" href="${esc(wa)}" target="_blank" rel="noopener">💬 WhatsApp Support</a>` : '',
+      tg ? `<a class="btn" href="${esc(tg)}" target="_blank" rel="noopener">✈ Telegram Support</a>` : ''
+    ].filter(Boolean);
+    if (btns.length) {
+      extBox.innerHTML = `<div style="display:flex;gap:10px;flex-wrap:wrap;align-items:center"><span style="color:var(--muted)">Direct Channels:</span>${btns.join('')}</div>`;
+      extBox.style.display = 'block';
+    } else {
+      extBox.style.display = 'none';
+    }
+  }
 }
 
 /* ==================== DATA AGGREGATION ==================== */

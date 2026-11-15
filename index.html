@@ -3691,24 +3691,24 @@
           </div>
         </section>
 
-        <!-- ==================== USER PANEL LIVE CONTROL (user.html CMS & Providers) ==================== -->
+        <!-- ==================== USER PANEL LIVE CONTROL (user.html A-to-Z Visual CMS) ==================== -->
         <section id="view-userpanel" class="view-section">
           <div class="card accent-border" style="margin-bottom: 18px;">
             <div style="display:flex; align-items:center; justify-content:space-between; flex-wrap:wrap; gap:12px;">
               <div>
-                <h3 style="margin:0 0 4px; color:var(--primary); font-size:1.05rem;">📱 ইউজার প্যানেল (user.html) লাইভ কন্ট্রোল</h3>
-                <p style="margin:0; font-size:0.82rem; color:var(--text-dim);">আপনার ইউজার প্যানেলের নোটিশ, ট্যাগলাইন, সাপোর্ট লিংক, পেমেন্ট নম্বর ও স্লাইডার রিয়েল-টাইমে নিয়ন্ত্রণ করুন।</p>
+                <h3 style="margin:0 0 4px; color:var(--primary); font-size:1.05rem;">📱 ইউজার প্যানেল (user.html) A-to-Z লাইভ কন্ট্রোল ও ডাউনলাইন CMS</h3>
+                <p style="margin:0; font-size:0.82rem; color:var(--text-dim);">মাস্টার অ্যাডমিনের দেওয়া পারমিশন অনুযায়ী আপনার ইউজার প্যানেল, প্রমোশন, বোনাস, VIP, লিমিট, অফার, ফুটার এবং এজেন্ট/অ্যাফিলিয়েটের লাইভ ঘোষণা নিয়ন্ত্রণ করুন।</p>
               </div>
               <div style="display:flex; gap:10px; flex-wrap:wrap; align-items:center;">
                 <a id="ua-up-open-link" href="user.html" target="_blank" class="btn btn-outline btn-sm">↗ ইউজার প্যানেল খুলুন</a>
-                <button type="button" class="btn btn-primary" onclick="saveUserPanelConfigAdmin()">💾 সেভ ও পাবলিশ করুন</button>
+                <button type="button" class="btn btn-primary" onclick="saveUserPanelConfigAdmin()">💾 সব পরিবর্তন সেভ ও পাবলিশ করুন</button>
               </div>
             </div>
           </div>
 
           <div style="display:grid; grid-template-columns:repeat(auto-fit, minmax(290px, 1fr)); gap:16px; margin-bottom:16px;">
-            <div class="card">
-              <div class="card-header"><div class="card-title"><span>📢 ব্র্যান্ড, নোটিশ ও মেইনটেন্যান্স</span></div></div>
+            <div class="card" data-up-perm="up_brand_notice">
+              <div class="card-header"><div class="card-title"><span>📢 ১. ব্র্যান্ড, নোটিশ ও মেইনটেন্যান্স</span></div></div>
               <div style="display:flex; flex-direction:column; gap:10px;">
                 <div class="form-group">
                   <label>ব্র্যান্ড ট্যাগলাইন (Logo Tagline)</label>
@@ -3716,7 +3716,7 @@
                 </div>
                 <div class="form-group">
                   <label>হোম পেজ চলমান নোটিশ (Marquee)</label>
-                  <textarea id="ua-up-notice" class="form-control" rows="3" placeholder="স্বাগতম MOSTWIN88-এ..."></textarea>
+                  <textarea id="ua-up-notice" class="form-control" rows="2" placeholder="স্বাগতম MOSTWIN88-এ..."></textarea>
                 </div>
                 <label style="display:flex; align-items:center; gap:8px; cursor:pointer; font-size:0.85rem;">
                   <input type="checkbox" id="ua-up-maint" style="width:auto;"> ইউজার প্যানেল মেইনটেন্যান্স মোড (সাইট সাময়িক বন্ধ)
@@ -3728,8 +3728,28 @@
               </div>
             </div>
 
-            <div class="card">
-              <div class="card-header"><div class="card-title"><span>💬 সাপোর্ট ও পেমেন্ট ওভাররাইড</span></div></div>
+            <div class="card" data-up-perm="up_partner_notice">
+              <div class="card-header"><div class="card-title"><span>📣 ২. এজেন্ট ও অ্যাফিলিয়েট ডাউনলাইন ঘোষণা</span></div></div>
+              <div style="display:flex; flex-direction:column; gap:10px;">
+                <div class="form-group">
+                  <label>সকল এজেন্ট ও অ্যাফিলিয়েটের জন্য লাইভ নোটিশ</label>
+                  <textarea id="ua-up-partner-notice" class="form-control" rows="2" placeholder="আপনার অধীনস্থ এজেন্ট ও অ্যাফিলিয়েট ড্যাশবোর্ডে এই ঘোষণা দেখাবে..."></textarea>
+                </div>
+                <div class="form-group">
+                  <label>শুধু এজেন্টদের জন্য বিশেষ নির্দেশনা</label>
+                  <input type="text" id="ua-up-agent-note" class="form-control" placeholder="দ্রুত ডিপোজিট যাচাই ও সাপোর্ট সংক্রান্ত বার্তা...">
+                </div>
+                <div class="form-group">
+                  <label>শুধু অ্যাফিলিয়েটদের জন্য প্রোমো/কমিশন বার্তা</label>
+                  <input type="text" id="ua-up-aff-promo" class="form-control" placeholder="নতুন অফার ও ক্যাম্পেইন নির্দেশনা...">
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="card" style="margin-bottom:16px;" data-up-perm="up_limits">
+            <div class="card-header"><div class="card-title"><span>💬 ৩. সাপোর্ট, পেমেন্ট নম্বর ও ডিপোজিট/উইথড্র লিমিট</span></div></div>
+            <div style="display:grid; grid-template-columns:repeat(auto-fit, minmax(260px, 1fr)); gap:12px;">
               <div style="display:flex; flex-direction:column; gap:10px;">
                 <div class="form-row">
                   <div class="form-group"><label>WhatsApp লিংক/নম্বর</label><input type="text" id="ua-up-wa" class="form-control" placeholder="+8801..."></div>
@@ -3739,6 +3759,16 @@
                   <label>সাপোর্ট অফিসারের ছবির URL (প্রতি লাইনে একটি)</label>
                   <textarea id="ua-up-officers" class="form-control" rows="2" placeholder="https://..."></textarea>
                 </div>
+                <div class="form-row">
+                  <div class="form-group"><label>সর্বনিম্ন ডিপোজিট (৳)</label><input type="number" id="ua-up-min-dep" class="form-control" min="1" value="500"></div>
+                  <div class="form-group"><label>সর্বোচ্চ ডিপোজিট (৳)</label><input type="number" id="ua-up-max-dep" class="form-control" min="10" value="50000"></div>
+                </div>
+                <div class="form-row">
+                  <div class="form-group"><label>সর্বনিম্ন উইথড্র (৳)</label><input type="number" id="ua-up-min-wd" class="form-control" min="1" value="500"></div>
+                  <div class="form-group"><label>সর্বোচ্চ উইথড্র (৳)</label><input type="number" id="ua-up-max-wd" class="form-control" min="10" value="25000"></div>
+                </div>
+              </div>
+              <div style="display:flex; flex-direction:column; gap:10px;">
                 <div class="form-row">
                   <div class="form-group"><label>bKash নম্বর</label><input type="text" id="ua-up-bk" class="form-control" placeholder="017..."></div>
                   <div class="form-group"><label>Nagad নম্বর</label><input type="text" id="ua-up-ng" class="form-control" placeholder="018..."></div>
@@ -3755,8 +3785,47 @@
             </div>
           </div>
 
-          <div class="card" style="margin-bottom:16px;">
-            <div class="card-header"><div class="card-title"><span>🎞️ হিরো স্লাইডার ম্যানেজার (ইউজার প্যানেল হোম স্লাইডার)</span></div></div>
+          <div class="card" style="margin-bottom:16px;" data-up-perm="up_sections">
+            <div class="card-header"><div class="card-title"><span>🧩 ৪. ইউজার প্যানেল সেকশন ও ফিচার কন্ট্রোল (ON / OFF)</span></div></div>
+            <p style="font-size:0.82rem;color:var(--text-dim);margin-bottom:10px;">আপনার অধীনস্থ ইউজার প্যানেলে কোন কোন অপশন ও সেকশন দেখাবে বা চালু থাকবে তা এখান থেকে নিয়ন্ত্রণ করুন।</p>
+            <div id="ua-up-features-grid" style="display:grid; grid-template-columns:repeat(auto-fit, minmax(195px, 1fr)); gap:8px;"></div>
+          </div>
+
+          <div class="card" style="margin-bottom:16px;" data-up-perm="up_promos">
+            <div class="card-header"><div class="card-title"><span>🎁 ৫. প্রমোশন কার্ড, ডেইলি বোনাস, রেফারেল % ও VIP লেভেল</span></div></div>
+            <div style="display:grid; grid-template-columns:repeat(auto-fit, minmax(190px, 1fr)); gap:10px; margin-bottom:14px;">
+              <label style="display:flex;align-items:center;gap:8px;padding:10px;border:1px solid var(--border-subtle);border-radius:10px;background:var(--bg-inner);cursor:pointer;font-size:0.85rem;">
+                <input type="checkbox" id="ua-up-daily-on" style="width:auto;" checked> ডেইলি বোনাস ক্লেইম চালু
+              </label>
+              <div class="form-group"><label>ডেইলি বোনাস পরিমাণ (৳)</label><input type="number" id="ua-up-daily-amt" class="form-control" min="0" value="50"></div>
+              <div class="form-group"><label>প্লেয়ার রেফারেল বোনাস (%)</label><input type="number" id="ua-up-ref-pct" class="form-control" min="0" max="100" value="20"></div>
+            </div>
+            <div style="font-weight:700;font-size:0.88rem;margin-bottom:8px;">প্রমোশন কার্ড তালিকা (Promo &amp; Bonus পেজ)</div>
+            <div id="ua-promos-visual-list" style="margin-bottom:12px;"></div>
+            <div style="padding:12px;border:1px solid var(--border-subtle);border-radius:10px;background:var(--bg-inner);margin-bottom:14px;">
+              <div style="font-weight:700;font-size:0.86rem;color:var(--primary);margin-bottom:8px;" id="ua-promo-form-title">+ নতুন প্রমোশন কার্ড যোগ করুন</div>
+              <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(165px,1fr));gap:8px;">
+                <input type="text" id="ua-pr-id" class="form-control" placeholder="Promo ID (e.g. daily_bonus)">
+                <input type="text" id="ua-pr-i" class="form-control" placeholder="আইকন (🎁)" value="🎁">
+                <input type="text" id="ua-pr-t" class="form-control" placeholder="শিরোনাম">
+                <input type="text" id="ua-pr-d" class="form-control" placeholder="বিবরণ">
+                <select id="ua-pr-go" class="form-control"><option value="">Direct Claim Button</option><option value="dep">Deposit পেজে নিন</option><option value="bonus">Bonus পেজে নিন</option><option value="vip">VIP পেজে নিন</option><option value="ref">Referral পেজে নিন</option><option value="games">Games পেজে নিন</option></select>
+                <input type="number" id="ua-pr-v" class="form-control" placeholder="বোনাস ৳" value="50">
+              </div>
+              <div style="display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:8px;margin-top:8px;">
+                <label style="display:flex;align-items:center;gap:6px;font-size:0.82rem;"><input type="checkbox" id="ua-pr-act" checked style="width:auto;"> Active রাখুন</label>
+                <div style="display:flex;gap:8px;">
+                  <button type="button" id="ua-pr-cancel-btn" class="btn btn-secondary btn-sm" style="display:none;" onclick="uaPromoCancel()">বাতিল</button>
+                  <button type="button" id="ua-pr-save-btn" class="btn btn-primary btn-sm" onclick="uaPromoSave()">+ প্রমোশন যোগ করুন</button>
+                </div>
+              </div>
+            </div>
+            <div style="font-weight:700;font-size:0.88rem;margin-bottom:8px;">👑 VIP লেভেল ও পয়েন্ট সেটিংস (৫টি লেভেল)</div>
+            <div id="ua-vip-grid" style="display:flex;flex-direction:column;gap:8px;"></div>
+          </div>
+
+          <div class="card" style="margin-bottom:16px;" data-up-perm="up_slides">
+            <div class="card-header"><div class="card-title"><span>🎞️ ৬. হিরো স্লাইডার ম্যানেজার (ইউজার প্যানেল হোম স্লাইডার)</span></div></div>
             <p style="font-size:0.82rem;color:var(--text-dim);margin-bottom:12px;">এখানে যোগ করা স্লাইডার সরাসরি আপনার ইউজার প্যানেলের হোম পেজে দেখা যাবে। মাস্টার অ্যাডমিন লক করা স্লাইডারগুলো ডিলিট/এডিট করা যাবে না।</p>
             <div id="ua-slides-visual-list" style="margin-bottom:14px;"></div>
             <div style="padding:12px;border:1px solid var(--border-subtle);border-radius:10px;background:var(--bg-inner);">
@@ -3792,14 +3861,65 @@
             </div>
           </div>
 
+          <div style="display:grid; grid-template-columns:repeat(auto-fit, minmax(290px, 1fr)); gap:16px; margin-bottom:16px;" data-up-perm="up_offers">
+            <div class="card">
+              <div class="card-header"><div class="card-title"><span>🏷️ ৭. স্পেশাল অফার কার্ডস (Special Offers)</span></div></div>
+              <div id="ua-offers-visual-list" style="margin-bottom:12px;"></div>
+              <div style="padding:10px;border:1px solid var(--border-subtle);border-radius:10px;background:var(--bg-inner);">
+                <div style="font-weight:700;font-size:0.84rem;color:var(--primary);margin-bottom:8px;" id="ua-of-form-title">+ নতুন স্পেশাল অফার</div>
+                <div style="display:grid;grid-template-columns:1fr 1fr;gap:6px;">
+                  <input type="text" id="ua-of-t" class="form-control" placeholder="শিরোনাম">
+                  <input type="text" id="ua-of-d" class="form-control" placeholder="সাবটাইটেল">
+                  <input type="text" id="ua-of-b" class="form-control" placeholder="বাটন (Deposit Now)" value="Deposit Now">
+                  <input type="text" id="ua-of-a" class="form-control" placeholder="আইকন (💰)" value="💰">
+                  <select id="ua-of-go" class="form-control"><option value="dep">Deposit</option><option value="promo">Promo</option><option value="bonus">Bonus</option><option value="vip">VIP</option><option value="ref">Referral</option><option value="games">Games</option></select>
+                  <input type="text" id="ua-of-img" class="form-control" placeholder="ইমেজ URL (ঐচ্ছিক)">
+                </div>
+                <div style="display:flex;gap:8px;justify-content:flex-end;margin-top:8px;">
+                  <button type="button" id="ua-of-cancel-btn" class="btn btn-secondary btn-sm" style="display:none;" onclick="uaBannerCancel('offer')">বাতিল</button>
+                  <button type="button" id="ua-of-save-btn" class="btn btn-primary btn-sm" onclick="uaBannerSave('offer')">+ অফার যোগ করুন</button>
+                </div>
+              </div>
+            </div>
+
+            <div class="card">
+              <div class="card-header"><div class="card-title"><span>🖥️ ৮. ডেস্কটপ সাইড ব্যানার (Side Banners)</span></div></div>
+              <div id="ua-side-visual-list" style="margin-bottom:12px;"></div>
+              <div style="padding:10px;border:1px solid var(--border-subtle);border-radius:10px;background:var(--bg-inner);">
+                <div style="font-weight:700;font-size:0.84rem;color:var(--primary);margin-bottom:8px;" id="ua-sb-form-title">+ নতুন সাইড ব্যানার</div>
+                <div style="display:grid;grid-template-columns:1fr 1fr;gap:6px;">
+                  <input type="text" id="ua-sb-t" class="form-control" placeholder="শিরোনাম">
+                  <input type="text" id="ua-sb-d" class="form-control" placeholder="বিবরণ">
+                  <input type="text" id="ua-sb-b" class="form-control" placeholder="বাটন (Play Now)" value="Play Now">
+                  <input type="text" id="ua-sb-a" class="form-control" placeholder="আইকন (🔥)" value="🔥">
+                  <select id="ua-sb-go" class="form-control"><option value="games">Games</option><option value="promo">Promo</option><option value="dep">Deposit</option><option value="vip">VIP</option><option value="ref">Referral</option></select>
+                  <input type="text" id="ua-sb-img" class="form-control" placeholder="ইমেজ URL (ঐচ্ছিক)">
+                </div>
+                <div style="display:flex;gap:8px;justify-content:flex-end;margin-top:8px;">
+                  <button type="button" id="ua-sb-cancel-btn" class="btn btn-secondary btn-sm" style="display:none;" onclick="uaBannerCancel('side')">বাতিল</button>
+                  <button type="button" id="ua-sb-save-btn" class="btn btn-primary btn-sm" onclick="uaBannerSave('side')">+ সাইড ব্যানার যোগ</button>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="card" style="margin-bottom:16px;" data-up-perm="up_footer">
+            <div class="card-header"><div class="card-title"><span>🛡️ ৯. ফুটার, স্পনসর, অ্যাম্বাসেডর ও লাইসেন্স ম্যানেজার</span></div></div>
+            <div id="ua-footer-visual-list" style="display:grid;grid-template-columns:repeat(auto-fit,minmax(250px,1fr));gap:10px;margin-bottom:12px;"></div>
+            <div class="form-row">
+              <div class="form-group"><label>Responsible Gaming Note</label><input type="text" id="ua-up-resp-note" class="form-control" placeholder="Gambling can be addictive..."></div>
+              <div class="form-group"><label>Copyright Text</label><input type="text" id="ua-up-copyright" class="form-control" placeholder="© MOSTWIN88. All rights reserved. 2026"></div>
+            </div>
+          </div>
+
           <div class="card" style="margin-bottom:16px;">
             <details>
-              <summary style="cursor:pointer;font-weight:700;font-size:0.9rem;color:var(--primary);">⚙️ অ্যাডভান্সড JSON এডিটর (স্লাইডার / অফার / ফুটার)</summary>
+              <summary style="cursor:pointer;font-weight:700;font-size:0.9rem;color:var(--primary);">⚙️ অ্যাডভান্সড JSON এডিটর (ব্যাকআপ)</summary>
               <div style="display:grid; grid-template-columns:repeat(auto-fit, minmax(240px, 1fr)); gap:12px; margin-top:12px;">
-                <div class="form-group"><label>Hero Slides JSON</label><textarea id="ua-up-slides" class="form-control" rows="4" placeholder='[{"t":"Welcome","d":"Bonus","go":"games","img":""}]'></textarea></div>
-                <div class="form-group"><label>Special Offers JSON</label><textarea id="ua-up-offers" class="form-control" rows="4" placeholder='[{"t":"100% Bonus","d":"Up to 5000","b":"Deposit","go":"dep","img":""}]'></textarea></div>
-                <div class="form-group"><label>Side Banners JSON</label><textarea id="ua-up-sidebans" class="form-control" rows="4" placeholder='[{"t":"VIP","d":"Play & Earn","b":"VIP","go":"vip"}]'></textarea></div>
-                <div class="form-group"><label>Footer Sponsors/Partners JSON</label><textarea id="ua-up-footer" class="form-control" rows="4" placeholder='{"sponsors":[],"ambassadors":[],"partners":[],"licenses":[]}'></textarea></div>
+                <div class="form-group" data-up-perm="up_slides"><label>Hero Slides JSON</label><textarea id="ua-up-slides" class="form-control" rows="4" placeholder='[{"t":"Welcome","d":"Bonus","go":"games","img":""}]'></textarea></div>
+                <div class="form-group" data-up-perm="up_offers"><label>Special Offers JSON</label><textarea id="ua-up-offers" class="form-control" rows="4" placeholder='[{"t":"100% Bonus","d":"Up to 5000","b":"Deposit","go":"dep","img":""}]'></textarea></div>
+                <div class="form-group" data-up-perm="up_offers"><label>Side Banners JSON</label><textarea id="ua-up-sidebans" class="form-control" rows="4" placeholder='[{"t":"VIP","d":"Play & Earn","b":"VIP","go":"vip"}]'></textarea></div>
+                <div class="form-group" data-up-perm="up_footer"><label>Footer Sponsors/Partners JSON</label><textarea id="ua-up-footer" class="form-control" rows="4" placeholder='{"sponsors":[],"ambassadors":[],"partners":[],"licenses":[]}'></textarea></div>
               </div>
             </details>
           </div>
@@ -4927,9 +5047,11 @@
         renderNotifications();
       });
 
-      // 12. User Panel CMS & Casino Providers
-      db.ref('userPanelConfig/global/slides').on('value', (snap) => {
-        STATE.masterSlides = Array.isArray(snap.val()) ? snap.val() : [];
+      // 12. User Panel CMS (Full Global + Per-Admin Override)
+      db.ref('userPanelConfig/global').on('value', (snap) => {
+        const g = snap.val() || {};
+        STATE.globalUserPanelConfig = g;
+        STATE.masterSlides = Array.isArray(g.slides) ? g.slides : [];
         renderUserPanelControl();
         renderBannersList();
       });
@@ -10121,7 +10243,15 @@
       "set_pay":      { "fns": ["handleSavePaymentSettings", "handleSaveSocialSettings"] },
       "banners":      { "fns": ["handleAddBanner", "handleDeleteBanner"] },
       "ads_manage":   { "fns": ["handleSaveHtmlAd", "handleDeleteHtmlAd"] },
-      "ref_link":     { "fns": ["npCopyRefLink"], "extraCss": "#np-ref-card{display:none !important}" }
+      "ref_link":     { "fns": ["npCopyRefLink"], "extraCss": "#np-ref-card{display:none !important}" },
+      "up_brand_notice": { "extraCss": "[data-up-perm=\"up_brand_notice\"]{display:none !important}" },
+      "up_slides":       { "fns": ["saveUserAdminSlide", "handleDeleteAdminSlide", "moveUserAdminSlide", "handleAddBanner"], "extraCss": "[data-up-perm=\"up_slides\"]{display:none !important}" },
+      "up_offers":       { "fns": ["uaBannerSave", "uaBannerDel"], "extraCss": "[data-up-perm=\"up_offers\"]{display:none !important}" },
+      "up_promos":       { "fns": ["uaPromoSave", "uaPromoToggle", "uaPromoDel"], "extraCss": "[data-up-perm=\"up_promos\"]{display:none !important}" },
+      "up_limits":       { "extraCss": "[data-up-perm=\"up_limits\"]{display:none !important}" },
+      "up_sections":     { "extraCss": "[data-up-perm=\"up_sections\"]{display:none !important}" },
+      "up_footer":       { "fns": ["uaFooterAddItem", "uaFooterDelItem"], "extraCss": "[data-up-perm=\"up_footer\"]{display:none !important}" },
+      "up_partner_notice": { "extraCss": "[data-up-perm=\"up_partner_notice\"]{display:none !important}" }
     };
     var FEATURES = {}, MY_FEATURES = {};
     // A feature is ON only if it is on for everyone (adminFeatures) AND on for this admin (admins/{uid}/features)
@@ -10986,68 +11116,369 @@
     try { await persistAdminSlidesList(list); } catch (e) { showToast(e.message, 'error'); }
   }
 
+  var UA_DEFAULT_BANNERS = [
+    { a: '💰', t: '100% Deposit Bonus', d: 'Double your deposit, up to ৳5,000', b: 'Deposit Now', go: 'dep', h: 265, h2: 305 },
+    { a: '💸', t: '10% Weekly Cashback', d: 'Get back part of every loss each Monday', b: 'Learn More', go: 'bonus', h: 150, h2: 190 },
+    { a: '🤝', t: 'Refer a Friend, Earn 20%', d: 'Invite friends and earn on their deposit', b: 'Invite Now', go: 'ref', h: 15, h2: 40 },
+    { a: '👑', t: 'VIP Rewards Club', d: 'Level up for higher cashback and gifts', b: 'Upgrade', go: 'vip', h: 40, h2: 28 },
+    { a: '🎁', t: 'Daily Bonus up to ৳50', d: 'Log in every day and claim your reward', b: 'Claim Now', go: 'promo', h: 330, h2: 355 },
+    { a: '🚀', t: 'Rocket Crash Action', d: 'Catch massive multipliers live', b: 'Play Now', go: 'games', h: 205, h2: 235 }
+  ];
+  var UA_DEFAULT_SIDE = [
+    { a: '🎰', t: 'Lucky Spin', d: 'Spin daily and win a free bonus', b: 'Spin Now', go: 'games', h: 300, h2: 335 },
+    { a: '🔥', t: 'Live Crash Arena', d: 'Instant multiplier rounds 24/7', b: 'Play Now', go: 'games', h: 38, h2: 18 },
+    { a: '🎁', t: 'Free Bet Friday', d: 'Get a free bet bonus every Friday', b: 'Claim Now', go: 'promo', h: 160, h2: 195 }
+  ];
+  var UA_DEFAULT_PROMOS = [
+    { id: 'daily_bonus', i: '🎁', t: 'Daily Bonus', d: 'Log in daily and collect ৳50', v: 50, go: '', active: true },
+    { id: 'welcome_bonus', i: '🏆', t: 'Welcome Bonus', d: '100% on your first deposit, up to ৳5,000', v: 0, go: 'dep', active: true },
+    { id: 'cashback_offer', i: '💸', t: 'Cashback Offer', d: '10% weekly cashback on net losses', v: 0, go: 'bonus', active: true },
+    { id: 'weekend_reload', i: '⭐', t: 'Special Promotion', d: 'Weekend reload bonus on deposits', v: 0, go: 'dep', active: true }
+  ];
+  var UA_DEFAULT_VIP = [
+    { ic: '🥉', name: 'Bronze', minXp: 0, cashback: 2, desc: '0 pts · 2% cashback' },
+    { ic: '🥈', name: 'Silver', minXp: 2000, cashback: 5, desc: '2,000 pts · 5% cashback' },
+    { ic: '🥇', name: 'Gold', minXp: 5000, cashback: 10, desc: '5,000 pts · 10% cashback' },
+    { ic: '💠', name: 'Platinum', minXp: 10000, cashback: 15, desc: '10,000 pts · 15% cashback' },
+    { ic: '💎', name: 'Diamond', minXp: 25000, cashback: 20, desc: '25,000 pts · personal manager' }
+  ];
+  var UA_DEFAULT_FOOTER = {
+    sponsors: [{ n: 'Official Arena Partner', r: 'Title Sponsor', y: '2026', ic: '🏏' }, { n: 'Premier Cricket League', r: 'Principal Sponsor', y: '2026', ic: '🏆' }],
+    ambassadors: [{ n: 'Pro Gaming Ambassador', y: '2026', ic: '⭐' }, { n: 'VIP Lounge Host', y: '2026', ic: '👑' }],
+    partners: [{ n: 'Verified Payments BD', ic: '🤝' }],
+    licenses: [{ n: 'Curacao eGaming', d: 'Licensed & Regulated iGaming Operator', ic: '🛡️' }],
+    responsibleNote: 'Gambling can be addictive. Play responsibly, set limits, and never bet more than you can afford to lose.',
+    copyright: '© MOSTWIN88. All rights reserved. 2026'
+  };
+  var UA_FEAT_DEFS = [
+    ['deposits', 'ডিপোজিট অপশন'], ['withdrawals', 'উইথড্র অপশন'], ['liveChat', 'লাইভ সাপোর্ট চ্যাট'],
+    ['referral', 'রেফারেল প্রোগ্রাম'], ['vip', 'VIP ক্লাব ও লেভেল'], ['promotions', 'প্রমোশন পেজ'],
+    ['dailyBonus', 'ডেইলি বোনাস কার্ড'], ['popularGames', 'Popular Games সেকশন'], ['gameLobby', 'Game Lobby সেকশন'],
+    ['specialOffers', 'Special Offers সেকশন'], ['responsibleGaming', 'Responsible Gaming'], ['biometric', 'ফিঙ্গারপ্রিন্ট / পাসকি লক']
+  ];
+  var uaEditOfferIdx = -1, uaEditSideIdx = -1, uaEditPromoIdx = -1;
+
+  function uaEffCfg() {
+    var g = STATE.globalUserPanelConfig || {}, a = STATE.userPanelConfig || {};
+    return Object.assign({}, g, a, {
+      limits: Object.assign({}, g.limits || {}, a.limits || {}),
+      features: Object.assign({}, g.features || {}, a.features || {}),
+      footer: Object.assign({}, UA_DEFAULT_FOOTER, g.footer || {}, a.footer || {})
+    });
+  }
+  function uaGetArr(field, def) {
+    var a = STATE.userPanelConfig || {}, g = STATE.globalUserPanelConfig || {};
+    var src = (Array.isArray(a[field]) && a[field].length) ? a[field] : ((Array.isArray(g[field]) && g[field].length) ? g[field] : def);
+    return src.map(function (x) { return Object.assign({}, x); });
+  }
+  async function uaPersistField(field, val) {
+    var uid = npMyUid(); if (!db || !uid) throw new Error('Admin login missing');
+    await db.ref('userPanelConfig/byAdmin/' + uid + '/' + field).set(val);
+    await db.ref('userPanelConfig/byAdmin/' + uid + '/updatedAt').set(firebase.database.ServerValue.TIMESTAMP).catch(function () {});
+    if (!STATE.userPanelConfig) STATE.userPanelConfig = {};
+    STATE.userPanelConfig[field] = val;
+  }
+
+  function renderUaBannerLists() {
+    var offers = uaGetArr('banners', UA_DEFAULT_BANNERS), sides = uaGetArr('sideBanners', UA_DEFAULT_SIDE);
+    var ob = document.getElementById('ua-offers-visual-list');
+    if (ob) ob.innerHTML = offers.map(function (b, i) {
+      return '<div class="slide-builder-row"><div class="slide-builder-info">' +
+        (b.img ? '<img class="slide-thumb" src="' + npcEsc(b.img) + '" alt="offer">' : '<div class="slide-thumb">' + npcEsc(b.a || '🎁') + '</div>') +
+        '<div style="min-width:0;flex:1"><div style="font-weight:700;font-size:0.86rem">' + npcEsc(b.t || 'Offer') + '</div><div style="font-size:0.75rem;color:var(--text-dim)">' + npcEsc(b.d || '') + ' · → ' + npcEsc(b.go || 'promo') + '</div></div></div>' +
+        '<div style="display:flex;gap:6px"><button type="button" class="btn btn-secondary btn-sm" onclick="uaBannerEdit(\'offer\',' + i + ')">✏️</button><button type="button" class="btn btn-accent btn-sm" onclick="uaBannerDel(\'offer\',' + i + ')">🗑️</button></div></div>';
+    }).join('');
+    var sb = document.getElementById('ua-side-visual-list');
+    if (sb) sb.innerHTML = sides.map(function (b, i) {
+      return '<div class="slide-builder-row"><div class="slide-builder-info">' +
+        (b.img ? '<img class="slide-thumb" src="' + npcEsc(b.img) + '" alt="side">' : '<div class="slide-thumb">' + npcEsc(b.a || '🔥') + '</div>') +
+        '<div style="min-width:0;flex:1"><div style="font-weight:700;font-size:0.86rem">' + npcEsc(b.t || 'Banner') + '</div><div style="font-size:0.75rem;color:var(--text-dim)">' + npcEsc(b.d || '') + ' · → ' + npcEsc(b.go || 'games') + '</div></div></div>' +
+        '<div style="display:flex;gap:6px"><button type="button" class="btn btn-secondary btn-sm" onclick="uaBannerEdit(\'side\',' + i + ')">✏️</button><button type="button" class="btn btn-accent btn-sm" onclick="uaBannerDel(\'side\',' + i + ')">🗑️</button></div></div>';
+    }).join('');
+  }
+  function uaBannerEdit(kind, idx) {
+    var list = uaGetArr(kind === 'side' ? 'sideBanners' : 'banners', kind === 'side' ? UA_DEFAULT_SIDE : UA_DEFAULT_BANNERS);
+    var b = list[idx]; if (!b) return;
+    if (kind === 'side') uaEditSideIdx = idx; else uaEditOfferIdx = idx;
+    var p = kind === 'side' ? 'ua-sb-' : 'ua-of-';
+    var sv = function (id, v) { var el = document.getElementById(id); if (el) el.value = v || ''; };
+    sv(p + 't', b.t); sv(p + 'd', b.d); sv(p + 'b', b.b || 'View'); sv(p + 'a', b.a || '🎁'); sv(p + 'go', b.go || 'promo'); sv(p + 'img', b.img || '');
+    var ft = document.getElementById(p + 'form-title'); if (ft) ft.textContent = '✏️ এডিট করুন';
+    var cb = document.getElementById(p + 'cancel-btn'); if (cb) cb.style.display = 'inline-flex';
+    var sbtn = document.getElementById(p + 'save-btn'); if (sbtn) sbtn.textContent = '💾 আপডেট';
+  }
+  function uaBannerCancel(kind) {
+    if (kind === 'side') uaEditSideIdx = -1; else uaEditOfferIdx = -1;
+    var p = kind === 'side' ? 'ua-sb-' : 'ua-of-';
+    ['t', 'd', 'img'].forEach(function (x) { var el = document.getElementById(p + x); if (el) el.value = ''; });
+    var ft = document.getElementById(p + 'form-title'); if (ft) ft.textContent = kind === 'side' ? '+ নতুন সাইড ব্যানার' : '+ নতুন স্পেশাল অফার';
+    var cb = document.getElementById(p + 'cancel-btn'); if (cb) cb.style.display = 'none';
+    var sbtn = document.getElementById(p + 'save-btn'); if (sbtn) sbtn.textContent = kind === 'side' ? '+ সাইড ব্যানার যোগ' : '+ অফার যোগ করুন';
+  }
+  async function uaBannerSave(kind) {
+    if (typeof featureOn === 'function' && !featureOn('up_offers')) { showToast('এই ফিচারটির পারমিশন নেই', 'error'); return; }
+    var p = kind === 'side' ? 'ua-sb-' : 'ua-of-', field = kind === 'side' ? 'sideBanners' : 'banners';
+    var gv = function (k) { var el = document.getElementById(p + k); return el ? el.value.trim() : ''; };
+    var t = gv('t'), d = gv('d'), b = gv('b') || 'View', a = gv('a') || '🎁', go = gv('go') || 'promo', img = gv('img');
+    if (!t && !img) { showToast('শিরোনাম বা ইমেজ URL দিন', 'error'); return; }
+    var list = uaGetArr(field, kind === 'side' ? UA_DEFAULT_SIDE : UA_DEFAULT_BANNERS);
+    var idx = kind === 'side' ? uaEditSideIdx : uaEditOfferIdx;
+    var item = { a: a, t: t || 'Offer', d: d, b: b, go: go, img: img, h: (idx >= 0 && list[idx] && list[idx].h) || 265, h2: ((idx >= 0 && list[idx] && list[idx].h2) || 300) };
+    if (idx >= 0 && idx < list.length) list[idx] = item; else list.push(item);
+    try {
+      await uaPersistField(field, list);
+      uaBannerCancel(kind);
+      renderUaBannerLists();
+      recordAuditLog('USERPANEL_BANNER_SAVED', npMyUid(), field);
+      showToast('সেভ ও ইউজার প্যানেলে পাবলিশ হয়েছে ✅', 'success');
+    } catch (e) { showToast('সেভ ব্যর্থ: ' + e.message, 'error'); }
+  }
+  async function uaBannerDel(kind, idx) {
+    if (typeof featureOn === 'function' && !featureOn('up_offers')) return;
+    var field = kind === 'side' ? 'sideBanners' : 'banners';
+    var list = uaGetArr(field, kind === 'side' ? UA_DEFAULT_SIDE : UA_DEFAULT_BANNERS);
+    if (idx < 0 || idx >= list.length || !confirm('এই ব্যানারটি মুছে ফেলবেন?')) return;
+    list.splice(idx, 1);
+    try { await uaPersistField(field, list); uaBannerCancel(kind); renderUaBannerLists(); showToast('মুছে ফেলা হয়েছে ✅', 'success'); }
+    catch (e) { showToast(e.message, 'error'); }
+  }
+
+  function renderUaPromosAndVip() {
+    var promos = uaGetArr('promos', UA_DEFAULT_PROMOS);
+    var pb = document.getElementById('ua-promos-visual-list');
+    if (pb) pb.innerHTML = promos.map(function (p, i) {
+      return '<div class="slide-builder-row"><div class="slide-builder-info"><div class="slide-thumb">' + npcEsc(p.i || '🎁') + '</div>' +
+        '<div style="min-width:0;flex:1"><div style="font-weight:700;font-size:0.86rem">' + npcEsc(p.t) + ' <span class="badge ' + (p.active === false ? 'badge-pending' : 'badge-approved') + '">' + (p.active === false ? 'বন্ধ' : 'চালু') + '</span></div>' +
+        '<div style="font-size:0.75rem;color:var(--text-dim)">' + npcEsc(p.d || '') + ' · ' + (p.go ? ('যাবে: ' + npcEsc(p.go)) : ('৳' + Number(p.v || 0))) + '</div></div></div>' +
+        '<div style="display:flex;gap:6px"><button type="button" class="btn btn-sm ' + (p.active === false ? 'btn-success' : 'btn-outline') + '" onclick="uaPromoToggle(' + i + ')">' + (p.active === false ? 'চালু' : 'বন্ধ') + '</button><button type="button" class="btn btn-secondary btn-sm" onclick="uaPromoEdit(' + i + ')">✏️</button><button type="button" class="btn btn-accent btn-sm" onclick="uaPromoDel(' + i + ')">🗑️</button></div></div>';
+    }).join('');
+    var eff = uaEffCfg();
+    var vips = (Array.isArray(eff.vipLevels) && eff.vipLevels.length) ? eff.vipLevels : UA_DEFAULT_VIP;
+    var vg = document.getElementById('ua-vip-grid');
+    if (vg) vg.innerHTML = [0, 1, 2, 3, 4].map(function (i) {
+      var v = vips[i] || {};
+      return '<div style="display:grid;grid-template-columns:62px 1fr 105px 88px 1.4fr;gap:6px">' +
+        '<input type="text" id="ua-vip-ic-' + i + '" class="form-control" value="' + npcEsc(v.ic || '⭐') + '" placeholder="আইকন">' +
+        '<input type="text" id="ua-vip-nm-' + i + '" class="form-control" value="' + npcEsc(v.name || '') + '" placeholder="লেভেল নাম">' +
+        '<input type="number" id="ua-vip-xp-' + i + '" class="form-control" value="' + Number(v.minXp || 0) + '" placeholder="Min XP">' +
+        '<input type="number" id="ua-vip-cb-' + i + '" class="form-control" value="' + Number(v.cashback || 0) + '" placeholder="Cashback %">' +
+        '<input type="text" id="ua-vip-ds-' + i + '" class="form-control" value="' + npcEsc(v.desc || '') + '" placeholder="বিবরণ"></div>';
+    }).join('');
+  }
+  function uaPromoEdit(idx) {
+    var list = uaGetArr('promos', UA_DEFAULT_PROMOS), p = list[idx]; if (!p) return;
+    uaEditPromoIdx = idx;
+    var sv = function (id, val) { var el = document.getElementById(id); if (el) el.value = val != null ? val : ''; };
+    sv('ua-pr-id', p.id); sv('ua-pr-i', p.i || '🎁'); sv('ua-pr-t', p.t); sv('ua-pr-d', p.d); sv('ua-pr-go', p.go || ''); sv('ua-pr-v', p.v || 0);
+    var ac = document.getElementById('ua-pr-act'); if (ac) ac.checked = p.active !== false;
+    var ft = document.getElementById('ua-promo-form-title'); if (ft) ft.textContent = '✏️ প্রমোশন কার্ড এডিট করুন';
+    var cb = document.getElementById('ua-pr-cancel-btn'); if (cb) cb.style.display = 'inline-flex';
+    var sb = document.getElementById('ua-pr-save-btn'); if (sb) sb.textContent = '💾 আপডেট';
+  }
+  function uaPromoCancel() {
+    uaEditPromoIdx = -1;
+    ['ua-pr-id', 'ua-pr-t', 'ua-pr-d'].forEach(function (id) { var el = document.getElementById(id); if (el) el.value = ''; });
+    var ft = document.getElementById('ua-promo-form-title'); if (ft) ft.textContent = '+ নতুন প্রমোশন কার্ড যোগ করুন';
+    var cb = document.getElementById('ua-pr-cancel-btn'); if (cb) cb.style.display = 'none';
+    var sb = document.getElementById('ua-pr-save-btn'); if (sb) sb.textContent = '+ প্রমোশন যোগ করুন';
+  }
+  async function uaPromoSave() {
+    if (typeof featureOn === 'function' && !featureOn('up_promos')) return;
+    var gv = function (id) { var el = document.getElementById(id); return el ? el.value.trim() : ''; };
+    var t = gv('ua-pr-t'), d = gv('ua-pr-d'), i = gv('ua-pr-i') || '🎁', go = gv('ua-pr-go'), v = parseFloat(gv('ua-pr-v')) || 0;
+    if (!t) { showToast('প্রমোশনের শিরোনাম দিন', 'error'); return; }
+    var list = uaGetArr('promos', UA_DEFAULT_PROMOS);
+    var ex = (uaEditPromoIdx >= 0 && list[uaEditPromoIdx]) || {};
+    var item = { id: gv('ua-pr-id') || ex.id || ('promo_' + Date.now()), i: i, t: t, d: d, v: v, go: go, active: !!(document.getElementById('ua-pr-act') && document.getElementById('ua-pr-act').checked) };
+    if (uaEditPromoIdx >= 0 && uaEditPromoIdx < list.length) list[uaEditPromoIdx] = item; else list.push(item);
+    try { await uaPersistField('promos', list); uaPromoCancel(); renderUaPromosAndVip(); showToast('প্রমোশন কার্ড সেভ হয়েছে ✅', 'success'); }
+    catch (e) { showToast(e.message, 'error'); }
+  }
+  async function uaPromoToggle(idx) {
+    if (typeof featureOn === 'function' && !featureOn('up_promos')) return;
+    var list = uaGetArr('promos', UA_DEFAULT_PROMOS); if (!list[idx]) return;
+    list[idx].active = list[idx].active === false;
+    try { await uaPersistField('promos', list); renderUaPromosAndVip(); showToast('স্ট্যাটাস আপডেট হয়েছে ✅', 'success'); } catch (e) { showToast(e.message, 'error'); }
+  }
+  async function uaPromoDel(idx) {
+    if (typeof featureOn === 'function' && !featureOn('up_promos')) return;
+    var list = uaGetArr('promos', UA_DEFAULT_PROMOS); if (idx < 0 || idx >= list.length || !confirm('প্রমোশন কার্ডটি মুছবেন?')) return;
+    list.splice(idx, 1);
+    try { await uaPersistField('promos', list); uaPromoCancel(); renderUaPromosAndVip(); showToast('ডিলিট হয়েছে ✅', 'success'); } catch (e) { showToast(e.message, 'error'); }
+  }
+
+  function renderUaFooterList() {
+    var box = document.getElementById('ua-footer-visual-list'); if (!box) return;
+    var fData = uaEffCfg().footer || UA_DEFAULT_FOOTER;
+    var secs = [['sponsors', '🏆 Sponsorships', 'Role'], ['ambassadors', '⭐ Brand Ambassadors', 'Year'], ['partners', '🤝 Brand Partners', 'Note'], ['licenses', '🛡️ Licenses', 'Details']];
+    box.innerHTML = secs.map(function (sc) {
+      var sec = sc[0], items = Array.isArray(fData[sec]) ? fData[sec] : [];
+      return '<div style="padding:10px;border:1px solid var(--border-subtle);border-radius:10px;background:var(--bg-inner)">' +
+        '<b style="font-size:0.84rem">' + sc[1] + '</b>' +
+        '<div style="display:flex;flex-direction:column;gap:5px;margin:8px 0">' +
+        (items.map(function (x, i) { return '<div style="display:flex;justify-content:space-between;align-items:center;gap:6px;font-size:0.78rem;padding:5px 8px;border-radius:8px;background:var(--bg-surface)"><span>' + npcEsc(x.ic || '🏆') + ' <b>' + npcEsc(x.n || x) + '</b> ' + npcEsc(x.r || x.d || x.y || '') + '</span><button type="button" class="btn btn-accent btn-sm" style="padding:2px 7px" onclick="uaFooterDelItem(\'' + sec + '\',' + i + ')">✕</button></div>'; }).join('') || '<small style="color:var(--text-dim)">কোনো আইটেম নেই</small>') +
+        '</div><div style="display:grid;grid-template-columns:52px 1fr 1fr auto;gap:5px"><input id="uaf-' + sec + '-ic" class="form-control" value="🏆"><input id="uaf-' + sec + '-n" class="form-control" placeholder="নাম"><input id="uaf-' + sec + '-ex" class="form-control" placeholder="' + sc[2] + '"><button type="button" class="btn btn-primary btn-sm" onclick="uaFooterAddItem(\'' + sec + '\')">+</button></div></div>';
+    }).join('');
+  }
+  async function uaFooterAddItem(sec) {
+    if (typeof featureOn === 'function' && !featureOn('up_footer')) return;
+    var fData = JSON.parse(JSON.stringify(uaEffCfg().footer || UA_DEFAULT_FOOTER));
+    if (!Array.isArray(fData[sec])) fData[sec] = [];
+    var n = (document.getElementById('uaf-' + sec + '-n') && document.getElementById('uaf-' + sec + '-n').value.trim()) || '';
+    if (!n) { showToast('নাম লিখুন', 'error'); return; }
+    var ic = (document.getElementById('uaf-' + sec + '-ic') && document.getElementById('uaf-' + sec + '-ic').value.trim()) || '🏆';
+    var ex = (document.getElementById('uaf-' + sec + '-ex') && document.getElementById('uaf-' + sec + '-ex').value.trim()) || '';
+    var item = sec === 'sponsors' ? { n: n, r: ex || 'Sponsor', y: '2026', ic: ic } : sec === 'ambassadors' ? { n: n, y: ex || '2026', ic: ic } : sec === 'licenses' ? { n: n, d: ex || 'Licensed', ic: ic } : { n: n, ic: ic };
+    fData[sec].push(item);
+    try { await uaPersistField('footer', fData); renderUaFooterList(); showToast('ফুটার আইটেম যুক্ত হয়েছে ✅', 'success'); } catch (e) { showToast(e.message, 'error'); }
+  }
+  async function uaFooterDelItem(sec, idx) {
+    if (typeof featureOn === 'function' && !featureOn('up_footer')) return;
+    var fData = JSON.parse(JSON.stringify(uaEffCfg().footer || UA_DEFAULT_FOOTER));
+    if (!Array.isArray(fData[sec]) || idx < 0 || idx >= fData[sec].length) return;
+    fData[sec].splice(idx, 1);
+    try { await uaPersistField('footer', fData); renderUaFooterList(); showToast('মুছে ফেলা হয়েছে ✅', 'success'); } catch (e) { showToast(e.message, 'error'); }
+  }
+
+  window.uaBannerEdit = uaBannerEdit;
+  window.uaBannerCancel = uaBannerCancel;
+  window.uaBannerSave = uaBannerSave;
+  window.uaBannerDel = uaBannerDel;
+  window.uaPromoEdit = uaPromoEdit;
+  window.uaPromoCancel = uaPromoCancel;
+  window.uaPromoSave = uaPromoSave;
+  window.uaPromoToggle = uaPromoToggle;
+  window.uaPromoDel = uaPromoDel;
+  window.uaFooterAddItem = uaFooterAddItem;
+  window.uaFooterDelItem = uaFooterDelItem;
+
   function renderUserPanelControl() {
-    var d = STATE.userPanelConfig || {};
-    var pay = d.payments || {}, ch = d.chat || {};
-    var sv = function (id, val) { var el = document.getElementById(id); if (el) el.value = val || ''; };
-    sv('ua-up-tag', d.tagline || 'PLAY BIG, WIN BIGGER');
+    var d = STATE.userPanelConfig || {}, eff = uaEffCfg();
+    var pay = d.payments || {}, ch = d.chat || {}, lim = eff.limits || {}, feats = eff.features || {}, fData = eff.footer || UA_DEFAULT_FOOTER;
+    var sv = function (id, val) { var el = document.getElementById(id); if (el) el.value = val != null ? val : ''; };
+    var openLink = document.getElementById('ua-up-open-link');
+    if (openLink && npMyUid()) openLink.href = 'user.html?admin=' + encodeURIComponent(npMyUid());
+    sv('ua-up-tag', d.tagline || eff.tagline || 'PLAY BIG, WIN BIGGER');
     sv('ua-up-notice', d.notice || '');
+    sv('ua-up-partner-notice', d.partnerNotice || '');
+    sv('ua-up-agent-note', d.agentSupportNote || '');
+    sv('ua-up-aff-promo', d.affiliatePromoText || '');
     var mt = document.getElementById('ua-up-maint');
     if (mt) mt.checked = !!d.maintenanceMode;
     sv('ua-up-maint-msg', d.maintenanceMessage || '');
     sv('ua-up-wa', ch.whatsapp || '');
     sv('ua-up-tg', ch.telegram || '');
     sv('ua-up-officers', Array.isArray(ch.officers) ? ch.officers.join('\n') : '');
+    sv('ua-up-min-dep', lim.minDeposit != null ? lim.minDeposit : 500);
+    sv('ua-up-max-dep', lim.maxDeposit != null ? lim.maxDeposit : 50000);
+    sv('ua-up-min-wd', lim.minWithdraw != null ? lim.minWithdraw : 500);
+    sv('ua-up-max-wd', lim.maxWithdraw != null ? lim.maxWithdraw : 25000);
     sv('ua-up-bk', pay.bkashNumber || '');
     sv('ua-up-ng', pay.nagadNumber || '');
     sv('ua-up-rk', pay.rocketNumber || '');
     sv('ua-up-up', pay.upayNumber || '');
     sv('ua-up-bnk', pay.bankDetails || '');
     sv('ua-up-usdt', pay.usdtAddress || '');
+    var dy = document.getElementById('ua-up-daily-on');
+    if (dy) dy.checked = eff.dailyBonusEnabled !== false;
+    sv('ua-up-daily-amt', eff.dailyBonusAmount != null ? eff.dailyBonusAmount : 50);
+    sv('ua-up-ref-pct', eff.referralBonusPercent != null ? eff.referralBonusPercent : 20);
+    var fg = document.getElementById('ua-up-features-grid');
+    if (fg) fg.innerHTML = UA_FEAT_DEFS.map(function (it) {
+      return '<label style="display:flex;align-items:center;gap:8px;padding:8px 10px;border:1px solid var(--border-subtle);border-radius:10px;background:var(--bg-inner);cursor:pointer;font-size:0.83rem"><input type="checkbox" id="ua-up-feat-' + it[0] + '" ' + (feats[it[0]] !== false ? 'checked' : '') + ' style="width:auto"> ' + it[1] + '</label>';
+    }).join('');
+    sv('ua-up-resp-note', fData.responsibleNote || UA_DEFAULT_FOOTER.responsibleNote);
+    sv('ua-up-copyright', fData.copyright || UA_DEFAULT_FOOTER.copyright);
     sv('ua-up-slides', d.slides ? JSON.stringify(d.slides, null, 2) : '');
     sv('ua-up-offers', d.banners ? JSON.stringify(d.banners, null, 2) : '');
     sv('ua-up-sidebans', d.sideBanners ? JSON.stringify(d.sideBanners, null, 2) : '');
     sv('ua-up-footer', d.footer ? JSON.stringify(d.footer, null, 2) : '');
     renderUserPanelSlidesList();
+    renderUaBannerLists();
+    renderUaPromosAndVip();
+    renderUaFooterList();
   }
 
   async function saveUserPanelConfigAdmin() {
     var uid = npMyUid();
     if (!db || !uid) { showToast('অ্যাডমিন লগইন পাওয়া যায়নি', 'error'); return; }
     var gv = function (id) { var el = document.getElementById(id); return el ? el.value.trim() : ''; };
+    var can = function (k) { return typeof featureOn !== 'function' || featureOn(k); };
     var cfg = JSON.parse(JSON.stringify(STATE.userPanelConfig || {}));
-    cfg.tagline = gv('ua-up-tag') || 'PLAY BIG, WIN BIGGER';
-    cfg.notice = gv('ua-up-notice');
-    cfg.maintenanceMode = !!(document.getElementById('ua-up-maint') && document.getElementById('ua-up-maint').checked);
-    cfg.maintenanceMessage = gv('ua-up-maint-msg');
-    cfg.chat = {
-      whatsapp: gv('ua-up-wa'),
-      telegram: gv('ua-up-tg'),
-      officers: gv('ua-up-officers').split('\n').map(function (x) { return x.trim(); }).filter(Boolean)
-    };
-    cfg.payments = {
-      bkashNumber: gv('ua-up-bk'),
-      nagadNumber: gv('ua-up-ng'),
-      rocketNumber: gv('ua-up-rk'),
-      upayNumber: gv('ua-up-up'),
-      bankDetails: gv('ua-up-bnk'),
-      usdtAddress: gv('ua-up-usdt')
-    };
+    if (can('up_brand_notice')) {
+      cfg.tagline = gv('ua-up-tag') || 'PLAY BIG, WIN BIGGER';
+      cfg.notice = gv('ua-up-notice');
+      cfg.maintenanceMode = !!(document.getElementById('ua-up-maint') && document.getElementById('ua-up-maint').checked);
+      cfg.maintenanceMessage = gv('ua-up-maint-msg');
+    }
+    if (can('up_partner_notice')) {
+      cfg.partnerNotice = gv('ua-up-partner-notice');
+      cfg.agentSupportNote = gv('ua-up-agent-note');
+      cfg.affiliatePromoText = gv('ua-up-aff-promo');
+    }
+    if (can('up_limits')) {
+      cfg.limits = {
+        minDeposit: Math.max(1, parseFloat(gv('ua-up-min-dep')) || 500),
+        maxDeposit: Math.max(10, parseFloat(gv('ua-up-max-dep')) || 50000),
+        minWithdraw: Math.max(1, parseFloat(gv('ua-up-min-wd')) || 500),
+        maxWithdraw: Math.max(10, parseFloat(gv('ua-up-max-wd')) || 25000)
+      };
+      cfg.chat = {
+        whatsapp: gv('ua-up-wa'),
+        telegram: gv('ua-up-tg'),
+        officers: gv('ua-up-officers').split('\n').map(function (x) { return x.trim(); }).filter(Boolean)
+      };
+      cfg.payments = {
+        bkashNumber: gv('ua-up-bk'),
+        nagadNumber: gv('ua-up-ng'),
+        rocketNumber: gv('ua-up-rk'),
+        upayNumber: gv('ua-up-up'),
+        bankDetails: gv('ua-up-bnk'),
+        usdtAddress: gv('ua-up-usdt')
+      };
+    }
+    if (can('up_sections')) {
+      var feats = {};
+      UA_FEAT_DEFS.forEach(function (it) { var el = document.getElementById('ua-up-feat-' + it[0]); if (el) feats[it[0]] = el.checked; });
+      cfg.features = feats;
+    }
+    if (can('up_promos')) {
+      var dy = document.getElementById('ua-up-daily-on');
+      cfg.dailyBonusEnabled = dy ? dy.checked : true;
+      cfg.dailyBonusAmount = Math.max(0, parseFloat(gv('ua-up-daily-amt')) || 50);
+      cfg.referralBonusPercent = Math.max(0, Math.min(100, parseFloat(gv('ua-up-ref-pct')) || 20));
+      var vips = [];
+      for (var i = 0; i < 5; i++) {
+        var nm = gv('ua-vip-nm-' + i); if (!nm) continue;
+        var xp = Math.max(0, parseFloat(gv('ua-vip-xp-' + i)) || 0), cb = Math.max(0, parseFloat(gv('ua-vip-cb-' + i)) || 0);
+        vips.push({ ic: gv('ua-vip-ic-' + i) || '⭐', name: nm, minXp: xp, cashback: cb, desc: gv('ua-vip-ds-' + i) || (xp.toLocaleString() + ' pts · ' + cb + '% cashback') });
+      }
+      if (vips.length) { vips.sort(function (a, b) { return a.minXp - b.minXp; }); cfg.vipLevels = vips; }
+    }
     var parseJsonField = function (id) {
       var raw = gv(id);
       if (!raw) return null;
       return JSON.parse(raw);
     };
     try {
-      var sl = parseJsonField('ua-up-slides');
-      if (Array.isArray(sl)) cfg.slides = sl.filter(function (s) { return s && !s.locked && !s.masterLockedId; });
-      var of = parseJsonField('ua-up-offers'); if (of) cfg.banners = of;
-      var sb = parseJsonField('ua-up-sidebans'); if (sb) cfg.sideBanners = sb;
-      var ft = parseJsonField('ua-up-footer'); if (ft) cfg.footer = ft;
+      if (can('up_slides')) {
+        var sl = parseJsonField('ua-up-slides');
+        if (Array.isArray(sl)) cfg.slides = sl.filter(function (s) { return s && !s.locked && !s.masterLockedId; });
+      }
+      if (can('up_offers')) {
+        var of = parseJsonField('ua-up-offers'); if (of) cfg.banners = of;
+        var sb = parseJsonField('ua-up-sidebans'); if (sb) cfg.sideBanners = sb;
+      }
+      if (can('up_footer')) {
+        var ft = parseJsonField('ua-up-footer'); if (ft) cfg.footer = ft;
+        if (!cfg.footer || typeof cfg.footer !== 'object') cfg.footer = Object.assign({}, UA_DEFAULT_FOOTER);
+        if (document.getElementById('ua-up-resp-note')) cfg.footer.responsibleNote = gv('ua-up-resp-note') || UA_DEFAULT_FOOTER.responsibleNote;
+        if (document.getElementById('ua-up-copyright')) cfg.footer.copyright = gv('ua-up-copyright') || UA_DEFAULT_FOOTER.copyright;
+      }
       cfg.updatedAt = firebase.database.ServerValue.TIMESTAMP;
       await db.ref('userPanelConfig/byAdmin/' + uid).set(cfg);
       recordAuditLog('USERPANEL_CMS_SAVED', uid, 'Updated userPanelConfig/byAdmin/' + uid);
-      showToast('ইউজার প্যানেল কনফিগারেশন সেভ হয়েছে ✅', 'success');
+      showToast('ইউজার প্যানেল কনফিগারেশন সেভ ও লাইভ পাবলিশ হয়েছে ✅', 'success');
     } catch (e) {
       showToast('সেভ ব্যর্থ: ' + e.message, 'error');
     }

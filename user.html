@@ -626,7 +626,21 @@ const EM = {'⭐':'star','🥉':'medb','🥈':'meds','🥇':'medg','💠':'diamo
 const ER = new RegExp('👑|' + Object.keys(EM).join('|'), 'g');
 const cr = h => String(h).replace(/\uFE0F/g, '').replace(/<[^>]*>|[^<]+/g, chunk => chunk[0] === '<' ? chunk : chunk.replace(ER, m => m === '👑' ? CRN : '<svg class="sv"><use href="#i-' + EM[m] + '"/></svg>'));
 const LOGO = '<span class="lm"><span class="w">M</span><span class="lo"><svg viewBox="0 0 100 100" aria-hidden="true"><g class="lo-r"><circle cx="50" cy="50" r="43" fill="none" stroke="rgba(255,255,255,.4)" stroke-width="14"/><circle cx="50" cy="50" r="43" fill="none" stroke="#fff" stroke-width="14" stroke-dasharray="7.4 3.86"/></g><circle cx="50" cy="50" r="18" fill="#ffd23f"/><circle cx="50" cy="50" r="18" fill="none" stroke="#fff2b3" stroke-width="3"/></svg></span><span class="w">ST</span>WIN<span class="r">88</span></span><small class="logo-sub">PLAY BIG, WIN BIGGER</small>';
-const REF = '<div class="card" style="text-align:center;margin-top:14px;border-color:#ffd23f88"><div style="font-size:34px">🏆</div><b style="color:var(--gold)">REFER A FRIEND<br>GET 20% BONUS</b><br><br><button class="btn bgold sm" onclick="go(\'ref\')">Invite Now →</button></div>';
+const isUserFeat = k => !CFG || !CFG.features || CFG.features[k] !== false;
+function getRefBoxHtml() {
+  if (!isUserFeat('referral')) return '';
+  const pct = Number(CFG.referralBonusPercent != null ? CFG.referralBonusPercent : 20);
+  return '<div class="card" style="text-align:center;margin-top:14px;border-color:#ffd23f88"><div style="font-size:34px">🏆</div><b style="color:var(--gold)">REFER A FRIEND<br>GET ' + pct + '% BONUS</b><br><br><button class="btn bgold sm" onclick="go(\'ref\')">Invite Now →</button></div>';
+}
+function getLimits() {
+  const l = (CFG && CFG.limits) || {};
+  return {
+    minDeposit: Number(l.minDeposit || LIVE_SETTINGS.minDeposit || 500),
+    maxDeposit: Number(l.maxDeposit || LIVE_SETTINGS.maxDeposit || 50000),
+    minWithdraw: Number(l.minWithdraw || LIVE_SETTINGS.minWithdraw || 500),
+    maxWithdraw: Number(l.maxWithdraw || LIVE_SETTINGS.maxWithdraw || 25000)
+  };
+}
 
 const DEFAULT_CFG = {
   tagline: 'PLAY BIG, WIN BIGGER',
@@ -651,6 +665,23 @@ const DEFAULT_CFG = {
     {a:'🎁',t:'Daily Bonus up to ৳50',d:'Log in every day and claim your reward',b:'Claim Now',go:'promo',h:330,h2:355},
     {a:'🚀',t:'Rocket Crash Action',d:'Catch massive multipliers live',b:'Play Now',go:'games',h:205,h2:235}
   ],
+  promos: [
+    {id:'daily_bonus',i:'🎁',t:'Daily Bonus',d:'Log in daily and collect ৳50',v:50,go:'',active:true},
+    {id:'welcome_bonus',i:'🏆',t:'Welcome Bonus',d:'100% on your first deposit, up to ৳5,000',v:0,go:'dep',active:true},
+    {id:'cashback_offer',i:'💸',t:'Cashback Offer',d:'10% weekly cashback on net losses',v:0,go:'bonus',active:true},
+    {id:'weekend_reload',i:'⭐',t:'Special Promotion',d:'Weekend reload bonus on deposits',v:0,go:'dep',active:true}
+  ],
+  dailyBonusEnabled: true,
+  dailyBonusAmount: 50,
+  referralBonusPercent: 20,
+  vipLevels: [
+    {ic:'🥉',name:'Bronze',minXp:0,cashback:2,desc:'0 pts · 2% cashback'},
+    {ic:'🥈',name:'Silver',minXp:2000,cashback:5,desc:'2,000 pts · 5% cashback'},
+    {ic:'🥇',name:'Gold',minXp:5000,cashback:10,desc:'5,000 pts · 10% cashback'},
+    {ic:'💠',name:'Platinum',minXp:10000,cashback:15,desc:'10,000 pts · 15% cashback'},
+    {ic:'💎',name:'Diamond',minXp:25000,cashback:20,desc:'25,000 pts · personal manager'}
+  ],
+  limits: { minDeposit: 500, maxDeposit: 50000, minWithdraw: 500, maxWithdraw: 25000 },
   games: [
     ['✈️','Aviator','Crash & Arcade'],['🎡','Crazy Time','Live Casino'],['🎱','Roulette','Table Games'],['🎲','Ludo','Table Games'],['🪙','Carrom King','Table Games'],
     ['🃏','Blackjack','Table Games'],['♠️','Baccarat','Live Casino'],['🐉','Dragon Tiger','Live Casino'],['🎴','Teen Patti','Table Games'],['🀄','Andar Bahar','Live Casino'],
@@ -673,7 +704,9 @@ const DEFAULT_CFG = {
       {n:'VIP Lounge Host',y:'2026',ic:'👑'}
     ],
     partners: [{n:'Verified Payments BD',ic:'🤝'}],
-    licenses: [{n:'Curacao eGaming',d:'Licensed & Regulated iGaming Operator',ic:'🛡️'}]
+    licenses: [{n:'Curacao eGaming',d:'Licensed & Regulated iGaming Operator',ic:'🛡️'}],
+    responsibleNote: 'Gambling can be addictive. Play responsibly, set limits, and never bet more than you can afford to lose.',
+    copyright: '© MOSTWIN88. All rights reserved. 2026'
   },
   features: {
     deposits: true,
@@ -682,7 +715,12 @@ const DEFAULT_CFG = {
     referral: true,
     vip: true,
     promotions: true,
-    dailyBonus: true
+    dailyBonus: true,
+    popularGames: true,
+    gameLobby: true,
+    specialOffers: true,
+    responsibleGaming: true,
+    biometric: true
   },
   providerBanners: {},
   providerLogos: {},
@@ -824,6 +862,14 @@ function rebuildMergedConfig() {
     if (layer.notice) base.notice = layer.notice;
     if (Array.isArray(layer.banners) && layer.banners.length) base.banners = layer.banners;
     if (Array.isArray(layer.sideBanners) && layer.sideBanners.length) base.sideBanners = layer.sideBanners;
+    if (Array.isArray(layer.promos) && layer.promos.length) base.promos = layer.promos;
+    if (typeof layer.dailyBonusEnabled === 'boolean') base.dailyBonusEnabled = layer.dailyBonusEnabled;
+    if (layer.dailyBonusAmount != null && !isNaN(Number(layer.dailyBonusAmount))) base.dailyBonusAmount = Number(layer.dailyBonusAmount);
+    if (layer.referralBonusPercent != null && !isNaN(Number(layer.referralBonusPercent))) base.referralBonusPercent = Number(layer.referralBonusPercent);
+    if (Array.isArray(layer.vipLevels) && layer.vipLevels.length) base.vipLevels = layer.vipLevels;
+    if (layer.limits && typeof layer.limits === 'object') {
+      base.limits = Object.assign({}, base.limits, layer.limits);
+    }
     if (Array.isArray(layer.games) && layer.games.length) base.games = layer.games;
     if (layer.chat && typeof layer.chat === 'object') {
       base.chat = Object.assign({}, base.chat, layer.chat);
@@ -841,6 +887,13 @@ function rebuildMergedConfig() {
     if (layer.sportsConfig && typeof layer.sportsConfig === 'object') base.sportsConfig = Object.assign({}, base.sportsConfig, layer.sportsConfig);
     if (layer.gameApi && typeof layer.gameApi === 'object') base.gameApi = Object.assign({}, base.gameApi, layer.gameApi);
   };
+
+  if (LIVE_SETTINGS.whatsapp) base.chat.whatsapp = LIVE_SETTINGS.whatsapp.startsWith('http') ? LIVE_SETTINGS.whatsapp : ('https://wa.me/' + String(LIVE_SETTINGS.whatsapp).replace(/\D/g, ''));
+  if (LIVE_SETTINGS.telegram) base.chat.telegram = LIVE_SETTINGS.telegram.startsWith('http') ? LIVE_SETTINGS.telegram : ('https://t.me/' + String(LIVE_SETTINGS.telegram).replace(/^@/, ''));
+  if (LIVE_SETTINGS.minDeposit) base.limits.minDeposit = Number(LIVE_SETTINGS.minDeposit);
+  if (LIVE_SETTINGS.maxDeposit) base.limits.maxDeposit = Number(LIVE_SETTINGS.maxDeposit);
+  if (LIVE_SETTINGS.minWithdraw) base.limits.minWithdraw = Number(LIVE_SETTINGS.minWithdraw);
+  if (LIVE_SETTINGS.maxWithdraw) base.limits.maxWithdraw = Number(LIVE_SETTINGS.maxWithdraw);
 
   applyLayer(LIVE_GLOBAL_CMS);
   applyLayer(LIVE_ADMIN_CMS);
@@ -870,10 +923,12 @@ function rebuildMergedConfig() {
     base.slides = [...lockedMasterSlides, ...unlockedGlobalSlides];
   }
 
-  if (LIVE_SETTINGS.whatsapp) base.chat.whatsapp = LIVE_SETTINGS.whatsapp.startsWith('http') ? LIVE_SETTINGS.whatsapp : ('https://wa.me/' + String(LIVE_SETTINGS.whatsapp).replace(/\D/g, ''));
-  if (LIVE_SETTINGS.telegram) base.chat.telegram = LIVE_SETTINGS.telegram.startsWith('http') ? LIVE_SETTINGS.telegram : ('https://t.me/' + String(LIVE_SETTINGS.telegram).replace(/^@/, ''));
-
   Object.assign(CFG, base);
+  if (typeof computeVipLevel === 'function' && typeof S !== 'undefined') {
+    const vInfo = computeVipLevel(S.xp || 0);
+    S.lvl = vInfo.name;
+    S.next = vInfo.next;
+  }
 
   /* Payment methods from User Admin CMS (strictly isolated per User Admin — never leak another admin's numbers) */
   Object.keys(DEFAULT_M).forEach(k => { M[k] = DEFAULT_M[k].slice(); });
@@ -927,17 +982,24 @@ function rebuildMergedConfig() {
   if (typeof window.mwFitLogos === 'function') window.mwFitLogos();
 
   /* Maintenance check */
-  const maint = !!(LIVE_SETTINGS.maintenanceMode || (LIVE_ADMIN_CMS && LIVE_ADMIN_CMS.maintenanceMode));
+  const maint = !!(LIVE_SETTINGS.maintenanceMode || (LIVE_GLOBAL_CMS && LIVE_GLOBAL_CMS.maintenanceMode) || (LIVE_ADMIN_CMS && LIVE_ADMIN_CMS.maintenanceMode));
   const mo = document.getElementById('maintOverlay');
   if (mo) {
     mo.classList.toggle('o', maint);
     const mt = document.getElementById('maintText');
-    if (mt && (LIVE_SETTINGS.maintenanceMessage || (LIVE_ADMIN_CMS && LIVE_ADMIN_CMS.maintenanceMessage))) {
-      mt.textContent = (LIVE_ADMIN_CMS && LIVE_ADMIN_CMS.maintenanceMessage) || LIVE_SETTINGS.maintenanceMessage;
-    }
+    const maintMsg = (LIVE_ADMIN_CMS && LIVE_ADMIN_CMS.maintenanceMessage) || (LIVE_GLOBAL_CMS && LIVE_GLOBAL_CMS.maintenanceMessage) || LIVE_SETTINGS.maintenanceMessage;
+    if (mt && maintMsg) mt.textContent = maintMsg;
   }
 
-  if (typeof cur !== 'undefined' && ['home', 'promo', 'dep', 'ref', 'vip', 'games'].includes(cur) && !pe && !vk) {
+  const fsupBtn = document.getElementById('fsup');
+  if (fsupBtn) {
+    fsupBtn.style.display = (!isUserFeat('liveChat') || (typeof cur !== 'undefined' && cur === 'support')) ? 'none' : '';
+  }
+  if (typeof nav === 'function' && typeof cur !== 'undefined') {
+    try { nav(); } catch (e) {}
+  }
+
+  if (typeof cur !== 'undefined' && ['home', 'promo', 'dep', 'wd', 'wallet', 'bonus', 'ref', 'vip', 'games', 'sec', 'resp', 'profile'].includes(cur) && !pe && !vk) {
     if (cur === 'home' && window.drawList && (document.getElementById('pvList') || document.getElementById('pvTabs'))) {
       const m = $('#m');
       if (m) {
@@ -956,7 +1018,7 @@ function rebuildMergedConfig() {
         }
         const pgSec = m.querySelector('#pgSec');
         const pgEl = m.querySelector('#pg');
-        const popOn = isGameCatEnabled('Popular Games');
+        const popOn = isUserFeat('popularGames') && isGameCatEnabled('Popular Games');
         if (pgSec) pgSec.classList.toggle('mw-cat-hide', !popOn);
         const popGames = popOn ? (typeof gl === 'function' ? gl().filter(g => g[3]) : []) : [];
         const pgSig = sigHash(popGames);
@@ -965,12 +1027,26 @@ function rebuildMergedConfig() {
           pgEl.innerHTML = cr(popGames.map((g, k) => `<button class="pc" style="--h:${k*47+200}" onclick="play('${esc(g[1])}')"><span class="hot">HOT</span>${g[4]?`<i class="pci" style="background-image:url('${imgUrl(g[4])}')"></i>`:`<i>${g[0]}</i>`}<b>${esc(g[1])}</b><u>Play Now</u></button>`).join(''));
           if (pgSec && !popGames.length) pgSec.classList.add('mw-cat-hide');
         }
+        const lobHdr = m.querySelector('#pvLobbyHdr'), lobWrap = m.querySelector('#pvHomeWrap');
+        const lobOn = isUserFeat('gameLobby');
+        if (lobHdr) lobHdr.classList.toggle('mw-cat-hide', !lobOn);
+        if (lobWrap) lobWrap.classList.toggle('mw-cat-hide', !lobOn);
+        const soSec = m.querySelector('#soSec');
+        if (soSec) soSec.classList.toggle('mw-cat-hide', !isUserFeat('specialOffers'));
+        const dkVip = m.querySelector('.dk-vip');
+        if (dkVip) dkVip.classList.toggle('mw-cat-hide', !isUserFeat('vip'));
         const bnEl = m.querySelector('#bn');
         const offers = (CFG.banners && CFG.banners.length) ? CFG.banners : DEFAULT_CFG.banners;
         const offerSig = sigHash(offers);
         if (bnEl && bnEl.dataset.sig !== offerSig) {
           bnEl.dataset.sig = offerSig;
           bnEl.innerHTML = cr(offers.map(b => b.img ? `<button class="bs" style="background:#0b1d52 url('${imgUrl(b.img)}') center/cover" onclick="go('${esc(b.go||'promo')}')" aria-label="Offer"></button>` : `<button class="bs" style="--h:${b.h||265};--h2:${b.h2||300}" onclick="go('${esc(b.go||'promo')}')"><span class="ba">${esc(b.a||'🎁')}</span><div><b>${esc(b.t)}</b><small>${esc(b.d||'')}</small><u>${esc(b.b||'Learn More')} →</u></div></button>`).join(''));
+        }
+        const ftrEl = m.querySelector('.ftr');
+        const ftrSig = sigHash({ f: CFG.features, ft: CFG.footer });
+        if (ftrEl && ftrEl.dataset.sig !== ftrSig && window.foot) {
+          ftrEl.remove();
+          window.foot();
         }
       }
       if (window.pvRefreshCatalog) window.pvRefreshCatalog();
@@ -1232,11 +1308,17 @@ function unbindUserListeners() {
 }
 
 function computeVipLevel(xp) {
-  if (xp >= 25000) return {name:'Diamond', next:50000};
-  if (xp >= 10000) return {name:'Platinum', next:25000};
-  if (xp >= 5000) return {name:'Gold', next:10000};
-  if (xp >= 2000) return {name:'Silver', next:5000};
-  return {name:'Bronze', next:2000};
+  const numXp = Number(xp || 0);
+  const src = (CFG && Array.isArray(CFG.vipLevels) && CFG.vipLevels.length) ? CFG.vipLevels : DEFAULT_CFG.vipLevels;
+  const levels = src.slice().sort((a, b) => Number(a.minXp || 0) - Number(b.minXp || 0));
+  let curIdx = 0;
+  for (let i = 0; i < levels.length; i++) {
+    if (numXp >= Number(levels[i].minXp || 0)) curIdx = i;
+  }
+  const active = levels[curIdx] || { name: 'Bronze', minXp: 0, cashback: 2, ic: '🥉' };
+  const nxt = levels[curIdx + 1];
+  const nextXp = nxt ? Number(nxt.minXp || 0) : Math.max(Number(active.minXp || 25000) * 2, 50000);
+  return { name: active.name || 'Bronze', next: nextXp, cashback: Number(active.cashback || 0), ic: active.ic || '👑' };
 }
 
 function updateNotifBadge() {
@@ -1456,6 +1538,21 @@ const sl = x => x.img
   ? `<div class="sl sl-img" style="background:#0b1d52" onclick="go('${esc(x.go || 'promo')}')"><img class="sl-pic" src="${imgUrl(x.img)}" alt="${esc(x.d || 'Promotion')}"></div>`
   : `<div class="sl ${esc(x.c || 's1')}"><h3>${String(x.t || '').replace('{name}', esc(S.name || 'Player'))}</h3><p>${esc(x.d || '')}</p><button class="btn bgold sm" onclick="go('${esc(x.go || 'games')}')">Play Now →</button><div class="art">${esc(x.a || '🎰')}</div></div>`;
 
+const FEAT_ROUTE_MAP = {
+  dep: 'deposits',
+  wd: 'withdrawals',
+  vip: 'vip',
+  promo: 'promotions',
+  bonus: 'promotions',
+  ref: 'referral',
+  resp: 'responsibleGaming',
+  support: 'liveChat'
+};
+function routeAllowed(s) {
+  const fk = FEAT_ROUTE_MAP[s];
+  return !fk || isUserFeat(fk);
+}
+
 const NAV = [['🏠','Home','home'],['🎮','Games','games'],['👑','VIP','vip'],['🎁','Promo','promo'],['☰','More','more']];
 const MENU = [
   ['📊','Dashboard','home'],['👤','My Profile','profile'],['👛','My Wallet','wallet'],
@@ -1495,6 +1592,11 @@ function go(s) {
   if (s === 'more') { drawer(1); return; }
   if (s === 'support') { drawer(0); openChat(); return; }
   if (s === 'out') { drawer(0); if (window.logoutUser) window.logoutUser(); else toast('Logged out'); return; }
+  if (!routeAllowed(s)) {
+    drawer(0);
+    toast('এই ফিচারটি বর্তমানে বন্ধ রয়েছে');
+    return false;
+  }
   drawer(0);
   if (s !== 'profile') { pe = 0; vk = ''; }
   cur = s;
@@ -1508,6 +1610,7 @@ function go(s) {
   nav();
   updBal();
   try { window.dispatchEvent(new Event('mw:view')); } catch (e) {}
+  return true;
 }
 
 function updBal() {
@@ -1518,8 +1621,10 @@ function updBal() {
 
 function nav() {
   const nEl = $('#nav'), sEl = $('#sd');
-  if (nEl) nEl.innerHTML = cr(NAV.map(n => `<button class="${n[2] === cur ? 'on2' : ''}" onclick="go('${n[2]}')"><span>${n[0]}</span>${n[1]}</button>`).join(''));
-  if (sEl) sEl.innerHTML = cr(`<div class="logo lg2">${LOGO.replace('PLAY BIG, WIN BIGGER', esc((CFG && CFG.tagline) || 'PLAY BIG, WIN BIGGER'))}</div>` + MENU.map(n => `<button class="${n[2] === cur ? 'cur' : ''}" onclick="go('${n[2]}')"><span>${n[0]}</span>${n[1]}</button>`).join('') + REF);
+  const visNav = NAV.filter(n => routeAllowed(n[2]));
+  const visMenu = MENU.filter(n => routeAllowed(n[2]));
+  if (nEl) nEl.innerHTML = cr(visNav.map(n => `<button class="${n[2] === cur ? 'on2' : ''}" onclick="go('${n[2]}')"><span>${n[0]}</span>${n[1]}</button>`).join(''));
+  if (sEl) sEl.innerHTML = cr(`<div class="logo lg2">${LOGO.replace('PLAY BIG, WIN BIGGER', esc((CFG && CFG.tagline) || 'PLAY BIG, WIN BIGGER'))}</div>` + visMenu.map(n => `<button class="${n[2] === cur ? 'cur' : ''}" onclick="go('${n[2]}')"><span>${n[0]}</span>${n[1]}</button>`).join('') + getRefBoxHtml());
   if (typeof window.mwFitLogos === 'function') requestAnimationFrame(window.mwFitLogos);
 }
 
@@ -1529,11 +1634,18 @@ const txr = t => {
   const stCls = /success|approved|completed/i.test(t[4]) ? 'Success' : /reject|fail/i.test(t[4]) ? 'Failed' : 'Pending';
   return `<div class="tx"><div class="ic">${ic}</div><div><b>${esc(t[2])}</b><small>${esc(t[0])} · ${esc(t[1])}</small></div><div class="am"><div class="${t[3] > 0 ? 'pos' : 'neg'}">${t[3] > 0 ? '+' : '−'}${f(Math.abs(t[3]))}</div><span class="pill ${stCls}">${esc(t[4])}</span></div></div>`;
 };
-const wal = () => `<div class="card wallet"><div class="sub">Total Balance</div><div class="tot">${f(tot())}</div><div class="mini"><div><span class="sub">Deposit Balance</span><b>${f(S.dep)}</b></div><div><span class="sub">Bonus Balance</span><b style="color:var(--gold)">${f(S.bon)}</b></div></div><div class="two"><button class="btn bg" onclick="go('dep')">⬇ Deposit</button><button class="btn bb" onclick="go('wd')">⬆ Withdraw</button></div></div>`;
+const wal = () => {
+  const dBtn = isUserFeat('deposits') ? `<button class="btn bg" onclick="go('dep')">⬇ Deposit</button>` : '';
+  const wBtn = isUserFeat('withdrawals') ? `<button class="btn bb" onclick="go('wd')">⬆ Withdraw</button>` : '';
+  return `<div class="card wallet"><div class="sub">Total Balance</div><div class="tot">${f(tot())}</div><div class="mini"><div><span class="sub">Deposit Balance</span><b>${f(S.dep)}</b></div><div><span class="sub">Bonus Balance</span><b style="color:var(--gold)">${f(S.bon)}</b></div></div>${(dBtn || wBtn) ? `<div class="two">${dBtn}${wBtn}</div>` : ''}</div>`;
+};
 
 function getPromoCards() {
   const todayKey = new Date().toISOString().slice(0, 10);
   const dailyClaimed = S.lastDailyBonusAt && new Date(S.lastDailyBonusAt).toISOString().slice(0, 10) === todayKey;
+  const dailyOn = isUserFeat('dailyBonus') && CFG.dailyBonusEnabled !== false;
+  const dailyAmt = Number(CFG.dailyBonusAmount != null ? CFG.dailyBonusAmount : 50);
+  const srcPromos = (CFG && Array.isArray(CFG.promos) && CFG.promos.length) ? CFG.promos : BASE_PROMOS;
   const dynPromos = getActiveDepositPromos().map(dp => ({
     id: 'dep_' + dp.id,
     i: '💰',
@@ -1541,11 +1653,22 @@ function getPromoCards() {
     d: (dp.bonusType === 'percent' ? dp.bonusValue + '% bonus' : f(dp.bonusValue) + ' bonus') + ' · Min ' + f(dp.minDeposit || 0) + (dp.turnoverMultiplier ? ' · ' + dp.turnoverMultiplier + 'x turnover' : ''),
     v: 0,
     c: 0,
-    go: 'dep'
+    go: isUserFeat('deposits') ? 'dep' : ''
   }));
-  const list = BASE_PROMOS.map(p => Object.assign({}, p, {
-    c: p.id === 'daily_bonus' ? (dailyClaimed ? 1 : 0) : (S.claimedPromos && S.claimedPromos[p.id] ? 1 : 0)
-  }));
+  const list = srcPromos.filter(p => {
+    if (!p || p.active === false) return false;
+    if (p.id === 'daily_bonus' && !dailyOn) return false;
+    return true;
+  }).map(p => {
+    const copy = Object.assign({}, p, {
+      c: p.id === 'daily_bonus' ? (dailyClaimed ? 1 : 0) : (S.claimedPromos && S.claimedPromos[p.id] ? 1 : 0)
+    });
+    if (copy.id === 'daily_bonus' && dailyAmt > 0 && (!copy.d || /collect\s*৳?\s*50\b/i.test(copy.d))) {
+      copy.d = 'Log in daily and collect ৳' + dailyAmt;
+      copy.v = dailyAmt;
+    }
+    return copy;
+  });
   return [...list, ...dynPromos];
 }
 
@@ -1573,35 +1696,40 @@ const V = {
     const slidesSig = sigHash(slides);
     const offersSig = sigHash(offers);
     const pct = Math.min(100, Math.round((Number(S.xp || 0) / Math.max(1, Number(S.next || 2000))) * 100));
-    const popOn = isGameCatEnabled('Popular Games');
+    const popOn = isUserFeat('popularGames') && isGameCatEnabled('Popular Games');
+    const lobOn = isUserFeat('gameLobby');
+    const soOn = isUserFeat('specialOffers');
+    const vipOn = isUserFeat('vip');
     const popGames = popOn ? gl().filter(g => g[3]) : [];
     const pgSig = sigHash(popGames);
     return `<div class="hm"><div class="mn"><div class="car-wrap"><div class="car" id="car" data-sig="${slidesSig}">${slides.map(sl).join('')}</div><div class="dots" id="dots">${slides.map((_,i)=>`<i class="${i?'':'a'}"></i>`).join('')}</div></div><div class="nb"><span>📢</span><div class="nbt"><span style="animation-duration:${Math.max(14,notice.length*.26)}s">${esc(notice)}</span></div></div>
 <div id="pgSec" class="${(!popOn||!popGames.length)?'mw-cat-hide':''}"><h2>Popular Games <span class="ar"><button class="ib" onclick="pgs(-1)" aria-label="Previous">‹</button><button class="ib" onclick="pgs(1)" aria-label="Next">›</button></span></h2><div class="pg" id="pg" data-sig="${pgSig}" onmouseenter="pgp=1" onmouseleave="pgp=0" ontouchstart="pgp=1" ontouchend="pgp=0">${popGames.map((g,k)=>`<button class="pc" style="--h:${k*47+200}" onclick="play('${esc(g[1])}')"><span class="hot">HOT</span>${g[4]?`<i class="pci" style="background-image:url('${imgUrl(g[4])}')"></i>`:`<i>${g[0]}</i>`}<b>${esc(g[1])}</b><u>Play Now</u></button>`).join('')}</div></div>
-<h2 class="pv-lobby">Game Lobby</h2><div id="pvHomeWrap">${window.homeGames?homeGames():''}</div>
-<h2>Special Offers <span class="ar"><button class="ib" onclick="bns(-1)" aria-label="Previous">‹</button><button class="ib" onclick="bns(1)" aria-label="Next">›</button></span></h2><div class="pg bn" id="bn" data-sig="${offersSig}" onmouseenter="bnp=1" onmouseleave="bnp=0" ontouchstart="bnp=1" ontouchend="bnp=0">${offers.map(b=>b.img?`<button class="bs" style="background:#0b1d52 url('${imgUrl(b.img)}') center/cover" onclick="go('${esc(b.go||'promo')}')" aria-label="Offer"></button>`:`<button class="bs" style="--h:${b.h||265};--h2:${b.h2||300}" onclick="go('${esc(b.go||'promo')}')"><span class="ba">${esc(b.a||'🎁')}</span><div><b>${esc(b.t)}</b><small>${esc(b.d||'')}</small><u>${esc(b.b||'Learn More')} →</u></div></button>`).join('')}</div></div>
-<div class="dk"><div class="card" style="text-align:center;border-color:#ffd23f99;box-shadow:0 0 22px #ffd23f33"><div style="font-size:46px">👑</div><h2 style="justify-content:center;font-size:22px;color:var(--gold)">VIP CLUB</h2><div class="sub">Your VIP Level: <b style="color:var(--gold)">${esc(S.lvl)}</b></div><div class="bar"><i style="width:${pct}%"></i></div>✔ Higher Rewards<br>✔ Exclusive Bonuses<br>✔ Priority Support<br><br><button class="btn bgold sm" onclick="go('vip')">Upgrade Now →</button></div><div class="card"><h2>📊 Betting Summary</h2>${betSummaryTotals().map(x=>`<div class="tx"><div style="flex:1">${x[0]}</div><b>${f(x[1])}</b></div>`).join('')}<br><button class="btn out sm" style="width:100%" onclick="go('bets')">View Details</button></div><div class="sbs">${sides.map(b=>b.img?`<button class="bs" style="background:#0b1d52 url('${imgUrl(b.img)}') center/cover" onclick="go('${esc(b.go||'promo')}')" aria-label="Offer"></button>`:`<button class="bs" style="--h:${b.h||265};--h2:${b.h2||300}" onclick="go('${esc(b.go||'promo')}')"><span class="ba">${esc(b.a||'🎁')}</span><div><b>${esc(b.t)}</b><small>${esc(b.d||'')}</small><u>${esc(b.b||'Learn More')} →</u></div></button>`).join('')}</div></div></div>`;
+<h2 id="pvLobbyHdr" class="pv-lobby ${lobOn?'':'mw-cat-hide'}">Game Lobby</h2><div id="pvHomeWrap" class="${lobOn?'':'mw-cat-hide'}">${window.homeGames?homeGames():''}</div>
+<div id="soSec" class="${soOn?'':'mw-cat-hide'}"><h2>Special Offers <span class="ar"><button class="ib" onclick="bns(-1)" aria-label="Previous">‹</button><button class="ib" onclick="bns(1)" aria-label="Next">›</button></span></h2><div class="pg bn" id="bn" data-sig="${offersSig}" onmouseenter="bnp=1" onmouseleave="bnp=0" ontouchstart="bnp=1" ontouchend="bnp=0">${offers.map(b=>b.img?`<button class="bs" style="background:#0b1d52 url('${imgUrl(b.img)}') center/cover" onclick="go('${esc(b.go||'promo')}')" aria-label="Offer"></button>`:`<button class="bs" style="--h:${b.h||265};--h2:${b.h2||300}" onclick="go('${esc(b.go||'promo')}')"><span class="ba">${esc(b.a||'🎁')}</span><div><b>${esc(b.t)}</b><small>${esc(b.d||'')}</small><u>${esc(b.b||'Learn More')} →</u></div></button>`).join('')}</div></div></div>
+<div class="dk"><div class="card dk-vip ${vipOn?'':'mw-cat-hide'}" style="text-align:center;border-color:#ffd23f99;box-shadow:0 0 22px #ffd23f33"><div style="font-size:46px">👑</div><h2 style="justify-content:center;font-size:22px;color:var(--gold)">VIP CLUB</h2><div class="sub">Your VIP Level: <b style="color:var(--gold)">${esc(S.lvl)}</b></div><div class="bar"><i style="width:${pct}%"></i></div>✔ Higher Rewards<br>✔ Exclusive Bonuses<br>✔ Priority Support<br><br><button class="btn bgold sm" onclick="go('vip')">Upgrade Now →</button></div><div class="card"><h2>📊 Betting Summary</h2>${betSummaryTotals().map(x=>`<div class="tx"><div style="flex:1">${x[0]}</div><b>${f(x[1])}</b></div>`).join('')}<br><button class="btn out sm" style="width:100%" onclick="go('bets')">View Details</button></div><div class="sbs">${sides.map(b=>b.img?`<button class="bs" style="background:#0b1d52 url('${imgUrl(b.img)}') center/cover" onclick="go('${esc(b.go||'promo')}')" aria-label="Offer"></button>`:`<button class="bs" style="--h:${b.h||265};--h2:${b.h2||300}" onclick="go('${esc(b.go||'promo')}')"><span class="ba">${esc(b.a||'🎁')}</span><div><b>${esc(b.t)}</b><small>${esc(b.d||'')}</small><u>${esc(b.b||'Learn More')} →</u></div></button>`).join('')}</div></div></div>`;
   },
 
   profile: () => bk('My Profile') + (pe
     ? `<div class="card" style="text-align:center"><div class="av" style="width:64px;height:64px;font-size:32px;margin:auto">${avh()}</div><label class="btn out sm" style="margin-top:10px;width:auto;cursor:pointer">Change Photo<input type="file" accept="image/*" hidden onchange="photo(this)"></label></div><div class="card"><label>Full name</label><input id="pn" value="${esc(S.name)}"><label>Country (selected at signup)</label><input value="${esc(S.country)}" disabled style="opacity:.6"><label>Mobile</label><input id="pm2" type="tel" inputmode="numeric" value="${esc(S.mob)}"><label>Email</label><input id="pe2" type="email" value="${esc(S.email)}"><div class="sub" style="margin-top:6px">Changing your mobile or email will require verification again.</div><label for="plSel">Language</label><select id="plSel" class="mw-sel">${['English','বাংলা'].map(l=>`<option value="${l}" ${l==S.lang?'selected':''}>${l}</option>`).join('')}</select><br><br><div class="two"><button class="btn out sm" style="width:100%" onclick="pe=0;go('profile')">Cancel</button><button class="btn bg sm" style="width:100%" onclick="saveP()">Save Changes</button></div></div>`
-    : `<div class="card" style="text-align:center"><div class="av" style="width:64px;height:64px;font-size:32px;margin:auto">${avh()}</div><h2 style="justify-content:center;margin-top:10px">${esc(S.name)}</h2><div class="sub">Member ID: ${esc(S.id)}</div><div style="margin:8px"><span class="on"><i class="dot"></i> Online</span> &nbsp;<span class="pill vip">👑 VIP ${esc(S.lvl)}</span></div></div><div class="card">${prow()}</div>${vk ? vcard() : ''}<div id="mw-biometric-slot"></div><div class="two"><button class="btn bb sm" style="width:100%" onclick="pe=1;go('profile')">Edit Profile</button><button class="btn bgold sm" style="width:100%" onclick="go('vip')">VIP Level</button></div>`),
+    : `<div class="card" style="text-align:center"><div class="av" style="width:64px;height:64px;font-size:32px;margin:auto">${avh()}</div><h2 style="justify-content:center;margin-top:10px">${esc(S.name)}</h2><div class="sub">Member ID: ${esc(S.id)}</div><div style="margin:8px"><span class="on"><i class="dot"></i> Online</span>${isUserFeat('vip')?` &nbsp;<span class="pill vip">👑 VIP ${esc(S.lvl)}</span>`:''}</div></div><div class="card">${prow()}</div>${vk ? vcard() : ''}${isUserFeat('biometric') ? '<div id="mw-biometric-slot"></div>' : ''}<div class="${isUserFeat('vip')?'two':''}"><button class="btn bb sm" style="width:100%" onclick="pe=1;go('profile')">Edit Profile</button>${isUserFeat('vip')?`<button class="btn bgold sm" style="width:100%" onclick="go('vip')">VIP Level</button>`:''}</div>`),
 
   wallet: () => bk('My Wallet') + wal() + `<div class="card"><h2>Recent Activity <a onclick="go('tx')">View All</a></h2>${T.length ? T.slice(0,5).map(txr).join('') : '<p class="sub">No transactions yet. Make a deposit to get started.</p>'}</div>`,
 
   dep: () => {
     const dyn = getActiveDepositPromos();
+    const lim = getLimits();
     const bonOpts = dyn.length
       ? dyn.map((p, i) => `<option value="1" data-pid="${esc(p.id)}" data-pname="${esc(p.name)}" ${i === 0 ? 'selected' : ''}>${esc(p.name)} (${p.bonusType==='percent'?p.bonusValue+'%':f(p.bonusValue)})</option>`).join('') + `<option value="0" data-pid="" data-pname="">No Bonus</option>`
       : `<option value="1" data-pid="" data-pname="Welcome Bonus" selected>Deposit Bonus</option><option value="0" data-pid="" data-pname="">No Bonus</option>`;
-    return bk('Deposit') + `<div class="card"><label for="pmSel">Payment method</label><select id="pmSel" class="mw-sel" onchange="selPay(this.value)">${Object.keys(M).map(m=>`<option value="${m}" ${m==pay?'selected':''}>${m}</option>`).join('')}</select><div id="pi">${pinfo(pay)}</div></div><div class="card"><label>Amount (min ৳${Number(LIVE_SETTINGS.minDeposit||500)} · max ৳${Number(LIVE_SETTINGS.maxDeposit||50000).toLocaleString()})</label><input id="a" type="number" inputmode="decimal" placeholder="Enter amount"><div class="amt-grid">${[500,1000,2000,5000,10000].map(v=>`<button class="chip" type="button" onclick="$('#a').value=${v}">৳${v}</button>`).join('')}</div><label id="sl">${mob(pay)?'Your '+pay+' number':'Sender account or wallet'}</label><input id="sn" type="tel" inputmode="numeric" placeholder="01XXXXXXXXX" value="${esc(S.mob||'')}"><label>Transaction ID (TrxID)</label><input id="tid" placeholder="e.g. 9H7K2L5M1P" autocapitalize="characters"><label for="boSel">Bonus / Promotion</label><select id="boSel" class="mw-sel">${bonOpts}</select><br><br><button class="btn bg" id="depBtn" onclick="dep()">Submit Deposit</button><p class="sub" style="margin-top:10px">Your balance updates as soon as an admin/agent verifies your payment.</p></div>`;
+    return bk('Deposit') + `<div class="card"><label for="pmSel">Payment method</label><select id="pmSel" class="mw-sel" onchange="selPay(this.value)">${Object.keys(M).map(m=>`<option value="${m}" ${m==pay?'selected':''}>${m}</option>`).join('')}</select><div id="pi">${pinfo(pay)}</div></div><div class="card"><label>Amount (min ৳${lim.minDeposit} · max ৳${lim.maxDeposit.toLocaleString()})</label><input id="a" type="number" inputmode="decimal" placeholder="Enter amount"><div class="amt-grid">${[500,1000,2000,5000,10000].map(v=>`<button class="chip" type="button" onclick="$('#a').value=${v}">৳${v}</button>`).join('')}</div><label id="sl">${mob(pay)?'Your '+pay+' number':'Sender account or wallet'}</label><input id="sn" type="tel" inputmode="numeric" placeholder="01XXXXXXXXX" value="${esc(S.mob||'')}"><label>Transaction ID (TrxID)</label><input id="tid" placeholder="e.g. 9H7K2L5M1P" autocapitalize="characters"><label for="boSel">Bonus / Promotion</label><select id="boSel" class="mw-sel">${bonOpts}</select><br><br><button class="btn bg" id="depBtn" onclick="dep()">Submit Deposit</button><p class="sub" style="margin-top:10px">Your balance updates as soon as an admin/agent verifies your payment.</p></div>`;
   },
 
   wd: () => {
+    const lim = getLimits();
     const remTo = Math.max(0, Number(S.turnoverRequired || 0) - Number(S.turnoverDone || 0));
     const pTurn = Object.values(LIVE_PROMO_TURNOVER || {}).filter(x => x && !x.completed);
     const pRem = pTurn.reduce((a, x) => a + Math.max(0, Number(x.required || 0) - Number(x.completedAmount || x.progress || 0)), 0);
-    return bk('Withdraw') + `<div class="card"><div class="row sp"><div><div class="sub">Withdrawable balance</div><div class="tot" style="font-size:24px">${f(S.dep)}</div></div><div style="text-align:right"><div class="sub">Bonus (locked)</div><b>${f(S.bon)}</b></div></div>${(remTo > 0 || pRem > 0) ? `<div class="sub" style="margin-top:10px;color:var(--gold)">⚠ Remaining Turnover required before withdraw: <b>${f(Math.max(remTo, pRem))}</b></div>` : ''}</div><div class="card"><label for="wmSel">Withdraw method</label><select id="wmSel" class="mw-sel" onchange="selWm(this.value)">${['bKash','Nagad','Rocket','Upay','Bank'].map(m=>`<option value="${m}" ${m==wm?'selected':''}>${m}</option>`).join('')}</select><div id="wf">${wfields(wm)}</div><label>Amount (min ৳${Number(LIVE_SETTINGS.minWithdraw||500)} · max ৳${Number(LIVE_SETTINGS.maxWithdraw||25000).toLocaleString()})</label><div class="row"><input id="a" type="number" inputmode="decimal" placeholder="Enter amount"><button class="btn out sm" onclick="$('#a').value=Math.min(S.dep,${Number(LIVE_SETTINGS.maxWithdraw||25000)})">Max</button></div><label>Withdrawal PIN ${S.withdrawPin ? '' : '(first-time PIN will be saved)'}</label><input id="pin" type="password" inputmode="numeric" maxlength="6" placeholder="4-6 digit PIN"><br><br><button class="btn bb" id="wdBtn" onclick="wd()">Request Withdrawal</button></div><div class="card"><h2>Withdrawal Rules</h2><ul class="rules"><li>The account must be in your own name.</li><li>Requests are processed within 24 hours.</li><li>Bonus balance cannot be withdrawn until turnover is complete.</li><li>Check the account number carefully before submitting.</li></ul></div>`;
+    return bk('Withdraw') + `<div class="card"><div class="row sp"><div><div class="sub">Withdrawable balance</div><div class="tot" style="font-size:24px">${f(S.dep)}</div></div><div style="text-align:right"><div class="sub">Bonus (locked)</div><b>${f(S.bon)}</b></div></div>${(remTo > 0 || pRem > 0) ? `<div class="sub" style="margin-top:10px;color:var(--gold)">⚠ Remaining Turnover required before withdraw: <b>${f(Math.max(remTo, pRem))}</b></div>` : ''}</div><div class="card"><label for="wmSel">Withdraw method</label><select id="wmSel" class="mw-sel" onchange="selWm(this.value)">${['bKash','Nagad','Rocket','Upay','Bank'].map(m=>`<option value="${m}" ${m==wm?'selected':''}>${m}</option>`).join('')}</select><div id="wf">${wfields(wm)}</div><label>Amount (min ৳${lim.minWithdraw} · max ৳${lim.maxWithdraw.toLocaleString()})</label><div class="row"><input id="a" type="number" inputmode="decimal" placeholder="Enter amount"><button class="btn out sm" onclick="$('#a').value=Math.min(S.dep,${lim.maxWithdraw})">Max</button></div><label>Withdrawal PIN ${S.withdrawPin ? '' : '(first-time PIN will be saved)'}</label><input id="pin" type="password" inputmode="numeric" maxlength="6" placeholder="4-6 digit PIN"><br><br><button class="btn bb" id="wdBtn" onclick="wd()">Request Withdrawal</button></div><div class="card"><h2>Withdrawal Rules</h2><ul class="rules"><li>The account must be in your own name.</li><li>Requests are processed within 24 hours.</li><li>Bonus balance cannot be withdrawn until turnover is complete.</li><li>Check the account number carefully before submitting.</li></ul></div>`;
   },
 
   tx: () => bk('Transaction History') + `<div class="card">${T.length ? T.map(txr).join('') : '<p class="sub">No transactions found.</p>'}</div>`,
@@ -1615,7 +1743,9 @@ const V = {
 
   vip: () => {
     const pct = Math.min(100, Math.round((Number(S.xp || 0) / Math.max(1, Number(S.next || 2000))) * 100));
-    return `<div class="card wallet" style="text-align:center"><div style="font-size:54px">👑</div><h2 style="justify-content:center">VIP ${esc(S.lvl)}</h2><div class="bar"><i style="width:${pct}%"></i></div><div class="sub">${Number(S.xp || 0).toLocaleString()} / ${Number(S.next || 2000).toLocaleString()} XP</div></div><div class="card"><h2>VIP Levels</h2>${[['🥉','Bronze','0 pts · 2% cashback'],['🥈','Silver','2,000 pts · 5% cashback'],['🥇','Gold','5,000 pts · 10% cashback'],['💠','Platinum','10,000 pts · 15% cashback'],['💎','Diamond','25,000 pts · personal manager']].map(l=>`<div class="tx"><div class="ic">${l[0]}</div><div><b>${l[1]}</b><small>${l[2]}</small></div>${l[1]==S.lvl?'<span class="pill vip">Current</span>':''}</div>`).join('')}</div>`;
+    const vLevels = ((CFG && Array.isArray(CFG.vipLevels) && CFG.vipLevels.length) ? CFG.vipLevels : DEFAULT_CFG.vipLevels)
+      .slice().sort((a, b) => Number(a.minXp || 0) - Number(b.minXp || 0));
+    return `<div class="card wallet" style="text-align:center"><div style="font-size:54px">👑</div><h2 style="justify-content:center">VIP ${esc(S.lvl)}</h2><div class="bar"><i style="width:${pct}%"></i></div><div class="sub">${Number(S.xp || 0).toLocaleString()} / ${Number(S.next || 2000).toLocaleString()} XP</div></div><div class="card"><h2>VIP Levels</h2>${vLevels.map(l=>`<div class="tx"><div class="ic">${esc(l.ic||'👑')}</div><div><b>${esc(l.name||'Tier')}</b><small>${esc(l.desc || (Number(l.minXp||0).toLocaleString()+' pts · '+(l.cashback||0)+'% cashback'))}</small></div>${l.name===S.lvl?'<span class="pill vip">Current</span>':''}</div>`).join('')}</div>`;
   },
 
   ref: () => {
@@ -1623,7 +1753,8 @@ const V = {
     const targetBase = /\/user(\.html)?$/i.test(cleanBase) ? cleanBase : (cleanBase.replace(/\/+$/, '') + '/user.html');
     const myCode = S.code || (S.uid ? ('MW' + S.uid.slice(0, 6).toUpperCase()) : '');
     const refUrl = targetBase + '?ref=' + encodeURIComponent(myCode);
-    return bk('Referral Program') + `<div class="card wallet" style="text-align:center"><div class="sub">Your referral code</div><div class="tot">${esc(myCode)}</div><div class="sub" style="margin-top:6px;word-break:break-all">${esc(refUrl)}</div><br><div class="two" style="margin-bottom:8px"><button class="btn bgold sm" style="width:100%" onclick="copyText('${esc(myCode)}','Code copied')">Copy Code</button><button class="btn out sm" style="width:100%" onclick="copyText('${esc(refUrl)}','Referral link copied')">Copy Link</button></div><button class="btn bg sm" style="width:100%" onclick="shareRefLink('${esc(refUrl)}')">↗ Share Referral Link</button></div><div class="grid" style="grid-template-columns:repeat(3,1fr)"><div class="q" style="min-height:0;padding:12px 6px"><b style="display:block;font-size:17px;color:var(--gold);margin-bottom:2px">20%</b>Bonus</div><div class="q" style="min-height:0;padding:12px 6px"><b style="display:block;font-size:17px;color:var(--gold);margin-bottom:2px">${LIVE_DEPOSITS.filter(d=>d.status==='Approved').length}</b>Deposits</div><div class="q" style="min-height:0;padding:12px 6px"><b style="display:block;font-size:17px;color:var(--gold);margin-bottom:2px">${f(S.bon)}</b>Bonus</div></div><p class="sub" style="margin-top:12px">Invite friends using your referral link so they automatically link to your admin/network.</p>`;
+    const refPct = Number(CFG.referralBonusPercent != null ? CFG.referralBonusPercent : 20);
+    return bk('Referral Program') + `<div class="card wallet" style="text-align:center"><div class="sub">Your referral code</div><div class="tot">${esc(myCode)}</div><div class="sub" style="margin-top:6px;word-break:break-all">${esc(refUrl)}</div><br><div class="two" style="margin-bottom:8px"><button class="btn bgold sm" style="width:100%" onclick="copyText('${esc(myCode)}','Code copied')">Copy Code</button><button class="btn out sm" style="width:100%" onclick="copyText('${esc(refUrl)}','Referral link copied')">Copy Link</button></div><button class="btn bg sm" style="width:100%" onclick="shareRefLink('${esc(refUrl)}')">↗ Share Referral Link</button></div><div class="grid" style="grid-template-columns:repeat(3,1fr)"><div class="q" style="min-height:0;padding:12px 6px"><b style="display:block;font-size:17px;color:var(--gold);margin-bottom:2px">${refPct}%</b>Bonus</div><div class="q" style="min-height:0;padding:12px 6px"><b style="display:block;font-size:17px;color:var(--gold);margin-bottom:2px">${LIVE_DEPOSITS.filter(d=>d.status==='Approved').length}</b>Deposits</div><div class="q" style="min-height:0;padding:12px 6px"><b style="display:block;font-size:17px;color:var(--gold);margin-bottom:2px">${f(S.bon)}</b>Bonus</div></div><p class="sub" style="margin-top:12px">Invite friends using your referral link so they automatically link to your admin/network.</p>`;
   },
 
   games: () => `<h2 style="font-size:20px">Casino Games</h2><div class="grid" style="grid-template-columns:repeat(2,1fr)">${gl().map(g=>`<div class="gm"><span>${g[0]}</span><b>${esc(g[1])}</b><button class="btn bgold sm" onclick="play('${esc(g[1])}')">Play Now</button></div>`).join('')}</div>`,
@@ -1640,15 +1771,18 @@ const V = {
     return bk('Notifications') + `<div class="card">${LIVE_NOTIFS.length ? LIVE_NOTIFS.map(n => `<div class="tx"><div class="ic">${esc(n.icon || '🔔')}</div><div><b style="white-space:normal">${esc(n.title || '')} ${esc(n.message || n.body || '')}</b><small>${formatTime(n.createdAt || n.timestamp)}</small></div></div>`).join('') : '<p class="sub">No notifications yet.</p>'}</div>`;
   },
 
-  sec: () => bk('Security Settings')
-    + tg([
+  sec: () => {
+    const rows = [
       ['twoFactor', 'Two-factor authentication', S.securityPrefs.twoFactor !== false],
-      ['loginAlerts', 'Login alerts', S.securityPrefs.loginAlerts !== false],
-      ['biometric', 'Biometric unlock', !!S.securityPrefs.biometric]
-    ], 'securityPrefs')
-    + `<div id="mw-biometric-slot"></div>`
-    + `<div class="card"><label>Set / Update Withdrawal PIN (4-6 digits)</label><div class="row"><input id="newPin" type="password" inputmode="numeric" maxlength="6" placeholder="4-6 digits"><button class="btn bgold sm" onclick="saveWdPin()">Save PIN</button></div></div>`
-    + `<button class="btn bb" onclick="changeUserPassword()">Change Password</button>`,
+      ['loginAlerts', 'Login alerts', S.securityPrefs.loginAlerts !== false]
+    ];
+    if (isUserFeat('biometric')) rows.push(['biometric', 'Biometric unlock', !!S.securityPrefs.biometric]);
+    return bk('Security Settings')
+      + tg(rows, 'securityPrefs')
+      + (isUserFeat('biometric') ? `<div id="mw-biometric-slot"></div>` : '')
+      + `<div class="card"><label>Set / Update Withdrawal PIN (4-6 digits)</label><div class="row"><input id="newPin" type="password" inputmode="numeric" maxlength="6" placeholder="4-6 digits"><button class="btn bgold sm" onclick="saveWdPin()">Save PIN</button></div></div>`
+      + `<button class="btn bb" onclick="changeUserPassword()">Change Password</button>`;
+  },
 
   resp: () => bk('Responsible Gaming')
     + tg([
@@ -1770,7 +1904,10 @@ function vOk() {
   vk = ''; toast('Verified successfully'); go('profile');
 }
 
-function openChat() { const d = $('#lcd'); if (!d) return; d.classList.add('o'); d.setAttribute('aria-hidden', 'false'); document.body.classList.add('chat-open'); if (window.mwOnChatOpen) window.mwOnChatOpen(); }
+function openChat() {
+  if (!isUserFeat('liveChat')) return toast('লাইভ সাপোর্ট চ্যাট বর্তমানে বন্ধ রয়েছে');
+  const d = $('#lcd'); if (!d) return; d.classList.add('o'); d.setAttribute('aria-hidden', 'false'); document.body.classList.add('chat-open'); if (window.mwOnChatOpen) window.mwOnChatOpen();
+}
 function closeChat() { const d = $('#lcd'); if (!d) return; d.classList.remove('o'); d.setAttribute('aria-hidden', 'true'); document.body.classList.remove('chat-open'); d.style.bottom = ''; d.style.maxHeight = ''; }
 addEventListener('keydown', e => { if (e.key === 'Escape') closeChat(); });
 
@@ -1844,9 +1981,11 @@ function pick(e) { [...e.parentNode.children].forEach(c => c.classList.remove('s
 function wfields(m) { return m === 'Bank' ? '<label>Bank name</label><input id="wb" placeholder="e.g. ABC Bank"><label>Account holder name</label><input id="wh"><label>Account number</label><input id="wn" inputmode="numeric">' : `<label>${m} account number</label><input id="wn" type="tel" inputmode="numeric" placeholder="01XXXXXXXXX" value="${esc(S.mob||'')}">`; }
 
 async function dep() {
+  if (!isUserFeat('deposits')) return toast('ডিপোজিট অপশন বর্তমানে বন্ধ রয়েছে');
   if (!S.uid) return window.openAuth ? openAuth('login', 'dep') : toast('Please login first');
   if (S.responsibleGaming && S.responsibleGaming.selfExclusion) return toast('Self-exclusion is active in Responsible Gaming settings.');
-  const minD = Number(LIVE_SETTINGS.minDeposit || 500), maxD = Number(LIVE_SETTINGS.maxDeposit || 50000);
+  const lim = getLimits();
+  const minD = lim.minDeposit, maxD = lim.maxDeposit;
   const v = parseFloat($('#a').value), sn = $('#sn').value.trim(), tid = $('#tid').value.trim().toUpperCase();
   if (!v || v < minD) return toast('Minimum deposit is ' + f(minD));
   if (v > maxD) return toast('Maximum deposit is ' + f(maxD));
@@ -1897,8 +2036,10 @@ async function dep() {
 }
 
 async function wd() {
+  if (!isUserFeat('withdrawals')) return toast('উইথড্র অপশন বর্তমানে বন্ধ রয়েছে');
   if (!S.uid) return window.openAuth ? openAuth('login', 'wd') : toast('Please login first');
-  const minW = Number(LIVE_SETTINGS.minWithdraw || 500), maxW = Number(LIVE_SETTINGS.maxWithdraw || 25000);
+  const lim = getLimits();
+  const minW = lim.minWithdraw, maxW = lim.maxWithdraw;
   const v = parseFloat($('#a').value), n = $('#wn').value.trim(), pin = $('#pin').value;
   if (!v || v < minW) return toast('Minimum withdrawal is ' + f(minW));
   if (v > maxW) return toast('Maximum per request is ' + f(maxW));
@@ -1953,11 +2094,16 @@ async function wd() {
 async function claimPromo(id) {
   if (!S.uid) return window.openAuth ? openAuth('login', 'promo') : toast('Please login first');
   if (id === 'daily_bonus') {
+    if (!isUserFeat('dailyBonus') || CFG.dailyBonusEnabled === false) {
+      return toast('ডেইলি বোনাস বর্তমানে বন্ধ রয়েছে');
+    }
     const todayKey = new Date().toISOString().slice(0, 10);
     if (S.lastDailyBonusAt && new Date(S.lastDailyBonusAt).toISOString().slice(0, 10) === todayKey) {
       return toast('Daily bonus already claimed today');
     }
-    const bonusAmt = 50;
+    const promoObj = (CFG.promos || []).find(x => x && x.id === 'daily_bonus');
+    const bonusAmt = Math.max(0, Number(CFG.dailyBonusAmount != null ? CFG.dailyBonusAmount : ((promoObj && promoObj.v) || 50)));
+    if (!bonusAmt) return toast('Daily bonus amount is currently 0');
     try {
       await fbDb.ref('users/' + S.uid + '/bonusBalance').transaction(c => Number(c || 0) + bonusAmt);
       await fbDb.ref('users/' + S.uid + '/lastDailyBonusAt').set(Date.now());
@@ -2457,23 +2603,47 @@ if (ibBtn) ibBtn.onclick = () => { if (typeof window.mwTriggerInstall === 'funct
     const F = CFG.footer || DEFAULT_CFG.footer;
     const catKeyMap = {sports:'Sports',casino:'Live Casino',slots:'Slots',table:'Table Games',crash:'Crash & Arcade',fishing:'Fishing',arcade:'Crash & Arcade'};
     const visCats = CATS.filter(c => !catKeyMap[c[0]] || typeof isGameCatEnabled !== 'function' || isGameCatEnabled(catKeyMap[c[0]]));
-    return `<footer class="ftr"><div class="fc">${FL('Gaming', visCats.map(c => [c[2], `fCat('${c[0]}')`]))}${FL('Features', [['Promotions',"go('promo')"],['VIP Club',"go('vip')"],['Referral',"go('ref')"],['APP Download','fApp()']])}${FL('Account', [['My Profile',"go('profile')"],['My Wallet',"go('wallet')"],['Deposit',"go('dep')"],['Withdraw',"go('wd')"],['Security',"go('sec')"]])}${FL('Support', [['Transaction History',"go('tx')"],['Bet History',"go('bets')"],['Bonus History',"go('bonus')"],['Notifications',"go('notif')"],['Responsible Gaming',"go('resp')"]])}</div>`
+    const featLinks = [
+      ...(isUserFeat('promotions') ? [['Promotions',"go('promo')"]] : []),
+      ...(isUserFeat('vip') ? [['VIP Club',"go('vip')"]] : []),
+      ...(isUserFeat('referral') ? [['Referral',"go('ref')"]] : []),
+      ['APP Download','fApp()']
+    ];
+    const accLinks = [
+      ['My Profile',"go('profile')"],
+      ['My Wallet',"go('wallet')"],
+      ...(isUserFeat('deposits') ? [['Deposit',"go('dep')"]] : []),
+      ...(isUserFeat('withdrawals') ? [['Withdraw',"go('wd')"]] : []),
+      ['Security',"go('sec')"]
+    ];
+    const supLinks = [
+      ['Transaction History',"go('tx')"],
+      ['Bet History',"go('bets')"],
+      ...(isUserFeat('promotions') ? [['Bonus History',"go('bonus')"]] : []),
+      ['Notifications',"go('notif')"],
+      ...(isUserFeat('responsibleGaming') ? [['Responsible Gaming',"go('resp')"]] : [])
+    ];
+    const ftrSig = sigHash({ f: CFG.features, ft: F });
+    const respNote = (F && F.responsibleNote) || DEFAULT_CFG.footer.responsibleNote;
+    const copyNote = (F && F.copyright) || DEFAULT_CFG.footer.copyright;
+    return `<footer class="ftr" data-sig="${ftrSig}"><div class="fc">${FL('Gaming', visCats.map(c => [c[2], `fCat('${c[0]}')`]))}${FL('Features', featLinks)}${FL('Account', accLinks)}${FL('Support', supLinks)}</div>`
       + FS('Sponsorships', F.sponsors, x => `<div class="fi">${lg(x)}<div><b>${e2(x.n)}</b><small>${e2(x.r || '')}</small><small>${e2(x.y || '')}</small></div></div>`)
       + FS('Brand Ambassadors', F.ambassadors, x => `<div class="fi">${lg(x)}<div><b>${e2(x.n)}</b><small>${e2(x.y || '')}</small></div></div>`)
       + FS('Official Brand Partner', F.partners, x => `<div class="fi">${lg(x)}<div><b>${e2(x.n || x)}</b></div></div>`)
       + FS('Gaming License', F.licenses, x => `<div class="fi">${lg(x)}<div><b>${e2(x.n || x)}</b><small>${e2(x.d || '')}</small></div></div>`)
-      + `<div class="fs"><h4 class="gr">Responsible Gaming</h4><div class="fr"><span class="a18">✋</span><span class="a18">18+</span><small style="max-width:420px">Gambling can be addictive. Play responsibly, set limits, and never bet more than you can afford to lose.</small></div></div><div class="rg">© MOSTWIN88. All rights reserved. 2026</div></footer>`;
+      + `<div class="fs"><h4 class="gr">Responsible Gaming</h4><div class="fr"><span class="a18">✋</span><span class="a18">18+</span><small style="max-width:420px">${e2(respNote)}</small></div></div><div class="rg">${e2(copyNote)}</div></footer>`;
   };
 
   window.foot = () => {
-    const q = $('#fsup'); if (q) q.style.display = cur === 'support' ? 'none' : '';
+    const q = $('#fsup'); if (q) q.style.display = (cur === 'support' || !isUserFeat('liveChat')) ? 'none' : '';
     const m = $('#m'); if (!m || m.querySelector('.ftr,.rg')) return;
     m.insertAdjacentHTML('beforeend', cur === 'support' ? '' : ftr());
   };
 
   window.go = function(s) {
-    _go(s);
-    if (s !== 'more' && s !== 'out' && !pop && location.hash.slice(1) !== s) {
+    const ok = _go(s);
+    if (ok === false) return;
+    if (s !== 'more' && s !== 'out' && s !== 'support' && !pop && location.hash.slice(1) !== s) {
       try { history.pushState({s}, '', '#' + s); } catch (e) {}
     }
     foot();
