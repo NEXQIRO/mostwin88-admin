@@ -1,4 +1,4 @@
-const CACHE_NAME = 'mw-user-v2';
+const CACHE_NAME = 'mw-user-v3';
 const ENTRY = './user.html';
 const PRECACHE = [
   ENTRY,
@@ -6,8 +6,8 @@ const PRECACHE = [
   './passkey.js',
   './firebase-config.js',
   './user-manifest.json',
-  './icon-192.png',
-  './icon-512.png'
+  './icon-192.png?v=3',
+  './icon-512.png?v=3'
 ];
 
 self.addEventListener('install', (e) => {

@@ -15,7 +15,7 @@
   else if (path.indexOf('user') !== -1 || search.indexOf('ref=') !== -1 || path === '/' || path === '') appKey = 'user';
 
   var APP_META = {
-    user:      { name: 'MOSTWIN88 App',       sw: './user-sw.js',      icon: './icon-192.png' },
+    user:      { name: 'MOSTWIN88 App',       sw: './user-sw.js',      icon: './icon-192.png?v=3' },
     admin:     { name: 'MOSTWIN88 Admin',     sw: './admin-sw.js',     icon: './admin-icon-192.png' },
     master:    { name: 'MOSTWIN88 Master',    sw: './master-sw.js',    icon: './master-icon-192.png' },
     agent:     { name: 'MOSTWIN88 Agent',     sw: './agent-sw.js',     icon: './agent-icon-192.png' },
