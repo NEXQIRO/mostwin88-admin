@@ -2708,6 +2708,17 @@ async function rejectAffReqMaster(id){
  toast('বাতিল করা হয়েছে');
 }
 
+let ADM_FORM_MODE='new';
+function setAdmFormMode(mode){
+ ADM_FORM_MODE=mode==='uid'?'uid':'new';
+ const nF=$('admNewForm'),uF=$('admUidForm'),hT=$('admFormHint'),bT=$('admFormTitle');
+ if(nF)nF.style.display=ADM_FORM_MODE==='new'?'flex':'none';
+ if(uF)uF.style.display=ADM_FORM_MODE==='uid'?'flex':'none';
+ if(bT)bT.textContent=ADM_FORM_MODE==='new'?'👑 ১) সরাসরি নতুন ইউজার অ্যাডমিন তৈরি করুন':'⚡ ২) বিদ্যমান ইউজার বা প্লেয়ারের UID দিয়ে অ্যাডমিন পারমিশন দিন';
+ if(hT)hT.textContent=ADM_FORM_MODE==='new'
+  ?'এখানে নাম, ইমেইল, রোল ও পাসওয়ার্ড দিয়ে সেভ করলেই একাউন্ট খুলে সরাসরি অ্যাক্টিভ ইউজার অ্যাডমিন পারমিশন সেট হয়ে যাবে:'
+  :'যদি কোনো প্লেয়ারের একাউন্ট অলরেডি খোলা থাকে, তার UID নিচে পেস্ট করে পারমিশন দিন। সে ওই পাসওয়ার্ড দিয়েই User Admin প্যানেলে ঢুকতে পারবে:';
+}
 function draw(){if(!started)return;
  const A=Object.entries(ADM),P=Object.entries(REQ).filter(([k,r])=>r.status==='pending'),AG=Object.entries(AGENTS),AGP=Object.entries(AGREQ).filter(([k,r])=>r.status==='pending'),AFP=Object.entries(AFFREQ).filter(([k,r])=>r.status==='pending');
  const allocFund=A.reduce((s,[k,a])=>s+(+a.balance||0),0);
@@ -2735,10 +2746,16 @@ function draw(){if(!started)return;
  if($('nav-aff-pending'))$('nav-aff-pending').textContent=AFP.length;
  drawTn();['admins','agents','affiliates','reqs','led','games','userpanel','players','act','feat','promo','chat','tenants','guide'].forEach(t=>{const el=$('t-'+t);if(el)el.className=(t===cur||(t==='admins'&&cur==='admin'))?'on':''});let h='';
  if(cur==='admins'){
-  h=`<div class="cd" style="margin-bottom:12px;background:var(--in);border:1px solid var(--bg2)">
-   <b style="font-size:16px;color:var(--gold);display:flex;align-items:center;gap:6px">👑 ১) সরাসরি নতুন ইউজার অ্যাডমিন তৈরি করুন</b>
-   <span style="display:block;margin-top:4px">এখানে নাম, ইমেইল, রোল ও পাসওয়ার্ড দিয়ে সেভ করলেই একাউন্ট খুলে সরাসরি অ্যাক্টিভ ইউজার অ্যাডমিন পারমিশন সেট হয়ে যাবে:</span>
-   <div class="row" style="margin-top:10px">
+  h=`<div class="cd" style="margin-bottom:14px;background:var(--in);border:1px solid var(--bg2)">
+   <div style="display:flex;align-items:center;justify-content:space-between;gap:10px;flex-wrap:wrap">
+    <b id="admFormTitle" style="font-size:16px;color:var(--gold);display:flex;align-items:center;gap:6px">${ADM_FORM_MODE==='new'?'👑 ১) সরাসরি নতুন ইউজার অ্যাডমিন তৈরি করুন':'⚡ ২) বিদ্যমান ইউজার বা প্লেয়ারের UID দিয়ে অ্যাডমিন পারমিশন দিন'}</b>
+    <select id="admModeSel" aria-label="ইউজার অ্যাডমিন যোগ করার পদ্ধতি" onchange="setAdmFormMode(this.value)" style="min-height:40px;height:40px;background:var(--card);color:var(--gold);border:1px solid rgba(255,210,63,.35);border-radius:10px;padding:0 12px;font-weight:700;cursor:pointer;max-width:100%">
+     <option value="new" ${ADM_FORM_MODE==='new'?'selected':''}>👑 ১) সরাসরি নতুন ইউজার অ্যাডমিন তৈরি করুন</option>
+     <option value="uid" ${ADM_FORM_MODE==='uid'?'selected':''}>⚡ ২) বিদ্যমান ইউজার / প্লেয়ারের UID দিয়ে পারমিশন</option>
+    </select>
+   </div>
+   <span id="admFormHint" style="display:block;margin-top:6px;color:var(--mu);font-size:12.5px">${ADM_FORM_MODE==='new'?'এখানে নাম, ইমেইল, রোল ও পাসওয়ার্ড দিয়ে সেভ করলেই একাউন্ট খুলে সরাসরি অ্যাক্টিভ ইউজার অ্যাডমিন পারমিশন সেট হয়ে যাবে:':'যদি কোনো প্লেয়ারের একাউন্ট অলরেডি খোলা থাকে, তার UID নিচে পেস্ট করে পারমিশন দিন। সে ওই পাসওয়ার্ড দিয়েই User Admin প্যানেলে ঢুকতে পারবে:'}</span>
+   <div id="admNewForm" class="row" style="margin-top:10px;display:${ADM_FORM_MODE==='new'?'flex':'none'}">
     <input id="an" placeholder="অ্যাডমিন নাম (যেমন: Rahim Admin)">
     <input id="ae" type="email" placeholder="ইমেইল (যেমন: rahim@admin.com)">
     <select id="ar" style="height:42px;background:var(--in);color:var(--tx);border:1px solid var(--bd);border-radius:10px;padding:0 10px">
@@ -2748,12 +2765,7 @@ function draw(){if(!started)return;
     <input id="ap" type="password" placeholder="পাসওয়ার্ড (৬+ অক্ষর)">
     <button class="p" onclick="createAdmin()" style="font-weight:700">+ অ্যাডমিন সেভ ও অনুমতি দিন</button>
    </div>
-  </div>
-
-  <div class="cd" style="margin-bottom:14px;background:var(--card);border:1px solid var(--bd)">
-   <b style="font-size:16px;color:var(--gold)">⚡ ২) বিদ্যমান ইউজার বা প্লেয়ারের UID দিয়ে অ্যাডমিন পারমিশন দিন</b>
-   <span style="display:block;margin-top:4px">যদি কোনো প্লেয়ারের একাউন্ট অলরেডি খোলা থাকে, তার UID নিচে পেস্ট করে পারমিশন দিন। সে ওই পাসওয়ার্ড দিয়েই User Admin প্যানেলে ঢুকতে পারবে:</span>
-   <div class="row" style="margin-top:10px">
+   <div id="admUidForm" class="row" style="margin-top:10px;display:${ADM_FORM_MODE==='uid'?'flex':'none'}">
     <input id="auid" placeholder="প্লেয়ার / ইউজারের UID (যেমন: rX9sK...)" style="flex:1.5">
     <input id="aunm" placeholder="অ্যাডমিন হিসেবে প্রদর্শিত নাম (ঐচ্ছিক)">
     <select id="aur" style="height:42px;background:var(--in);color:var(--tx);border:1px solid var(--bd);border-radius:10px;padding:0 10px">
