@@ -46,13 +46,16 @@ h2 a{font-size:12px;color:var(--gold);font-weight:600;cursor:pointer}
 .pill{display:inline-flex;gap:5px;align-items:center;padding:3px 10px;border-radius:20px;font-size:11px;font-weight:700}
 .vip{background:linear-gradient(135deg,#ffe27a,#e49a00);color:#2a1c00}
 .on{color:var(--g)}.dot{width:8px;height:8px;border-radius:50%;background:var(--g);box-shadow:0 0 8px var(--g);display:inline-block}
-.car-wrap{position:relative;border-radius:20px;overflow:hidden;margin-bottom:12px;border:1px solid rgba(255,255,255,.1);box-shadow:0 14px 28px -16px rgba(0,0,0,.85);background:#0b1d52}
-.car{display:flex;overflow-x:auto;scroll-snap-type:x mandatory;gap:0;scrollbar-width:none;border-radius:0;margin-bottom:0!important}
+.car-wrap{position:relative;border-radius:20px;overflow:hidden;margin-bottom:12px;border:1px solid rgba(255,255,255,.1);box-shadow:0 14px 28px -16px rgba(0,0,0,.85);background:#0b1d52;transition:height .28s ease}
+.car{display:flex;align-items:flex-start;overflow-x:auto;scroll-snap-type:x mandatory;gap:0;scrollbar-width:none;border-radius:0;margin-bottom:0!important}
 .car::-webkit-scrollbar{display:none}
-.sl{flex:0 0 100%;width:100%;scroll-snap-align:center;min-height:185px;aspect-ratio:16/7.8;border-radius:0;border:0!important;box-shadow:none!important;padding:20px 124px 36px 18px;position:relative;overflow:hidden;display:flex;flex-direction:column;justify-content:center;align-items:flex-start}
-.sl.sl-img{padding:0!important;display:block;cursor:pointer}
-.sl.sl-img img.sl-pic{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;display:block}
-.sl.sl-img::after{content:"";position:absolute;left:0;right:0;bottom:0;height:46px;background:linear-gradient(transparent,rgba(5,11,26,.55));pointer-events:none;z-index:2}
+.sl{flex:0 0 100%;width:100%;scroll-snap-align:center;min-height:185px;border-radius:0;border:0!important;box-shadow:none!important;padding:20px 124px 36px 18px;position:relative;overflow:hidden;display:flex;flex-direction:column;justify-content:center;align-items:flex-start}
+.sl.sl-img{padding:0!important;min-height:140px!important;aspect-ratio:auto!important;display:flex;align-items:center;justify-content:center;cursor:pointer;background:#0b1d52}
+.sl.sl-img img.sl-bg{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;filter:blur(18px) brightness(.44) saturate(1.2);transform:scale(1.12);pointer-events:none;z-index:0;display:none}
+.sl.sl-img.sl-clamped img.sl-bg{display:block}
+.sl.sl-img img.sl-pic{position:relative;z-index:1;width:100%;height:auto;max-height:540px;object-fit:contain;display:block}
+.sl.sl-img.sl-clamped img.sl-pic{width:100%;height:100%;object-fit:contain}
+.sl.sl-img::after{content:"";position:absolute;left:0;right:0;bottom:0;height:38px;background:linear-gradient(transparent,rgba(5,11,26,.45));pointer-events:none;z-index:2}
 .sl h3{font-size:22px;line-height:1.15;color:#fff;max-width:100%;text-shadow:0 2px 10px #0008;position:relative;z-index:2}.sl h3 em{font-style:normal;color:var(--gold)}
 .sl p{font-size:12px;color:#dce6ff;margin:6px 0 12px;max-width:100%;position:relative;z-index:2}
 .sl .btn{position:relative;z-index:2}
@@ -121,7 +124,7 @@ aside{transform:none!important;width:250px;z-index:25;background:linear-gradient
 main{padding:18px 22px;max-width:1300px;margin:auto}
 .hm{display:grid;grid-template-columns:minmax(0,1fr) 290px;gap:16px}.mn{min-width:0}
 .dk{display:block}.stats.dk,.two.dk{display:grid}.stats{grid-template-columns:repeat(4,1fr);gap:12px;margin:14px 0}
-.qg{grid-template-columns:repeat(8,1fr)}.sl{min-height:240px;aspect-ratio:21/9;padding:26px 140px 42px 26px}.sl h3{font-size:30px}.sl .art{font-size:120px}
+.qg{grid-template-columns:repeat(8,1fr)}.sl:not(.sl-img){min-height:240px;padding:26px 140px 42px 26px}.sl h3{font-size:30px}.sl .art{font-size:120px}
 .screen>*:not(.hm){max-width:640px;margin-left:auto;margin-right:auto}
 }
 .cr{width:1em;height:1em;fill:var(--gold);vertical-align:-.12em}.vip .cr,aside button.cur .cr{fill:#2a1c00}
@@ -131,7 +134,7 @@ main{padding:18px 22px;max-width:1300px;margin:auto}
 @media(max-width:480px){
 main{padding:12px 12px 0}h2{font-size:15px}
 header{padding-left:10px;padding-right:10px}.ib,.av{width:38px;height:38px;font-size:17px}.logo{font-size:clamp(16px,5.2vw,21px)}
-.sl{min-height:178px;aspect-ratio:16/8;padding:16px 96px 34px 16px}.sl h3{font-size:clamp(16px,5vw,20px);max-width:100%}.sl p{font-size:11px;margin:4px 0 10px;max-width:100%}.sl .art{font-size:62px;right:8px;bottom:14px}.sl .btn{min-height:38px;font-size:13px}
+.sl:not(.sl-img){min-height:178px;padding:16px 96px 34px 16px}.sl h3{font-size:clamp(16px,5vw,20px);max-width:100%}.sl p{font-size:11px;margin:4px 0 10px;max-width:100%}.sl .art{font-size:62px;right:8px;bottom:14px}.sl .btn{min-height:38px;font-size:13px}
 .cw{padding:12px;gap:10px}.cw>div:first-child{font-size:28px!important}.cw .btn{min-width:0;min-height:40px;font-size:13px;padding:0 10px}
 .q{min-height:76px;font-size:10.5px;padding:10px 2px}.q span{font-size:24px}
 .dbn{gap:10px;padding:10px}.dbn>div:first-child{font-size:34px!important}.dbn i{font-size:17px!important}.dbn .btn{font-size:12px;padding:0 10px}
@@ -241,6 +244,37 @@ h2{margin:2px 0 10px;letter-spacing:.2px}
 .tx{border-bottom-color:rgba(255,255,255,.06)}
 #toast,#ins{box-shadow:0 14px 34px -12px rgba(0,0,0,.8);border-color:rgba(255,210,63,.4)}
 .sbs{display:grid;gap:12px}.sbs .bs{flex:none;width:100%;min-height:124px}
+.bs.bs-img{padding:0!important;gap:0!important;display:flex;align-items:center;justify-content:center;background:#0b1d52;min-height:110px}
+.bs.bs-img img.bs-bg{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;filter:blur(14px) brightness(.42);transform:scale(1.12);pointer-events:none;z-index:0;display:none}
+.bs.bs-img.bs-clamped img.bs-bg{display:block}
+.bs.bs-img img.bs-pic{position:relative;z-index:1;width:100%;height:auto;max-height:260px;object-fit:contain;display:block}
+.bs.bs-img.bs-clamped img.bs-pic{width:100%;height:100%;object-fit:contain}
+.dk-ad-card{padding:12px;border-color:rgba(255,210,63,.28);background:linear-gradient(165deg,rgba(16,34,79,.92),rgba(8,18,43,.95))}
+.dk-ad-hd{display:flex;align-items:center;justify-content:space-between;gap:8px;margin-bottom:10px}
+.dk-ad-tag{display:inline-flex;align-items:center;gap:5px;font-size:10px;font-weight:800;letter-spacing:.6px;text-transform:uppercase;padding:3px 9px;border-radius:999px;background:rgba(255,210,63,.16);color:var(--gold);border:1px solid rgba(255,210,63,.35)}
+.dk-ad-nav{display:flex;align-items:center;gap:5px}
+.dk-ad-arr{width:26px;height:26px;border-radius:8px;background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.12);color:var(--t);font-size:15px;line-height:1;display:grid;place-items:center;cursor:pointer}
+.dk-ad-arr:hover{border-color:var(--gold);color:var(--gold)}
+.dk-ad-view{position:relative;overflow:hidden;border-radius:14px;background:#0a1530;border:1px solid rgba(255,255,255,.08)}
+.dk-ad-track{display:flex;align-items:flex-start;overflow-x:auto;scroll-snap-type:x mandatory;scrollbar-width:none;scroll-behavior:smooth}
+.dk-ad-track::-webkit-scrollbar{display:none}
+.dk-ad-slide{flex:0 0 100%;width:100%;scroll-snap-align:center;box-sizing:border-box}
+.dk-ad-promo{position:relative;padding:14px;display:flex;flex-direction:column;gap:8px;min-height:152px;justify-content:space-between;text-align:left;cursor:pointer;background:linear-gradient(135deg,hsl(var(--h,225) 68% 24%),hsl(var(--h2,268) 62% 32%));width:100%;color:#fff;border:0}
+.dk-ad-promo-top{display:flex;align-items:flex-start;justify-content:space-between;gap:10px}
+.dk-ad-promo-ic{font-size:38px;line-height:1;filter:drop-shadow(0 4px 10px rgba(0,0,0,.5));flex:none}
+.dk-ad-pill{font-size:9px;font-weight:800;letter-spacing:.5px;padding:2px 8px;border-radius:999px;background:rgba(0,0,0,.35);border:1px solid rgba(255,210,63,.45);color:var(--gold)}
+.dk-ad-promo b{display:block;font-size:15px;line-height:1.25;color:#fff}
+.dk-ad-promo small{display:block;font-size:11.5px;line-height:1.45;color:#e4ecff}
+.dk-ad-cta{display:inline-flex;align-items:center;justify-content:center;gap:5px;width:100%;min-height:34px;border-radius:10px;background:linear-gradient(135deg,#ffe27a,#e49a00);color:#2a1c00;font-weight:800;font-size:12px;margin-top:4px;box-shadow:0 4px 10px rgba(0,0,0,.35)}
+.dk-ad-imgbtn{position:relative;display:flex;align-items:center;justify-content:center;width:100%;padding:0;border:0;background:#0b1d52;cursor:pointer;overflow:hidden}
+.dk-ad-imgbtn img.bs-bg{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;filter:blur(14px) brightness(.44);transform:scale(1.12);display:none;pointer-events:none}
+.dk-ad-imgbtn.bs-clamped img.bs-bg{display:block}
+.dk-ad-imgbtn img.bs-pic{position:relative;z-index:1;width:100%;height:auto;max-height:260px;object-fit:contain;display:block}
+.dk-ad-imgbtn.bs-clamped img.bs-pic{width:100%;height:100%;object-fit:contain}
+.dk-html-ad-frame{width:100%;min-height:170px;max-height:280px;border:0;display:block;background:#0a1530}
+.dk-ad-dots{display:flex;justify-content:center;gap:5px;margin-top:9px}
+.dk-ad-dots i{width:6px;height:6px;border-radius:999px;background:rgba(255,255,255,.32);transition:.25s;cursor:pointer}
+.dk-ad-dots i.a{width:18px;background:var(--gold)}
 
 /* ===== Live Chat widget ===== */
 .lcd{position:fixed;right:16px;bottom:16px;width:min(380px,calc(100vw - 24px));height:min(580px,calc(100dvh - 32px));z-index:70;display:flex;flex-direction:column;border-radius:20px;overflow:hidden;background:linear-gradient(180deg,rgba(10,22,52,.99),rgba(5,11,26,.99));border:1px solid rgba(255,210,63,.35);box-shadow:0 24px 60px -12px rgba(0,0,0,.85);opacity:0;pointer-events:none;transform:translateY(24px) scale(.96);transform-origin:bottom right;transition:opacity .28s,transform .28s cubic-bezier(.2,.8,.2,1)}
@@ -727,7 +761,8 @@ const DEFAULT_CFG = {
   providerLogos: {},
   gameCategories: {},
   sportsConfig: {},
-  gameApi: {}
+  gameApi: {},
+  htmlAd: { code: '', config: { enabled: false } }
 };
 
 const CFG = JSON.parse(JSON.stringify(DEFAULT_CFG));
@@ -928,6 +963,9 @@ function rebuildMergedConfig() {
 
   if (Array.isArray(g.sideBanners) && g.sideBanners.length) base.sideBanners = g.sideBanners;
   if (cmsAdminWins(g, a, 'sideBanners', Array.isArray(a.sideBanners) && a.sideBanners.length > 0)) base.sideBanners = a.sideBanners;
+
+  if (g.htmlAd && typeof g.htmlAd === 'object') base.htmlAd = g.htmlAd;
+  if (cmsAdminWins(g, a, 'htmlAd', !!(a.htmlAd && typeof a.htmlAd === 'object'))) base.htmlAd = a.htmlAd;
 
   if (Array.isArray(g.promos) && g.promos.length) base.promos = g.promos;
   if (cmsAdminWins(g, a, 'promos', Array.isArray(a.promos) && a.promos.length > 0)) base.promos = a.promos;
@@ -1133,7 +1171,20 @@ function rebuildMergedConfig() {
         const offerSig = sigHash(offers);
         if (bnEl && bnEl.dataset.sig !== offerSig) {
           bnEl.dataset.sig = offerSig;
-          bnEl.innerHTML = cr(offers.map(b => b.img ? `<button class="bs" style="background:#0b1d52 url('${imgUrl(b.img)}') center/cover" onclick="go('${esc(b.go||'promo')}')" aria-label="Offer"></button>` : `<button class="bs" style="--h:${b.h||265};--h2:${b.h2||300}" onclick="go('${esc(b.go||'promo')}')"><span class="ba">${esc(b.a||'🎁')}</span><div><b>${esc(b.t)}</b><small>${esc(b.d||'')}</small><u>${esc(b.b||'Learn More')} →</u></div></button>`).join(''));
+          bnEl.innerHTML = cr(offers.map(b => renderBannerBtn(b, 'promo')).join(''));
+        }
+        const adCardEl = m.querySelector('#dkAdCard');
+        const nextAdSig = getSidebarAdSig();
+        if (adCardEl && adCardEl.dataset.sig !== nextAdSig) {
+          adCardEl.outerHTML = cr(renderSidebarAdCard());
+          if (typeof initDkAdSlider === 'function') initDkAdSlider();
+        }
+        const sbsEl = m.querySelector('#sbsList');
+        const nextSides = (CFG.sideBanners && CFG.sideBanners.length) ? CFG.sideBanners : DEFAULT_CFG.sideBanners;
+        const nextSidesSig = sigHash(nextSides);
+        if (sbsEl && sbsEl.dataset.sig !== nextSidesSig) {
+          sbsEl.dataset.sig = nextSidesSig;
+          sbsEl.innerHTML = cr(nextSides.map(b => renderBannerBtn(b, 'promo')).join(''));
         }
         const ftrEl = m.querySelector('.ftr');
         const ftrSig = sigHash({ f: CFG.features, ft: CFG.footer });
@@ -1623,8 +1674,90 @@ function bns(d, a) {
   e.scrollTo({left: d > 0 && end ? 0 : d < 0 && e.scrollLeft <= 4 ? e.scrollWidth : e.scrollLeft + d * w, behavior: 'smooth'});
 }
 
+function fitHeroSlideImg(img) {
+  try {
+    if (!img || !img.naturalWidth || !img.naturalHeight) return;
+    const slideEl = img.closest('.sl.sl-img');
+    const carEl = document.getElementById('car');
+    if (!slideEl) return;
+    const cw = (carEl && carEl.clientWidth) || slideEl.clientWidth || (innerWidth >= 900 ? 700 : Math.max(280, innerWidth - 24));
+    const ratio = img.naturalWidth / img.naturalHeight;
+    const naturalFullH = Math.round(cw / ratio);
+    const maxH = innerWidth >= 900
+      ? Math.min(540, Math.round(innerHeight * 0.62))
+      : Math.min(440, Math.round(innerHeight * 0.56));
+    if (naturalFullH > maxH) {
+      slideEl.style.height = maxH + 'px';
+      slideEl.classList.add('sl-clamped');
+    } else {
+      slideEl.style.height = Math.max(130, naturalFullH) + 'px';
+      slideEl.classList.remove('sl-clamped');
+    }
+    syncHeroSliderHeight();
+  } catch (e) {}
+}
+
+function syncHeroSliderHeight(idx) {
+  try {
+    const carEl = document.getElementById('car');
+    const wrapEl = carEl ? carEl.closest('.car-wrap') : null;
+    if (!carEl || !wrapEl || !carEl.children.length) return;
+    const kids = [...carEl.children];
+    const hasImg = kids.some(el => el.classList.contains('sl-img'));
+    if (!hasImg) {
+      wrapEl.style.height = '';
+      return;
+    }
+    let activeIdx = typeof idx === 'number' ? idx : 0;
+    if (typeof idx !== 'number' && carEl.clientWidth) {
+      activeIdx = Math.max(0, Math.min(kids.length - 1, Math.round(carEl.scrollLeft / carEl.clientWidth)));
+    }
+    const activeSlide = kids[activeIdx];
+    if (!activeSlide) return;
+    const h = activeSlide.offsetHeight || parseInt(activeSlide.style.height, 10) || 0;
+    if (h > 60) wrapEl.style.height = h + 'px';
+  } catch (e) {}
+}
+
+function refitAllHeroSlides() {
+  const carEl = document.getElementById('car');
+  if (!carEl) return;
+  carEl.querySelectorAll('img.sl-pic').forEach(im => {
+    if (im.complete && im.naturalWidth) fitHeroSlideImg(im);
+  });
+  syncHeroSliderHeight();
+}
+
+function fitSideBannerImg(img) {
+  try {
+    if (!img || !img.naturalWidth || !img.naturalHeight) return;
+    const box = img.closest('.bs-img, .dk-ad-imgbtn');
+    if (!box) return;
+    const bw = box.clientWidth || (box.closest('.dk') ? 266 : 300);
+    const ratio = img.naturalWidth / img.naturalHeight;
+    const natH = Math.round(bw / ratio);
+    const maxH = box.classList.contains('dk-ad-imgbtn') ? 260 : 250;
+    if (natH > maxH) {
+      box.style.height = maxH + 'px';
+      box.classList.add('bs-clamped');
+    } else {
+      box.style.height = Math.max(105, natH) + 'px';
+      box.classList.remove('bs-clamped');
+    }
+  } catch (e) {}
+}
+
+function renderBannerBtn(b, fallbackGo) {
+  const goTo = esc((b && b.go) || fallbackGo || 'promo');
+  if (b && b.img) {
+    const src = imgUrl(b.img);
+    return `<button type="button" class="bs bs-img" onclick="go('${goTo}')" aria-label="${esc(b.t || 'Offer')}"><img class="bs-bg" src="${src}" alt="" aria-hidden="true"><img class="bs-pic" src="${src}" alt="${esc(b.t || 'Offer')}" onload="fitSideBannerImg(this)"></button>`;
+  }
+  return `<button type="button" class="bs" style="--h:${(b && b.h) || 265};--h2:${(b && b.h2) || 300}" onclick="go('${goTo}')"><span class="ba">${esc((b && b.a) || '🎁')}</span><div><b>${esc((b && b.t) || 'Offer')}</b><small>${esc((b && b.d) || '')}</small><u>${esc((b && b.b) || 'Learn More')} →</u></div></button>`;
+}
+
 const sl = x => x.img
-  ? `<div class="sl sl-img" style="background:#0b1d52" onclick="go('${esc(x.go || 'promo')}')"><img class="sl-pic" src="${imgUrl(x.img)}" alt="${esc(x.d || 'Promotion')}"></div>`
+  ? `<div class="sl sl-img" style="background:#0b1d52" onclick="go('${esc(x.go || 'promo')}')"><img class="sl-bg" src="${imgUrl(x.img)}" alt="" aria-hidden="true"><img class="sl-pic" src="${imgUrl(x.img)}" alt="${esc(x.d || 'Promotion')}" onload="fitHeroSlideImg(this)"></div>`
   : `<div class="sl ${esc(x.c || 's1')}"><h3>${String(x.t || '').replace('{name}', esc(S.name || 'Player'))}</h3><p>${esc(x.d || '')}</p><button class="btn bgold sm" onclick="go('${esc(x.go || 'games')}')">Play Now →</button><div class="art">${esc(x.a || '🎰')}</div></div>`;
 
 const FEAT_ROUTE_MAP = {
@@ -1690,6 +1823,7 @@ function go(s) {
   if (s !== 'profile') { pe = 0; vk = ''; }
   cur = s;
   clearInterval(timer);
+  if (typeof dkAdTimer !== 'undefined') clearInterval(dkAdTimer);
   tms.forEach(t => { clearTimeout(t); clearInterval(t); });
   tms = [];
   const mEl = $('#m');
@@ -1763,17 +1897,87 @@ function getPromoCards() {
 
 const promoCardHtml = (p, i) => `<div class="card pr"><div class="ic">${p.i}</div><div><b>${esc(p.t)}</b><span class="sub">${esc(p.d)}</span></div>${p.go ? `<button class="btn bgold sm" onclick="go('${p.go}')">Use Offer</button>` : `<button class="btn bgold sm" ${p.c ? 'disabled style="opacity:.5"' : ''} onclick="claimPromo('${esc(p.id)}')">${p.c ? 'Claimed' : 'Claim Now'}</button>`}</div>`;
 
-function betSummaryTotals() {
-  let tb = 0, tw = 0, tl = 0;
-  LIVE_GAME_TX.forEach(g => {
-    const b = Number(g.bet || g.amount || 0);
-    const w = Number(g.win || g.payout || 0);
-    const pl = g.net != null ? Number(g.net) : (w - b);
-    tb += Math.abs(b);
-    if (pl >= 0) tw += (w || pl);
-    else tl += Math.abs(pl);
+function getSidebarAdItems() {
+  const items = [];
+  const had = CFG && CFG.htmlAd;
+  if (had && had.code && String(had.code).trim() && (!had.config || had.config.enabled !== false)) {
+    items.push({ kind: 'html', code: String(had.code), config: had.config || {} });
+  }
+  const dynPromos = typeof getActiveDepositPromos === 'function' ? getActiveDepositPromos() : [];
+  dynPromos.slice(0, 2).forEach((dp, idx) => {
+    items.push({
+      kind: 'promo',
+      tag: 'HOT PROMO',
+      a: '💰',
+      t: dp.name || 'Deposit Bonus',
+      d: (dp.bonusType === 'percent' ? dp.bonusValue + '% Extra Bonus' : f(dp.bonusValue) + ' Instant Bonus') + ' · Min ' + f(dp.minDeposit || 500),
+      b: 'Deposit Now',
+      go: isUserFeat('deposits') ? 'dep' : 'promo',
+      h: idx % 2 === 0 ? 225 : 275,
+      h2: idx % 2 === 0 ? 265 : 315
+    });
   });
-  return [['Total Bets', tb], ['Total Wins', tw], ['Total Loss', tl]];
+  const srcBanners = (CFG.banners && CFG.banners.length) ? CFG.banners : DEFAULT_CFG.banners;
+  srcBanners.slice(0, 4).forEach(b => {
+    if (!b) return;
+    if (b.img) {
+      items.push({ kind: 'img', img: b.img, t: b.t || 'Featured Offer', go: b.go || 'promo' });
+    } else {
+      items.push({
+        kind: 'promo',
+        tag: 'AD · OFFER',
+        a: b.a || '🎁',
+        t: b.t || 'Special Offer',
+        d: b.d || '',
+        b: b.b || 'Claim Offer',
+        go: b.go || 'promo',
+        h: b.h || 235,
+        h2: b.h2 || 280
+      });
+    }
+  });
+  if (!items.length) {
+    items.push({
+      kind: 'promo',
+      tag: 'SPONSORED',
+      a: '🎁',
+      t: 'Daily Rewards & Cashback',
+      d: 'Claim daily bonus, cashback & referral commission every day.',
+      b: 'Explore Promos',
+      go: 'promo',
+      h: 245,
+      h2: 290
+    });
+  }
+  return items;
+}
+
+function getSidebarAdSig() {
+  return sigHash({
+    htmlAd: CFG && CFG.htmlAd ? CFG.htmlAd : null,
+    banners: CFG && CFG.banners ? CFG.banners : [],
+    dyn: Object.keys(LIVE_DEPOSIT_PROMOS || {}).length
+  });
+}
+
+function renderSidebarAdCard() {
+  const ads = getSidebarAdItems();
+  const sig = getSidebarAdSig();
+  const slidesHtml = ads.map(ad => {
+    if (ad.kind === 'html') {
+      const cfg = ad.config || {};
+      const ch = parseInt(cfg.customHeight, 10);
+      const fh = (!isNaN(ch) && ch >= 120 && ch <= 280) ? ch : 185;
+      const doc = `<!DOCTYPE html><html><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><base target="_blank"><style>html,body{margin:0;padding:0;width:100%;height:100%;overflow:hidden;background:#0a1530;color:#fff;display:flex;align-items:center;justify-content:center;font-family:sans-serif}img,video,iframe{max-width:100%!important;max-height:100%!important;width:auto;height:auto;object-fit:contain;display:block}</style></head><body>${ad.code}</body></html>`;
+      return `<div class="dk-ad-slide"><iframe class="dk-html-ad-frame" style="height:${fh}px" sandbox="allow-popups allow-popups-to-escape-sandbox" loading="lazy" title="Featured Ad" srcdoc="${esc(doc)}"></iframe></div>`;
+    }
+    if (ad.kind === 'img') {
+      const src = imgUrl(ad.img);
+      return `<div class="dk-ad-slide"><button type="button" class="dk-ad-imgbtn" onclick="go('${esc(ad.go || 'promo')}')" aria-label="${esc(ad.t || 'Ad')}"><img class="bs-bg" src="${src}" alt="" aria-hidden="true"><img class="bs-pic" src="${src}" alt="${esc(ad.t || 'Ad')}" onload="fitSideBannerImg(this)"></button></div>`;
+    }
+    return `<div class="dk-ad-slide"><button type="button" class="dk-ad-promo" style="--h:${ad.h || 235};--h2:${ad.h2 || 280}" onclick="go('${esc(ad.go || 'promo')}')"><div class="dk-ad-promo-top"><span class="dk-ad-pill">${esc(ad.tag || 'AD')}</span><span class="dk-ad-promo-ic">${esc(ad.a || '🎁')}</span></div><div><b>${esc(ad.t)}</b><small>${esc(ad.d || '')}</small></div><span class="dk-ad-cta">${esc(ad.b || 'View Offer')} →</span></button></div>`;
+  }).join('');
+  return `<div class="card dk-ad-card" id="dkAdCard" data-sig="${sig}" onmouseenter="dkAdPause=1" onmouseleave="dkAdPause=0"><div class="dk-ad-hd"><span class="dk-ad-tag">📢 Featured Ads</span>${ads.length > 1 ? `<div class="dk-ad-nav"><button type="button" class="dk-ad-arr" onclick="dkAdStep(-1)" aria-label="Previous Ad">‹</button><button type="button" class="dk-ad-arr" onclick="dkAdStep(1)" aria-label="Next Ad">›</button></div>` : ''}</div><div class="dk-ad-view"><div class="dk-ad-track" id="dkAdTrack">${slidesHtml}</div></div>${ads.length > 1 ? `<div class="dk-ad-dots" id="dkAdDots">${ads.map((_, i) => `<i class="${i ? '' : 'a'}" onclick="dkAdGo(${i})"></i>`).join('')}</div>` : ''}</div>`;
 }
 
 const V = {
@@ -1784,6 +1988,7 @@ const V = {
     const sides = CFG.sideBanners && CFG.sideBanners.length ? CFG.sideBanners : DEFAULT_CFG.sideBanners;
     const slidesSig = sigHash(slides);
     const offersSig = sigHash(offers);
+    const sidesSig = sigHash(sides);
     const pct = Math.min(100, Math.round((Number(S.xp || 0) / Math.max(1, Number(S.next || 2000))) * 100));
     const popOn = isUserFeat('popularGames') && isGameCatEnabled('Popular Games');
     const lobOn = isUserFeat('gameLobby');
@@ -1794,8 +1999,8 @@ const V = {
     return `<div class="hm"><div class="mn"><div class="car-wrap"><div class="car" id="car" data-sig="${slidesSig}">${slides.map(sl).join('')}</div><div class="dots" id="dots">${slides.map((_,i)=>`<i class="${i?'':'a'}"></i>`).join('')}</div></div><div class="nb"><span>📢</span><div class="nbt"><span style="animation-duration:${Math.max(14,notice.length*.26)}s">${esc(notice)}</span></div></div>
 <div id="pgSec" class="${(!popOn||!popGames.length)?'mw-cat-hide':''}"><h2>Popular Games <span class="ar"><button class="ib" onclick="pgs(-1)" aria-label="Previous">‹</button><button class="ib" onclick="pgs(1)" aria-label="Next">›</button></span></h2><div class="pg" id="pg" data-sig="${pgSig}" onmouseenter="pgp=1" onmouseleave="pgp=0" ontouchstart="pgp=1" ontouchend="pgp=0">${popGames.map((g,k)=>`<button class="pc" style="--h:${k*47+200}" onclick="play('${esc(g[1])}')"><span class="hot">HOT</span>${g[4]?`<i class="pci" style="background-image:url('${imgUrl(g[4])}')"></i>`:`<i>${g[0]}</i>`}<b>${esc(g[1])}</b><u>Play Now</u></button>`).join('')}</div></div>
 <h2 id="pvLobbyHdr" class="pv-lobby ${lobOn?'':'mw-cat-hide'}">Game Lobby</h2><div id="pvHomeWrap" class="${lobOn?'':'mw-cat-hide'}">${window.homeGames?homeGames():''}</div>
-<div id="soSec" class="${soOn?'':'mw-cat-hide'}"><h2>Special Offers <span class="ar"><button class="ib" onclick="bns(-1)" aria-label="Previous">‹</button><button class="ib" onclick="bns(1)" aria-label="Next">›</button></span></h2><div class="pg bn" id="bn" data-sig="${offersSig}" onmouseenter="bnp=1" onmouseleave="bnp=0" ontouchstart="bnp=1" ontouchend="bnp=0">${offers.map(b=>b.img?`<button class="bs" style="background:#0b1d52 url('${imgUrl(b.img)}') center/cover" onclick="go('${esc(b.go||'promo')}')" aria-label="Offer"></button>`:`<button class="bs" style="--h:${b.h||265};--h2:${b.h2||300}" onclick="go('${esc(b.go||'promo')}')"><span class="ba">${esc(b.a||'🎁')}</span><div><b>${esc(b.t)}</b><small>${esc(b.d||'')}</small><u>${esc(b.b||'Learn More')} →</u></div></button>`).join('')}</div></div></div>
-<div class="dk"><div class="card dk-vip ${vipOn?'':'mw-cat-hide'}" style="text-align:center;border-color:#ffd23f99;box-shadow:0 0 22px #ffd23f33"><div style="font-size:46px">👑</div><h2 style="justify-content:center;font-size:22px;color:var(--gold)">VIP CLUB</h2><div class="sub">Your VIP Level: <b style="color:var(--gold)">${esc(S.lvl)}</b></div><div class="bar"><i style="width:${pct}%"></i></div>✔ Higher Rewards<br>✔ Exclusive Bonuses<br>✔ Priority Support<br><br><button class="btn bgold sm" onclick="go('vip')">Upgrade Now →</button></div><div class="card"><h2>📊 Betting Summary</h2>${betSummaryTotals().map(x=>`<div class="tx"><div style="flex:1">${x[0]}</div><b>${f(x[1])}</b></div>`).join('')}<br><button class="btn out sm" style="width:100%" onclick="go('bets')">View Details</button></div><div class="sbs">${sides.map(b=>b.img?`<button class="bs" style="background:#0b1d52 url('${imgUrl(b.img)}') center/cover" onclick="go('${esc(b.go||'promo')}')" aria-label="Offer"></button>`:`<button class="bs" style="--h:${b.h||265};--h2:${b.h2||300}" onclick="go('${esc(b.go||'promo')}')"><span class="ba">${esc(b.a||'🎁')}</span><div><b>${esc(b.t)}</b><small>${esc(b.d||'')}</small><u>${esc(b.b||'Learn More')} →</u></div></button>`).join('')}</div></div></div>`;
+<div id="soSec" class="${soOn?'':'mw-cat-hide'}"><h2>Special Offers <span class="ar"><button class="ib" onclick="bns(-1)" aria-label="Previous">‹</button><button class="ib" onclick="bns(1)" aria-label="Next">›</button></span></h2><div class="pg bn" id="bn" data-sig="${offersSig}" onmouseenter="bnp=1" onmouseleave="bnp=0" ontouchstart="bnp=1" ontouchend="bnp=0">${offers.map(b=>renderBannerBtn(b,'promo')).join('')}</div></div></div>
+<div class="dk"><div class="card dk-vip ${vipOn?'':'mw-cat-hide'}" style="text-align:center;border-color:#ffd23f99;box-shadow:0 0 22px #ffd23f33"><div style="font-size:46px">👑</div><h2 style="justify-content:center;font-size:22px;color:var(--gold)">VIP CLUB</h2><div class="sub">Your VIP Level: <b style="color:var(--gold)">${esc(S.lvl)}</b></div><div class="bar"><i style="width:${pct}%"></i></div>✔ Higher Rewards<br>✔ Exclusive Bonuses<br>✔ Priority Support<br><br><button class="btn bgold sm" onclick="go('vip')">Upgrade Now →</button></div>${renderSidebarAdCard()}<div class="sbs" id="sbsList" data-sig="${sidesSig}">${sides.map(b=>renderBannerBtn(b,'promo')).join('')}</div></div></div>`;
   },
 
   profile: () => bk('My Profile') + (pe
@@ -2040,6 +2245,33 @@ async function changeUserPassword() {
   try { await fbAuth.sendPasswordResetEmail(u.email); toast('Password reset email sent to ' + u.email); } catch (e) { toast(e.message || 'Could not send reset email'); }
 }
 
+var dkAdTimer = null, dkAdPause = 0, dkAdIdx = 0;
+function dkAdGo(idx) {
+  const tr = document.getElementById('dkAdTrack');
+  const dots = document.getElementById('dkAdDots');
+  if (!tr || !tr.children.length) return;
+  const n = tr.children.length;
+  dkAdIdx = ((idx % n) + n) % n;
+  if (tr.clientWidth) tr.scrollTo({ left: dkAdIdx * tr.clientWidth, behavior: 'smooth' });
+  if (dots) [...dots.children].forEach((el, k) => el.classList.toggle('a', k === dkAdIdx));
+}
+function dkAdStep(d) { dkAdGo(dkAdIdx + d); }
+function initDkAdSlider() {
+  clearInterval(dkAdTimer);
+  const tr = document.getElementById('dkAdTrack');
+  const dots = document.getElementById('dkAdDots');
+  if (!tr || tr.children.length < 2) return;
+  dkAdIdx = 0;
+  tr.onscroll = () => {
+    if (!tr.clientWidth) return;
+    dkAdIdx = Math.round(tr.scrollLeft / tr.clientWidth);
+    if (dots) [...dots.children].forEach((el, k) => el.classList.toggle('a', k === dkAdIdx));
+  };
+  dkAdTimer = setInterval(() => {
+    if (!dkAdPause && document.body.contains(tr)) dkAdStep(1);
+  }, 4500);
+}
+
 function carousel() {
   clearInterval(timer);
   tms.forEach(t => { clearTimeout(t); clearInterval(t); });
@@ -2055,11 +2287,39 @@ function carousel() {
   }
   if (c && dots && dots.children.length) {
     const d = [...dots.children]; let i = 0;
-    const up = () => { if (!c.clientWidth) return; i = Math.round(c.scrollLeft / c.clientWidth); d.forEach((e, k) => e.className = k === i ? 'a' : ''); };
-    d.forEach((e, idx) => { e.onclick = () => { if (c.clientWidth) c.scrollTo({left: idx * c.clientWidth, behavior: 'smooth'}); }; });
+    const up = () => {
+      if (!c.clientWidth) return;
+      i = Math.max(0, Math.min(d.length - 1, Math.round(c.scrollLeft / c.clientWidth)));
+      d.forEach((e, k) => e.className = k === i ? 'a' : '');
+      syncHeroSliderHeight(i);
+    };
+    d.forEach((e, idx) => {
+      e.onclick = () => {
+        if (c.clientWidth) {
+          c.scrollTo({left: idx * c.clientWidth, behavior: 'smooth'});
+          syncHeroSliderHeight(idx);
+        }
+      };
+    });
     c.onscroll = up;
-    timer = setInterval(() => { if (!c.clientWidth) return; i = (i + 1) % d.length; c.scrollTo({left: i * c.clientWidth, behavior: 'smooth'}); }, 5000);
+    requestAnimationFrame(refitAllHeroSlides);
+    timer = setInterval(() => {
+      if (!c.clientWidth) return;
+      i = (i + 1) % d.length;
+      c.scrollTo({left: i * c.clientWidth, behavior: 'smooth'});
+      syncHeroSliderHeight(i);
+    }, 5000);
   }
+  if (!window._mwHeroResizeBound) {
+    window._mwHeroResizeBound = true;
+    window.addEventListener('resize', () => {
+      refitAllHeroSlides();
+      document.querySelectorAll('.bs.bs-img img.bs-pic, .dk-ad-imgbtn img.bs-pic').forEach(im => {
+        if (im.complete && im.naturalWidth) fitSideBannerImg(im);
+      });
+    });
+  }
+  initDkAdSlider();
   tms = [setTimeout(() => { tms.push(setInterval(() => pgs(-1, 1), 3200)); }, 1200), setTimeout(() => { tms.push(setInterval(() => bns(1, 1), 6500)); }, 2400)];
 }
 
