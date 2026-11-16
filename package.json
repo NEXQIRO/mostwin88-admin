@@ -4,7 +4,11 @@
   "description": "MOSTWIN88 Multi-Panel Backend & Static Server for Render (User, User Admin, Master Admin, Agent, Affiliate)",
   "main": "server.js",
   "scripts": {
-    "start": "node server.js"
+    "start": "node server.js",
+    "test:backend": "node --test backend/tests/*.test.js"
+  },
+  "dependencies": {
+    "firebase-admin": "^12.7.0"
   },
   "engines": {
     "node": ">=18.0.0"

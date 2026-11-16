@@ -614,6 +614,7 @@ const S = {
   turnoverDone: 0,
   betCount: 0,
   withdrawPin: '',
+  hasWithdrawPin: false,
   lastDailyBonusAt: 0,
   createdAt: Date.now(),
   claimedPromos: {},
@@ -1303,6 +1304,7 @@ function bindUserListeners(uid) {
     S.turnoverDone = Number(u.turnoverDone != null ? u.turnoverDone : (u.turnoverCompleted || 0));
     S.betCount = Number(u.betCount || 0);
     S.withdrawPin = u.withdrawPin || '';
+    S.hasWithdrawPin = !!(u.hasWithdrawPin || u.withdrawPin);
     S.lastDailyBonusAt = Number(u.lastDailyBonusAt || 0);
     S.createdAt = Number(u.createdAt || Date.now());
     S.claimedPromos = u.claimedPromos || {};
@@ -1554,32 +1556,13 @@ window.launchGameSession = async function(opts) {
     }
     toast('Launching ' + (o.name || 'game') + '...');
     try {
-      const headers = { 'Content-Type': 'application/json' };
-      if (gApi.apiKey) {
-        headers['X-API-Key'] = gApi.apiKey;
-        headers['Authorization'] = 'Bearer ' + gApi.apiKey;
-      }
-      const res = await fetch(resolved, gApi.mode === 'rest_get'
-        ? { method: 'GET', headers }
-        : {
-            method: 'POST',
-            headers,
-            body: JSON.stringify({
-              operatorCode: gApi.operatorCode || '',
-              apiKey: gApi.apiKey || '',
-              uid: S.uid,
-              username: S.username || S.name || S.uid,
-              gameCode: o.gameCode || String(o.name || '').toLowerCase().replace(/[^a-z0-9]+/g, '_'),
-              provider: o.providerApi || o.provider || 'casino',
-              gameName: o.name || '',
-              currency: gApi.currency || 'BDT',
-              lang: gApi.lang || 'bn',
-              balance: tot(),
-              returnUrl: location.href
-            })
-          });
-      const json = await res.json().catch(() => null);
-      const gameLaunch = json && (json.gameUrl || json.url || json.launch_url || json.launchUrl || (json.data && (json.data.url || json.data.gameUrl || json.data.launch_url)));
+      const json = await window.mwApi('/api/v1/game/launch', {
+        gameCode: o.gameCode || String(o.name || '').toLowerCase().replace(/[^a-z0-9]+/g, '_'),
+        provider: o.providerApi || o.provider || 'casino',
+        gameName: o.name || '',
+        returnUrl: location.href
+      }, fbAuth);
+      const gameLaunch = json && json.gameUrl;
       if (gameLaunch) {
         openGameSurface(gameLaunch, o);
       } else {
@@ -1835,7 +1818,7 @@ const V = {
     const remTo = Math.max(0, Number(S.turnoverRequired || 0) - Number(S.turnoverDone || 0));
     const pTurn = Object.values(LIVE_PROMO_TURNOVER || {}).filter(x => x && !x.completed);
     const pRem = pTurn.reduce((a, x) => a + Math.max(0, Number(x.required || 0) - Number(x.completedAmount || x.progress || 0)), 0);
-    return bk('Withdraw') + `<div class="card"><div class="row sp"><div><div class="sub">Withdrawable balance</div><div class="tot" style="font-size:24px">${f(S.dep)}</div></div><div style="text-align:right"><div class="sub">Bonus (locked)</div><b>${f(S.bon)}</b></div></div>${(remTo > 0 || pRem > 0) ? `<div class="sub" style="margin-top:10px;color:var(--gold)">⚠ Remaining Turnover required before withdraw: <b>${f(Math.max(remTo, pRem))}</b></div>` : ''}</div><div class="card"><label for="wmSel">Withdraw method</label><select id="wmSel" class="mw-sel" onchange="selWm(this.value)">${['bKash','Nagad','Rocket','Upay','Bank'].map(m=>`<option value="${m}" ${m==wm?'selected':''}>${m}</option>`).join('')}</select><div id="wf">${wfields(wm)}</div><label>Amount (min ৳${lim.minWithdraw} · max ৳${lim.maxWithdraw.toLocaleString()})</label><div class="row"><input id="a" type="number" inputmode="decimal" placeholder="Enter amount"><button class="btn out sm" onclick="$('#a').value=Math.min(S.dep,${lim.maxWithdraw})">Max</button></div><label>Withdrawal PIN ${S.withdrawPin ? '' : '(first-time PIN will be saved)'}</label><input id="pin" type="password" inputmode="numeric" maxlength="6" placeholder="4-6 digit PIN"><br><br><button class="btn bb" id="wdBtn" onclick="wd()">Request Withdrawal</button></div><div class="card"><h2>Withdrawal Rules</h2><ul class="rules"><li>The account must be in your own name.</li><li>Requests are processed within 24 hours.</li><li>Bonus balance cannot be withdrawn until turnover is complete.</li><li>Check the account number carefully before submitting.</li></ul></div>`;
+    return bk('Withdraw') + `<div class="card"><div class="row sp"><div><div class="sub">Withdrawable balance</div><div class="tot" style="font-size:24px">${f(S.dep)}</div></div><div style="text-align:right"><div class="sub">Bonus (locked)</div><b>${f(S.bon)}</b></div></div>${(remTo > 0 || pRem > 0) ? `<div class="sub" style="margin-top:10px;color:var(--gold)">⚠ Remaining Turnover required before withdraw: <b>${f(Math.max(remTo, pRem))}</b></div>` : ''}</div><div class="card"><label for="wmSel">Withdraw method</label><select id="wmSel" class="mw-sel" onchange="selWm(this.value)">${['bKash','Nagad','Rocket','Upay','Bank'].map(m=>`<option value="${m}" ${m==wm?'selected':''}>${m}</option>`).join('')}</select><div id="wf">${wfields(wm)}</div><label>Amount (min ৳${lim.minWithdraw} · max ৳${lim.maxWithdraw.toLocaleString()})</label><div class="row"><input id="a" type="number" inputmode="decimal" placeholder="Enter amount"><button class="btn out sm" onclick="$('#a').value=Math.min(S.dep,${lim.maxWithdraw})">Max</button></div><label>Withdrawal PIN ${(S.hasWithdrawPin || S.withdrawPin) ? '' : '(first-time PIN will be saved)'}</label><input id="pin" type="password" inputmode="numeric" maxlength="6" placeholder="4-6 digit PIN"><br><br><button class="btn bb" id="wdBtn" onclick="wd()">Request Withdrawal</button></div><div class="card"><h2>Withdrawal Rules</h2><ul class="rules"><li>The account must be in your own name.</li><li>Requests are processed within 24 hours.</li><li>Bonus balance cannot be withdrawn until turnover is complete.</li><li>Check the account number carefully before submitting.</li></ul></div>`;
   },
 
   tx: () => bk('Transaction History') + `<div class="card">${T.length ? T.map(txr).join('') : '<p class="sub">No transactions found.</p>'}</div>`,
@@ -2030,11 +2013,19 @@ function togglePref(btn, pathKey, key) {
     else if (!val && typeof window.mwDisableBiometric === 'function') window.mwDisableBiometric();
   }
 }
-function saveWdPin() {
+async function saveWdPin() {
   const p = ($('#newPin') && $('#newPin').value || '').trim();
   if (!/^\d{4,6}$/.test(p)) return toast('Enter a valid 4-6 digit PIN');
   if (!S.uid) return toast('Please login first');
-  fbDb.ref('users/' + S.uid + '/withdrawPin').set(p).then(() => { S.withdrawPin = p; $('#newPin').value = ''; toast('Withdrawal PIN saved'); }).catch(() => toast('Failed to save PIN'));
+  try {
+    await window.mwApi('/api/v1/user/pin', { pin: p }, fbAuth);
+    S.hasWithdrawPin = true;
+    S.withdrawPin = '';
+    $('#newPin').value = '';
+    toast('Withdrawal PIN saved securely');
+  } catch (e) {
+    toast(e.message || 'Failed to save PIN');
+  }
 }
 async function changeUserPassword() {
   const u = fbAuth.currentUser;
@@ -2111,12 +2102,7 @@ async function dep() {
   try {
     const adminUid = getPlayerAdminUid();
     const activeAg = ACTIVE_AGENT_BY_METHOD[pay] || null;
-    const reqRef = fbDb.ref('depositRequests').push();
-    const payload = {
-      id: reqRef.key,
-      uid: S.uid,
-      userName: S.name,
-      userPhone: S.mob || sn,
+    await window.mwApi('/api/v1/user/deposit', {
       method: pay,
       amount: v,
       senderNumber: sn,
@@ -2124,15 +2110,10 @@ async function dep() {
       promoId: promoId,
       promoName: promoName,
       bonusOptIn: bonusOptIn,
-      status: 'Pending',
       adminUid: adminUid,
       assignedAgentId: activeAg ? activeAg.agentUid : '',
-      agentWalletNumber: activeAg ? activeAg.number : '',
-      affiliateUid: S.affiliateUid || '',
-      timestamp: Date.now(),
-      createdAt: TS
-    };
-    await reqRef.set(payload);
+      agentWalletNumber: activeAg ? activeAg.number : ''
+    }, fbAuth);
     toast('Deposit request submitted! Waiting for verification.');
     go('tx');
   } catch (err) {
@@ -2152,43 +2133,24 @@ async function wd() {
   if (v > S.dep) return toast('Amount exceeds your withdrawable balance');
   const remTo = Math.max(0, Number(S.turnoverRequired || 0) - Number(S.turnoverDone || 0));
   if (remTo > 0) return toast('Complete ' + f(remTo) + ' turnover before withdrawing');
-  if (wm === 'Bank' && (!$('#wb').value.trim() || !$('#wh').value.trim())) return toast('Enter bank name and account holder');
+  const wb = $('#wb') ? $('#wb').value.trim() : '';
+  const wh = $('#wh') ? $('#wh').value.trim() : '';
+  if (wm === 'Bank' && (!wb || !wh)) return toast('Enter bank name and account holder');
   if (wm === 'Bank' ? n.length < 6 : !/^01\d{9}$/.test(n)) return toast('Enter a valid account number');
   if (!/^\d{4,6}$/.test(pin)) return toast('Enter your 4-6 digit withdrawal PIN');
-  if (S.withdrawPin && S.withdrawPin !== pin) return toast('Incorrect withdrawal PIN');
 
   const btn = $('#wdBtn'); if (btn) { btn.disabled = true; btn.textContent = 'Submitting...'; }
   try {
-    if (!S.withdrawPin) await fbDb.ref('users/' + S.uid + '/withdrawPin').set(pin);
-    const balRef = fbDb.ref('users/' + S.uid + '/balance');
-    const txRes = await balRef.transaction(curr => {
-      const curBal = Number(curr || 0);
-      if (curBal < v) return; /* abort */
-      return curBal - v;
-    });
-    if (!txRes.committed) {
-      if (btn) { btn.disabled = false; btn.textContent = 'Request Withdrawal'; }
-      return toast('Insufficient balance');
-    }
-    const adminUid = getPlayerAdminUid();
-    const reqRef = fbDb.ref('withdrawalRequests').push();
-    const accountDetails = wm === 'Bank' ? ($('#wb').value.trim() + ' · ' + $('#wh').value.trim() + ' · ' + n) : n;
-    await reqRef.set({
-      id: reqRef.key,
-      uid: S.uid,
-      userName: S.name,
-      userPhone: S.mob || n,
+    const res = await window.mwApi('/api/v1/user/withdraw', {
       method: wm,
       amount: v,
-      receiverNumber: accountDetails,
-      accountNumber: accountDetails,
-      currentBalance: Number(txRes.snapshot.val() || 0),
-      status: 'Pending',
-      adminUid: adminUid,
-      affiliateUid: S.affiliateUid || '',
-      timestamp: Date.now(),
-      createdAt: TS
-    });
+      accountNumber: n,
+      bankName: wb,
+      accountHolder: wh,
+      pin
+    }, fbAuth);
+    S.hasWithdrawPin = true;
+    if (typeof res.balance === 'number') S.dep = res.balance;
     toast('Withdrawal request sent. Processing takes up to 24 hours.');
     go('tx');
   } catch (err) {
@@ -2207,24 +2169,14 @@ async function claimPromo(id) {
     if (S.lastDailyBonusAt && new Date(S.lastDailyBonusAt).toISOString().slice(0, 10) === todayKey) {
       return toast('Daily bonus already claimed today');
     }
-    const promoObj = (CFG.promos || []).find(x => x && x.id === 'daily_bonus');
-    const bonusAmt = Math.max(0, Number(CFG.dailyBonusAmount != null ? CFG.dailyBonusAmount : ((promoObj && promoObj.v) || 50)));
-    if (!bonusAmt) return toast('Daily bonus amount is currently 0');
     try {
-      await fbDb.ref('users/' + S.uid + '/bonusBalance').transaction(c => Number(c || 0) + bonusAmt);
-      await fbDb.ref('users/' + S.uid + '/lastDailyBonusAt').set(Date.now());
-      await fbDb.ref('transactions').push().set({
-        uid: S.uid,
-        adminUid: S.adminUid || '',
-        type: 'Bonus',
-        amount: bonusAmt,
-        status: 'Success',
-        note: 'Daily Login Bonus',
-        timestamp: Date.now()
-      });
+      const res = await window.mwApi('/api/v1/user/claim-daily-bonus', {}, fbAuth);
+      const bonusAmt = Number(res.bonusAmount || 0);
+      if (typeof res.bonusBalance === 'number') S.bon = res.bonusBalance;
+      if (res.claimedAt) S.lastDailyBonusAt = res.claimedAt;
       toast('Daily Bonus claimed · +' + f(bonusAmt));
       go(cur);
-    } catch (e) { toast('Could not claim daily bonus'); }
+    } catch (e) { toast(e.message || 'Could not claim daily bonus'); }
     return;
   }
   toast('Promotion selected');
@@ -3355,7 +3307,7 @@ if (ibBtn) ibBtn.onclick = () => { if (typeof window.mwTriggerInstall === 'funct
   }
 
   function guestState() {
-    Object.assign(S, {uid:'',name:'',username:'',id:'',code:'',lvl:'Bronze',xp:0,next:2000,dep:0,bon:0,mob:'',email:'',photo:'',adminUid:'',affiliateUid:'',withdrawPin:'',betCount:0,turnoverRequired:0,turnoverDone:0});
+    Object.assign(S, {uid:'',name:'',username:'',id:'',code:'',lvl:'Bronze',xp:0,next:2000,dep:0,bon:0,mob:'',email:'',photo:'',adminUid:'',affiliateUid:'',withdrawPin:'',hasWithdrawPin:false,betCount:0,turnoverRequired:0,turnoverDone:0});
   }
 
   function ui() {

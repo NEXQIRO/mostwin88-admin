@@ -4746,7 +4746,7 @@
       if (!amt || amt <= 0) return;
       const note = prompt('নোট (ঐচ্ছিক):', '') || '';
       try {
-        await db.ref('balanceRequests').push({ uid: u.uid, email: u.email, amount: amt, note, status: 'pending', createdAt: firebase.database.ServerValue.TIMESTAMP });
+        await window.mwApi('/api/v1/admin/balance-request', { amount: amt, note }, auth);
         showToast('রিকোয়েস্ট পাঠানো হয়েছে। Master অনুমোদন করলে ব্যালেন্স যোগ হবে।', 'success');
       } catch (e) { showToast('রিকোয়েস্ট ব্যর্থ: ' + e.message, 'error'); }
     }
@@ -6761,71 +6761,17 @@
       if (promoId) confirmMsg += (window.npPromoPreviewText ? window.npPromoPreviewText(dep) : '');
       if (!confirm(confirmMsg)) return;
 
-      // প্রতিটি ডিপোজিটের জন্য লক: একই ডিপোজিট দুবার অনুমোদন (ডাবল ক্লিক / দুই অ্যাডমিন) হতে পারবে না
       if (String(dep.status || '').toLowerCase() !== 'pending') { showToast('এই ডিপোজিট ইতিমধ্যে প্রসেস হয়েছে', 'error'); return; }
-      const lk = await db.ref(`depositRequests/${depId}/approvalLock`).transaction(c => (c === null ? STATE.adminUser.uid : undefined));
-      if (!lk.committed) { showToast('এই ডিপোজিট অন্য কেউ প্রসেস করছেন বা প্রসেস হয়ে গেছে', 'error'); return; }
 
       try {
-        const userRef = db.ref(`users/${dep.uid}`);
-        const uSnap = await userRef.once('value');
-        const uData = uSnap.val() || {};
-        const curBal = parseFloat(uData.balance) || 0;
-        const curBonusBal = parseFloat(uData.bonusBalance) || 0;
-        const curTurnoverReq = parseFloat(uData.turnoverRequired) || 0;
-
-        const newBal = curBal + totalCredited;
-        const newBonusBal = curBonusBal + bonusAmt;
-        const newTurnoverReq = curTurnoverReq + turnoverAdded;
-
-        const trxKey = db.ref('transactions').push().key;
-        const curAdminBal = STATE.adminBalance || 0;
-        if (curAdminBal < depAmt) { db.ref(`depositRequests/${depId}/approvalLock`).remove().catch(() => {}); showToast(`আপনার ব্যালেন্স পর্যাপ্ত নয় (৳${curAdminBal})। Master-এর কাছে রিকোয়েস্ট করুন।`, 'error'); return; }
-        const newAdminBal = curAdminBal - depAmt;
-
-        const updates = {};
-        updates[`depositRequests/${depId}/status`] = 'Approved';
-        updates[`depositRequests/${depId}/approvedAt`] = firebase.database.ServerValue.TIMESTAMP;
-        updates[`depositRequests/${depId}/bonusAmount`] = bonusAmt;
-        updates[`depositRequests/${depId}/totalCredited`] = totalCredited;
-        updates[`depositRequests/${depId}/turnoverAdded`] = turnoverAdded;
-        updates[`depositRequests/${depId}/turnoverMultiplier`] = mult;
-
-        // সার্ভার-সাইড increment: গেমের পেআউট/টার্নওভার একই মুহূর্তে এলে পুরোনো মান দিয়ে ওভাররাইট হবে না
-        updates[`users/${dep.uid}/balance`] = firebase.database.ServerValue.increment(totalCredited);
-        updates[`users/${dep.uid}/bonusBalance`] = firebase.database.ServerValue.increment(bonusAmt);
-        updates[`users/${dep.uid}/turnoverRequired`] = firebase.database.ServerValue.increment(turnoverAdded);
-        if (uData.turnoverDone === undefined) {   // শুধু প্রথমবার চালু করা; পরে সার্ভার/গেম এটি বাড়ায়, তাই আর ওভাররাইট নয়
-          const curTurnDone = parseFloat(uData.turnoverCompleted) || 0;
-          updates[`users/${dep.uid}/turnoverDone`] = curTurnDone;
-          updates[`users/${dep.uid}/turnoverCompleted`] = curTurnDone;
+        const res = await window.mwApi('/api/v1/admin/deposits/decision', { depId, decision: 'approve' }, auth);
+        if (typeof res.adminBalance === 'number') {
+          setAdminBalance(res.adminBalance, `Deposit Approved -৳${depAmt} for ${dep.userName}`);
         }
-        if (!uData.adminUid) updates[`users/${dep.uid}/adminUid`] = STATE.adminUser.uid;   // প্রথম অনুমোদনকারী অ্যাডমিনই ইউজারের অ্যাডমিন থাকে
-        updates[`depositRequests/${depId}/adminUid`] = STATE.adminUser.uid;
-        updates[`admins/${STATE.adminUser.uid}/balance`] = firebase.database.ServerValue.increment(-depAmt);
-
-        const noteText = `${dep.method} TrxID: ${dep.trxId} Approved. Credited: ৳${totalCredited} (Deposit: ৳${depAmt}${bonusAmt > 0 ? ` + ৳${bonusAmt} Bonus` : ''}, Turnover: ৳${turnoverAdded})`;
-        updates[`transactions/${trxKey}`] = {
-          trxId: trxKey,
-          uid: dep.uid,
-          type: 'DEPOSIT_CREDIT',
-          amount: totalCredited,
-          depositAmount: depAmt,
-          bonusAmount: bonusAmt,
-          turnoverAdded: turnoverAdded,
-          beforeBal: curBal,
-          afterBal: newBal,
-          date: new Date().toLocaleString('bn-BD'),
-          timestamp: firebase.database.ServerValue.TIMESTAMP,
-          note: noteText
-        };
-
-        await db.ref().update(updates);
-        setAdminBalance(newAdminBal, `Deposit Approved -৳${depAmt} for ${dep.userName}`);
-        recordAuditLog('DEPOSIT_APPROVED', depId, `৳${depAmt} + ৳${bonusAmt} Bonus credited to ${dep.uid}, Turnover Req: ৳${newTurnoverReq}`);
-        showToast(`ডিপোজিট ৳${depAmt}${bonusAmt > 0 ? ` + বোনাস ৳${bonusAmt}` : ''} অনুমোদিত! প্লেয়ার ওয়ালেটে ৳${totalCredited} যোগ হয়েছে।`, 'success');
+        const srvBonus = Number(res.bonusAmount ?? bonusAmt);
+        const srvTotal = Number(res.totalCredited ?? (depAmt + srvBonus));
+        showToast(`ডিপোজিট ৳${depAmt}${srvBonus > 0 ? ` + বোনাস ৳${srvBonus}` : ''} অনুমোদিত! প্লেয়ার ওয়ালেটে ৳${srvTotal} যোগ হয়েছে।`, 'success');
       } catch (err) {
-        db.ref(`depositRequests/${depId}/approvalLock`).remove().catch(() => {});
         showToast('অনুমোদনে সমস্যা: ' + err.message, 'error');
       }
     }
@@ -6838,19 +6784,11 @@
       if (!reason) return;
 
       if (String(dep.status || '').toLowerCase() !== 'pending') { showToast('এই ডিপোজিট ইতিমধ্যে প্রসেস হয়েছে', 'error'); return; }
-      const rlk = await db.ref(`depositRequests/${depId}/approvalLock`).transaction(c => (c === null ? STATE.adminUser.uid : undefined));
-      if (!rlk.committed) { showToast('এই ডিপোজিট অন্য কেউ প্রসেস করছেন বা প্রসেস হয়ে গেছে', 'error'); return; }
 
       try {
-        await db.ref(`depositRequests/${depId}`).update({
-          status: 'Rejected',
-          adminNote: reason,
-          rejectedAt: firebase.database.ServerValue.TIMESTAMP
-        });
-        recordAuditLog('DEPOSIT_REJECTED', depId, `Reason: ${reason}`);
+        await window.mwApi('/api/v1/admin/deposits/decision', { depId, decision: 'reject', reason }, auth);
         showToast('ডিপোজিট রিকোয়েস্ট বাতিল করা হয়েছে', 'info');
       } catch (err) {
-        db.ref(`depositRequests/${depId}/approvalLock`).remove().catch(() => {});
         showToast('বাতিল করতে ব্যর্থ: ' + err.message, 'error');
       }
     }
@@ -6861,7 +6799,6 @@
 
       if (!isWithdrawalOpen(w.status)) { showToast('এই উইথড্র ইতিমধ্যে সম্পন্ন বা বাতিল হয়েছে', 'error'); return; }
 
-      // Check Turnover requirement
       const u = (STATE.users || []).find(x => x.uid === w.uid);
       const req = parseFloat(u?.turnoverRequired) || 0;
       const comp = parseFloat(u?.turnoverDone !== undefined ? u?.turnoverDone : u?.turnoverCompleted) || 0;
@@ -6873,49 +6810,17 @@
         if (!proceed) return;
       }
 
-      const curAdminBal = STATE.adminBalance || 0;
       const wAmt = parseFloat(w.amount) || 0;
-
       const refId = prompt(`ইউজার ${w.userName} কে ৳${wAmt} পাঠানোর পর আপনার পেমেন্ট TrxID লিখুন:`, 'TRX_' + Math.floor(Math.random() * 899999 + 100000));
       if (!refId) return;
 
-      // লক: একই উইথড্র দুবার Complete বা Complete + Refund হতে পারবে না
-      const wlk = await db.ref(`withdrawalRequests/${withKey}/actionLock`).transaction(c => (c === null ? (STATE.adminUser ? STATE.adminUser.uid : 'admin') : undefined));
-      if (!wlk.committed) { showToast('এই উইথড্র অন্য কেউ প্রসেস করছেন বা সম্পন্ন হয়ে গেছে', 'error'); return; }
       try {
-        const freshSt = (await db.ref(`withdrawalRequests/${withKey}/status`).once('value')).val();
-        if (!isWithdrawalOpen(freshSt)) { await db.ref(`withdrawalRequests/${withKey}/actionLock`).remove().catch(() => {}); showToast('এই উইথড্র ইতিমধ্যে সম্পন্ন বা বাতিল হয়েছে', 'error'); return; }
-      } catch (e) { await db.ref(`withdrawalRequests/${withKey}/actionLock`).remove().catch(() => {}); showToast('স্ট্যাটাস যাচাই ব্যর্থ: ' + e.message, 'error'); return; }
-
-      try {
-        // User withdrawal: Money deducted from user is credited to user admin balance:
-        const adminUid = STATE.adminUser ? STATE.adminUser.uid : (auth.currentUser ? auth.currentUser.uid : null);
-        const newAdminBal = curAdminBal + wAmt;
-
-        const updates = {};
-        updates[`withdrawalRequests/${withKey}/status`] = 'Completed';
-        updates[`withdrawalRequests/${withKey}/paymentRef`] = refId;
-        updates[`withdrawalRequests/${withKey}/processedAt`] = firebase.database.ServerValue.TIMESTAMP;
-        updates[`withdrawalRequests/${withKey}/statusUpdatedAt`] = firebase.database.ServerValue.TIMESTAMP;
-        if (adminUid) {
-          updates[`withdrawalRequests/${withKey}/adminUid`] = adminUid;
-          updates[`admins/${adminUid}/balance`] = firebase.database.ServerValue.increment(wAmt);
-          updates[`admins/${adminUid}/creditRef`] = withKey;   // নতুন Rules: এই উইথড্রের সমান অঙ্কই অ্যাডমিন ব্যালেন্সে বাড়তে পারবে
+        const res = await window.mwApi('/api/v1/admin/withdrawals/decision', { withKey, decision: 'complete', paymentRef: refId }, auth);
+        if (typeof res.adminBalance === 'number') {
+          setAdminBalance(res.adminBalance, `Withdrawal Completed +৳${wAmt} from User ${w.userName}`);
         }
-
-        try {
-          await db.ref().update(updates);
-        } catch (e1) {
-          if (adminUid && e1 && (e1.code === 'PERMISSION_DENIED' || /permission/i.test(String(e1.message)))) {
-            delete updates[`admins/${adminUid}/creditRef`];   // পুরোনো Rules-এর সাথে সামঞ্জস্য
-            await db.ref().update(updates);
-          } else { throw e1; }
-        }
-        setAdminBalance(newAdminBal, `Withdrawal Completed +৳${wAmt} from User ${w.userName}`);
-        recordAuditLog('WITHDRAWAL_COMPLETED', withKey, `Paid ৳${wAmt} to ${w.receiverNumber}. Ref: ${refId}, Admin Balance credited: ৳${newAdminBal}`);
         showToast(`উইথড্র রিকোয়েস্ট সফলভাবে সম্পন্ন হয়েছে! ৳${wAmt} অ্যাডমিন ব্যালেন্সে জমা হয়েছে`, 'success');
       } catch (err) {
-        db.ref(`withdrawalRequests/${withKey}/actionLock`).remove().catch(() => {});
         showToast('সম্পন্ন ব্যর্থ: ' + err.message, 'error');
       }
     }
@@ -6931,38 +6836,11 @@
 
       const refAmt = parseFloat(w.amount);
       if (!isFinite(refAmt) || refAmt <= 0) { showToast('অবৈধ উইথড্র পরিমাণ, রিফান্ড করা যাচ্ছে না', 'error'); return; }
-      const rlk2 = await db.ref(`withdrawalRequests/${withKey}/actionLock`).transaction(c => (c === null ? (STATE.adminUser ? STATE.adminUser.uid : 'admin') : undefined));
-      if (!rlk2.committed) { showToast('এই উইথড্র অন্য কেউ প্রসেস করছেন বা সম্পন্ন হয়ে গেছে', 'error'); return; }
 
       try {
-        const freshSt2 = (await db.ref(`withdrawalRequests/${withKey}/status`).once('value')).val();
-        if (!isWithdrawalOpen(freshSt2)) { await db.ref(`withdrawalRequests/${withKey}/actionLock`).remove().catch(() => {}); showToast('এই উইথড্র ইতিমধ্যে সম্পন্ন বা বাতিল হয়েছে', 'error'); return; }
-        const uSnap = await db.ref(`users/${w.uid}/balance`).once('value');
-        const curBal = parseFloat(uSnap.val()) || 0;
-        const newBal = curBal + refAmt;
-        const trxKey = db.ref('transactions').push().key;
-
-        const updates = {};
-        updates[`withdrawalRequests/${withKey}/status`] = 'Rejected';
-        updates[`withdrawalRequests/${withKey}/adminNote`] = reason;
-        updates[`users/${w.uid}/balance`] = firebase.database.ServerValue.increment(refAmt);   // atomic refund
-        updates[`transactions/${trxKey}`] = {
-          trxId: trxKey,
-          uid: w.uid,
-          type: 'WITHDRAW_REFUND',
-          amount: refAmt,
-          beforeBal: curBal,
-          afterBal: newBal,
-          date: new Date().toLocaleString('bn-BD'),
-          timestamp: firebase.database.ServerValue.TIMESTAMP,
-          note: `Withdrawal ${withKey} Rejected: Refunded`
-        };
-
-        await db.ref().update(updates);
-        recordAuditLog('WITHDRAWAL_REJECTED', withKey, `Refunded ৳${w.amount}. Reason: ${reason}`);
+        await window.mwApi('/api/v1/admin/withdrawals/decision', { withKey, decision: 'reject', reason }, auth);
         showToast('উইথড্র বাতিল এবং ব্যালেন্স রিফান্ড সম্পন্ন!', 'info');
       } catch (err) {
-        db.ref(`withdrawalRequests/${withKey}/actionLock`).remove().catch(() => {});
         showToast('বাতিল করতে ব্যর্থ: ' + err.message, 'error');
       }
     }
@@ -9519,22 +9397,8 @@
       if (!a || !me || !db) return;
       const amt = Math.floor(parseFloat(prompt(`${a.name || a.email}-কে আপনার তহবিল থেকে কত ৳ পাঠাবেন? (আপনার ব্যালেন্স: ৳${Math.round(STATE.adminBalance || 0)})`, '5000')));
       if (!amt || amt <= 0) return;
-      if ((STATE.adminBalance || 0) < amt) { showToast(`আপনার ব্যালেন্স পর্যাপ্ত নয় (৳${Math.round(STATE.adminBalance || 0)})`, 'error'); return; }
       try {
-        const updates = {};
-        updates[`admins/${me}/balance`] = firebase.database.ServerValue.increment(-amt);
-        updates[`agents/${agentId}/balance`] = firebase.database.ServerValue.increment(amt);
-        updates[`agents/${agentId}/receivedFromAdmin`] = firebase.database.ServerValue.increment(amt);
-        const trxKey = db.ref('transactions').push().key;
-        updates[`transactions/${trxKey}`] = {
-          trxId: trxKey, uid: agentId, agentUid: agentId, adminUid: me,
-          type: 'AGENT_ALLOCATE', amount: amt,
-          beforeBal: a.balance || 0, afterBal: (a.balance || 0) + amt,
-          date: new Date().toLocaleString('bn-BD'), timestamp: firebase.database.ServerValue.TIMESTAMP,
-          note: `Admin fund allocation to Agent ${a.name || agentId}`
-        };
-        await db.ref().update(updates);
-        recordAuditLog('AGENT_ALLOCATE', agentId, `Allocated ৳${amt} to ${a.name || agentId}`);
+        await window.mwApi('/api/v1/admin/agent/transfer', { agentUid: agentId, amount: amt, direction: 'send' }, auth);
         showToast(`✅ ৳${amt} এজেন্ট ${a.name}-কে পাঠানো হয়েছে`, 'success');
       } catch (err) { showToast('ফান্ড পাঠানো ব্যর্থ: ' + err.message, 'error'); }
     }
@@ -9545,21 +9409,8 @@
       if (!a || !me || !db) return;
       const amt = Math.floor(parseFloat(prompt(`${a.name || a.email} থেকে কত ৳ ফেরত নেবেন? (এজেন্ট ব্যালেন্স: ৳${Math.round(a.balance || 0)})`, String(Math.round(a.balance || 0)))));
       if (!amt || amt <= 0) return;
-      if ((a.balance || 0) < amt) { showToast('এজেন্টের ব্যালেন্স পর্যাপ্ত নয়', 'error'); return; }
       try {
-        const updates = {};
-        updates[`agents/${agentId}/balance`] = firebase.database.ServerValue.increment(-amt);
-        updates[`admins/${me}/balance`] = firebase.database.ServerValue.increment(amt);
-        const trxKey = db.ref('transactions').push().key;
-        updates[`transactions/${trxKey}`] = {
-          trxId: trxKey, uid: agentId, agentUid: agentId, adminUid: me,
-          type: 'AGENT_RETRIEVE', amount: amt,
-          beforeBal: a.balance || 0, afterBal: (a.balance || 0) - amt,
-          date: new Date().toLocaleString('bn-BD'), timestamp: firebase.database.ServerValue.TIMESTAMP,
-          note: `Reclaimed from Agent ${a.name || agentId}`
-        };
-        await db.ref().update(updates);
-        recordAuditLog('AGENT_RETRIEVE', agentId, `Retrieved ৳${amt} from ${a.name || agentId}`);
+        await window.mwApi('/api/v1/admin/agent/transfer', { agentUid: agentId, amount: amt, direction: 'reclaim' }, auth);
         showToast(`✅ ৳${amt} এজেন্ট থেকে ফেরত নেওয়া হয়েছে`, 'success');
       } catch (err) { showToast('ফেরত নেওয়া ব্যর্থ: ' + err.message, 'error'); }
     }
@@ -9581,17 +9432,9 @@
       const me = npMyUid();
       if (!r || !me || !db) return;
       const amt = parseFloat(r.amount) || 0;
-      if ((STATE.adminBalance || 0) < amt) { showToast(`আপনার ব্যালেন্স পর্যাপ্ত নয় (৳${Math.round(STATE.adminBalance || 0)})`, 'error'); return; }
       if (!confirm(`এজেন্ট ${r.agentName || r.agentUid}-এর ৳${amt} ব্যালেন্স রিকোয়েস্ট অনুমোদন করবেন?`)) return;
       try {
-        const updates = {};
-        updates[`agentBalanceRequests/${reqId}/status`] = 'approved';
-        updates[`agentBalanceRequests/${reqId}/processedAt`] = firebase.database.ServerValue.TIMESTAMP;
-        updates[`admins/${me}/balance`] = firebase.database.ServerValue.increment(-amt);
-        updates[`agents/${r.agentUid}/balance`] = firebase.database.ServerValue.increment(amt);
-        updates[`agents/${r.agentUid}/receivedFromAdmin`] = firebase.database.ServerValue.increment(amt);
-        await db.ref().update(updates);
-        recordAuditLog('AGENT_REQ_APPROVED', reqId, `Approved ৳${amt} for ${r.agentName || r.agentUid}`);
+        await window.mwApi('/api/v1/admin/agent-requests/decision', { reqId, decision: 'approve' }, auth);
         showToast(`✅ ৳${amt} এজেন্টকে প্রদান করা হয়েছে`, 'success');
       } catch (err) { showToast('অনুমোদন ব্যর্থ: ' + err.message, 'error'); }
     }
@@ -9599,7 +9442,7 @@
     async function rejectAgentReqAdmin(reqId) {
       if (!confirm('এজেন্ট ব্যালেন্স রিকোয়েস্টটি বাতিল করবেন?')) return;
       try {
-        await db.ref('agentBalanceRequests/' + reqId).update({ status: 'rejected', processedAt: firebase.database.ServerValue.TIMESTAMP });
+        await window.mwApi('/api/v1/admin/agent-requests/decision', { reqId, decision: 'reject' }, auth);
         showToast('এজেন্ট রিকোয়েস্ট বাতিল করা হয়েছে', 'info');
       } catch (err) { showToast('ব্যর্থ: ' + err.message, 'error'); }
     }
@@ -9779,20 +9622,8 @@
       if (!af || !me || !db) return;
       const amt = Math.floor(parseFloat(prompt(`${af.name || af.email}-কে কত ৳ কমিশন ক্রেডিট করবেন?\n(আপনার তহবিল থেকে সমন্বয় হবে · আপনার ব্যালেন্স: ৳${Math.round(STATE.adminBalance || 0)})`, '500')));
       if (!amt || amt <= 0) return;
-      if ((STATE.adminBalance || 0) < amt) { showToast(`আপনার ব্যালেন্স পর্যাপ্ত নয় (৳${Math.round(STATE.adminBalance || 0)})`, 'error'); return; }
       try {
-        const updates = {};
-        updates[`admins/${me}/balance`] = firebase.database.ServerValue.increment(-amt);
-        updates[`affiliates/${affId}/commissionBalance`] = firebase.database.ServerValue.increment(amt);
-        const trxKey = db.ref('transactions').push().key;
-        updates[`transactions/${trxKey}`] = {
-          trxId: trxKey, uid: affId, adminUid: me, type: 'AFF_COMMISSION_CREDIT', amount: amt,
-          beforeBal: af.commissionBalance || 0, afterBal: (af.commissionBalance || 0) + amt,
-          date: new Date().toLocaleString('bn-BD'), timestamp: firebase.database.ServerValue.TIMESTAMP,
-          note: `Affiliate commission credit to ${af.name || affId}`
-        };
-        await db.ref().update(updates);
-        recordAuditLog('AFF_COMMISSION_CREDIT', affId, `Credited ৳${amt} to ${af.name || affId}`);
+        await window.mwApi('/api/v1/admin/affiliate/credit', { affiliateUid: affId, amount: amt }, auth);
         showToast(`✅ ৳${amt} কমিশন ওয়ালেটে যোগ হয়েছে`, 'success');
       } catch (err) { showToast('ক্রেডিট ব্যর্থ: ' + err.message, 'error'); }
     }
@@ -9813,19 +9644,9 @@
       const me = npMyUid();
       if (!r || !me || !db) return;
       const amt = parseFloat(r.amount) || 0;
-      const af = (STATE.affiliates || []).find(x => x.id === r.affiliateUid);
       if (!confirm(`${r.affiliateName || r.affiliateUid}-এর ৳${amt} কমিশন পেআউট অনুমোদন করবেন?`)) return;
       try {
-        const updates = {};
-        updates[`affiliateCommissionRequests/${reqId}/status`] = 'approved';
-        updates[`affiliateCommissionRequests/${reqId}/approvedBy`] = me;
-        updates[`affiliateCommissionRequests/${reqId}/processedAt`] = firebase.database.ServerValue.TIMESTAMP;
-        if (af && (parseFloat(af.commissionBalance) || 0) >= amt) {
-          updates[`affiliates/${r.affiliateUid}/commissionBalance`] = firebase.database.ServerValue.increment(-amt);
-        }
-        updates[`affiliates/${r.affiliateUid}/totalCommissionPaid`] = firebase.database.ServerValue.increment(amt);
-        await db.ref().update(updates);
-        recordAuditLog('AFF_COMM_PAYOUT_APPROVED', reqId, `Paid ৳${amt} to ${r.affiliateName || r.affiliateUid}`);
+        await window.mwApi('/api/v1/admin/affiliate-requests/decision', { reqId, decision: 'approve' }, auth);
         showToast(`✅ ৳${amt} কমিশন পেআউট সম্পন্ন হয়েছে`, 'success');
       } catch (err) { showToast('অনুমোদন ব্যর্থ: ' + err.message, 'error'); }
     }
@@ -9833,7 +9654,7 @@
     async function rejectAffReqAdmin(reqId) {
       if (!confirm('অ্যাফিলিয়েট কমিশন রিকোয়েস্টটি বাতিল করবেন?')) return;
       try {
-        await db.ref('affiliateCommissionRequests/' + reqId).update({ status: 'rejected', processedAt: firebase.database.ServerValue.TIMESTAMP });
+        await window.mwApi('/api/v1/admin/affiliate-requests/decision', { reqId, decision: 'reject' }, auth);
         showToast('কমিশন রিকোয়েস্ট বাতিল করা হয়েছে', 'info');
       } catch (err) { showToast('ব্যর্থ: ' + err.message, 'error'); }
     }

@@ -1639,7 +1639,6 @@ function renderMasterGamesTab(){
  </div>`+body;
 }
 async function uAdjust(uid){const u=USERS[uid]||{},a=parseFloat(prompt(`${u.name||uid} (ব্যালেন্স ৳${u.balance||0})\nযোগ করতে +50, কাটতে -50 লিখুন:`,'50'));if(!a)return;const why=prompt('কারণ:','ম্যানুয়াল সমন্বয়');if(!why)return;
- // টাকা কাটলে সেই টাকা ইউজারের অ্যাডমিনের অ্যাকাউন্টে ফেরত যাবে
  let adm=null;
  if(a<0){
   adm=u.adminUid&&ADM[u.adminUid]?u.adminUid:null;
@@ -1647,12 +1646,11 @@ async function uAdjust(uid){const u=USERS[uid]||{},a=parseFloat(prompt(`${u.name
    if(L.length){const pick=prompt(`এই প্লেয়ারের অ্যাডমিন রেকর্ড করা নেই।\nকাটা ৳${-a} কোন অ্যাডমিনের অ্যাকাউন্টে ফেরত যাবে? নম্বর লিখুন\n(খালি রাখলে কোনো অ্যাডমিনকে ফেরত যাবে না, বাতিল চাপলে পুরো কাজ বন্ধ):\n\n`+L.map(([k,x],i)=>`${i+1}. ${x.name||x.email}`).join('\n'),'');
     if(pick===null)return;const n=parseInt(pick);if(n>=1&&n<=L.length)adm=L[n-1][0]}}
   if(adm&&!confirm(`৳${-a} প্লেয়ারের ব্যালেন্স থেকে কেটে "${ADM[adm].name||ADM[adm].email}" অ্যাডমিনের অ্যাকাউন্টে ফেরত যাবে। নিশ্চিত?`))return}
- let before=0;const ok=await tx(`users/${uid}/balance`,b=>{if(b===null)return 0;before=b;return b+a>=0?b+a:undefined});if(!ok){toast('ব্যালেন্স আপডেট হয়নি (ঋণাত্মক হয়ে যাবে)');return}
- if(adm){try{if(!await tx(`admins/${adm}/balance`,inc(-a)))throw 0}catch(e){await tx(`users/${uid}/balance`,inc(-a));toast('অ্যাডমিনকে ফেরত দেওয়া যায়নি, তাই কাটা বাতিল করা হয়েছে');return}
-  try{await db.ref(`users/${uid}/adminUid`).set(adm)}catch(e){}
-  try{await log({type:'USER_DEDUCT_RETURN',uid:adm,email:ADM[adm].email||'',amount:-a,note:`${u.name||uid}: ${why}`})}catch(e){}}
- const k=db.ref('transactions').push().key;await db.ref('transactions/'+k).set({trxId:k,uid,type:a>0?'ADMIN_CREDIT':'ADMIN_DEBIT',amount:Math.abs(a),beforeBal:before,afterBal:before+a,date:new Date().toLocaleString('bn-BD'),timestamp:TS,note:'Master Adjustment: '+why+(adm?` (অ্যাডমিনকে ফেরত: ${ADM[adm].name||ADM[adm].email})`:'')});
- await db.ref('adminAuditLogs').push({admin:auth.currentUser.email,action:'BALANCE_ADJUST',target:uid,details:`Amount: ${a}, Reason: ${why}${adm?', Returned to admin: '+adm:''}`,timestamp:Date.now()});toast(adm?`সমন্বয় সম্পন্ন ✅ ৳${-a} অ্যাডমিনকে ফেরত গেছে`:'সমন্বয় সম্পন্ন ✅')}
+ try{
+  const res=await window.mwApi('/api/v1/master/user/adjust',{uid,amount:a,returnAdminUid:adm||'',reason:why},auth);
+  toast(res.returnedAdminUid?`সমন্বয় সম্পন্ন ✅ ৳${-a} অ্যাডমিনকে ফেরত গেছে`:'সমন্বয় সম্পন্ন ✅');
+ }catch(e){toast('ব্যর্থ: '+(e.message||e))}
+}
 const RULES_TXT=`{
   "rules": {
     "admins": {
@@ -1661,7 +1659,7 @@ const RULES_TXT=`{
         ".read": "auth != null && (auth.uid == $adminUid || auth.token.email == 'mijanbabu2015@gmail.com')",
         ".write": "auth != null && auth.token.email == 'mijanbabu2015@gmail.com'",
         "balance": {
-          ".write": "auth != null && (auth.token.email == 'mijanbabu2015@gmail.com' || (auth.uid == $adminUid && root.child('adminSettings').child('userAdminOn').val() != false && data.exists() && newData.isNumber() && newData.val() >= 0 && newData.val() <= data.val()))",
+          ".write": false,
           ".validate": "newData.isNumber() && newData.val() >= 0"
         },
         "emailVerified": {
@@ -1711,25 +1709,23 @@ const RULES_TXT=`{
     "master": {
       "balance": {
         ".read": "auth != null && auth.token.email == 'mijanbabu2015@gmail.com'",
-        ".write": "auth != null && auth.token.email == 'mijanbabu2015@gmail.com'",
+        ".write": false,
         ".validate": "newData.isNumber() && newData.val() >= 0"
       }
     },
     "master_wallet": {
       ".read": "auth != null && auth.token.email == 'mijanbabu2015@gmail.com'",
-      ".write": "auth != null && auth.token.email == 'mijanbabu2015@gmail.com'",
-      ".validate": "newData.hasChildren(['balance']) && newData.child('balance').isNumber() && newData.child('balance').val() >= 0"
+      ".write": false
     },
     "master_wallet_ledger": {
       ".read": "auth != null && auth.token.email == 'mijanbabu2015@gmail.com'",
-      ".write": "auth != null && auth.token.email == 'mijanbabu2015@gmail.com'"
+      ".write": false
     },
     "admin_wallets": {
       ".read": "auth != null && auth.token.email == 'mijanbabu2015@gmail.com'",
       "$adminUid": {
         ".read": "auth != null && (auth.uid == $adminUid || auth.token.email == 'mijanbabu2015@gmail.com')",
-        ".write": "auth != null && auth.token.email == 'mijanbabu2015@gmail.com'",
-        ".validate": "newData.child('balance').isNumber() && newData.child('balance').val() >= 0"
+        ".write": false
       }
     },
     "admin_fund_requests": {
@@ -1737,8 +1733,7 @@ const RULES_TXT=`{
       ".indexOn": ["adminUid", "status"],
       "$reqId": {
         ".read": "auth != null && (data.child('adminUid').val() == auth.uid || auth.token.email == 'mijanbabu2015@gmail.com')",
-        ".write": "auth != null && ((!data.exists() && newData.child('status').val() == 'Pending' && newData.child('adminUid').val() == auth.uid && root.child('adminSettings').child('userAdminOn').val() != false && newData.child('amount').isNumber() && newData.child('amount').val() >= 100) || auth.token.email == 'mijanbabu2015@gmail.com')",
-        ".validate": "newData.hasChildren(['adminUid', 'amount', 'status']) && newData.child('amount').isNumber() && newData.child('amount').val() > 0"
+        ".write": false
       }
     },
     "admin_wallet_ledger": {
@@ -1746,7 +1741,7 @@ const RULES_TXT=`{
       ".indexOn": ["adminUid"],
       "$trxId": {
         ".read": "auth != null && (data.child('adminUid').val() == auth.uid || auth.token.email == 'mijanbabu2015@gmail.com')",
-        ".write": "auth != null && auth.token.email == 'mijanbabu2015@gmail.com'"
+        ".write": false
       }
     },
     "balanceRequests": {
@@ -1754,14 +1749,13 @@ const RULES_TXT=`{
       ".read": "auth != null && ((query.orderByChild == 'uid' && query.equalTo == auth.uid) || auth.token.email == 'mijanbabu2015@gmail.com')",
       "$reqId": {
         ".read": "auth != null && (data.child('uid').val() == auth.uid || auth.token.email == 'mijanbabu2015@gmail.com')",
-        ".write": "auth != null && (auth.token.email == 'mijanbabu2015@gmail.com' || (!data.exists() && root.child('admins').child(auth.uid).exists() && root.child('admins').child(auth.uid).child('active').val() != false && root.child('adminSettings').child('userAdminOn').val() != false && newData.child('uid').val() == auth.uid && newData.child('status').val() == 'pending' && newData.child('amount').isNumber() && newData.child('amount').val() > 0))",
-        ".validate": "newData.hasChildren(['uid', 'amount', 'status']) && newData.child('amount').isNumber() && newData.child('amount').val() > 0"
+        ".write": false
       }
     },
     "balanceLedger": {
       ".indexOn": ["uid"],
       ".read": "auth != null && auth.token.email == 'mijanbabu2015@gmail.com'",
-      ".write": "auth != null && auth.token.email == 'mijanbabu2015@gmail.com'"
+      ".write": false
     },
     "master_admin_chats": {
       ".read": "auth != null && auth.token.email == 'mijanbabu2015@gmail.com'",
@@ -1790,17 +1784,20 @@ const RULES_TXT=`{
         ".read": "auth != null && (auth.uid == $agentId || (root.child('admins').child(auth.uid).exists() && root.child('admins').child(auth.uid).child('active').val() != false) || auth.token.email == 'mijanbabu2015@gmail.com')",
         ".write": "auth != null && ((root.child('admins').child(auth.uid).exists() && root.child('admins').child(auth.uid).child('active').val() != false && root.child('adminSettings').child('userAdminOn').val() != false) || auth.token.email == 'mijanbabu2015@gmail.com')",
         "balance": {
-          ".write": "auth != null && (auth.token.email == 'mijanbabu2015@gmail.com' || (root.child('admins').child(auth.uid).exists() && root.child('admins').child(auth.uid).child('active').val() != false && root.child('adminSettings').child('userAdminOn').val() != false) || (auth.uid == $agentId && root.child('agents').child($agentId).child('active').val() != false && data.exists() && newData.isNumber() && newData.val() >= 0 && newData.val() <= data.val()))",
+          ".write": false,
           ".validate": "newData.isNumber() && newData.val() >= 0"
         },
+        "receivedFromAdmin": {
+          ".write": false
+        },
         "totalProcessedDeposits": {
-          ".write": "auth != null && (auth.uid == $agentId || (root.child('admins').child(auth.uid).exists() && root.child('admins').child(auth.uid).child('active').val() != false) || auth.token.email == 'mijanbabu2015@gmail.com')"
+          ".write": false
         },
         "totalProcessedWithdrawals": {
-          ".write": "auth != null && (auth.uid == $agentId || (root.child('admins').child(auth.uid).exists() && root.child('admins').child(auth.uid).child('active').val() != false) || auth.token.email == 'mijanbabu2015@gmail.com')"
+          ".write": false
         },
         "reservedBalance": {
-          ".write": "auth != null && (auth.uid == $agentId || (root.child('admins').child(auth.uid).exists() && root.child('admins').child(auth.uid).child('active').val() != false) || auth.token.email == 'mijanbabu2015@gmail.com')"
+          ".write": false
         },
         "lastSeen": {
           ".write": "auth != null && (auth.uid == $agentId || auth.token.email == 'mijanbabu2015@gmail.com')"
@@ -1827,8 +1824,7 @@ const RULES_TXT=`{
       ".read": "auth != null && ((query.orderByChild == 'agentUid' && query.equalTo == auth.uid) || (root.child('admins').child(auth.uid).exists() && root.child('admins').child(auth.uid).child('active').val() != false && root.child('adminSettings').child('userAdminOn').val() != false) || auth.token.email == 'mijanbabu2015@gmail.com')",
       "$reqId": {
         ".read": "auth != null && (data.child('agentUid').val() == auth.uid || (root.child('admins').child(auth.uid).exists() && root.child('admins').child(auth.uid).child('active').val() != false) || auth.token.email == 'mijanbabu2015@gmail.com')",
-        ".write": "auth != null && (auth.token.email == 'mijanbabu2015@gmail.com' || (root.child('admins').child(auth.uid).exists() && root.child('admins').child(auth.uid).child('active').val() != false && root.child('adminSettings').child('userAdminOn').val() != false) || (!data.exists() && root.child('agents').child(auth.uid).exists() && root.child('agents').child(auth.uid).child('active').val() != false && newData.child('agentUid').val() == auth.uid && newData.child('status').val() == 'pending' && newData.child('amount').isNumber() && newData.child('amount').val() > 0))",
-        ".validate": "newData.hasChildren(['agentUid', 'amount', 'status']) && newData.child('amount').isNumber() && newData.child('amount').val() > 0"
+        ".write": false
       }
     },
     "affiliates": {
@@ -1836,6 +1832,12 @@ const RULES_TXT=`{
       "$affId": {
         ".read": "auth != null && (auth.uid == $affId || (root.child('admins').child(auth.uid).exists() && root.child('admins').child(auth.uid).child('active').val() != false) || auth.token.email == 'mijanbabu2015@gmail.com')",
         ".write": "auth != null && ((root.child('admins').child(auth.uid).exists() && root.child('admins').child(auth.uid).child('active').val() != false && root.child('adminSettings').child('userAdminOn').val() != false) || auth.token.email == 'mijanbabu2015@gmail.com')",
+        "commissionBalance": {
+          ".write": false
+        },
+        "totalCommissionPaid": {
+          ".write": false
+        },
         "campaigns": {
           ".write": "auth != null && (auth.uid == $affId || (root.child('admins').child(auth.uid).exists() && root.child('admins').child(auth.uid).child('active').val() != false) || auth.token.email == 'mijanbabu2015@gmail.com')"
         },
@@ -1849,8 +1851,7 @@ const RULES_TXT=`{
       ".read": "auth != null && ((query.orderByChild == 'affiliateUid' && query.equalTo == auth.uid) || (root.child('admins').child(auth.uid).exists() && root.child('admins').child(auth.uid).child('active').val() != false && root.child('adminSettings').child('userAdminOn').val() != false) || auth.token.email == 'mijanbabu2015@gmail.com')",
       "$reqId": {
         ".read": "auth != null && (data.child('affiliateUid').val() == auth.uid || (root.child('admins').child(auth.uid).exists() && root.child('admins').child(auth.uid).child('active').val() != false) || auth.token.email == 'mijanbabu2015@gmail.com')",
-        ".write": "auth != null && (auth.token.email == 'mijanbabu2015@gmail.com' || (root.child('admins').child(auth.uid).exists() && root.child('admins').child(auth.uid).child('active').val() != false && root.child('adminSettings').child('userAdminOn').val() != false) || (!data.exists() && root.child('affiliates').child(auth.uid).exists() && root.child('affiliates').child(auth.uid).child('active').val() != false && newData.child('affiliateUid').val() == auth.uid && newData.child('status').val() == 'pending' && newData.child('amount').isNumber() && newData.child('amount').val() > 0))",
-        ".validate": "newData.hasChildren(['affiliateUid', 'amount', 'status']) && newData.child('amount').isNumber() && newData.child('amount').val() > 0"
+        ".write": false
       }
     },
     "games": {
@@ -1972,8 +1973,7 @@ const RULES_TXT=`{
       ".read": "auth != null && ((query.orderByChild == 'uid' && query.equalTo == auth.uid) || (query.orderByChild == 'assignedAgentId' && query.equalTo == auth.uid) || (root.child('agents').child(auth.uid).exists() && root.child('agents').child(auth.uid).child('active').val() != false) || (root.child('affiliates').child(auth.uid).exists() && root.child('affiliates').child(auth.uid).child('active').val() != false) || (root.child('admins').child(auth.uid).exists() && root.child('admins').child(auth.uid).child('active').val() != false && root.child('adminSettings').child('userAdminOn').val() != false) || auth.token.email == 'mijanbabu2015@gmail.com')",
       "$reqId": {
         ".read": "auth != null && (data.child('uid').val() == auth.uid || data.child('assignedAgentId').val() == auth.uid || (root.child('agents').child(auth.uid).exists() && root.child('agents').child(auth.uid).child('active').val() != false && data.child('adminUid').val() == root.child('agents').child(auth.uid).child('parentAdminId').val()) || (root.child('affiliates').child(auth.uid).exists() && root.child('affiliates').child(auth.uid).child('active').val() != false) || (root.child('admins').child(auth.uid).exists() && root.child('admins').child(auth.uid).child('active').val() != false && root.child('adminSettings').child('userAdminOn').val() != false) || auth.token.email == 'mijanbabu2015@gmail.com')",
-        ".write": "auth != null && ((!data.exists() && newData.child('uid').val() == auth.uid && newData.child('status').val() == 'Pending' && (!root.child('users').child(auth.uid).child('adminUid').exists() || root.child('users').child(auth.uid).child('adminUid').val() == '' || newData.child('adminUid').val() == root.child('users').child(auth.uid).child('adminUid').val())) || (root.child('agents').child(auth.uid).exists() && root.child('agents').child(auth.uid).child('active').val() != false && (data.child('assignedAgentId').val() == auth.uid || data.child('adminUid').val() == root.child('agents').child(auth.uid).child('parentAdminId').val())) || (root.child('admins').child(auth.uid).exists() && root.child('admins').child(auth.uid).child('active').val() != false && root.child('adminSettings').child('userAdminOn').val() != false) || auth.token.email == 'mijanbabu2015@gmail.com')",
-        ".validate": "newData.hasChildren(['uid', 'status']) && newData.child('uid').isString()"
+        ".write": false
       },
       ".indexOn": ["uid", "assignedAgentId", "adminUid"]
     },
@@ -1981,18 +1981,21 @@ const RULES_TXT=`{
       ".read": "auth != null && ((query.orderByChild == 'uid' && query.equalTo == auth.uid) || (query.orderByChild == 'assignedAgentId' && query.equalTo == auth.uid) || (root.child('agents').child(auth.uid).exists() && root.child('agents').child(auth.uid).child('active').val() != false) || (root.child('affiliates').child(auth.uid).exists() && root.child('affiliates').child(auth.uid).child('active').val() != false) || (root.child('admins').child(auth.uid).exists() && root.child('admins').child(auth.uid).child('active').val() != false && root.child('adminSettings').child('userAdminOn').val() != false) || auth.token.email == 'mijanbabu2015@gmail.com')",
       "$reqId": {
         ".read": "auth != null && (data.child('uid').val() == auth.uid || data.child('assignedAgentId').val() == auth.uid || (root.child('agents').child(auth.uid).exists() && root.child('agents').child(auth.uid).child('active').val() != false && data.child('adminUid').val() == root.child('agents').child(auth.uid).child('parentAdminId').val()) || (root.child('affiliates').child(auth.uid).exists() && root.child('affiliates').child(auth.uid).child('active').val() != false) || (root.child('admins').child(auth.uid).exists() && root.child('admins').child(auth.uid).child('active').val() != false && root.child('adminSettings').child('userAdminOn').val() != false) || auth.token.email == 'mijanbabu2015@gmail.com')",
-        ".write": "auth != null && ((!data.exists() && newData.child('uid').val() == auth.uid && newData.child('status').val() == 'Pending' && (!root.child('users').child(auth.uid).child('adminUid').exists() || root.child('users').child(auth.uid).child('adminUid').val() == '' || newData.child('adminUid').val() == root.child('users').child(auth.uid).child('adminUid').val()) && (!root.child('users').child(auth.uid).child('turnoverRequired').exists() || root.child('users').child(auth.uid).child('turnoverRequired').val() <= (root.child('users').child(auth.uid).child('turnoverDone').exists() ? root.child('users').child(auth.uid).child('turnoverDone').val() : (root.child('users').child(auth.uid).child('turnoverCompleted').exists() ? root.child('users').child(auth.uid).child('turnoverCompleted').val() : 0)))) || (root.child('agents').child(auth.uid).exists() && root.child('agents').child(auth.uid).child('active').val() != false && data.child('assignedAgentId').val() == auth.uid) || (root.child('admins').child(auth.uid).exists() && root.child('admins').child(auth.uid).child('active').val() != false && root.child('adminSettings').child('userAdminOn').val() != false) || auth.token.email == 'mijanbabu2015@gmail.com')",
-        ".validate": "newData.hasChildren(['uid', 'status']) && newData.child('uid').isString()"
+        ".write": false
       },
       ".indexOn": ["uid", "assignedAgentId", "adminUid"]
+    },
+    "userSecuritySecrets": {
+      ".read": false,
+      ".write": false
     },
     "users": {
       ".read": "auth != null && ((root.child('admins').child(auth.uid).exists() && root.child('admins').child(auth.uid).child('active').val() != false && root.child('adminSettings').child('userAdminOn').val() != false) || (root.child('agents').child(auth.uid).exists() && root.child('agents').child(auth.uid).child('active').val() != false) || (root.child('affiliates').child(auth.uid).exists() && root.child('affiliates').child(auth.uid).child('active').val() != false) || auth.token.email == 'mijanbabu2015@gmail.com')",
       "$uid": {
         ".read": "auth != null && (auth.uid == $uid || (root.child('admins').child(auth.uid).exists() && root.child('admins').child(auth.uid).child('active').val() != false && root.child('adminSettings').child('userAdminOn').val() != false) || (root.child('agents').child(auth.uid).exists() && root.child('agents').child(auth.uid).child('active').val() != false) || (root.child('affiliates').child(auth.uid).exists() && root.child('affiliates').child(auth.uid).child('active').val() != false) || auth.token.email == 'mijanbabu2015@gmail.com')",
-        ".write": "auth != null && ((root.child('admins').child(auth.uid).exists() && root.child('admins').child(auth.uid).child('active').val() != false && root.child('adminSettings').child('userAdminOn').val() != false) || auth.token.email == 'mijanbabu2015@gmail.com' || (auth.uid == $uid && !data.exists() && newData.child('balance').val() == 0 && (!newData.child('adminUid').exists() || newData.child('adminUid').val() == '' || root.child('adminLinks').child(newData.child('adminUid').val()).val() == true)))",
+        ".write": "auth != null && ((root.child('admins').child(auth.uid).exists() && root.child('admins').child(auth.uid).child('active').val() != false && root.child('adminSettings').child('userAdminOn').val() != false) || auth.token.email == 'mijanbabu2015@gmail.com' || (auth.uid == $uid && !data.exists() && newData.child('balance').val() == 0 && (!newData.child('bonusBalance').exists() || newData.child('bonusBalance').val() == 0) && !newData.child('withdrawPin').exists() && (!newData.child('adminUid').exists() || newData.child('adminUid').val() == '' || root.child('adminLinks').child(newData.child('adminUid').val()).val() == true)))",
         "balance": {
-          ".write": "auth != null && ((root.child('admins').child(auth.uid).exists() && root.child('admins').child(auth.uid).child('active').val() != false && root.child('adminSettings').child('userAdminOn').val() != false) || (root.child('agents').child(auth.uid).exists() && root.child('agents').child(auth.uid).child('active').val() != false && data.exists() && newData.isNumber() && newData.val() >= data.val()) || auth.token.email == 'mijanbabu2015@gmail.com' || (auth.uid == $uid && data.exists() && newData.isNumber() && newData.val() >= 0 && newData.val() <= data.val()))",
+          ".write": false,
           ".validate": "newData.isNumber() && newData.val() >= 0"
         },
         "name": {
@@ -2041,7 +2044,7 @@ const RULES_TXT=`{
           ".write": "auth != null && (auth.uid == $uid || (root.child('admins').child(auth.uid).exists() && root.child('admins').child(auth.uid).child('active').val() != false && root.child('adminSettings').child('userAdminOn').val() != false) || auth.token.email == 'mijanbabu2015@gmail.com')"
         },
         "turnoverRequired": {
-          ".write": "auth != null && ((root.child('admins').child(auth.uid).exists() && root.child('admins').child(auth.uid).child('active').val() != false && root.child('adminSettings').child('userAdminOn').val() != false) || (root.child('agents').child(auth.uid).exists() && root.child('agents').child(auth.uid).child('active').val() != false) || auth.token.email == 'mijanbabu2015@gmail.com')",
+          ".write": false,
           ".validate": "newData.isNumber() && newData.val() >= 0"
         },
         "turnoverDone": {
@@ -2053,11 +2056,11 @@ const RULES_TXT=`{
           ".validate": "newData.isNumber() && newData.val() >= 0 && (auth.uid != $uid || newData.val() >= (data.exists() ? data.val() : 0))"
         },
         "bonusBalance": {
-          ".write": "auth != null && (auth.uid == $uid || (root.child('admins').child(auth.uid).exists() && root.child('admins').child(auth.uid).child('active').val() != false && root.child('adminSettings').child('userAdminOn').val() != false) || auth.token.email == 'mijanbabu2015@gmail.com')",
+          ".write": false,
           ".validate": "newData.isNumber() && newData.val() >= 0"
         },
         "lastDailyBonusAt": {
-          ".write": "auth != null && (auth.uid == $uid || (root.child('admins').child(auth.uid).exists() && root.child('admins').child(auth.uid).child('active').val() != false && root.child('adminSettings').child('userAdminOn').val() != false) || auth.token.email == 'mijanbabu2015@gmail.com')"
+          ".write": false
         },
         "xp": {
           ".write": "auth != null && (auth.uid == $uid || (root.child('admins').child(auth.uid).exists() && root.child('admins').child(auth.uid).child('active').val() != false && root.child('adminSettings').child('userAdminOn').val() != false) || auth.token.email == 'mijanbabu2015@gmail.com')",
@@ -2077,7 +2080,10 @@ const RULES_TXT=`{
           ".write": "auth != null && (auth.uid == $uid || (root.child('admins').child(auth.uid).exists() && root.child('admins').child(auth.uid).child('active').val() != false && root.child('adminSettings').child('userAdminOn').val() != false) || auth.token.email == 'mijanbabu2015@gmail.com')"
         },
         "withdrawPin": {
-          ".write": "auth != null && (auth.uid == $uid || (root.child('admins').child(auth.uid).exists() && root.child('admins').child(auth.uid).child('active').val() != false && root.child('adminSettings').child('userAdminOn').val() != false) || auth.token.email == 'mijanbabu2015@gmail.com')"
+          ".write": false
+        },
+        "hasWithdrawPin": {
+          ".write": false
         },
         "lang": {
           ".write": "auth != null && (auth.uid == $uid || (root.child('admins').child(auth.uid).exists() && root.child('admins').child(auth.uid).child('active').val() != false && root.child('adminSettings').child('userAdminOn').val() != false) || auth.token.email == 'mijanbabu2015@gmail.com')"
@@ -2369,14 +2375,11 @@ async function tx(p,f){return(await db.ref(p).transaction(f)).committed}
 const dec=a=>b=>b===null?0:(b>=a?b-a:undefined),inc=a=>b=>(b||0)+a;
 async function log(o){await db.ref('balanceLedger').push({...o,time:TS})}
 async function toAdmin(uid,amt,type,note,reqId){
- if(!await tx('master/balance',dec(amt)))throw new Error('Master ব্যালেন্স যথেষ্ট নয়');
- try{if(!await tx(`admins/${uid}/balance`,inc(amt)))throw 0}catch(e){await tx('master/balance',inc(amt));throw new Error('ট্রান্সফার ব্যর্থ, টাকা ফেরত দেওয়া হয়েছে')}
- await log({type,uid,email:(ADM[uid]||{}).email||'',amount:amt,note:note||'',reqId:reqId||''})}
+ await window.mwApi('/api/v1/master/transfer-admin',{adminUid:uid,amount:amt,direction:'to_admin',type,note:note||'',reqId:reqId||''},auth)}
 async function fromAdmin(uid,amt,note){
- if(!await tx(`admins/${uid}/balance`,dec(amt)))throw new Error('অ্যাডমিনের ব্যালেন্স যথেষ্ট নয়');
- await tx('master/balance',inc(amt));await log({type:'MASTER_RECLAIM',uid,email:(ADM[uid]||{}).email||'',amount:amt,note:note||''})}
+ await window.mwApi('/api/v1/master/transfer-admin',{adminUid:uid,amount:amt,direction:'from_admin',note:note||''},auth)}
 async function setMaster(){const v=parseFloat(prompt('নতুন Master ব্যালেন্স (টাকা):',MB));if(isNaN(v)||v<0)return;const n=prompt('কারণ/নোট:','Master fund update')||'';
- await db.ref('master/balance').set(v);await log({type:'MASTER_SET',amount:v,note:n});toast('Master ব্যালেন্স আপডেট হয়েছে')}
+ try{await window.mwApi('/api/v1/master/set-balance',{balance:v,note:n},auth);toast('Master ব্যালেন্স আপডেট হয়েছে')}catch(e){toast(e.message||'ব্যর্থ')}}
 async function send(uid){const a=Math.floor(parseFloat(prompt('কত টাকা পাঠাবেন?','1000')));if(!a||a<=0)return;
  try{await toAdmin(uid,a,'MASTER_CREDIT','Direct send');toast('পাঠানো হয়েছে')}catch(e){toast(e.message)}}
 async function reclaim(uid){const a=Math.floor(parseFloat(prompt('কত টাকা ফেরত নেবেন?','1000')));if(!a||a<=0)return;
@@ -2390,24 +2393,21 @@ async function uaToggle(){const n=!UAON;
 async function delAdmin(uid){const a=ADM[uid];if(!a)return;const bal=+a.balance||0;
  if(!confirm('"'+(a.name||a.email)+'" অ্যাডমিনকে মুছে ফেলবেন?\n'+(bal>0?'তার ব্যালেন্স '+fmt(bal)+' Master-এ ফেরত আসবে।\n':'')+'এই কাজ ফেরানো যাবে না।'))return;
  if(!await reauth())return;
- try{if(bal>0)await fromAdmin(uid,bal,'Admin deleted - balance reclaimed');
-  await db.ref('admins/'+uid).remove();
-  try{await db.ref('adminAuditLogs').push({admin:auth.currentUser.email,action:'ADMIN_DELETE',target:uid,details:(a.email||'')+(bal>0?', reclaimed: '+bal:''),timestamp:Date.now()})}catch(e){}
+ try{await window.mwApi('/api/v1/master/admin/delete',{adminUid:uid},auth);
   if(SEL===uid){SEL='';cur='admins'}
   toast('অ্যাডমিন মুছে ফেলা হয়েছে ✅');draw()}
  catch(e){toast('ব্যর্থ: '+e.message)}}
 async function clearAdminTx(){
  const P=['balanceLedger','balanceRequests','admin_wallet_ledger','admin_fund_requests'];
  let sn;try{sn=await Promise.all(P.map(x=>db.ref(x).once('value')))}catch(e){toast('ডেটা পড়া যায়নি: '+e.message);return}
- const data={},ups={};let n=0,pend=0;
- P.forEach((x,i)=>{const v=sn[i].val()||{};data[x]=v;Object.keys(v).forEach(k=>{ups[x+'/'+k]=null;n++;if(x==='balanceRequests'&&v[k]&&v[k].status==='pending')pend++})});
+ const data={};let n=0,pend=0;
+ P.forEach((x,i)=>{const v=sn[i].val()||{};data[x]=v;Object.keys(v).forEach(k=>{n++;if(x==='balanceRequests'&&v[k]&&v[k].status==='pending')pend++})});
  if(!n){toast('মোছার মতো কোনো লেনদেন নেই');return}
  if(!confirm('User Admin-দের সব লেনদেনের ইতিহাস ('+n+' টি রেকর্ড: লেজার ও ব্যালেন্স রিকোয়েস্ট) মুছে যাবে।'+(pend?'\n⚠ এর মধ্যে '+pend+' টি রিকোয়েস্ট এখনো পেন্ডিং।':'')+'\nঅ্যাডমিনদের বর্তমান ব্যালেন্স ও প্লেয়ারদের লেনদেন বদলাবে না।\nএই কাজ ফেরানো যাবে না। এগোবেন?'))return;
  if(!await reauth())return;
  try{const a=document.createElement('a');a.href=URL.createObjectURL(new Blob([JSON.stringify(data,null,1)],{type:'application/json'}));a.download='admin-transactions-backup-'+Date.now()+'.json';document.body.appendChild(a);a.click();a.remove()}catch(e){if(!confirm('ব্যাকআপ ডাউনলোড হয়নি। ব্যাকআপ ছাড়াই মুছবেন?'))return}
- try{const ks=Object.keys(ups);for(let i=0;i<ks.length;i+=400){const c={};ks.slice(i,i+400).forEach(k=>c[k]=null);await db.ref().update(c)}
-  try{await db.ref('adminAuditLogs').push({admin:auth.currentUser.email,action:'CLEAR_ADMIN_TRANSACTIONS',target:'all',details:n+' records deleted',timestamp:Date.now()})}catch(e){}
-  toast('সব লেনদেন মুছে ফেলা হয়েছে ✅ ('+n+' টি)')}
+ try{const res=await window.mwApi('/api/v1/master/clear-admin-tx',{},auth);
+  toast('সব লেনদেন মুছে ফেলা হয়েছে ✅ ('+(res.deletedCount||n)+' টি)')}
  catch(e){toast('ব্যর্থ: '+e.message)}}
 async function toggle(uid){const nxt=ADM[uid].active===false;await db.ref(`admins/${uid}/active`).set(nxt);await db.ref(`adminLinks/${uid}`).set(nxt).catch(()=>{});}
 async function reauth(){const p=prompt('নিশ্চিত করতে আপনার Master পাসওয়ার্ড দিন:');if(!p)return false;
@@ -2415,10 +2415,9 @@ async function reauth(){const p=prompt('নিশ্চিত করতে আ�
 async function approve(id){const r=REQ[id],a=ADM[r.uid];
  if(!a||a.active===false){toast('অ্যাডমিন সক্রিয় নয়');return}
  if(!await reauth())return;
- const c=await db.ref(`balanceRequests/${id}/status`).transaction(s=>s==='pending'?'processing':undefined);if(!c.committed)return;
- try{await toAdmin(r.uid,r.amount,'REQUEST_APPROVED',r.note,id);await db.ref('balanceRequests/'+id).update({status:'approved',processedAt:TS});toast('অনুমোদিত ✅')}
- catch(e){await db.ref(`balanceRequests/${id}/status`).set('pending');toast(e.message)}}
-async function reject(id){if(!confirm('বাতিল করবেন?'))return;await db.ref('balanceRequests/'+id).update({status:'rejected',processedAt:TS})}
+ try{await window.mwApi('/api/v1/master/balance-requests/decision',{reqId:id,decision:'approve'},auth);toast('অনুমোদিত ✅')}
+ catch(e){toast(e.message)}}
+async function reject(id){if(!confirm('বাতিল করবেন?'))return;try{await window.mwApi('/api/v1/master/balance-requests/decision',{reqId:id,decision:'reject'},auth);toast('বাতিল করা হয়েছে')}catch(e){toast(e.message)}}
 async function createAdmin(){
  const n=$('an').value.trim(),e=$('ae').value.trim(),p=$('ap').value,r=($('ar')&&$('ar').value)||'USER_ADMIN';
  if(!n||!e||p.length<6){toast('নাম, ইমেইল ও ৬+ অক্ষরের পাসওয়ার্ড দিন');return}
@@ -2536,19 +2535,15 @@ async function sendAgentFund(uid){
  const ag=AGENTS[uid];if(!ag)return;
  const a=Math.floor(parseFloat(prompt(`"${ag.name||ag.email}" এজেন্টকে Master ব্যালেন্স থেকে কত টাকা পাঠাবেন?`,'5000')));
  if(!a||a<=0)return;
- if(!await tx('master/balance',dec(a))){toast('Master ব্যালেন্স যথেষ্ট নয়');return}
- try{if(!await tx(`agents/${uid}/balance`,inc(a)))throw 0}catch(e){await tx('master/balance',inc(a));toast('ব্যর্থ হয়েছে');return}
- await log({type:'AGENT_CREDIT',uid,email:ag.email||'',amount:a,note:'Master -> Agent direct fund'});
- toast('এজেন্টকে '+fmt(a)+' পাঠানো হয়েছে ✅');
+ try{await window.mwApi('/api/v1/master/transfer-agent',{agentUid:uid,amount:a,direction:'to_agent'},auth);toast('এজেন্টকে '+fmt(a)+' পাঠানো হয়েছে ✅')}
+ catch(e){toast(e.message||'ব্যর্থ হয়েছে')}
 }
 async function reclaimAgentFund(uid){
  const ag=AGENTS[uid];if(!ag)return;
  const a=Math.floor(parseFloat(prompt(`"${ag.name||ag.email}" (ব্যালেন্স ${fmt(ag.balance)}) থেকে কত টাকা Master-এ ফেরত নেবেন?`,'1000')));
  if(!a||a<=0)return;
- if(!await tx(`agents/${uid}/balance`,dec(a))){toast('এজেন্ট ব্যালেন্স যথেষ্ট নয়');return}
- await tx('master/balance',inc(a));
- await log({type:'AGENT_RECLAIM',uid,email:ag.email||'',amount:a,note:'Agent -> Master reclaim'});
- toast('ফেরত নেওয়া হয়েছে ✅');
+ try{await window.mwApi('/api/v1/master/transfer-agent',{agentUid:uid,amount:a,direction:'from_agent'},auth);toast('ফেরত নেওয়া হয়েছে ✅')}
+ catch(e){toast(e.message||'ব্যর্থ হয়েছে')}
 }
 async function toggleAgentActive(uid){
  const ag=AGENTS[uid];if(!ag)return;
@@ -2562,18 +2557,13 @@ async function approveAgentReq(id){
  const ag=AGENTS[r.agentUid];if(!ag||ag.active===false){toast('এজেন্ট সক্রিয় নয়');return}
  const a=parseFloat(r.amount)||0;if(a<=0)return;
  if(!confirm(`"${ag.name||ag.email}"-এর ${fmt(a)} ব্যালেন্স রিকোয়েস্ট Master থেকে অনুমোদন করবেন?`))return;
- const c=await db.ref(`agentBalanceRequests/${id}/status`).transaction(s=>s==='pending'?'processing':undefined);
- if(!c.committed)return;
- if(!await tx('master/balance',dec(a))){await db.ref(`agentBalanceRequests/${id}/status`).set('pending');toast('Master ব্যালেন্স যথেষ্ট নয়');return}
- try{if(!await tx(`agents/${r.agentUid}/balance`,inc(a)))throw 0}catch(e){await tx('master/balance',inc(a));await db.ref(`agentBalanceRequests/${id}/status`).set('pending');toast('ব্যর্থ হয়েছে');return}
- await db.ref('agentBalanceRequests/'+id).update({status:'approved',approvedBy:'MASTER',processedAt:TS});
- await log({type:'AGENT_REQ_APPROVED',uid:r.agentUid,email:ag.email||'',amount:a,note:r.note||''});
- toast('এজেন্ট রিকোয়েস্ট অনুমোদিত ✅');
+ try{await window.mwApi('/api/v1/master/agent-requests/decision',{reqId:id,decision:'approve'},auth);toast('এজেন্ট রিকোয়েস্ট অনুমোদিত ✅')}
+ catch(e){toast(e.message||'ব্যর্থ হয়েছে')}
 }
 async function rejectAgentReq(id){
  if(!confirm('এজেন্ট ব্যালেন্স রিকোয়েস্ট বাতিল করবেন?'))return;
- await db.ref('agentBalanceRequests/'+id).update({status:'rejected',processedAt:TS});
- toast('বাতিল করা হয়েছে');
+ try{await window.mwApi('/api/v1/master/agent-requests/decision',{reqId:id,decision:'reject'},auth);toast('বাতিল করা হয়েছে')}
+ catch(e){toast(e.message||'ব্যর্থ হয়েছে')}
 }
 
 function affCommLabel(af){
@@ -2648,8 +2638,7 @@ async function creditAffCommissionMaster(uid){
  const a=Math.floor(parseFloat(prompt(`"${af.name||af.email}"-এর কমিশন ওয়ালেটে কত টাকা যোগ করবেন?\n(বর্তমান ব্যালেন্স: ${fmt(af.commissionBalance)})`,'500')));
  if(!a||a<=0)return;
  try{
-  await tx(`affiliates/${uid}/commissionBalance`,inc(a));
-  await log({type:'AFF_COMMISSION_CREDIT',uid,email:af.email||'',amount:a,note:'Master Affiliate Commission Credit'});
+  await window.mwApi('/api/v1/master/affiliate/credit',{affiliateUid:uid,amount:a},auth);
   toast('কমিশন ওয়ালেটে '+fmt(a)+' যোগ হয়েছে ✅');
  }catch(e){toast('ব্যর্থ: '+e.message)}
 }
@@ -2664,20 +2653,13 @@ async function approveAffReqMaster(id){
  const af=AFFS[r.affiliateUid];if(!af){toast('অ্যাফিলিয়েট পাওয়া যায়নি');return}
  const a=parseFloat(r.amount)||0;if(a<=0)return;
  if(!confirm(`"${af.name||af.email}"-এর ${fmt(a)} কমিশন উত্তোলন রিকোয়েস্ট অনুমোদন করবেন?`))return;
- const c=await db.ref(`affiliateCommissionRequests/${id}/status`).transaction(s=>s==='pending'?'processing':undefined);
- if(!c.committed)return;
- if(+af.commissionBalance>=a){
-  await tx(`affiliates/${r.affiliateUid}/commissionBalance`,dec(a)).catch(()=>{});
- }
- await tx(`affiliates/${r.affiliateUid}/totalCommissionPaid`,inc(a));
- await db.ref('affiliateCommissionRequests/'+id).update({status:'approved',approvedBy:'MASTER',processedAt:TS});
- await log({type:'AFF_COMMISSION_PAID',uid:r.affiliateUid,email:af.email||'',amount:a,note:r.paymentInfo||'Commission Payout'});
- toast('কমিশন পেআউট অনুমোদিত ✅');
+ try{await window.mwApi('/api/v1/master/affiliate-requests/decision',{reqId:id,decision:'approve'},auth);toast('কমিশন পেআউট অনুমোদিত ✅')}
+ catch(e){toast('ব্যর্থ: '+e.message)}
 }
 async function rejectAffReqMaster(id){
  if(!confirm('অ্যাফিলিয়েট কমিশন রিকোয়েস্ট বাতিল করবেন?'))return;
- await db.ref('affiliateCommissionRequests/'+id).update({status:'rejected',processedAt:TS});
- toast('বাতিল করা হয়েছে');
+ try{await window.mwApi('/api/v1/master/affiliate-requests/decision',{reqId:id,decision:'reject'},auth);toast('বাতিল করা হয়েছে')}
+ catch(e){toast('ব্যর্থ: '+e.message)}
 }
 
 let ADM_FORM_MODE='new';

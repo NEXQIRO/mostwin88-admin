@@ -1,18 +1,26 @@
+# Secrets & Environment Variables (NEVER COMMIT)
+.env
+.env.*
+!.env.example
+serviceAccountKey.json
+*firebase-adminsdk*.json
+backend/secrets/
+private/
+
+# Dependencies & Build
+node_modules/
+npm-debug.log*
+yarn-error.log*
+
+# Android / IDE / OS leftovers
 *.iml
 .gradle
 .kotlin
 /local.properties
-/.idea/caches
-/.idea/libraries
-/.idea/modules.xml
-/.idea/workspace.xml
-/.idea/navEditor.xml
-/.idea/assetWizardSettings.xml
+/.idea/
 .DS_Store
 /build
 /captures
 .externalNativeBuild
 .cxx
-local.properties
-.env
 debug.keystore

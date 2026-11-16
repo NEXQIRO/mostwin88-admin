@@ -9,3 +9,11 @@ services:
     envVars:
       - key: NODE_ENV
         value: production
+      - key: MASTER_ADMIN_EMAIL
+        value: mijanbabu2015@gmail.com
+      - key: FIREBASE_DATABASE_URL
+        value: https://mostwin88-febbf-default-rtdb.asia-southeast1.firebasedatabase.app
+      - key: BACKEND_API_SECRET
+        generateValue: true
+      - key: FIREBASE_SERVICE_ACCOUNT_JSON
+        sync: false

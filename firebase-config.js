@@ -8,3 +8,46 @@ window.NP_FIREBASE_CONFIG = {
   appId: "1:1091271266801:web:0b4da03572189864077450",
   measurementId: "G-5Q07GB1YD6"
 };
+
+// Base URL of your Render Node.js backend (empty '' uses same-origin when hosted on Render)
+window.MW_BACKEND_URL = window.MW_BACKEND_URL || (function () {
+  try {
+    var saved = localStorage.getItem('mw_backend_url');
+    if (saved) return String(saved).replace(/\/+$/, '');
+  } catch (_) {}
+  return '';
+})();
+
+// Shared authenticated API helper for all 5 panels (User, User Admin, Master, Agent, Affiliate)
+window.mwApi = async function mwApi(apiPath, body, authObj) {
+  var authInstance = authObj;
+  if (!authInstance && typeof firebase !== 'undefined' && firebase.apps && firebase.apps.length) {
+    try { authInstance = firebase.auth(); } catch (_) {}
+  }
+  var user = authInstance && authInstance.currentUser;
+  if (!user) {
+    throw new Error('অ্যাকাউন্ট লগইন করা নেই।');
+  }
+  var token = await user.getIdToken();
+  var base = String(window.MW_BACKEND_URL || '').replace(/\/+$/, '');
+  var res = await fetch(base + apiPath, {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+      'Authorization': 'Bearer ' + token
+    },
+    body: JSON.stringify(body || {})
+  });
+  var data = null;
+  try {
+    data = await res.json();
+  } catch (_) {}
+  if (!res.ok || !data || data.ok === false) {
+    var msg = (data && data.error) || ('সার্ভার ত্রুটি (' + res.status + ')');
+    var err = new Error(msg);
+    err.status = res.status;
+    err.code = (data && data.code) || 'API_ERROR';
+    throw err;
+  }
+  return data;
+};

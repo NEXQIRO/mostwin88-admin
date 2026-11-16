@@ -1,7 +1,13 @@
+'use strict';
+
 const http = require('http');
 const fs = require('fs');
 const path = require('path');
 const url = require('url');
+
+const { getStatus } = require('./backend/firebaseAdmin');
+const { applySecurityHeaders } = require('./backend/securityEngine');
+const { handleApiRequest } = require('./backend/routes');
 
 const PORT = Number(process.env.PORT) || 3000;
 const ROOT = __dirname;
@@ -22,7 +28,9 @@ const MIME = {
   '.ttf': 'font/ttf'
 };
 
-// Publicly allowed root files and safe asset directories
+// STRICT PUBLIC ALLOWLIST ONLY
+// Private files (backend/*, server.js, serviceAccountKey.json, .env, database.rules.json,
+// package.json, render.yaml, *.test.js) are NEVER in this set and always return 404.
 const ALLOWED_ROOT_FILES = new Set([
   'user.html',
   'index.html',
@@ -63,29 +71,29 @@ const ROUTE_ALIASES = {
   '/affiliate': 'affiliate.html'
 };
 
-function sendJson(res, status, data) {
-  const body = JSON.stringify(data);
-  res.writeHead(status, {
-    'Content-Type': 'application/json; charset=utf-8',
-    'Cache-Control': 'no-store',
-    'Access-Control-Allow-Origin': '*'
-  });
-  res.end(body);
-}
-
-function getClientIp(req) {
-  const xf = req.headers['x-forwarded-for'];
-  if (xf) return String(xf).split(',')[0].trim();
-  return req.socket?.remoteAddress || '';
-}
-
 function resolveSafeFile(reqPath) {
   const clean = reqPath.replace(/\/+$/, '') || '/';
   if (ROUTE_ALIASES[clean]) {
     return path.join(ROOT, ROUTE_ALIASES[clean]);
   }
   const rel = clean.replace(/^\/+/, '');
-  if (!rel || rel.includes('..') || rel.includes('\0')) return null;
+  if (!rel || rel.includes('..') || rel.includes('\0') || rel.startsWith('.')) return null;
+
+  // Hard block private paths regardless of case
+  const lower = rel.toLowerCase();
+  if (
+    lower.startsWith('backend/') ||
+    lower.includes('serviceaccount') ||
+    lower.includes('firebase-adminsdk') ||
+    lower.startsWith('.env') ||
+    lower === 'server.js' ||
+    lower === 'database.rules.json' ||
+    lower === 'package.json' ||
+    lower === 'package-lock.json' ||
+    lower === 'render.yaml'
+  ) {
+    return null;
+  }
 
   if (ALLOWED_ROOT_FILES.has(rel)) {
     return path.join(ROOT, rel);
@@ -104,68 +112,70 @@ function resolveSafeFile(reqPath) {
   return null;
 }
 
-const server = http.createServer((req, res) => {
-  const parsed = url.parse(req.url || '/', true);
-  const pathname = decodeURIComponent(parsed.pathname || '/');
+function createAppServer() {
+  return http.createServer(async (req, res) => {
+    const parsed = url.parse(req.url || '/', true);
+    let pathname = '/';
+    try {
+      pathname = decodeURIComponent(parsed.pathname || '/');
+    } catch (_) {
+      res.writeHead(400, { 'Content-Type': 'text/plain; charset=utf-8' });
+      return res.end('400 Bad Request');
+    }
 
-  res.setHeader('X-Content-Type-Options', 'nosniff');
-  res.setHeader('Referrer-Policy', 'strict-origin-when-cross-origin');
+    applySecurityHeaders(req, res);
 
-  if (req.method === 'OPTIONS') {
-    res.writeHead(204, {
-      'Access-Control-Allow-Origin': '*',
-      'Access-Control-Allow-Methods': 'GET, POST, OPTIONS',
-      'Access-Control-Allow-Headers': 'Content-Type, Authorization'
-    });
-    return res.end();
-  }
+    if (req.method === 'OPTIONS') {
+      res.writeHead(204);
+      return res.end();
+    }
 
-  // Render health check
-  if (pathname === '/health' || pathname === '/api/health') {
-    return sendJson(res, 200, {
-      ok: true,
-      service: 'mostwin88-platform',
-      timestamp: Date.now(),
-      panels: ['user.html', 'index.html', 'master.html', 'agent.html', 'affiliate.html']
-    });
-  }
+    // Handle /health, /api/health, /api/ip, and all /api/v1/* private backend endpoints
+    if (pathname === '/health' || pathname === '/api/health' || pathname === '/api/ip' || pathname.startsWith('/api/')) {
+      const handled = await handleApiRequest(req, res, pathname);
+      if (handled) return;
+    }
 
-  // Real client IP endpoint for security/device logging
-  if (pathname === '/api/ip') {
-    return sendJson(res, 200, { ip: getClientIp(req) });
-  }
+    if (req.method !== 'GET' && req.method !== 'HEAD') {
+      res.writeHead(405, { 'Content-Type': 'application/json; charset=utf-8' });
+      return res.end(JSON.stringify({ ok: false, error: 'Method Not Allowed' }));
+    }
 
-  if (req.method !== 'GET' && req.method !== 'HEAD') {
-    return sendJson(res, 405, { error: 'Method Not Allowed' });
-  }
-
-  const filePath = resolveSafeFile(pathname);
-  if (!filePath) {
-    res.writeHead(404, { 'Content-Type': 'text/plain; charset=utf-8' });
-    return res.end('404 Not Found');
-  }
-
-  fs.stat(filePath, (err, stat) => {
-    if (err || !stat.isFile()) {
+    const filePath = resolveSafeFile(pathname);
+    if (!filePath) {
       res.writeHead(404, { 'Content-Type': 'text/plain; charset=utf-8' });
       return res.end('404 Not Found');
     }
-    const ext = path.extname(filePath).toLowerCase();
-    const contentType = MIME[ext] || 'application/octet-stream';
-    const isSw = filePath.endsWith('-sw.js');
-    const cacheControl = (ext === '.html' || isSw) ? 'no-cache, no-store, must-revalidate' : 'public, max-age=300';
 
-    res.writeHead(200, {
-      'Content-Type': contentType,
-      'Content-Length': stat.size,
-      'Cache-Control': cacheControl
+    fs.stat(filePath, (err, stat) => {
+      if (err || !stat.isFile()) {
+        res.writeHead(404, { 'Content-Type': 'text/plain; charset=utf-8' });
+        return res.end('404 Not Found');
+      }
+      const ext = path.extname(filePath).toLowerCase();
+      const contentType = MIME[ext] || 'application/octet-stream';
+      const isSw = filePath.endsWith('-sw.js');
+      const cacheControl = (ext === '.html' || isSw) ? 'no-cache, no-store, must-revalidate' : 'public, max-age=300';
+
+      res.writeHead(200, {
+        'Content-Type': contentType,
+        'Content-Length': stat.size,
+        'Cache-Control': cacheControl
+      });
+
+      if (req.method === 'HEAD') return res.end();
+      fs.createReadStream(filePath).pipe(res);
     });
-
-    if (req.method === 'HEAD') return res.end();
-    fs.createReadStream(filePath).pipe(res);
   });
-});
+}
 
-server.listen(PORT, '0.0.0.0', () => {
-  console.log(`MOSTWIN88 Server running on http://0.0.0.0:${PORT}`);
-});
+if (require.main === module) {
+  const server = createAppServer();
+  server.listen(PORT, '0.0.0.0', () => {
+    const st = getStatus();
+    console.log(`MOSTWIN88 Server running on http://0.0.0.0:${PORT}`);
+    console.log(`Backend Firebase Admin status: ${st.configured ? 'READY (' + st.credentialSource + ')' : 'NOT CONFIGURED - ' + st.error}`);
+  });
+}
+
+module.exports = { createAppServer, resolveSafeFile, ALLOWED_ROOT_FILES };

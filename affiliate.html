@@ -1489,17 +1489,7 @@ async function requestCommissionPayout() {
   if (amt > avail) { toast(`আপনার ক্রেডিটকৃত কমিশন ব্যালেন্স: ৳${Math.round(avail)}`); return; }
   if (!method) { toast('পেমেন্ট মেথড ও নম্বর লিখুন'); return; }
   try {
-    const r = db.ref('affiliateCommissionRequests').push();
-    await r.set({
-      id: r.key,
-      affiliateUid: MY_UID,
-      affiliateName: MY_PROF.name || MY_PROF.email || 'Affiliate',
-      parentAdminId: MY_PROF.parentAdminId || '',
-      amount: amt,
-      paymentInfo: method,
-      status: 'pending',
-      createdAt: TS
-    });
+    await window.mwApi('/api/v1/affiliate/commission-request', { amount: amt, paymentInfo: method }, auth);
     toast('কমিশন পেআউট রিকোয়েস্ট পাঠানো হয়েছে ✅');
   } catch (e) {
     toast('ব্যর্থ: ' + e.message);
