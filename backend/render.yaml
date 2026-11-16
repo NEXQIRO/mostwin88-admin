@@ -1,6 +1,6 @@
 services:
   - type: web
-    name: mostwin88-platform
+    name: mostwin88-backend
     runtime: node
     plan: free
     buildCommand: npm install

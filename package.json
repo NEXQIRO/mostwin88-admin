@@ -2,9 +2,9 @@
   "name": "mostwin88-platform",
   "version": "1.0.0",
   "description": "MOSTWIN88 Multi-Panel Backend & Static Server for Render (User, User Admin, Master Admin, Agent, Affiliate)",
-  "main": "server.js",
+  "main": "backend/server.js",
   "scripts": {
-    "start": "node server.js",
+    "start": "node backend/server.js",
     "test:backend": "node --test backend/tests/*.test.js"
   },
   "dependencies": {

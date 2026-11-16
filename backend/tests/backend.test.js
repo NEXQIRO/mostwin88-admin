@@ -4,7 +4,7 @@ const test = require('node:test');
 const assert = require('node:assert/strict');
 const http = require('node:http');
 
-const { createAppServer, resolveSafeFile } = require('../../server');
+const { createAppServer, resolveSafeFile } = require('../server');
 const security = require('../securityEngine');
 const balance = require('../balanceEngine');
 
@@ -44,12 +44,19 @@ test('Private files & directories are strictly blocked from static HTTP access',
   const blocked = [
     '/.env',
     '/.env.example',
+    '/backend/.env',
+    '/backend/.env.example',
+    '/backend/.gitignore',
     '/serviceAccountKey.json',
     '/mostwin88-febbf-firebase-adminsdk-1234.json',
     '/server.js',
+    '/backend/server.js',
     '/package.json',
+    '/backend/package.json',
     '/render.yaml',
+    '/backend/render.yaml',
     '/database.rules.json',
+    '/backend/database.rules.json',
     '/backend/firebaseAdmin.js',
     '/backend/securityEngine.js',
     '/backend/balanceEngine.js',

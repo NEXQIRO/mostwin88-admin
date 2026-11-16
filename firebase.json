@@ -1,6 +1,6 @@
 {
   "database": {
-    "rules": "database.rules.json"
+    "rules": "backend/database.rules.json"
   },
   "hosting": {
     "public": ".",
@@ -8,13 +8,16 @@
       "firebase.json",
       "**/.*",
       "**/node_modules/**",
+      "backend/**",
       "app/**",
       "gradle/**",
       "public/**",
       "*.kts",
       "*.properties",
       "*.base64",
-      "metadata.json"
+      "metadata.json",
+      "package.json",
+      "package-lock.json"
     ]
   }
 }

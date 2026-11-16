@@ -2,13 +2,19 @@
 .env
 .env.*
 !.env.example
+backend/.env
+backend/.env.*
+!backend/.env.example
 serviceAccountKey.json
+backend/serviceAccountKey.json
 *firebase-adminsdk*.json
+backend/*firebase-adminsdk*.json
 backend/secrets/
 private/
 
 # Dependencies & Build
 node_modules/
+backend/node_modules/
 npm-debug.log*
 yarn-error.log*
 

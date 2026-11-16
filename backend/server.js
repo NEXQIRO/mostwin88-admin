@@ -5,12 +5,13 @@ const fs = require('fs');
 const path = require('path');
 const url = require('url');
 
-const { getStatus } = require('./backend/firebaseAdmin');
-const { applySecurityHeaders } = require('./backend/securityEngine');
-const { handleApiRequest } = require('./backend/routes');
+const { getStatus } = require('./firebaseAdmin');
+const { applySecurityHeaders } = require('./securityEngine');
+const { handleApiRequest } = require('./routes');
 
 const PORT = Number(process.env.PORT) || 3000;
-const ROOT = __dirname;
+const BACKEND_DIR = __dirname;
+const PUBLIC_ROOT = path.resolve(__dirname, '..');
 
 const MIME = {
   '.html': 'text/html; charset=utf-8',
@@ -29,8 +30,8 @@ const MIME = {
 };
 
 // STRICT PUBLIC ALLOWLIST ONLY
-// Private files (backend/*, server.js, serviceAccountKey.json, .env, database.rules.json,
-// package.json, render.yaml, *.test.js) are NEVER in this set and always return 404.
+// Private backend & secret files (backend/*, server.js, serviceAccountKey.json, .env,
+// database.rules.json, package.json, render.yaml, *.test.js) ALWAYS return 404.
 const ALLOWED_ROOT_FILES = new Set([
   'user.html',
   'index.html',
@@ -74,15 +75,17 @@ const ROUTE_ALIASES = {
 function resolveSafeFile(reqPath) {
   const clean = reqPath.replace(/\/+$/, '') || '/';
   if (ROUTE_ALIASES[clean]) {
-    return path.join(ROOT, ROUTE_ALIASES[clean]);
+    return path.join(PUBLIC_ROOT, ROUTE_ALIASES[clean]);
   }
   const rel = clean.replace(/^\/+/, '');
   if (!rel || rel.includes('..') || rel.includes('\0') || rel.startsWith('.')) return null;
 
-  // Hard block private paths regardless of case
   const lower = rel.toLowerCase();
   if (
+    lower === 'backend' ||
     lower.startsWith('backend/') ||
+    lower.startsWith('secrets/') ||
+    lower.startsWith('private/') ||
     lower.includes('serviceaccount') ||
     lower.includes('firebase-adminsdk') ||
     lower.startsWith('.env') ||
@@ -90,23 +93,24 @@ function resolveSafeFile(reqPath) {
     lower === 'database.rules.json' ||
     lower === 'package.json' ||
     lower === 'package-lock.json' ||
-    lower === 'render.yaml'
+    lower === 'render.yaml' ||
+    lower === 'firebase.json' ||
+    lower === 'metadata.json'
   ) {
     return null;
   }
 
   if (ALLOWED_ROOT_FILES.has(rel)) {
-    return path.join(ROOT, rel);
+    return path.join(PUBLIC_ROOT, rel);
   }
 
-  // Allow static assets inside public/assets/ via /assets/... or /public/assets/...
   if (rel.startsWith('assets/')) {
-    const target = path.resolve(ROOT, 'public', rel);
-    if (target.startsWith(path.resolve(ROOT, 'public', 'assets') + path.sep)) return target;
+    const target = path.resolve(PUBLIC_ROOT, 'public', rel);
+    if (target.startsWith(path.resolve(PUBLIC_ROOT, 'public', 'assets') + path.sep)) return target;
   }
   if (rel.startsWith('public/assets/')) {
-    const target = path.resolve(ROOT, rel);
-    if (target.startsWith(path.resolve(ROOT, 'public', 'assets') + path.sep)) return target;
+    const target = path.resolve(PUBLIC_ROOT, rel);
+    if (target.startsWith(path.resolve(PUBLIC_ROOT, 'public', 'assets') + path.sep)) return target;
   }
 
   return null;
@@ -130,7 +134,6 @@ function createAppServer() {
       return res.end();
     }
 
-    // Handle /health, /api/health, /api/ip, and all /api/v1/* private backend endpoints
     if (pathname === '/health' || pathname === '/api/health' || pathname === '/api/ip' || pathname.startsWith('/api/')) {
       const handled = await handleApiRequest(req, res, pathname);
       if (handled) return;
@@ -149,6 +152,19 @@ function createAppServer() {
 
     fs.stat(filePath, (err, stat) => {
       if (err || !stat.isFile()) {
+        // When `backend/` is deployed standalone on Render without parent HTML files,
+        // return a clean API status response on `/` instead of a 404.
+        if (pathname === '/' || pathname === '') {
+          const st = getStatus();
+          const payload = JSON.stringify({
+            ok: true,
+            service: 'MOSTWIN88 Private Backend API',
+            mode: 'backend-only',
+            firebaseConfigured: st.configured
+          });
+          res.writeHead(200, { 'Content-Type': 'application/json; charset=utf-8' });
+          return res.end(req.method === 'HEAD' ? undefined : payload);
+        }
         res.writeHead(404, { 'Content-Type': 'text/plain; charset=utf-8' });
         return res.end('404 Not Found');
       }
@@ -173,7 +189,8 @@ if (require.main === module) {
   const server = createAppServer();
   server.listen(PORT, '0.0.0.0', () => {
     const st = getStatus();
-    console.log(`MOSTWIN88 Server running on http://0.0.0.0:${PORT}`);
+    console.log(`MOSTWIN88 Private Backend Server running on http://0.0.0.0:${PORT}`);
+    console.log(`Backend root: ${BACKEND_DIR}`);
     console.log(`Backend Firebase Admin status: ${st.configured ? 'READY (' + st.credentialSource + ')' : 'NOT CONFIGURED - ' + st.error}`);
   });
 }
