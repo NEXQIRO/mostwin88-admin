@@ -1,4 +1,4 @@
-const CACHE_NAME = 'mw-master-v3';
+const CACHE_NAME = 'mw-master-v4';
 const ENTRY = './master.html';
 const PRECACHE = [
   ENTRY,
@@ -31,7 +31,7 @@ self.addEventListener('fetch', (e) => {
   if (u.origin !== self.location.origin) return;
   if (u.pathname.startsWith('/api/') || u.pathname === '/health' || u.pathname.endsWith('-sw.js')) return;
 
-  if (req.mode === 'navigate' || u.pathname.endsWith('.html')) {
+  if (req.mode === 'navigate' || u.pathname.endsWith('.html') || u.pathname.endsWith('.js')) {
     e.respondWith(
       fetch(req).then((res) => {
         if (res && res.ok) {

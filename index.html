@@ -4549,7 +4549,8 @@
 
 
   <!-- ==================== JAVASCRIPT APPLICATION CODE ==================== -->
-  <script src="./firebase-config.js"></script>
+  <script src="./firebase-config.js?v=20261116c"></script>
+  <script>if(typeof window.mwApi!=='function'){window.MW_DEFAULT_BACKEND_URL=window.MW_DEFAULT_BACKEND_URL||'https://mostwin88-bakend.onrender.com';window.MW_BACKEND_URL=window.MW_BACKEND_URL||(location.origin===window.MW_DEFAULT_BACKEND_URL?'':window.MW_DEFAULT_BACKEND_URL);window.mwApiUrl=function(p){p=String(p||'');if(/^https?:\/\//i.test(p))return p;var b=String(window.MW_BACKEND_URL||'').replace(/\/+$/,'');return b+(p[0]==='/'?p:'/'+p);};window.mwApi=async function(p,b,a){var ai=a;if(!ai&&typeof firebase!=='undefined'&&firebase.apps&&firebase.apps.length){try{ai=firebase.auth();}catch(_){}}var u=ai&&ai.currentUser;if(!u)throw new Error('অ্যাকাউন্ট লগইন করা নেই।');var t=await u.getIdToken();var r=await fetch(window.mwApiUrl(p),{method:'POST',headers:{'Content-Type':'application/json','Authorization':'Bearer '+t},body:JSON.stringify(b||{})});var d=null;try{d=await r.json();}catch(_){}if(!r.ok||!d||d.ok===false){var e=new Error((d&&d.error)||('সার্ভার ত্রুটি ('+r.status+')'));e.status=r.status;e.code=(d&&d.code)||'API_ERROR';throw e;}return d;};}</script>
   <script>
     /**
      * MOSTWIN88 - ADMIN ENGINE
