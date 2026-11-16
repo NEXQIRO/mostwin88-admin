@@ -46,15 +46,14 @@ h2 a{font-size:12px;color:var(--gold);font-weight:600;cursor:pointer}
 .pill{display:inline-flex;gap:5px;align-items:center;padding:3px 10px;border-radius:20px;font-size:11px;font-weight:700}
 .vip{background:linear-gradient(135deg,#ffe27a,#e49a00);color:#2a1c00}
 .on{color:var(--g)}.dot{width:8px;height:8px;border-radius:50%;background:var(--g);box-shadow:0 0 8px var(--g);display:inline-block}
-.car-wrap{position:relative;border-radius:20px;overflow:hidden;margin-bottom:12px;border:1px solid rgba(255,255,255,.1);box-shadow:0 14px 28px -16px rgba(0,0,0,.85);background:#0b1d52;transition:height .28s ease}
-.car{display:flex;align-items:flex-start;overflow-x:auto;scroll-snap-type:x mandatory;gap:0;scrollbar-width:none;border-radius:0;margin-bottom:0!important}
+.car-wrap{position:relative;border-radius:20px;overflow:hidden;margin-bottom:12px;border:1px solid rgba(255,255,255,.1);box-shadow:0 14px 28px -16px rgba(0,0,0,.85);background:#0b1d52}
+.car{display:flex;align-items:stretch;overflow-x:auto;scroll-snap-type:x mandatory;gap:0;scrollbar-width:none;border-radius:0;margin-bottom:0!important}
 .car::-webkit-scrollbar{display:none}
-.sl{flex:0 0 100%;width:100%;scroll-snap-align:center;min-height:185px;border-radius:0;border:0!important;box-shadow:none!important;padding:20px 124px 36px 18px;position:relative;overflow:hidden;display:flex;flex-direction:column;justify-content:center;align-items:flex-start}
-.sl.sl-img{padding:0!important;min-height:140px!important;aspect-ratio:auto!important;display:flex;align-items:center;justify-content:center;cursor:pointer;background:#0b1d52}
-.sl.sl-img img.sl-bg{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;filter:blur(18px) brightness(.44) saturate(1.2);transform:scale(1.12);pointer-events:none;z-index:0;display:none}
+.sl{flex:0 0 100%;width:100%;scroll-snap-align:center;height:185px;min-height:185px;max-height:185px;border-radius:0;border:0!important;box-shadow:none!important;padding:20px 124px 36px 18px;position:relative;overflow:hidden;display:flex;flex-direction:column;justify-content:center;align-items:flex-start}
+.sl.sl-img{padding:0!important;display:flex;align-items:center;justify-content:center;cursor:pointer;background:#0b1d52}
+.sl.sl-img img.sl-bg{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;filter:blur(18px) brightness(.46) saturate(1.2);transform:scale(1.12);pointer-events:none;z-index:0;display:none}
 .sl.sl-img.sl-clamped img.sl-bg{display:block}
-.sl.sl-img img.sl-pic{position:relative;z-index:1;width:100%;height:auto;max-height:540px;object-fit:contain;display:block}
-.sl.sl-img.sl-clamped img.sl-pic{width:100%;height:100%;object-fit:contain}
+.sl.sl-img img.sl-pic{position:relative;z-index:1;width:100%;height:100%;object-fit:contain;display:block}
 .sl.sl-img::after{content:"";position:absolute;left:0;right:0;bottom:0;height:38px;background:linear-gradient(transparent,rgba(5,11,26,.45));pointer-events:none;z-index:2}
 .sl h3{font-size:22px;line-height:1.15;color:#fff;max-width:100%;text-shadow:0 2px 10px #0008;position:relative;z-index:2}.sl h3 em{font-style:normal;color:var(--gold)}
 .sl p{font-size:12px;color:#dce6ff;margin:6px 0 12px;max-width:100%;position:relative;z-index:2}
@@ -124,7 +123,7 @@ aside{transform:none!important;width:250px;z-index:25;background:linear-gradient
 main{padding:18px 22px;max-width:1300px;margin:auto}
 .hm{display:grid;grid-template-columns:minmax(0,1fr) 290px;gap:16px}.mn{min-width:0}
 .dk{display:block}.stats.dk,.two.dk{display:grid}.stats{grid-template-columns:repeat(4,1fr);gap:12px;margin:14px 0}
-.qg{grid-template-columns:repeat(8,1fr)}.sl:not(.sl-img){min-height:240px;padding:26px 140px 42px 26px}.sl h3{font-size:30px}.sl .art{font-size:120px}
+.qg{grid-template-columns:repeat(8,1fr)}.sl{height:240px;min-height:240px;max-height:240px;padding:26px 140px 42px 26px}.sl h3{font-size:30px}.sl .art{font-size:120px}
 .screen>*:not(.hm){max-width:640px;margin-left:auto;margin-right:auto}
 }
 .cr{width:1em;height:1em;fill:var(--gold);vertical-align:-.12em}.vip .cr,aside button.cur .cr{fill:#2a1c00}
@@ -134,7 +133,7 @@ main{padding:18px 22px;max-width:1300px;margin:auto}
 @media(max-width:480px){
 main{padding:12px 12px 0}h2{font-size:15px}
 header{padding-left:10px;padding-right:10px}.ib,.av{width:38px;height:38px;font-size:17px}.logo{font-size:clamp(16px,5.2vw,21px)}
-.sl:not(.sl-img){min-height:178px;padding:16px 96px 34px 16px}.sl h3{font-size:clamp(16px,5vw,20px);max-width:100%}.sl p{font-size:11px;margin:4px 0 10px;max-width:100%}.sl .art{font-size:62px;right:8px;bottom:14px}.sl .btn{min-height:38px;font-size:13px}
+.sl{height:178px;min-height:178px;max-height:178px;padding:16px 96px 34px 16px}.sl h3{font-size:clamp(16px,5vw,20px);max-width:100%}.sl p{font-size:11px;margin:4px 0 10px;max-width:100%}.sl .art{font-size:62px;right:8px;bottom:14px}.sl .btn{min-height:38px;font-size:13px}
 .cw{padding:12px;gap:10px}.cw>div:first-child{font-size:28px!important}.cw .btn{min-width:0;min-height:40px;font-size:13px;padding:0 10px}
 .q{min-height:76px;font-size:10.5px;padding:10px 2px}.q span{font-size:24px}
 .dbn{gap:10px;padding:10px}.dbn>div:first-child{font-size:34px!important}.dbn i{font-size:17px!important}.dbn .btn{font-size:12px;padding:0 10px}
@@ -1681,44 +1680,22 @@ function fitHeroSlideImg(img) {
   try {
     if (!img || !img.naturalWidth || !img.naturalHeight) return;
     const slideEl = img.closest('.sl.sl-img');
-    const carEl = document.getElementById('car');
     if (!slideEl) return;
-    const cw = (carEl && carEl.clientWidth) || slideEl.clientWidth || (innerWidth >= 900 ? 700 : Math.max(280, innerWidth - 24));
-    const ratio = img.naturalWidth / img.naturalHeight;
-    const naturalFullH = Math.round(cw / ratio);
-    const maxH = innerWidth >= 900
-      ? Math.min(540, Math.round(innerHeight * 0.62))
-      : Math.min(440, Math.round(innerHeight * 0.56));
-    if (naturalFullH > maxH) {
-      slideEl.style.height = maxH + 'px';
-      slideEl.classList.add('sl-clamped');
-    } else {
-      slideEl.style.height = Math.max(130, naturalFullH) + 'px';
-      slideEl.classList.remove('sl-clamped');
-    }
-    syncHeroSliderHeight();
+    slideEl.style.height = '';
+    const boxW = slideEl.clientWidth || (innerWidth >= 900 ? 800 : Math.max(280, innerWidth - 24));
+    const boxH = slideEl.clientHeight || (innerWidth >= 900 ? 240 : (innerWidth <= 480 ? 178 : 185));
+    const imgRatio = img.naturalWidth / img.naturalHeight;
+    const boxRatio = boxW / Math.max(1, boxH);
+    const diff = Math.abs(imgRatio - boxRatio) / boxRatio;
+    slideEl.classList.toggle('sl-clamped', diff > 0.08);
   } catch (e) {}
 }
 
-function syncHeroSliderHeight(idx) {
+function syncHeroSliderHeight() {
   try {
     const carEl = document.getElementById('car');
     const wrapEl = carEl ? carEl.closest('.car-wrap') : null;
-    if (!carEl || !wrapEl || !carEl.children.length) return;
-    const kids = [...carEl.children];
-    const hasImg = kids.some(el => el.classList.contains('sl-img'));
-    if (!hasImg) {
-      wrapEl.style.height = '';
-      return;
-    }
-    let activeIdx = typeof idx === 'number' ? idx : 0;
-    if (typeof idx !== 'number' && carEl.clientWidth) {
-      activeIdx = Math.max(0, Math.min(kids.length - 1, Math.round(carEl.scrollLeft / carEl.clientWidth)));
-    }
-    const activeSlide = kids[activeIdx];
-    if (!activeSlide) return;
-    const h = activeSlide.offsetHeight || parseInt(activeSlide.style.height, 10) || 0;
-    if (h > 60) wrapEl.style.height = h + 'px';
+    if (wrapEl) wrapEl.style.height = '';
   } catch (e) {}
 }
 
