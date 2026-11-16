@@ -830,9 +830,12 @@ async function agentLogin(event) {
     let email = rawId;
     if (!rawId.includes('@')) {
       const clean = rawId.toLowerCase().replace(/[^a-z0-9_]/g, '');
-      const uSnap = await db.ref('usernames/' + clean).once('value');
-      if (uSnap.exists() && uSnap.val().email) email = uSnap.val().email;
-      else email = clean + '@npapp.local';
+      let foundEmail = '';
+      try {
+        const uSnap = await db.ref('usernames/' + clean).once('value');
+        if (uSnap.exists() && uSnap.val().email) foundEmail = uSnap.val().email;
+      } catch (_) {}
+      email = foundEmail || (clean + '@npapp.local');
     }
     const cred = await auth.signInWithEmailAndPassword(email, pass);
     const agSnap = await db.ref('agents/' + cred.user.uid).once('value');

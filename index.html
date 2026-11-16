@@ -5353,16 +5353,14 @@
         // If input does not contain @, resolve username from DB or alias
         if (!inputVal.includes('@')) {
           const cleanUser = inputVal.toLowerCase().replace(/[^a-z0-9_]/g, '');
+          let foundEmail = '';
           if (db) {
-            const uSnap = await db.ref(`usernames/${cleanUser}`).once('value');
-            if (uSnap.exists() && uSnap.val().email) {
-              resolvedEmail = uSnap.val().email;
-            } else {
-              resolvedEmail = cleanUser + '@npapp.local';
-            }
-          } else {
-            resolvedEmail = cleanUser + '@npapp.local';
+            try {
+              const uSnap = await db.ref(`usernames/${cleanUser}`).once('value');
+              if (uSnap.exists() && uSnap.val().email) foundEmail = uSnap.val().email;
+            } catch (_) {}
           }
+          resolvedEmail = foundEmail || (cleanUser + '@npapp.local');
         }
 
         const cred = await auth.signInWithEmailAndPassword(resolvedEmail, pass);

@@ -1985,10 +1985,10 @@ const V = {
   },
 
   profile: () => bk('My Profile') + (pe
-    ? `<div class="card" style="text-align:center"><div class="av" style="width:64px;height:64px;font-size:32px;margin:auto">${avh()}</div><label class="btn out sm" style="margin-top:10px;width:auto;cursor:pointer">Change Photo<input type="file" accept="image/*" hidden onchange="photo(this)"></label></div><div class="card"><label>Full name</label><input id="pn" value="${esc(S.name)}"><label>Country (selected at signup)</label><input value="${esc(S.country)}" disabled style="opacity:.6"><label>Mobile</label><input id="pm2" type="tel" inputmode="numeric" value="${esc(S.mob)}"><label>Email</label><input id="pe2" type="email" value="${esc(S.email)}"><div class="sub" style="margin-top:6px">Changing your mobile or email will require verification again.</div><label for="plSel">Language</label><select id="plSel" class="mw-sel">${['English','বাংলা'].map(l=>`<option value="${l}" ${l==S.lang?'selected':''}>${l}</option>`).join('')}</select><br><br><div class="two"><button class="btn out sm" style="width:100%" onclick="pe=0;go('profile')">Cancel</button><button class="btn bg sm" style="width:100%" onclick="saveP()">Save Changes</button></div></div>`
-    : `<div class="card" style="text-align:center"><div class="av" style="width:64px;height:64px;font-size:32px;margin:auto">${avh()}</div><h2 style="justify-content:center;margin-top:10px">${esc(S.name)}</h2><div class="sub">Member ID: ${esc(S.id)}</div><div style="margin:8px"><span class="on"><i class="dot"></i> Online</span>${isUserFeat('vip')?` &nbsp;<span class="pill vip">👑 VIP ${esc(S.lvl)}</span>`:''}</div></div><div class="card">${prow()}</div>${vk ? vcard() : ''}${isUserFeat('biometric') ? '<div id="mw-biometric-slot"></div>' : ''}<div class="${isUserFeat('vip')?'two':''}"><button class="btn bb sm" style="width:100%" onclick="pe=1;go('profile')">Edit Profile</button>${isUserFeat('vip')?`<button class="btn bgold sm" style="width:100%" onclick="go('vip')">VIP Level</button>`:''}</div>`),
+    ? `<div class="card" style="text-align:center"><div class="av" style="width:64px;height:64px;font-size:32px;margin:auto">${avh()}</div><label class="btn out sm" style="margin-top:10px;width:auto;cursor:pointer">Change Photo<input type="file" accept="image/*" hidden onchange="photo(this)"></label></div><div class="card"><label>Full name</label><input id="pn" value="${esc(S.name)}"><label>Country</label><input value="${esc(S.country)}" disabled style="opacity:.6"><label>Mobile</label><input id="pm2" type="tel" inputmode="numeric" value="${esc(S.mob)}"><label>Email</label><input id="pe2" type="email" value="${esc(S.email)}"><label for="plSel">Language</label><select id="plSel" class="mw-sel">${['English','বাংলা'].map(l=>`<option value="${l}" ${l==S.lang?'selected':''}>${l}</option>`).join('')}</select><br><br><div class="two"><button class="btn out sm" style="width:100%" onclick="pe=0;go('profile')">Cancel</button><button class="btn bg sm" style="width:100%" onclick="saveP()">Save</button></div></div>`
+    : `<div class="card" style="text-align:center"><div class="av" style="width:64px;height:64px;font-size:32px;margin:auto">${avh()}</div><h2 style="justify-content:center;margin-top:10px">${esc(S.name)}</h2><div class="sub">ID: ${esc(S.id)}</div><div style="margin:8px"><span class="on"><i class="dot"></i> Online</span>${isUserFeat('vip')?` &nbsp;<span class="pill vip">👑 VIP ${esc(S.lvl)}</span>`:''}</div></div><div class="card">${prow()}</div>${vk ? vcard() : ''}${isUserFeat('biometric') ? '<div id="mw-biometric-slot"></div>' : ''}<div class="${isUserFeat('vip')?'two':''}"><button class="btn bb sm" style="width:100%" onclick="pe=1;go('profile')">Edit Profile</button>${isUserFeat('vip')?`<button class="btn bgold sm" style="width:100%" onclick="go('vip')">VIP Level</button>`:''}</div>`),
 
-  wallet: () => bk('My Wallet') + wal() + `<div class="card"><h2>Recent Activity <a onclick="go('tx')">View All</a></h2>${T.length ? T.slice(0,5).map(txr).join('') : '<p class="sub">No transactions yet. Make a deposit to get started.</p>'}</div>`,
+  wallet: () => bk('My Wallet') + wal() + `<div class="card"><h2>Recent Activity <a onclick="go('tx')">View All</a></h2>${T.length ? T.slice(0,5).map(txr).join('') : '<p class="sub">No transactions yet.</p>'}</div>`,
 
   dep: () => {
     const dyn = getActiveDepositPromos();
@@ -1996,7 +1996,7 @@ const V = {
     const bonOpts = dyn.length
       ? dyn.map((p, i) => `<option value="1" data-pid="${esc(p.id)}" data-pname="${esc(p.name)}" ${i === 0 ? 'selected' : ''}>${esc(p.name)} (${p.bonusType==='percent'?p.bonusValue+'%':f(p.bonusValue)})</option>`).join('') + `<option value="0" data-pid="" data-pname="">No Bonus</option>`
       : `<option value="1" data-pid="" data-pname="Welcome Bonus" selected>Deposit Bonus</option><option value="0" data-pid="" data-pname="">No Bonus</option>`;
-    return bk('Deposit') + `<div class="card"><label for="pmSel">Payment method</label><select id="pmSel" class="mw-sel" onchange="selPay(this.value)">${Object.keys(M).map(m=>`<option value="${m}" ${m==pay?'selected':''}>${m}</option>`).join('')}</select><div id="pi">${pinfo(pay)}</div></div><div class="card"><label>Amount (min ৳${lim.minDeposit} · max ৳${lim.maxDeposit.toLocaleString()})</label><input id="a" type="number" inputmode="decimal" placeholder="Enter amount"><div class="amt-grid">${[500,1000,2000,5000,10000].map(v=>`<button class="chip" type="button" onclick="$('#a').value=${v}">৳${v}</button>`).join('')}</div><label id="sl">${mob(pay)?'Your '+pay+' number':'Sender account or wallet'}</label><input id="sn" type="tel" inputmode="numeric" placeholder="01XXXXXXXXX" value="${esc(S.mob||'')}"><label>Transaction ID (TrxID)</label><input id="tid" placeholder="e.g. 9H7K2L5M1P" autocapitalize="characters"><label for="boSel">Bonus / Promotion</label><select id="boSel" class="mw-sel">${bonOpts}</select><br><br><button class="btn bg" id="depBtn" onclick="dep()">Submit Deposit</button><p class="sub" style="margin-top:10px">Your balance updates as soon as an admin/agent verifies your payment.</p></div>`;
+    return bk('Deposit') + `<div class="card"><label for="pmSel">Method</label><select id="pmSel" class="mw-sel" onchange="selPay(this.value)">${Object.keys(M).map(m=>`<option value="${m}" ${m==pay?'selected':''}>${m}</option>`).join('')}</select><div id="pi">${pinfo(pay)}</div></div><div class="card"><label>Amount (৳${lim.minDeposit} – ৳${lim.maxDeposit.toLocaleString()})</label><input id="a" type="number" inputmode="decimal" placeholder="Amount"><div class="amt-grid">${[500,1000,2000,5000,10000].map(v=>`<button class="chip" type="button" onclick="$('#a').value=${v}">৳${v}</button>`).join('')}</div><label id="sl">${mob(pay)?'Your '+pay+' number':'Sender number'}</label><input id="sn" type="tel" inputmode="numeric" placeholder="01XXXXXXXXX" value="${esc(S.mob||'')}"><label>Transaction ID (TrxID)</label><input id="tid" placeholder="Enter TrxID" autocapitalize="characters"><label for="boSel">Bonus</label><select id="boSel" class="mw-sel">${bonOpts}</select><br><br><button class="btn bg" id="depBtn" onclick="dep()">Submit Deposit</button><p class="sub" style="margin-top:8px">Balance updates after verification.</p></div>`;
   },
 
   wd: () => {
@@ -2004,14 +2004,14 @@ const V = {
     const remTo = Math.max(0, Number(S.turnoverRequired || 0) - Number(S.turnoverDone || 0));
     const pTurn = Object.values(LIVE_PROMO_TURNOVER || {}).filter(x => x && !x.completed);
     const pRem = pTurn.reduce((a, x) => a + Math.max(0, Number(x.required || 0) - Number(x.completedAmount || x.progress || 0)), 0);
-    return bk('Withdraw') + `<div class="card"><div class="row sp"><div><div class="sub">Withdrawable balance</div><div class="tot" style="font-size:24px">${f(S.dep)}</div></div><div style="text-align:right"><div class="sub">Bonus (locked)</div><b>${f(S.bon)}</b></div></div>${(remTo > 0 || pRem > 0) ? `<div class="sub" style="margin-top:10px;color:var(--gold)">⚠ Remaining Turnover required before withdraw: <b>${f(Math.max(remTo, pRem))}</b></div>` : ''}</div><div class="card"><label for="wmSel">Withdraw method</label><select id="wmSel" class="mw-sel" onchange="selWm(this.value)">${['bKash','Nagad','Rocket','Upay','Bank'].map(m=>`<option value="${m}" ${m==wm?'selected':''}>${m}</option>`).join('')}</select><div id="wf">${wfields(wm)}</div><label>Amount (min ৳${lim.minWithdraw} · max ৳${lim.maxWithdraw.toLocaleString()})</label><div class="row"><input id="a" type="number" inputmode="decimal" placeholder="Enter amount"><button class="btn out sm" onclick="$('#a').value=Math.min(S.dep,${lim.maxWithdraw})">Max</button></div><label>Withdrawal PIN ${(S.hasWithdrawPin || S.withdrawPin) ? '' : '(first-time PIN will be saved)'}</label><input id="pin" type="password" inputmode="numeric" maxlength="6" placeholder="4-6 digit PIN"><br><br><button class="btn bb" id="wdBtn" onclick="wd()">Request Withdrawal</button></div><div class="card"><h2>Withdrawal Rules</h2><ul class="rules"><li>The account must be in your own name.</li><li>Requests are processed within 24 hours.</li><li>Bonus balance cannot be withdrawn until turnover is complete.</li><li>Check the account number carefully before submitting.</li></ul></div>`;
+    return bk('Withdraw') + `<div class="card"><div class="row sp"><div><div class="sub">Withdrawable</div><div class="tot" style="font-size:24px">${f(S.dep)}</div></div><div style="text-align:right"><div class="sub">Bonus (locked)</div><b>${f(S.bon)}</b></div></div>${(remTo > 0 || pRem > 0) ? `<div class="sub" style="margin-top:10px;color:var(--gold)">⚠ Turnover left: <b>${f(Math.max(remTo, pRem))}</b></div>` : ''}</div><div class="card"><label for="wmSel">Method</label><select id="wmSel" class="mw-sel" onchange="selWm(this.value)">${['bKash','Nagad','Rocket','Upay','Bank'].map(m=>`<option value="${m}" ${m==wm?'selected':''}>${m}</option>`).join('')}</select><div id="wf">${wfields(wm)}</div><label>Amount (৳${lim.minWithdraw} – ৳${lim.maxWithdraw.toLocaleString()})</label><div class="row"><input id="a" type="number" inputmode="decimal" placeholder="Amount"><button class="btn out sm" onclick="$('#a').value=Math.min(S.dep,${lim.maxWithdraw})">Max</button></div><label>Withdrawal PIN</label><input id="pin" type="password" inputmode="numeric" maxlength="6" placeholder="4-6 digit PIN"><br><br><button class="btn bb" id="wdBtn" onclick="wd()">Request Withdrawal</button></div><div class="card"><h2>Rules</h2><ul class="rules"><li>Own account only.</li><li>Processed within 24h.</li><li>Complete turnover before withdraw.</li></ul></div>`;
   },
 
-  tx: () => bk('Transaction History') + `<div class="card">${T.length ? T.map(txr).join('') : '<p class="sub">No transactions found.</p>'}</div>`,
+  tx: () => bk('Transaction History') + `<div class="card">${T.length ? T.map(txr).join('') : '<p class="sub">No transactions yet.</p>'}</div>`,
 
   bonus: () => {
     const turnList = Object.entries(LIVE_PROMO_TURNOVER || {}).map(([id, t]) => Object.assign({id}, t || {}));
-    return bk('Bonus & Rewards') + `<div class="card wallet"><div class="sub">Bonus Balance</div><div class="tot">${f(S.bon)}</div>${turnList.length ? `<div style="margin-top:10px;text-align:left">${turnList.map(x => { const rq = Number(x.required||0), dn = Number(x.completedAmount||x.progress||0), pct = rq > 0 ? Math.min(100, Math.round(dn/rq*100)) : 100; return `<div style="margin-top:8px"><div class="row sp"><small>${esc(x.promoName||'Promo Turnover')}</small><small>${f(dn)} / ${f(rq)} (${pct}%)</small></div><div class="bar" style="margin:4px 0"><i style="width:${pct}%"></i></div></div>`; }).join('')}</div>` : ''}</div>` + getPromoCards().map(promoCardHtml).join('') + `<div class="card"><h2>Bonus History</h2>${T.filter(t => t[2] === 'Bonus' || t[2] === 'Cashback').map(txr).join('') || '<p class="sub">No bonus payouts yet.</p>'}</div>`;
+    return bk('Bonus & Rewards') + `<div class="card wallet"><div class="sub">Bonus Balance</div><div class="tot">${f(S.bon)}</div>${turnList.length ? `<div style="margin-top:10px;text-align:left">${turnList.map(x => { const rq = Number(x.required||0), dn = Number(x.completedAmount||x.progress||0), pct = rq > 0 ? Math.min(100, Math.round(dn/rq*100)) : 100; return `<div style="margin-top:8px"><div class="row sp"><small>${esc(x.promoName||'Promo Turnover')}</small><small>${f(dn)} / ${f(rq)} (${pct}%)</small></div><div class="bar" style="margin:4px 0"><i style="width:${pct}%"></i></div></div>`; }).join('')}</div>` : ''}</div>` + getPromoCards().map(promoCardHtml).join('') + `<div class="card"><h2>Bonus History</h2>${T.filter(t => t[2] === 'Bonus' || t[2] === 'Cashback').map(txr).join('') || '<p class="sub">No bonuses yet.</p>'}</div>`;
   },
 
   promo: () => `<h2 style="font-size:20px">Promotions</h2>` + getPromoCards().map(promoCardHtml).join(''),
@@ -2029,12 +2029,12 @@ const V = {
     const myCode = S.code || (S.uid ? ('MW' + S.uid.slice(0, 6).toUpperCase()) : '');
     const refUrl = targetBase + '?ref=' + encodeURIComponent(myCode);
     const refPct = Number(CFG.referralBonusPercent != null ? CFG.referralBonusPercent : 20);
-    return bk('Referral Program') + `<div class="card wallet" style="text-align:center"><div class="sub">Your referral code</div><div class="tot">${esc(myCode)}</div><div class="sub" style="margin-top:6px;word-break:break-all">${esc(refUrl)}</div><br><div class="two" style="margin-bottom:8px"><button class="btn bgold sm" style="width:100%" onclick="copyText('${esc(myCode)}','Code copied')">Copy Code</button><button class="btn out sm" style="width:100%" onclick="copyText('${esc(refUrl)}','Referral link copied')">Copy Link</button></div><button class="btn bg sm" style="width:100%" onclick="shareRefLink('${esc(refUrl)}')">↗ Share Referral Link</button></div><div class="grid" style="grid-template-columns:repeat(3,1fr)"><div class="q" style="min-height:0;padding:12px 6px"><b style="display:block;font-size:17px;color:var(--gold);margin-bottom:2px">${refPct}%</b>Bonus</div><div class="q" style="min-height:0;padding:12px 6px"><b style="display:block;font-size:17px;color:var(--gold);margin-bottom:2px">${LIVE_DEPOSITS.filter(d=>d.status==='Approved').length}</b>Deposits</div><div class="q" style="min-height:0;padding:12px 6px"><b style="display:block;font-size:17px;color:var(--gold);margin-bottom:2px">${f(S.bon)}</b>Bonus</div></div><p class="sub" style="margin-top:12px">Invite friends using your referral link so they automatically link to your admin/network.</p>`;
+    return bk('Referral') + `<div class="card wallet" style="text-align:center"><div class="sub">Referral Code</div><div class="tot">${esc(myCode)}</div><div class="sub" style="margin-top:6px;word-break:break-all">${esc(refUrl)}</div><br><div class="two" style="margin-bottom:8px"><button class="btn bgold sm" style="width:100%" onclick="copyText('${esc(myCode)}','Code copied')">Copy Code</button><button class="btn out sm" style="width:100%" onclick="copyText('${esc(refUrl)}','Link copied')">Copy Link</button></div><button class="btn bg sm" style="width:100%" onclick="shareRefLink('${esc(refUrl)}')">↗ Share Link</button></div><div class="grid" style="grid-template-columns:repeat(3,1fr)"><div class="q" style="min-height:0;padding:12px 6px"><b style="display:block;font-size:17px;color:var(--gold);margin-bottom:2px">${refPct}%</b>Bonus</div><div class="q" style="min-height:0;padding:12px 6px"><b style="display:block;font-size:17px;color:var(--gold);margin-bottom:2px">${LIVE_DEPOSITS.filter(d=>d.status==='Approved').length}</b>Deposits</div><div class="q" style="min-height:0;padding:12px 6px"><b style="display:block;font-size:17px;color:var(--gold);margin-bottom:2px">${f(S.bon)}</b>Bonus</div></div><p class="sub" style="margin-top:10px">Share your link to earn referral bonuses.</p>`;
   },
 
   games: () => `<h2 style="font-size:20px">Casino Games</h2><div class="grid" style="grid-template-columns:repeat(2,1fr)">${gl().map(g=>`<div class="gm"><span>${g[0]}</span><b>${esc(g[1])}</b><button class="btn bgold sm" onclick="play('${esc(g[1])}')">Play Now</button></div>`).join('')}</div>`,
 
-  bets: () => bk('Bet History') + `<div class="card">${LIVE_GAME_TX.length ? LIVE_GAME_TX.map(g => { const amt = Number(g.win != null ? (Number(g.win) - Number(g.bet||0)) : (g.net || g.amount || 0)); const res = amt >= 0 ? 'Won' : 'Lost'; return `<div class="tx"><div class="ic">🎯</div><div><b>${esc(g.game || g.gameName || 'Casino')}</b><small>${esc(String(g.id||'').slice(-8))} · ${formatTime(g.time || g.timestamp)}</small></div><div class="am ${amt >= 0 ? 'pos' : 'neg'}">${amt >= 0 ? '+' : '−'}${f(Math.abs(amt))}<small>${res}</small></div></div>`; }).join('') : '<p class="sub">No bets recorded yet. Launch a game to start playing!</p>'}</div>`,
+  bets: () => bk('Bet History') + `<div class="card">${LIVE_GAME_TX.length ? LIVE_GAME_TX.map(g => { const amt = Number(g.win != null ? (Number(g.win) - Number(g.bet||0)) : (g.net || g.amount || 0)); const res = amt >= 0 ? 'Won' : 'Lost'; return `<div class="tx"><div class="ic">🎯</div><div><b>${esc(g.game || g.gameName || 'Casino')}</b><small>${esc(String(g.id||'').slice(-8))} · ${formatTime(g.time || g.timestamp)}</small></div><div class="am ${amt >= 0 ? 'pos' : 'neg'}">${amt >= 0 ? '+' : '−'}${f(Math.abs(amt))}<small>${res}</small></div></div>`; }).join('') : '<p class="sub">No bets yet.</p>'}</div>`,
 
   notif: () => {
     if (S.uid && LIVE_NOTIFS.length) {
@@ -2043,7 +2043,7 @@ const V = {
       if (Object.keys(updates).length) fbDb.ref('userNotificationReads/' + S.uid).update(updates).catch(() => {});
     }
     const nb = $('#nb'); if (nb) nb.style.display = 'none';
-    return bk('Notifications') + `<div class="card">${LIVE_NOTIFS.length ? LIVE_NOTIFS.map(n => `<div class="tx"><div class="ic">${esc(n.icon || '🔔')}</div><div><b style="white-space:normal">${esc(n.title || '')} ${esc(n.message || n.body || '')}</b><small>${formatTime(n.createdAt || n.timestamp)}</small></div></div>`).join('') : '<p class="sub">No notifications yet.</p>'}</div>`;
+    return bk('Notifications') + `<div class="card">${LIVE_NOTIFS.length ? LIVE_NOTIFS.map(n => `<div class="tx"><div class="ic">${esc(n.icon || '🔔')}</div><div><b style="white-space:normal">${esc(n.title || '')} ${esc(n.message || n.body || '')}</b><small>${formatTime(n.createdAt || n.timestamp)}</small></div></div>`).join('') : '<p class="sub">No notifications.</p>'}</div>`;
   },
 
   sec: () => {
@@ -2052,20 +2052,20 @@ const V = {
       ['loginAlerts', 'Login alerts', S.securityPrefs.loginAlerts !== false]
     ];
     if (isUserFeat('biometric')) rows.push(['biometric', 'Biometric unlock', !!S.securityPrefs.biometric]);
-    return bk('Security Settings')
+    return bk('Security')
       + tg(rows, 'securityPrefs')
       + (isUserFeat('biometric') ? `<div id="mw-biometric-slot"></div>` : '')
-      + `<div class="card"><label>Set / Update Withdrawal PIN (4-6 digits)</label><div class="row"><input id="newPin" type="password" inputmode="numeric" maxlength="6" placeholder="4-6 digits"><button class="btn bgold sm" onclick="saveWdPin()">Save PIN</button></div></div>`
+      + `<div class="card"><label>Withdrawal PIN</label><div class="row"><input id="newPin" type="password" inputmode="numeric" maxlength="6" placeholder="4-6 digit PIN"><button class="btn bgold sm" onclick="saveWdPin()">Save PIN</button></div></div>`
       + `<button class="btn bb" onclick="changeUserPassword()">Change Password</button>`;
   },
 
   resp: () => bk('Responsible Gaming')
     + tg([
-      ['dailyLimit', 'Daily deposit limit ৳10,000', !!S.responsibleGaming.dailyLimit],
-      ['sessionReminder', 'Session time reminder', S.responsibleGaming.sessionReminder !== false],
+      ['dailyLimit', 'Daily limit ৳10,000', !!S.responsibleGaming.dailyLimit],
+      ['sessionReminder', 'Session reminder', S.responsibleGaming.sessionReminder !== false],
       ['selfExclusion', 'Self-exclusion', !!S.responsibleGaming.selfExclusion]
     ], 'responsibleGaming')
-    + `<p class="sub">Play for fun and within your means.</p>`
+    + `<p class="sub">Play responsibly.</p>`
 };
 
 function fallbackCopy(txt) {
@@ -2139,23 +2139,27 @@ async function saveP() {
   const ev = e !== S.email ? false : !!S.ev;
   if (S.uid) {
     try {
-      const updates = {
-        ['users/' + S.uid + '/name']: n,
-        ['users/' + S.uid + '/phone']: m,
-        ['users/' + S.uid + '/email']: e,
-        ['users/' + S.uid + '/lang']: lang,
-        ['users/' + S.uid + '/mobileVerified']: mv,
-        ['users/' + S.uid + '/emailVerified']: ev,
-        ['users/' + S.uid + '/updatedAt']: TS
+      const profileUpdates = {
+        name: n,
+        phone: m,
+        email: e,
+        lang,
+        mobileVerified: mv,
+        emailVerified: ev,
+        updatedAt: TS
       };
+      await fbDb.ref('users/' + S.uid).update(profileUpdates);
       if (m && m !== S.mob) {
         const curUser = fbAuth.currentUser;
-        updates['usernames/' + m] = {uid: S.uid, email: (curUser && curUser.email) || e || (m + '@player.mostwin88.app'), phone: m};
+        fbDb.ref('usernames/' + m).set({
+          uid: S.uid,
+          email: (curUser && curUser.email) || e || (m + '@player.mostwin88.app'),
+          phone: m
+        }).catch(() => {});
       }
-      await fbDb.ref().update(updates);
       pe = 0; toast('Profile updated'); go('profile');
     } catch (err) {
-      toast('Could not save profile: ' + (err.message || err.code));
+      toast((/permission/i.test(err && (err.code || err.message))) ? 'Permission denied by database rules' : ('Failed: ' + (err.message || err.code)));
     }
   }
 }
@@ -2167,7 +2171,7 @@ function prow() {
   const vr = (k, ic, l, v, ok) => `<div class="tx"><div class="ic">${ic}</div><div><small>${l}</small><b style="word-break:break-all">${esc(v || 'Not set')}</b></div><div style="text-align:right"><span class="pill ${ok?'Success':'Pending'}">${ok?'Verified':'Unverified'}</span>${ok||!v?'':`<br><button class="btn bgold sm" style="margin-top:6px;min-height:30px" onclick="vOpen('${k}')">Verify</button>`}</div></div>`;
   return rw('🌐','Country',cn[0]+' ('+cn[1]+')') + vr('mob','📱','Mobile',S.mob,S.mv) + vr('mail','✉','Email',S.email,S.ev) + rw('📅','Member since',new Date(S.createdAt||Date.now()).toLocaleDateString('en-GB',{day:'2-digit',month:'short',year:'numeric'})) + rw('🌐','Language',S.lang);
 }
-const vcard = () => `<div class="card"><h2>Verify ${vk=='mob'?'Mobile Number':'Email'}</h2><div class="sub">Enter the 6-digit verification code for ${esc(vk=='mob'?S.mob:S.email)}</div><input id="vc" inputmode="numeric" maxlength="6" placeholder="6-digit code" style="margin:10px 0"><div class="two"><button class="btn out sm" style="width:100%" onclick="vSend()">Resend Code</button><button class="btn bg sm" style="width:100%" onclick="vOk()">Confirm</button></div></div>`;
+const vcard = () => `<div class="card"><h2>Verify ${vk=='mob'?'Mobile':'Email'}</h2><div class="sub">Enter 6-digit code sent to ${esc(vk=='mob'?S.mob:S.email)}</div><input id="vc" inputmode="numeric" maxlength="6" placeholder="6-digit code" style="margin:10px 0"><div class="two"><button class="btn out sm" style="width:100%" onclick="vSend()">Resend</button><button class="btn bg sm" style="width:100%" onclick="vOk()">Confirm</button></div></div>`;
 function vSend() { vc0 = String(100000 + Math.floor(Math.random() * 900000)); toast('Verification code: ' + vc0); }
 function vOpen(k) { vk = k; vSend(); go('profile'); }
 function vOk() {
@@ -2311,12 +2315,12 @@ function pinfo(m) {
   const ag = ACTIVE_AGENT_BY_METHOD[m] || null;
   const hasCopyable = n && !n.startsWith('Contact Live Chat') && !n.startsWith('Ask Support');
   const displayNum = hasCopyable ? n : (mob(m) ? 'Agent wallet is currently OFF — Contact Live Chat' : n);
-  return `<div class="pinfo"><div class="row sp"><div style="min-width:0"><div class="sub">${logoUrl?`<img src="${imgUrl(logoUrl)}" alt="" style="height:18px;vertical-align:middle;margin-right:6px">`:''}${m} ${mob(m)?'Agent Number':'Details'}${ag?` <span style="display:inline-block;margin-left:6px;padding:1px 7px;border-radius:99px;background:rgba(0,230,118,.15);color:#00E676;font-size:10px;font-weight:700">● Live Agent</span>`:''}</div><b style="word-break:break-all;${hasCopyable?'':'color:#8E9BB8;font-size:12px'}">${esc(displayNum)}</b></div>${hasCopyable?`<button class="btn bgold sm" onclick="copyText('${esc(n)}','Copied')">Copy</button>`:''}</div><ol><li>Open your ${mob(m)?m+' app':'payment app'} and choose ${M[m][1]}.</li><li>Send the amount to the details above.</li><li>Copy the Transaction ID (TrxID).</li><li>Enter the details below and submit.</li></ol></div>`;
+  return `<div class="pinfo"><div class="row sp"><div style="min-width:0"><div class="sub">${logoUrl?`<img src="${imgUrl(logoUrl)}" alt="" style="height:18px;vertical-align:middle;margin-right:6px">`:''}${m} ${mob(m)?'Agent Number':'Details'}${ag?` <span style="display:inline-block;margin-left:6px;padding:1px 7px;border-radius:99px;background:rgba(0,230,118,.15);color:#00E676;font-size:10px;font-weight:700">● Live Agent</span>`:''}</div><b style="word-break:break-all;${hasCopyable?'':'color:#8E9BB8;font-size:12px'}">${esc(displayNum)}</b></div>${hasCopyable?`<button class="btn bgold sm" onclick="copyText('${esc(n)}','Copied')">Copy</button>`:''}</div><ol><li>Send via ${esc(M[m][1])}.</li><li>Copy TrxID &amp; submit below.</li></ol></div>`;
 }
-function selPay(m) { pay = m; const ps = $('#pmSel'); if (ps) ps.value = m; $('#pi').innerHTML = pinfo(m); $('#sl').textContent = mob(m) ? 'Your ' + m + ' number' : 'Sender account or wallet'; }
+function selPay(m) { pay = m; const ps = $('#pmSel'); if (ps) ps.value = m; $('#pi').innerHTML = pinfo(m); $('#sl').textContent = mob(m) ? 'Your ' + m + ' number' : 'Sender number'; }
 function selWm(m) { wm = m; const ws = $('#wmSel'); if (ws) ws.value = m; $('#wf').innerHTML = wfields(m); }
 function pick(e) { [...e.parentNode.children].forEach(c => c.classList.remove('s')); e.classList.add('s'); }
-function wfields(m) { return m === 'Bank' ? '<label>Bank name</label><input id="wb" placeholder="e.g. ABC Bank"><label>Account holder name</label><input id="wh"><label>Account number</label><input id="wn" inputmode="numeric">' : `<label>${m} account number</label><input id="wn" type="tel" inputmode="numeric" placeholder="01XXXXXXXXX" value="${esc(S.mob||'')}">`; }
+function wfields(m) { return m === 'Bank' ? '<label>Bank name</label><input id="wb" placeholder="Bank name"><label>Account holder</label><input id="wh" placeholder="Holder name"><label>Account number</label><input id="wn" inputmode="numeric" placeholder="Account number">' : `<label>${m} number</label><input id="wn" type="tel" inputmode="numeric" placeholder="01XXXXXXXXX" value="${esc(S.mob||'')}">`; }
 
 async function dep() {
   if (!isUserFeat('deposits')) return toast('ডিপোজিট অপশন বর্তমানে বন্ধ রয়েছে');
@@ -3416,18 +3420,22 @@ if (ibBtn) ibBtn.onclick = () => { if (typeof window.mwTriggerInstall === 'funct
   const clean = v => String(v || '').replace(/[<>"'&`]/g, '').replace(/\s+/g, ' ').trim();
   function translateUserAuthErr(e) {
     const c = (e && e.code) || '';
+    const m = String((e && e.message) || '');
     if (c === 'auth/invalid-credential' || c === 'auth/wrong-password' || c === 'auth/user-not-found' || c === 'auth/invalid-login-credentials') {
-      return 'Incorrect username/mobile/email or password. Try Forgot Password or Continue with Google.';
+      return 'Invalid credentials or password.';
     }
-    if (c === 'auth/email-already-in-use') return 'This email or mobile number is already registered.';
-    if (c === 'auth/weak-password') return 'Password must be at least 8 characters with letters and numbers.';
-    if (c === 'auth/too-many-requests') return 'Too many login attempts. Please try again in a few minutes.';
-    if (c === 'auth/network-request-failed') return 'Network error. Please check your internet connection.';
-    if (c === 'auth/user-disabled') return 'This account has been disabled. Please contact support.';
-    return sanitizeUiMsg((e && e.message) || '') || 'Authentication failed. Please try again.';
+    if (c === 'auth/email-already-in-use') return 'Account already registered.';
+    if (c === 'auth/weak-password') return 'Min 8 chars with letters & numbers.';
+    if (c === 'auth/too-many-requests') return 'Too many attempts. Try later.';
+    if (c === 'auth/network-request-failed') return 'Network error. Check connection.';
+    if (c === 'auth/user-disabled') return 'Account disabled. Contact support.';
+    if (c === 'PERMISSION_DENIED' || /permission[_ ]denied/i.test(m)) {
+      return 'Database permission denied. Check Firebase RTDB rules.';
+    }
+    return sanitizeUiMsg(m) || 'Authentication failed.';
   }
   const GSVG = '<svg width="20" height="20" viewBox="0 0 48 48" aria-hidden="true"><path fill="#EA4335" d="M24 9.5c3.54 0 6.71 1.22 9.21 3.6l6.85-6.85C35.9 2.38 30.47 0 24 0 14.62 0 6.51 5.38 2.56 13.22l7.98 6.19C12.43 13.72 17.74 9.5 24 9.5z"/><path fill="#4285F4" d="M46.98 24.55c0-1.57-.15-3.09-.38-4.55H24v9.02h12.94c-.58 2.96-2.26 5.48-4.78 7.18l7.73 6c4.51-4.18 7.09-10.36 7.09-17.65z"/><path fill="#FBBC05" d="M10.53 28.59c-.48-1.45-.76-2.99-.76-4.59s.27-3.14.76-4.59l-7.98-6.19C.92 16.46 0 20.12 0 24c0 3.88.92 7.54 2.56 10.78l7.97-6.19z"/><path fill="#34A853" d="M24 48c6.48 0 11.93-2.13 15.89-5.81l-7.73-6c-2.15 1.45-4.92 2.3-8.16 2.3-6.26 0-11.57-4.22-13.47-9.91l-7.98 6.19C6.51 42.62 14.62 48 24 48z"/></svg>';
-  const gb = () => '<button type="button" class="gbtn" data-g="1">' + GSVG + '<span>Continue with Google</span></button><div class="or">or use mobile / email</div>';
+  const gb = () => '<button type="button" class="gbtn" data-g="1">' + GSVG + '<span>Continue with Google</span></button><div class="or">or</div>';
 
   function extractRefFromUrl() {
     try {
@@ -3469,82 +3477,105 @@ if (ibBtn) ibBtn.onclick = () => { if (typeof window.mwTriggerInstall === 'funct
     return { adminUid: adminUid || '', affiliateUid: affiliateUid || '', referredBy, referredByCode };
   }
 
+  const PROVISION_LOCKS = {};
   async function provisionUserRecord(fbUser, details) {
     const uid = fbUser.uid;
-    const uname = normUser(details.username || '');
-    const name = details.name || uname || fbUser.displayName || 'Player';
-    const mob = details.mob || '';
-    const email = details.email || (fbUser.email && !fbUser.email.endsWith('@player.mostwin88.app') ? fbUser.email : '');
-    const country = details.country || 'Bangladesh';
-    const attr = await resolveReferralAttribution(details.ref || LS('mw_ref') || '');
-    const memberId = 'MW' + Math.floor(100000 + Math.random() * 899999);
-    const letters = ((uname || name).replace(/[^A-Za-z]/g, '').toUpperCase().slice(0, 5) || 'MW');
-    const ownCode = letters + Math.floor(100 + Math.random() * 899);
-    const dv = getDeviceInfo();
-    const record = {
-      uid,
-      name,
-      username: uname || name,
-      usernameLower: (uname || name).toLowerCase(),
-      phone: mob,
-      email,
-      country,
-      lang: 'English',
-      memberId,
-      referralCode: ownCode,
-      balance: 0,
-      bonusBalance: 0,
-      xp: 0,
-      vipLevel: 'Bronze',
-      betCount: 0,
-      turnoverRequired: 0,
-      turnoverDone: 0,
-      adminUid: attr.adminUid,
-      affiliateUid: attr.affiliateUid,
-      referredBy: attr.referredBy,
-      referredByCode: attr.referredByCode,
-      status: 'active',
-      mobileVerified: false,
-      emailVerified: !!fbUser.emailVerified,
-      photoURL: fbUser.photoURL || '',
-      lastIp: LIVE_CLIENT_IP || '',
-      lastDevice: dv.device,
-      deviceId: dv.deviceId,
-      createdAt: Date.now(),
-      lastLoginAt: Date.now(),
-      lastSeen: Date.now()
-    };
-    await fbDb.ref('users/' + uid).set(record);
-    await fbDb.ref('referralCodes/' + ownCode).set({
-      uid,
-      role: 'USER',
-      adminUid: attr.adminUid,
-      affiliateUid: attr.affiliateUid,
-      createdAt: Date.now()
-    }).catch(() => {});
-    const resolvedAuthEmail = fbUser.email || email || (mob ? (mob + '@player.mostwin88.app') : (uname.toLowerCase() + '@player.mostwin88.app'));
-    if (uname) {
-      await fbDb.ref('usernames/' + uname.toLowerCase()).set({
-        uid,
-        email: resolvedAuthEmail,
-        username: uname,
-        phone: mob
-      }).catch(() => {});
-    }
-    if (mob) {
-      await fbDb.ref('usernames/' + mob).set({
-        uid,
-        email: resolvedAuthEmail,
-        username: uname || name,
-        phone: mob
-      }).catch(() => {});
-    }
-    if (dv.deviceId) {
-      await fbDb.ref('device_registry/' + dv.deviceId + '/' + uid).set({
-        uid, name, ip: LIVE_CLIENT_IP || '', device: dv.device, updatedAt: Date.now()
-      }).catch(() => {});
-    }
-    return record;
+    if (PROVISION_LOCKS[uid]) return PROVISION_LOCKS[uid];
+    PROVISION_LOCKS[uid] = (async () => {
+      try {
+        const existingSnap = await fbDb.ref('users/' + uid).once('value').catch(() => null);
+        if (existingSnap && existingSnap.exists()) {
+          return existingSnap.val();
+        }
+        const uname = normUser(details.username || '');
+        const name = details.name || uname || fbUser.displayName || 'Player';
+        const mob = details.mob || '';
+        const email = details.email || (fbUser.email && !fbUser.email.endsWith('@player.mostwin88.app') ? fbUser.email : '');
+        const country = details.country || 'Bangladesh';
+        const attr = await resolveReferralAttribution(details.ref || LS('mw_ref') || '');
+        const memberId = 'MW' + Math.floor(100000 + Math.random() * 899999);
+        const letters = ((uname || name).replace(/[^A-Za-z]/g, '').toUpperCase().slice(0, 5) || 'MW');
+        const ownCode = letters + Math.floor(100 + Math.random() * 899);
+        const dv = getDeviceInfo();
+        const safeProfile = {
+          uid,
+          name,
+          username: uname || name,
+          usernameLower: (uname || name).toLowerCase(),
+          phone: mob,
+          email,
+          country,
+          lang: 'English',
+          memberId,
+          referralCode: ownCode,
+          adminUid: attr.adminUid,
+          affiliateUid: attr.affiliateUid,
+          referredBy: attr.referredBy,
+          referredByCode: attr.referredByCode,
+          photoURL: fbUser.photoURL || '',
+          lastIp: LIVE_CLIENT_IP || '',
+          lastDevice: dv.device,
+          deviceId: dv.deviceId,
+          createdAt: Date.now(),
+          lastLoginAt: Date.now(),
+          lastSeen: Date.now()
+        };
+        const record = Object.assign({}, safeProfile, {
+          balance: 0,
+          bonusBalance: 0,
+          xp: 0,
+          vipLevel: 'Bronze',
+          betCount: 0,
+          turnoverRequired: 0,
+          turnoverDone: 0,
+          status: 'active',
+          mobileVerified: false,
+          emailVerified: !!fbUser.emailVerified
+        });
+        try {
+          await fbDb.ref('users/' + uid).set(record);
+        } catch (e) {
+          if ((e && e.code === 'PERMISSION_DENIED') || /permission/i.test((e && e.message) || '')) {
+            await fbDb.ref('users/' + uid).update(safeProfile);
+          } else {
+            throw e;
+          }
+        }
+        await fbDb.ref('referralCodes/' + ownCode).set({
+          uid,
+          role: 'USER',
+          adminUid: attr.adminUid,
+          affiliateUid: attr.affiliateUid,
+          createdAt: Date.now()
+        }).catch(() => {});
+        const resolvedAuthEmail = fbUser.email || email || (mob ? (mob + '@player.mostwin88.app') : (uname.toLowerCase() + '@player.mostwin88.app'));
+        if (uname) {
+          await fbDb.ref('usernames/' + uname.toLowerCase()).set({
+            uid,
+            email: resolvedAuthEmail,
+            username: uname,
+            phone: mob
+          }).catch(() => {});
+        }
+        if (mob) {
+          await fbDb.ref('usernames/' + mob).set({
+            uid,
+            email: resolvedAuthEmail,
+            username: uname || name,
+            phone: mob
+          }).catch(() => {});
+        }
+        if (dv.deviceId) {
+          await fbDb.ref('device_registry/' + dv.deviceId + '/' + uid).set({
+            uid, name, ip: LIVE_CLIENT_IP || '', device: dv.device, updatedAt: Date.now()
+          }).catch(() => {});
+        }
+        return record;
+      } finally {
+        delete PROVISION_LOCKS[uid];
+      }
+    })();
+    return PROVISION_LOCKS[uid];
   }
 
   function guestState() {
@@ -3654,7 +3685,7 @@ if (ibBtn) ibBtn.onclick = () => { if (typeof window.mwTriggerInstall === 'funct
         if (mEl) {
           const isBd = i.value === 'Bangladesh';
           mEl.maxLength = isBd ? 11 : 15;
-          mEl.placeholder = isBd ? '01XXXXXXXXX' : 'Phone number (6-15 digits)';
+          mEl.placeholder = isBd ? '01XXXXXXXXX' : 'Phone number';
         }
       }
     });
@@ -3665,7 +3696,7 @@ if (ibBtn) ibBtn.onclick = () => { if (typeof window.mwTriggerInstall === 'funct
     let n = 0; if (v.length >= 8) n++; if (/[a-z]/.test(v) && /[A-Z]/.test(v)) n++; if (/\d/.test(v)) n++; if (/[^A-Za-z0-9]/.test(v) && v.length >= 8) n++;
     const c = ['#ff6b84','#ff9d00','#ffd23f','#00E676'], L = ['Too weak','Weak','Fair','Strong'];
     document.querySelectorAll('#smB i').forEach((x, i) => x.style.background = v && i < n ? c[Math.max(0, n - 1)] : '');
-    const t = q('#smT'); if (t) t.textContent = v ? L[Math.max(0, n - 1)] + (n < 3 ? ' — use 8+ characters with letters and numbers' : '') : '8+ characters with letters and numbers';
+    const t = q('#smT'); if (t) t.textContent = v ? L[Math.max(0, n - 1)] : 'Min 8 chars (A-Z, 0-9)';
   }
 
   function render() {
@@ -3674,50 +3705,50 @@ if (ibBtn) ibBtn.onclick = () => { if (typeof window.mwTriggerInstall === 'funct
     q('.am-tabs').classList.toggle('s', mode === 'signup');
     document.querySelectorAll('.am-tabs button').forEach(b => b.classList.toggle('on', b.dataset.m === mode));
     q('#amS').textContent = mode === 'forgot'
-      ? 'Reset your password'
+      ? 'Reset password'
       : pend
-        ? 'Please login to continue'
+        ? 'Login to continue'
         : mode === 'signup'
-          ? (suStep === 1 ? 'Step 1 of 2 — Username, Country & Mobile' : 'Step 2 of 2 — Profile & Password')
-          : 'Welcome back! Login to play and manage your wallet.';
+          ? 'Create account'
+          : 'Welcome back';
     const fld = (id, lab, at, ph, ex, val) => '<div class="af"><label for="' + id + '">' + lab + '</label><input id="' + id + '" ' + at + ' placeholder="' + ph + '" value="' + esc(val || '') + '"><small class="ae" data-e="' + id + '"></small>' + (ex || '') + '</div>';
     const pwf = (id, lab, ac, ph, ex) => '<div class="af"><label for="' + id + '">' + lab + '</label><div class="pw"><input id="' + id + '" type="password" autocomplete="' + ac + '" placeholder="' + ph + '"><button type="button" class="pws" data-t="' + id + '">Show</button></div><small class="ae" data-e="' + id + '"></small>' + (ex || '') + '</div>';
     if (mode === 'login') {
-      F.innerHTML = gb() + fld('al_id','Username, Mobile or Email','name="username" autocomplete="username" autocapitalize="none" spellcheck="false"','username, 01XXXXXXXXX or email')
-        + pwf('al_pw','Password','current-password','Your password')
-        + '<div class="ar2"><label class="ck"><input type="checkbox" id="al_rm" checked> Remember me</label><a class="al" data-a="forgot" style="margin-top:12px">Forgot password?</a></div>'
-        + '<div class="ae big" id="amErr"></div><button class="btn bgold" id="amGo" type="submit">Login</button><div class="am-alt">New here? <a data-m="signup">Create an account</a></div>';
+      F.innerHTML = gb() + fld('al_id','Username or Mobile','name="username" autocomplete="username" autocapitalize="none" spellcheck="false"','Username, mobile or email')
+        + pwf('al_pw','Password','current-password','Password')
+        + '<div class="ar2"><label class="ck"><input type="checkbox" id="al_rm" checked> Remember me</label><a class="al" data-a="forgot" style="margin-top:12px">Forgot?</a></div>'
+        + '<div class="ae big" id="amErr"></div><button class="btn bgold" id="amGo" type="submit">Login</button><div class="am-alt">New here? <a data-m="signup">Create account</a></div>';
     } else if (mode === 'signup') {
       if (CFG && CFG.allowRegistration === false) {
-        F.innerHTML = '<div class="ae big" style="margin:12px 0;font-size:13px">নতুন প্লেয়ার রেজিস্ট্রেশন সাময়িকভাবে বন্ধ রয়েছে। আপনার অ্যাকাউন্ট থাকলে লগইন করুন।</div><button class="btn bgold" type="button" data-m="login">Login</button>';
+        F.innerHTML = '<div class="ae big" style="margin:12px 0;font-size:13px">রেজিস্ট্রেশন সাময়িকভাবে বন্ধ রয়েছে।</div><button class="btn bgold" type="button" data-m="login">Login</button>';
         return;
       }
-      const stepHead = `<div class="su-steps"><span>Step <b>${suStep}</b> of 2</span><span>${suStep === 1 ? 'Username, Country &amp; Number' : 'Complete Registration'}</span></div><div class="su-bars"><i class="on"></i><i class="${suStep === 2 ? 'on' : ''}"></i></div>`;
+      const stepHead = `<div class="su-steps"><span>Step <b>${suStep}</b> / 2</span><span>${suStep === 1 ? 'Account Info' : 'Security'}</span></div><div class="su-bars"><i class="on"></i><i class="${suStep === 2 ? 'on' : ''}"></i></div>`;
       if (suStep === 1) {
         const curCountry = suDraft.country || 'Bangladesh';
         const cOpts = COUNTRIES.map(c => `<option value="${esc(c[0])}" ${c[0] === curCountry ? 'selected' : ''}>${esc(c[0])} (${esc(c[1])})</option>`).join('');
         const isBd = curCountry === 'Bangladesh';
         F.innerHTML = stepHead + gb()
-          + fld('as_user','Username','autocomplete="username" autocapitalize="none" spellcheck="false" maxlength="20"','e.g. mijan88 (letters, numbers, _)', '', suDraft.username)
+          + fld('as_user','Username','autocomplete="username" autocapitalize="none" spellcheck="false" maxlength="20"','Enter username', '', suDraft.username)
           + '<div class="af"><label for="as_country">Country</label><select id="as_country">' + cOpts + '</select><small class="ae" data-e="as_country"></small></div>'
-          + fld('as_mob','Mobile number','type="tel" inputmode="numeric" autocomplete="tel" maxlength="' + (isBd ? 11 : 15) + '"', isBd ? '01XXXXXXXXX' : 'Phone number (6-15 digits)', '', suDraft.mob)
-          + '<div class="ae big" id="amErr"></div><button class="btn bgold" id="amGo" type="submit">Next →</button><div class="am-alt">Already have an account? <a data-m="login">Login</a></div>';
+          + fld('as_mob','Mobile','type="tel" inputmode="numeric" autocomplete="tel" maxlength="' + (isBd ? 11 : 15) + '"', isBd ? '01XXXXXXXXX' : 'Phone number', '', suDraft.mob)
+          + '<div class="ae big" id="amErr"></div><button class="btn bgold" id="amGo" type="submit">Next →</button><div class="am-alt">Have an account? <a data-m="login">Login</a></div>';
       } else {
         const rf = LS('mw_ref') || '';
         const cnMeta = COUNTRIES.find(c => c[0] === suDraft.country) || COUNTRIES[0];
         F.innerHTML = stepHead
           + `<div class="su-summary"><span>👤 <b>@${esc(suDraft.username)}</b></span><span>· ${esc(cnMeta[0])} (${esc(cnMeta[1])}) · ${esc(suDraft.mob)}</span></div>`
-          + fld('as_name','Full name','autocomplete="name" maxlength="40"','Your full name', '', suDraft.name)
-          + fld('as_mail','Email <span style="opacity:.6">(optional)</span>','type="email" autocomplete="email" autocapitalize="none"','you@example.com', '', suDraft.email)
-          + pwf('as_pw','Password','new-password','Create a password','<div class="sm-bar" id="smB"><i></i><i></i><i></i><i></i></div><div class="sm-t" id="smT">8+ characters with letters and numbers</div>')
+          + fld('as_name','Full name','autocomplete="name" maxlength="40"','Your name', '', suDraft.name)
+          + fld('as_mail','Email <span style="opacity:.6">(optional)</span>','type="email" autocomplete="email" autocapitalize="none"','Email', '', suDraft.email)
+          + pwf('as_pw','Password','new-password','Min 8 chars','<div class="sm-bar" id="smB"><i></i><i></i><i></i><i></i></div><div class="sm-t" id="smT">Min 8 chars (A-Z, 0-9)</div>')
           + pwf('as_pw2','Confirm password','new-password','Re-enter password')
-          + fld('as_ref','Referral code <span style="opacity:.6">(optional)</span>','autocomplete="off" maxlength="32"','Referral code', rf ? '<div class="rfok">✓ Referral code applied</div>' : '', rf)
-          + '<label class="ck"><input type="checkbox" id="as_tc"> <span>I am 18 or older and I accept the Terms &amp; Conditions.</span></label>'
-          + '<div class="ae big" id="amErr"></div><div class="su-nav"><button type="button" class="btn out" data-step="1">← Back</button><button class="btn bgold" id="amGo" type="submit">Create Account</button></div><div class="am-alt">Already have an account? <a data-m="login">Login</a></div>';
+          + fld('as_ref','Referral code <span style="opacity:.6">(optional)</span>','autocomplete="off" maxlength="32"','Referral code', rf ? '<div class="rfok">✓ Referral applied</div>' : '', rf)
+          + '<label class="ck"><input type="checkbox" id="as_tc"> <span>I am 18+ and accept the Terms.</span></label>'
+          + '<div class="ae big" id="amErr"></div><div class="su-nav"><button type="button" class="btn out" data-step="1">← Back</button><button class="btn bgold" id="amGo" type="submit">Create Account</button></div><div class="am-alt">Have an account? <a data-m="login">Login</a></div>';
       }
     } else {
-      F.innerHTML = fld('af_id','Email Address','autocapitalize="none" spellcheck="false"','Enter your registered email')
-        + '<div class="ae big" id="amErr"></div><button class="btn bgold" id="amGo" type="submit">Send reset email</button><div class="am-alt"><a data-m="login">Back to Login</a></div>';
+      F.innerHTML = fld('af_id','Email','autocapitalize="none" spellcheck="false"','Registered email')
+        + '<div class="ae big" id="amErr"></div><button class="btn bgold" id="amGo" type="submit">Send reset link</button><div class="am-alt"><a data-m="login">Back to Login</a></div>';
     }
   }
 
@@ -3772,11 +3803,16 @@ if (ibBtn) ibBtn.onclick = () => { if (typeof window.mwTriggerInstall === 'funct
         if (!rawId.includes('@')) {
           const userKey = rawId.replace(/^@+/, '').toLowerCase();
           const mobClean = normMob(rawId);
-          let unSnap = await fbDb.ref('usernames/' + userKey).once('value');
-          let un = unSnap.val();
-          if ((!un || !un.email) && mobClean && mobClean !== userKey) {
-            unSnap = await fbDb.ref('usernames/' + mobClean).once('value');
-            un = unSnap.val();
+          let un = null;
+          if (fbDb) {
+            try {
+              let unSnap = await fbDb.ref('usernames/' + userKey).once('value');
+              un = unSnap.val();
+              if ((!un || !un.email) && mobClean && mobClean !== userKey) {
+                unSnap = await fbDb.ref('usernames/' + mobClean).once('value');
+                un = unSnap.val();
+              }
+            } catch (_) {}
           }
           if (un && un.email) loginEmail = un.email;
           else if (isMob(mobClean)) loginEmail = mobClean + '@player.mostwin88.app';
@@ -3804,11 +3840,11 @@ if (ibBtn) ibBtn.onclick = () => { if (typeof window.mwTriggerInstall === 'funct
       const mob = normMob(q('#as_mob').value);
       const isBd = country === 'Bangladesh';
       const E = [];
-      if (!isUser(uname)) E.push(['as_user', 'Use 3–20 letters, numbers or _ (no spaces)']);
+      if (!isUser(uname)) E.push(['as_user', '3–20 chars (A-Z, 0-9, _)']);
       if (!mob) {
-        E.push(['as_mob', 'Enter your mobile number']);
+        E.push(['as_mob', 'Enter mobile number']);
       } else if (isBd ? !isMob(mob) : !isIntlMob(mob)) {
-        E.push(['as_mob', isBd ? 'Enter a valid 11-digit mobile number (01XXXXXXXXX)' : 'Enter a valid phone number (6–15 digits)']);
+        E.push(['as_mob', isBd ? 'Invalid 11-digit number' : 'Invalid phone number']);
       }
       E.forEach(x => setErr(x[0], x[1]));
       if (E.length) { q('#' + E[0][0]).focus(); return; }
@@ -3817,9 +3853,9 @@ if (ibBtn) ibBtn.onclick = () => { if (typeof window.mwTriggerInstall === 'funct
       try {
         if (fbDb) {
           const uSnap = await fbDb.ref('usernames/' + uname.toLowerCase()).once('value');
-          if (uSnap.exists()) { setBusy(false); setErr('as_user', 'This username is already taken.'); return; }
+          if (uSnap.exists()) { setBusy(false); setErr('as_user', 'Username taken'); return; }
           const mSnap = await fbDb.ref('usernames/' + mob).once('value');
-          if (mSnap.exists()) { setBusy(false); setErr('as_mob', 'This mobile number is already registered.'); return; }
+          if (mSnap.exists()) { setBusy(false); setErr('as_mob', 'Mobile already registered'); return; }
         }
         suDraft.username = uname;
         suDraft.country = country;
@@ -3850,13 +3886,13 @@ if (ibBtn) ibBtn.onclick = () => { if (typeof window.mwTriggerInstall === 'funct
     suDraft.name = name;
     suDraft.email = email;
     const E = [];
-    if (name.length < 2) E.push(['as_name', 'Enter your full name']);
-    if (email && !isMail(email)) E.push(['as_mail', 'Enter a valid email address']);
-    if (pw.length < 8 || !/[A-Za-z]/.test(pw) || !/\d/.test(pw)) E.push(['as_pw', 'Use 8+ characters with letters and numbers']);
+    if (name.length < 2) E.push(['as_name', 'Enter full name']);
+    if (email && !isMail(email)) E.push(['as_mail', 'Invalid email']);
+    if (pw.length < 8 || !/[A-Za-z]/.test(pw) || !/\d/.test(pw)) E.push(['as_pw', 'Min 8 chars (A-Z, 0-9)']);
     else if (pw !== pw2) E.push(['as_pw2', 'Passwords do not match']);
     E.forEach(x => setErr(x[0], x[1]));
     if (E.length) { q('#' + E[0][0]).focus(); return; }
-    if (!q('#as_tc').checked) { q('#amErr').textContent = 'Please confirm you are 18+ and accept the Terms.'; return; }
+    if (!q('#as_tc').checked) { q('#amErr').textContent = 'Accept Terms to continue.'; return; }
 
     setBusy(true);
     try {
@@ -3978,7 +4014,7 @@ if (ibBtn) ibBtn.onclick = () => { if (typeof window.mwTriggerInstall === 'funct
       if (fbUser) {
         S.uid = fbUser.uid;
         try {
-          if (fbDb) {
+          if (fbDb && !busy) {
             const snap = await fbDb.ref('users/' + fbUser.uid).once('value');
             if (!snap.exists()) {
               await provisionUserRecord(fbUser, { name: fbUser.displayName || 'Player', email: fbUser.email || '', ref: LS('mw_ref') || '' });

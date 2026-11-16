@@ -703,9 +703,12 @@ async function affiliateLogin(e) {
     let email = raw;
     if (!email.includes('@')) {
       const clean = raw.toLowerCase().replace(/[^a-z0-9_]/g, '');
-      const us = await db.ref('usernames/' + clean).once('value');
-      if (!us.exists() || !us.val().email) throw new Error('ইউজারনেম খুঁজে পাওয়া যায়নি');
-      email = us.val().email;
+      let foundEmail = '';
+      try {
+        const us = await db.ref('usernames/' + clean).once('value');
+        if (us.exists() && us.val().email) foundEmail = us.val().email;
+      } catch (_) {}
+      email = foundEmail || (clean + '@npapp.local');
     }
     await auth.signInWithEmailAndPassword(email, pass);
   } catch (err) {
