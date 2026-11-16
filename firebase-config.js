@@ -9,14 +9,26 @@ window.NP_FIREBASE_CONFIG = {
   measurementId: "G-5Q07GB1YD6"
 };
 
-// Base URL of your Render Node.js backend (empty '' uses same-origin when hosted on Render)
+// Default Render Node.js backend URL (used automatically across Cloudflare Pages, GitHub Pages, PWA, etc.)
+window.MW_DEFAULT_BACKEND_URL = 'https://mostwin88-bakend.onrender.com';
+
 window.MW_BACKEND_URL = window.MW_BACKEND_URL || (function () {
   try {
     var saved = localStorage.getItem('mw_backend_url');
     if (saved) return String(saved).replace(/\/+$/, '');
   } catch (_) {}
-  return '';
+  if (typeof location !== 'undefined' && location.origin === window.MW_DEFAULT_BACKEND_URL) {
+    return '';
+  }
+  return window.MW_DEFAULT_BACKEND_URL;
 })();
+
+window.mwApiUrl = function mwApiUrl(apiPath) {
+  var p = String(apiPath || '');
+  if (/^https?:\/\//i.test(p)) return p;
+  var base = String(window.MW_BACKEND_URL || '').replace(/\/+$/, '');
+  return base + (p.charAt(0) === '/' ? p : '/' + p);
+};
 
 // Shared authenticated API helper for all 5 panels (User, User Admin, Master, Agent, Affiliate)
 window.mwApi = async function mwApi(apiPath, body, authObj) {

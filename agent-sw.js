@@ -1,4 +1,4 @@
-const CACHE_NAME = 'mw-agent-v2';
+const CACHE_NAME = 'mw-agent-v3';
 const ENTRY = './agent.html';
 const PRECACHE = [
   ENTRY,

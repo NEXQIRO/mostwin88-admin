@@ -831,7 +831,10 @@ function getDeviceInfo() {
 
 fetch('https://api.ipify.org?format=json').then(r => r.json()).then(d => {
   if (d && d.ip) LIVE_CLIENT_IP = d.ip;
-}).catch(() => {});
+}).catch(() => {
+  const ipUrl = (typeof window.mwApiUrl === 'function') ? window.mwApiUrl('/api/ip') : 'https://mostwin88-bakend.onrender.com/api/ip';
+  fetch(ipUrl).then(r => r.json()).then(d => { if (d && d.ip) LIVE_CLIENT_IP = d.ip; }).catch(() => {});
+});
 
 function isGameCatEnabled(catName) {
   const cats = (CFG && CFG.gameCategories) || {};
