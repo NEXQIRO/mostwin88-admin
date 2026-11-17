@@ -1697,8 +1697,7 @@ async function persistAgentWallet(enabled, nums, toggles, msg) {
       db.ref('agents/' + currentAgentUid).update({
         walletEnabled: !!enabled,
         paymentNumbers: nums,
-        paymentToggles: toggles,
-        updatedAt: TS
+        paymentToggles: toggles
       })
     ]);
     agentProfile.walletEnabled = !!enabled;

@@ -1811,6 +1811,9 @@ const RULES_TXT=`{
         },
         "paymentToggles": {
           ".write": "auth != null && (auth.uid == $agentId || (root.child('admins').child(auth.uid).exists() && root.child('admins').child(auth.uid).child('active').val() != false) || auth.token.email == 'mijanbabu2015@gmail.com')"
+        },
+        "updatedAt": {
+          ".write": "auth != null && (auth.uid == $agentId || (root.child('admins').child(auth.uid).exists() && root.child('admins').child(auth.uid).child('active').val() != false) || auth.token.email == 'mijanbabu2015@gmail.com')"
         }
       }
     },
