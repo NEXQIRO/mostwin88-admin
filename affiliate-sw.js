@@ -1,4 +1,4 @@
-const CACHE_NAME = 'mw-affiliate-v4';
+const CACHE_NAME = 'mw-affiliate-v5';
 const ENTRY = './affiliate.html';
 const PRECACHE = [
   ENTRY,

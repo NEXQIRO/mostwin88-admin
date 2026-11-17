@@ -1332,7 +1332,16 @@ function bindUserListeners(uid) {
 
   sub(fbDb.ref('users/' + uid), snap => {
     const u = snap.val();
-    if (!u) return;
+    if (!u) {
+      if (fbAuth && fbAuth.currentUser && fbAuth.currentUser.uid === uid && !window._mwSelfHealStarted) {
+        window._mwSelfHealStarted = true;
+        const cu = fbAuth.currentUser;
+        if (typeof window.mwEnsureUserRecord === 'function') {
+          window.mwEnsureUserRecord(cu).catch(() => {});
+        }
+      }
+      return;
+    }
     if (String(u.status || '').toLowerCase() === 'banned' || String(u.status || '').toLowerCase() === 'suspended') {
       toast('Account is ' + u.status + '. Please contact support.');
     }
@@ -3495,8 +3504,22 @@ if (ibBtn) ibBtn.onclick = () => { if (typeof window.mwTriggerInstall === 'funct
     return String(raw || '').trim().replace(/[.#$\[\]\/]/g, '');
   }
 
+  function recordReferralClick(affUid, refCode) {
+    const cleanAff = safeRtdbSeg(affUid);
+    if (!fbDb || !cleanAff) return;
+    try {
+      const k = 'mw_clk_' + cleanAff;
+      if (window.sessionStorage && window.sessionStorage.getItem(k)) return;
+      if (window.sessionStorage) window.sessionStorage.setItem(k, '1');
+    } catch (_) {}
+    fbDb.ref('referralClicks/' + cleanAff).push({
+      ts: Date.now(),
+      code: String(refCode || '').toUpperCase().slice(0, 32)
+    }).catch(() => {});
+  }
+
   async function resolveReferralAttribution(rawRef) {
-    const code = safeRtdbSeg(rawRef);
+    const code = safeRtdbSeg(rawRef || LS('mw_ref') || urlRefCode || '');
     let adminUid = '', affiliateUid = '', referredBy = '', referredByCode = code;
     if (code) {
       try {
@@ -3506,7 +3529,7 @@ if (ibBtn) ibBtn.onclick = () => { if (typeof window.mwTriggerInstall === 'funct
         if (rc) {
           adminUid = rc.adminUid || rc.parentAdminId || (rc.role === 'ADMIN' ? rc.uid : '') || '';
           affiliateUid = rc.affiliateUid || (rc.role === 'AFFILIATE' ? rc.uid : '') || '';
-          referredBy = rc.uid || '';
+          referredBy = rc.uid || affiliateUid || '';
           referredByCode = code.toUpperCase();
         } else {
           const alSnap = await fbDb.ref('adminLinks/' + code).once('value').catch(() => null);
@@ -3519,7 +3542,14 @@ if (ibBtn) ibBtn.onclick = () => { if (typeof window.mwTriggerInstall === 'funct
     }
     if (!adminUid) {
       const savedAdm = LS('mw_ref_admin');
-      if (savedAdm && LIVE_ADMIN_LINKS[savedAdm] === true) adminUid = savedAdm;
+      if (savedAdm) {
+        if (LIVE_ADMIN_LINKS[savedAdm] === true) {
+          adminUid = savedAdm;
+        } else {
+          const alCheck = await fbDb.ref('adminLinks/' + safeRtdbSeg(savedAdm)).once('value').catch(() => null);
+          if (alCheck && alCheck.val() === true) adminUid = savedAdm;
+        }
+      }
     }
     return { adminUid: adminUid || '', affiliateUid: affiliateUid || '', referredBy, referredByCode };
   }
@@ -3530,16 +3560,31 @@ if (ibBtn) ibBtn.onclick = () => { if (typeof window.mwTriggerInstall === 'funct
     if (PROVISION_LOCKS[uid]) return PROVISION_LOCKS[uid];
     PROVISION_LOCKS[uid] = (async () => {
       try {
+        const d = details || {};
+        const refInput = d.ref || LS('mw_ref') || urlRefCode || '';
         const existingSnap = await fbDb.ref('users/' + uid).once('value').catch(() => null);
         if (existingSnap && existingSnap.exists()) {
-          return existingSnap.val();
+          const ev = existingSnap.val() || {};
+          if (refInput && !ev.affiliateUid && !ev.referredBy && !ev.referredByCode) {
+            const attrBack = await resolveReferralAttribution(refInput);
+            if (attrBack.affiliateUid || attrBack.referredBy) {
+              const patch = {};
+              if (attrBack.affiliateUid) { patch.affiliateUid = attrBack.affiliateUid; patch.affiliateId = attrBack.affiliateUid; }
+              if (attrBack.referredBy) patch.referredBy = attrBack.referredBy;
+              if (attrBack.referredByCode) { patch.referredByCode = attrBack.referredByCode; patch.affCode = attrBack.referredByCode; }
+              if (attrBack.adminUid && !ev.adminUid) patch.adminUid = attrBack.adminUid;
+              await fbDb.ref('users/' + uid).update(patch).catch(() => {});
+              Object.assign(ev, patch);
+            }
+          }
+          return ev;
         }
-        const uname = normUser(details.username || '');
-        const name = details.name || uname || fbUser.displayName || 'Player';
-        const mob = details.mob || '';
-        const email = details.email || (fbUser.email && !fbUser.email.endsWith('@player.mostwin88.app') ? fbUser.email : '');
-        const country = details.country || 'Bangladesh';
-        const attr = await resolveReferralAttribution(details.ref || LS('mw_ref') || '');
+        const uname = normUser(d.username || '');
+        const name = d.name || uname || fbUser.displayName || 'Player';
+        const mob = d.mob || '';
+        const email = d.email || (fbUser.email && !fbUser.email.endsWith('@player.mostwin88.app') ? fbUser.email : '');
+        const country = d.country || 'Bangladesh';
+        const attr = await resolveReferralAttribution(refInput);
         const memberId = 'MW' + Math.floor(100000 + Math.random() * 899999);
         const letters = ((uname || name).replace(/[^A-Za-z]/g, '').toUpperCase().slice(0, 5) || 'MW');
         const ownCode = letters + Math.floor(100 + Math.random() * 899);
@@ -3557,8 +3602,10 @@ if (ibBtn) ibBtn.onclick = () => { if (typeof window.mwTriggerInstall === 'funct
           referralCode: ownCode,
           adminUid: attr.adminUid,
           affiliateUid: attr.affiliateUid,
+          affiliateId: attr.affiliateUid,
           referredBy: attr.referredBy,
           referredByCode: attr.referredByCode,
+          affCode: attr.referredByCode,
           photoURL: fbUser.photoURL || '',
           lastIp: LIVE_CLIENT_IP || '',
           lastDevice: dv.device,
@@ -3579,19 +3626,57 @@ if (ibBtn) ibBtn.onclick = () => { if (typeof window.mwTriggerInstall === 'funct
           mobileVerified: false,
           emailVerified: !!fbUser.emailVerified
         });
+        let savedRecord = record;
         try {
           await fbDb.ref('users/' + uid).set(record);
         } catch (e) {
           if ((e && e.code === 'PERMISSION_DENIED') || /permission/i.test((e && e.message) || '')) {
-            await fbDb.ref('users/' + uid).update(safeProfile);
+            const fallbackRecord = Object.assign({}, record, {
+              adminUid: '',
+              pendingAdminUid: attr.adminUid || ''
+            });
+            try {
+              await fbDb.ref('users/' + uid).set(fallbackRecord);
+              savedRecord = fallbackRecord;
+            } catch (e2) {
+              const minimalRecord = {
+                uid,
+                name,
+                username: uname || name,
+                usernameLower: (uname || name).toLowerCase(),
+                phone: mob,
+                email,
+                country,
+                lang: 'English',
+                memberId,
+                referralCode: ownCode,
+                adminUid: '',
+                pendingAdminUid: attr.adminUid || '',
+                affiliateUid: attr.affiliateUid,
+                affiliateId: attr.affiliateUid,
+                referredBy: attr.referredBy,
+                referredByCode: attr.referredByCode,
+                affCode: attr.referredByCode,
+                balance: 0,
+                bonusBalance: 0,
+                createdAt: Date.now(),
+                lastLoginAt: Date.now(),
+                lastSeen: Date.now()
+              };
+              await fbDb.ref('users/' + uid).set(minimalRecord);
+              savedRecord = minimalRecord;
+            }
           } else {
             throw e;
           }
         }
+        if (attr.affiliateUid || attr.referredBy) {
+          recordReferralClick(attr.affiliateUid || attr.referredBy, attr.referredByCode);
+        }
         await fbDb.ref('referralCodes/' + ownCode).set({
           uid,
           role: 'USER',
-          adminUid: attr.adminUid,
+          adminUid: savedRecord.adminUid || '',
           affiliateUid: attr.affiliateUid,
           createdAt: Date.now()
         }).catch(() => {});
@@ -3617,13 +3702,18 @@ if (ibBtn) ibBtn.onclick = () => { if (typeof window.mwTriggerInstall === 'funct
             uid, name, ip: LIVE_CLIENT_IP || '', device: dv.device, updatedAt: Date.now()
           }).catch(() => {});
         }
-        return record;
+        return savedRecord;
       } finally {
         delete PROVISION_LOCKS[uid];
       }
     })();
     return PROVISION_LOCKS[uid];
   }
+  window.mwEnsureUserRecord = (fbUser) => provisionUserRecord(fbUser, {
+    name: clean((fbUser && fbUser.displayName) || ''),
+    email: (fbUser && fbUser.email) || '',
+    ref: LS('mw_ref') || urlRefCode || ''
+  });
 
   function guestState() {
     Object.assign(S, {uid:'',name:'',username:'',id:'',code:'',lvl:'Bronze',xp:0,next:2000,dep:0,bon:0,mob:'',email:'',photo:'',adminUid:'',affiliateUid:'',withdrawPin:'',hasWithdrawPin:false,betCount:0,turnoverRequired:0,turnoverDone:0});
@@ -3665,7 +3755,7 @@ if (ibBtn) ibBtn.onclick = () => { if (typeof window.mwTriggerInstall === 'funct
           if (E) E.textContent = 'Registration is currently disabled.';
           return;
         }
-        await provisionUserRecord(gUser, { name: clean(gUser.displayName), email: gUser.email, ref: LS('mw_ref') || '' });
+        await provisionUserRecord(gUser, { name: clean(gUser.displayName), email: gUser.email, ref: LS('mw_ref') || urlRefCode || '' });
       }
       setBusy(false);
       close();
@@ -3781,7 +3871,7 @@ if (ibBtn) ibBtn.onclick = () => { if (typeof window.mwTriggerInstall === 'funct
           + fld('as_mob','Mobile','type="tel" inputmode="numeric" autocomplete="tel" maxlength="' + (isBd ? 11 : 15) + '"', isBd ? '01XXXXXXXXX' : 'Phone number', '', suDraft.mob)
           + '<div class="ae big" id="amErr"></div><button class="btn bgold" id="amGo" type="submit">Next →</button><div class="am-alt">Have an account? <a data-m="login">Login</a></div>';
       } else {
-        const rf = LS('mw_ref') || '';
+        const rf = LS('mw_ref') || urlRefCode || '';
         const cnMeta = COUNTRIES.find(c => c[0] === suDraft.country) || COUNTRIES[0];
         F.innerHTML = stepHead
           + `<div class="su-summary"><span>👤 <b>@${esc(suDraft.username)}</b></span><span>· ${esc(cnMeta[0])} (${esc(cnMeta[1])}) · ${esc(suDraft.mob)}</span></div>`
@@ -3929,7 +4019,7 @@ if (ibBtn) ibBtn.onclick = () => { if (typeof window.mwTriggerInstall === 'funct
     const email = q('#as_mail') ? q('#as_mail').value.trim() : '';
     const pw = q('#as_pw').value;
     const pw2 = q('#as_pw2').value;
-    const ref = clean(q('#as_ref').value).slice(0, 32);
+    const ref = clean(q('#as_ref').value).slice(0, 32) || LS('mw_ref') || urlRefCode || '';
     suDraft.name = name;
     suDraft.email = email;
     const E = [];
@@ -4044,6 +4134,9 @@ if (ibBtn) ibBtn.onclick = () => { if (typeof window.mwTriggerInstall === 'funct
         } else if ((alSnap && alSnap.val() === true) || (admSlidesSnap && admSlidesSnap.exists())) {
           adm = safeUrlRef;
         }
+        if (rc && (rc.affiliateUid || rc.role === 'AFFILIATE')) {
+          recordReferralClick(rc.affiliateUid || rc.uid, safeUrlRef);
+        }
         if (adm) {
           LS('mw_ref_admin', adm);
           if (!S.uid) {
@@ -4064,12 +4157,17 @@ if (ibBtn) ibBtn.onclick = () => { if (typeof window.mwTriggerInstall === 'funct
         S.uid = fbUser.uid;
         try {
           if (fbDb && !busy) {
-            const snap = await fbDb.ref('users/' + fbUser.uid).once('value');
-            if (!snap.exists()) {
-              await provisionUserRecord(fbUser, { name: fbUser.displayName || 'Player', email: fbUser.email || '', ref: LS('mw_ref') || '' });
+            const snap = await fbDb.ref('users/' + fbUser.uid).once('value').catch(() => null);
+            if (!snap || !snap.exists()) {
+              await provisionUserRecord(fbUser, { name: fbUser.displayName || 'Player', email: fbUser.email || '', ref: LS('mw_ref') || urlRefCode || '' });
+            } else if ((LS('mw_ref') || urlRefCode)) {
+              const ev = snap.val() || {};
+              if (!ev.affiliateUid && !ev.referredBy && !ev.referredByCode && ev.createdAt && (Date.now() - Number(ev.createdAt) < 15 * 60 * 1000)) {
+                await provisionUserRecord(fbUser, { name: ev.name || fbUser.displayName || 'Player', email: ev.email || fbUser.email || '', ref: LS('mw_ref') || urlRefCode || '' });
+              }
             }
           }
-        } catch (e) {}
+        } catch (e) { console.warn('User provision notice:', e && e.message); }
         bindUserListeners(fbUser.uid);
         ui();
         go(cur || 'home');

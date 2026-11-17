@@ -809,6 +809,11 @@ function startLiveSync() {
   });
 
   db.ref('affiliates/' + MY_UID + '/lastSeen').set(Date.now()).catch(() => {});
+  window.LIVE_REF_CLICKS = window.LIVE_REF_CLICKS || 0;
+  attach(db.ref('referralClicks/' + MY_UID), snap => {
+    window.LIVE_REF_CLICKS = snap.exists() ? (typeof snap.numChildren === 'function' ? snap.numChildren() : Object.keys(snap.val() || {}).length) : 0;
+    renderAll();
+  });
 
   attach(db.ref('users'), snap => { ALL_USERS = snap.val() || {}; renderAll(); });
   attach(db.ref('depositRequests'), snap => { ALL_DEPS = snap.val() || {}; renderAll(); });
@@ -1137,7 +1142,7 @@ function renderAll() {
     totalWinAll += s.winAmt;
   });
 
-  const clicks = parseInt(MY_PROF.clicks || 0, 10) || players.length;
+  const clicks = Math.max(parseInt(MY_PROF.clicks || 0, 10) || 0, parseInt(window.LIVE_REF_CLICKS || 0, 10) || 0, players.length);
   const regCount = players.length;
   const activePlayers = players.filter(p => (p.status || 'ACTIVE').toUpperCase() === 'ACTIVE');
   const confirmedCount = players.filter(p => (depByUid[p.uid] || 0) > 0 || (parseFloat(p.totalDeposited) || 0) > 0).length;

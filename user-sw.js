@@ -1,4 +1,4 @@
-const CACHE_NAME = 'mw-user-v6';
+const CACHE_NAME = 'mw-user-v7';
 const ENTRY = './user.html';
 const PRECACHE = [
   ENTRY,

@@ -4940,11 +4940,31 @@
       }, (err) => { console.warn('Agent balance requests listener notice:', err); });
 
       // 6d. Affiliates & Commission Requests (Live Affiliate Panel Sync — Strictly scoped to this User Admin)
+      STATE.affiliateClicks = STATE.affiliateClicks || {};
+      const _affClickRefs = {};
       db.ref('affiliates').on('value', (snap) => {
         const val = snap.val() || {};
         const me = npMyUid();
         STATE.affiliates = Object.keys(val).map(k => ({ id: k, ...val[k] }))
           .filter(af => !!me && af.parentAdminId === me);
+        const curIds = new Set(STATE.affiliates.map(a => a.id));
+        Object.keys(_affClickRefs).forEach(id => {
+          if (!curIds.has(id)) {
+            try { _affClickRefs[id].off(); } catch (_) {}
+            delete _affClickRefs[id];
+            delete STATE.affiliateClicks[id];
+          }
+        });
+        STATE.affiliates.forEach(af => {
+          if (!_affClickRefs[af.id]) {
+            const cRef = db.ref('referralClicks/' + af.id);
+            _affClickRefs[af.id] = cRef;
+            cRef.on('value', cSnap => {
+              STATE.affiliateClicks[af.id] = cSnap.exists() ? (typeof cSnap.numChildren === 'function' ? cSnap.numChildren() : Object.keys(cSnap.val() || {}).length) : 0;
+              renderAffiliates();
+            }, () => {});
+          }
+        });
         renderAffiliates();
         try { if (typeof renderNpcPeerBar === 'function') renderNpcPeerBar(); } catch (e) {}
       }, (err) => { console.warn('Affiliates listener notice:', err); });
@@ -9505,11 +9525,12 @@
           const isAct = af.active !== false && af.status !== 'suspended';
           const cOn = af.commissionEnabled !== false;
           const refCnt = usersList.filter(u => u && (u.referredBy === af.id || u.affiliateUid === af.id || u.affiliateId === af.id || (af.referralCode && String(u.affCode || u.referredByCode || '').toUpperCase() === String(af.referralCode).toUpperCase()))).length;
+          const liveClk = Math.max(parseInt(af.clicks || 0), parseInt((STATE.affiliateClicks && STATE.affiliateClicks[af.id]) || 0), refCnt);
           const wdPct = Number(af.winDeductionPercent || 0);
           const wdBadge = (wdPct > 0 || af.commissionType === 'profit_share') ? ` · জিতলে −${wdPct}%` : '';
           return `<tr>
             <td><b>${escapeHtml(af.name || 'Affiliate')}</b> · <span class="badge badge-upcoming">${escapeHtml(af.referralCode || '—')}</span><br><small style="color:var(--text-dim);">${escapeHtml(af.email || af.id)} ${af.phone ? '· ' + escapeHtml(af.phone) : ''}</small></td>
-            <td><b>${refCnt} জন</b><br><small style="color:var(--text-dim);">ক্লিক: ${parseInt(af.clicks || 0)}</small></td>
+            <td><b>${refCnt} জন</b><br><small style="color:var(--text-dim);">ক্লিক: ${liveClk}</small></td>
             <td>
               <span class="badge ${cOn ? 'badge-approved' : 'badge-rejected'}">${cOn ? 'ON' : 'OFF'}</span>
               <div style="font-size:0.78rem; margin-top:4px;">${escapeHtml(modeMap[af.commissionType || 'profit_share'] || 'কমিশন %')} · <b>${Number(af.commissionRate || 0)}%</b>${escapeHtml(wdBadge)} (মিন ৳${Math.round(af.minCommissionPayout || 500)})</div>
@@ -9534,7 +9555,7 @@
       const email = document.getElementById('ua-af-email').value.trim();
       const pass = document.getElementById('ua-af-pass').value;
       const phone = document.getElementById('ua-af-phone').value.trim();
-      const rawCode = (document.getElementById('ua-af-code').value.trim() || name.replace(/[^a-zA-Z0-9]/g, '')).toUpperCase().slice(0, 12);
+      const rawCode = ((document.getElementById('ua-af-code').value.trim() || name.replace(/[^a-zA-Z0-9]/g, '')).replace(/[.#$\[\]\/\s]/g, '')).toUpperCase().slice(0, 12);
       const code = rawCode || ('AFF' + Math.floor(1000 + Math.random() * 9000));
       const cOn = document.getElementById('ua-af-comm-en').value === '1';
       const cType = document.getElementById('ua-af-comm-type').value || 'profit_share';
@@ -9962,53 +9983,7 @@
     }
 
     async function submitManualBonusCredit() {
-      if (!currentTurnoverPlayerUid || !db) return;
-      const u = (STATE.users || []).find(x => x.uid === currentTurnoverPlayerUid);
-      if (!u) return;
-
-      const bonusAmt = parseFloat(document.getElementById('tb-input-bonus-amt').value);
-      if (isNaN(bonusAmt) || bonusAmt <= 0) {
-        showToast('দয়া করে সঠিক বোনাস পরিমাণ লিখুন', 'error');
-        return;
-      }
-
-      const extraTurnover = parseFloat(document.getElementById('tb-input-bonus-turnover').value) || 0;
-
-      if (!confirm(`ইউজার ${u.name}-কে ৳${bonusAmt} প্রমোশনাল বোনাস দিতে চান?\n(অতিরিক্ত টার্নওভার: ৳${extraTurnover})`)) return;
-
-      try {
-        const curBal = parseFloat(u.balance) || 0;
-        const curBonus = parseFloat(u.bonusBalance) || 0;
-        const curReq = parseFloat(u.turnoverRequired) || 0;
-
-        const newBal = curBal + bonusAmt;
-        const newBonus = curBonus + bonusAmt;
-        const newReq = curReq + extraTurnover;
-
-        const trxKey = db.ref('transactions').push().key;
-        const updates = {};
-        updates[`users/${u.uid}/balance`] = firebase.database.ServerValue.increment(bonusAmt);
-        updates[`users/${u.uid}/bonusBalance`] = firebase.database.ServerValue.increment(bonusAmt);
-        updates[`users/${u.uid}/turnoverRequired`] = firebase.database.ServerValue.increment(extraTurnover);
-        updates[`transactions/${trxKey}`] = {
-          trxId: trxKey,
-          uid: u.uid,
-          type: 'PROMO_BONUS',
-          amount: bonusAmt,
-          beforeBal: curBal,
-          afterBal: newBal,
-          date: new Date().toLocaleString('bn-BD'),
-          timestamp: firebase.database.ServerValue.TIMESTAMP,
-          note: `Manual Promo Bonus credited by Admin (+৳${extraTurnover} turnover required)`
-        };
-
-        await db.ref().update(updates);
-        recordAuditLog('MANUAL_BONUS_CREDIT', u.uid, `Bonus: ৳${bonusAmt}, Turnover +৳${extraTurnover}`);
-        showToast(`🎉 ৳${bonusAmt} প্রমোশনাল বোনাস সফলভাবে অ্যাকাউন্টে যোগ করা হয়েছে!`, 'success');
-        openTurnoverBonusModal(u.uid);
-      } catch (err) {
-        showToast('বোনাস যোগ করতে ব্যর্থ: ' + err.message, 'error');
-      }
+      showToast('ম্যানুয়াল বোনাস বা ব্যালেন্স সমন্বয় শুধু MASTER ADMINISTRATOR করতে পারবেন।', 'error');
     }
 
     async function markUserTurnoverCompleted() {
@@ -10037,22 +10012,26 @@
       const u = (STATE.users || []).find(x => x.uid === currentTurnoverPlayerUid);
       if (!u) return;
 
-      const req = parseFloat(document.getElementById('tb-input-req-turnover').value);
+      const reqInput = parseFloat(document.getElementById('tb-input-req-turnover').value);
       const comp = parseFloat(document.getElementById('tb-input-comp-turnover').value);
 
-      if (isNaN(req) || isNaN(comp) || req < 0 || comp < 0) {
+      if (isNaN(comp) || comp < 0) {
         showToast('দয়া করে সঠিক সংখ্যা প্রদান করুন', 'error');
         return;
       }
 
       try {
         await db.ref(`users/${u.uid}`).update({
-          turnoverRequired: req,
           turnoverCompleted: comp,
           turnoverDone: comp
         });
-        recordAuditLog('TURNOVER_MANUAL_ADJUST', u.uid, `Required: ৳${req}, Completed: ৳${comp}`);
-        showToast('টার্নওভার সেটিংস সফলভাবে আপডেট হয়েছে!', 'success');
+        const curReq = parseFloat(u.turnoverRequired) || 0;
+        if (!isNaN(reqInput) && Math.abs(reqInput - curReq) > 0.01) {
+          showToast('Completed Turnover সেভ হয়েছে! (Required Turnover পরিবর্তন শুধু Master Admin করতে পারবেন)', 'info');
+        } else {
+          showToast('Completed Turnover সফলভাবে আপডেট হয়েছে!', 'success');
+        }
+        recordAuditLog('TURNOVER_MANUAL_ADJUST', u.uid, `Completed: ৳${comp}`);
         openTurnoverBonusModal(u.uid);
       } catch (err) {
         showToast('আপডেট ব্যর্থ: ' + err.message, 'error');
@@ -10064,17 +10043,15 @@
       const u = (STATE.users || []).find(x => x.uid === currentTurnoverPlayerUid);
       if (!u) return;
 
-      if (!confirm(`ইউজার ${u.name}-এর বোনাস ওয়ালেট ও টার্নওভার হিসেব শূন্য (০) রিসেট করতে চান?`)) return;
+      if (!confirm(`ইউজার ${u.name}-এর সম্পন্ন টার্নওভার ০ রিসেট করতে চান? (বোনাস ব্যালেন্স/Required Turnover কমাতে হলে Master Admin থেকে সমন্বয় করতে হবে)`)) return;
 
       try {
         await db.ref(`users/${u.uid}`).update({
-          bonusBalance: 0,
-          turnoverRequired: 0,
           turnoverCompleted: 0,
           turnoverDone: 0
         });
-        recordAuditLog('TURNOVER_BONUS_RESET', u.uid, 'Reset bonus and turnover to 0');
-        showToast('ইউজারের বোনাস ও টার্নওভার রিসেট করা হয়েছে', 'info');
+        recordAuditLog('TURNOVER_BONUS_RESET', u.uid, 'Reset completed turnover to 0');
+        showToast('ইউজারের সম্পন্ন টার্নওভার রিসেট করা হয়েছে', 'info');
         openTurnoverBonusModal(u.uid);
       } catch (err) {
         showToast('রিসেট ব্যর্থ: ' + err.message, 'error');
