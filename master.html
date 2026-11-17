@@ -2460,16 +2460,18 @@ async function setAdminBon(u){
 async function tx(p,f){return(await db.ref(p).transaction(f)).committed}
 const dec=a=>b=>b===null?0:(b>=a?b-a:undefined),inc=a=>b=>(b||0)+a;
 async function log(o){await db.ref('balanceLedger').push({...o,time:TS})}
+let _mwTxBusy=false;
+async function withTxLock(fn){if(_mwTxBusy){toast('অনুগ্রহ করে অপেক্ষা করুন...');return} _mwTxBusy=true;try{return await fn()}finally{_mwTxBusy=false}}
 async function toAdmin(uid,amt,type,note,reqId){
  await window.mwApi('/api/v1/master/transfer-admin',{adminUid:uid,amount:amt,direction:'to_admin',type,note:note||'',reqId:reqId||''},auth)}
 async function fromAdmin(uid,amt,note){
  await window.mwApi('/api/v1/master/transfer-admin',{adminUid:uid,amount:amt,direction:'from_admin',note:note||''},auth)}
 async function setMaster(){const v=parseFloat(prompt('নতুন Master ব্যালেন্স (টাকা):',MB));if(isNaN(v)||v<0)return;const n=prompt('কারণ/নোট:','Master fund update')||'';
- try{await window.mwApi('/api/v1/master/set-balance',{balance:v,note:n},auth);toast('Master ব্যালেন্স আপডেট হয়েছে')}catch(e){toast(e.message||'ব্যর্থ')}}
+ await withTxLock(async()=>{try{await window.mwApi('/api/v1/master/set-balance',{balance:v,note:n},auth);toast('Master ব্যালেন্স আপডেট হয়েছে')}catch(e){toast(e.message||'ব্যর্থ')}})}
 async function send(uid){const a=Math.floor(parseFloat(prompt('কত টাকা পাঠাবেন?','1000')));if(!a||a<=0)return;
- try{await toAdmin(uid,a,'MASTER_CREDIT','Direct send');toast('পাঠানো হয়েছে')}catch(e){toast(e.message)}}
+ await withTxLock(async()=>{try{await toAdmin(uid,a,'MASTER_CREDIT','Direct send');toast('পাঠানো হয়েছে')}catch(e){toast(e.message)}})}
 async function reclaim(uid){const a=Math.floor(parseFloat(prompt('কত টাকা ফেরত নেবেন?','1000')));if(!a||a<=0)return;
- try{await fromAdmin(uid,a,'Reclaim');toast('ফেরত নেওয়া হয়েছে')}catch(e){toast(e.message)}}
+ await withTxLock(async()=>{try{await fromAdmin(uid,a,'Reclaim');toast('ফেরত নেওয়া হয়েছে')}catch(e){toast(e.message)}})}
 async function uaToggle(){const n=!UAON;
  if(!confirm(n?'User Admin সাইড আবার চালু করবেন?':'User Admin সাইড বন্ধ করবেন?\nসব User Admin-এর অ্যাক্সেস বন্ধ হয়ে যাবে (প্লেয়ারদের কিছু হবে না)।'))return;
  try{await db.ref('adminSettings/userAdminOn').set(n);
@@ -2501,9 +2503,9 @@ async function reauth(){const p=prompt('নিশ্চিত করতে আ�
 async function approve(id){const r=REQ[id],a=ADM[r.uid];
  if(!a||a.active===false){toast('অ্যাডমিন সক্রিয় নয়');return}
  if(!await reauth())return;
- try{await window.mwApi('/api/v1/master/balance-requests/decision',{reqId:id,decision:'approve'},auth);toast('অনুমোদিত ✅')}
- catch(e){toast(e.message)}}
-async function reject(id){if(!confirm('বাতিল করবেন?'))return;try{await window.mwApi('/api/v1/master/balance-requests/decision',{reqId:id,decision:'reject'},auth);toast('বাতিল করা হয়েছে')}catch(e){toast(e.message)}}
+ await withTxLock(async()=>{try{await window.mwApi('/api/v1/master/balance-requests/decision',{reqId:id,decision:'approve'},auth);toast('অনুমোদিত ✅')}
+ catch(e){toast(e.message)}})}
+async function reject(id){if(!confirm('বাতিল করবেন?'))return;await withTxLock(async()=>{try{await window.mwApi('/api/v1/master/balance-requests/decision',{reqId:id,decision:'reject'},auth);toast('বাতিল করা হয়েছে')}catch(e){toast(e.message)}})}
 async function createAdmin(){
  const n=$('an').value.trim(),e=$('ae').value.trim(),p=$('ap').value,r=($('ar')&&$('ar').value)||'USER_ADMIN';
  if(!n||!e||p.length<6){toast('নাম, ইমেইল ও ৬+ অক্ষরের পাসওয়ার্ড দিন');return}

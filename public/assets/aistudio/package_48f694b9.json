@@ -1,0 +1,16 @@
+{
+  "name": "mostwin88-backend",
+  "version": "1.0.0",
+  "description": "MOSTWIN88 Private Balance & Security Backend for Render",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js",
+    "test": "node --test tests/*.test.js"
+  },
+  "dependencies": {
+    "firebase-admin": "^12.7.0"
+  },
+  "engines": {
+    "node": ">=18.0.0"
+  }
+}
