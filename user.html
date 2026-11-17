@@ -3047,8 +3047,7 @@ async function wd() {
   const btn = $('#wdBtn'); if (btn) { btn.disabled = true; btn.textContent = 'SUBMITTING...'; }
   setDwStatus('wdStatus', '', false);
   try {
-    const activeAg = getPreferredActiveAgent(wm);
-    const adminUid = getPlayerAdminUid() || (activeAg && activeAg.adminUid) || '';
+    const adminUid = getPlayerAdminUid() || '';
     const res = await window.mwApi('/api/v1/user/withdraw', {
       method: wm,
       amount: v,
@@ -3056,13 +3055,11 @@ async function wd() {
       bankName: wb,
       accountHolder: wh,
       pin,
-      adminUid: adminUid,
-      assignedAgentId: activeAg ? activeAg.agentUid : '',
-      assignedAgentName: activeAg ? activeAg.agentName : ''
+      adminUid: adminUid
     }, fbAuth);
     S.hasWithdrawPin = true;
     if (typeof res.balance === 'number') S.dep = res.balance;
-    toast('Withdrawal request sent. Processing takes up to 24 hours.');
+    toast('Withdrawal request User Admin-এর কাছে পাঠানো হয়েছে (Status: Pending)।');
     go('tx');
   } catch (err) {
     const msg = err.message || err.code || 'Withdrawal failed';

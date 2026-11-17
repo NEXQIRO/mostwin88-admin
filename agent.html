@@ -489,9 +489,9 @@ body.light .chat-bar input{background:#0a1530;color:#EAF0FF;border-color:rgba(25
 <!-- WITHDRAW -->
 <section class="page" id="withdraw">
  <div class="title">Assigned Withdrawals</div>
- <div class="subtitle">Admin কর্তৃক আপনার জন্য Assign করা Cashout Payments।</div>
+ <div class="subtitle">User Admin যাচাই করে আপনার কাছে পাঠানো পেমেন্টসমূহ · টাকা পাঠিয়ে Confirm করলে আপনার Wallet-এ যোগ হবে।</div>
  <select class="filter-select" id="withdrawFilterSelect" aria-label="Withdraw Status Filter" onchange="setFilter('withdraw', this.value)">
-  <option value="Assigned" id="optWdAssigned">Assigned (0)</option>
+  <option value="Assigned" id="optWdAssigned">Pending / Assigned (0)</option>
   <option value="Completed" id="optWdCompleted">Completed (0)</option>
   <option value="All" id="optWdAll">All (0)</option>
  </select>
@@ -914,10 +914,9 @@ function applyAgentScopeFilters() {
     .sort((a, b) => (b.timestamp || b.createdAt || 0) - (a.timestamp || a.createdAt || 0));
   withdrawals = rawWithdrawals
     .filter(w =>
-      w.assignedAgentId === currentAgentUid ||
-      (!w.assignedAgentId && myAdmin && w.adminUid === myAdmin) ||
-      (!w.assignedAgentId && !w.adminUid && !myAdmin) ||
-      w.completedByAgent === currentAgentUid
+      w.adminVerified === true &&
+      w.forwardedToAgent === true &&
+      (w.assignedAgentId === currentAgentUid || w.completedByAgent === currentAgentUid)
     )
     .sort((a, b) => (b.timestamp || b.createdAt || 0) - (a.timestamp || a.createdAt || 0));
 }
@@ -1033,9 +1032,9 @@ function startLiveAgentSync() {
     renderTransactionReport();
   });
 
-  // 4. Withdrawal Requests (Assigned to this agent OR under same parentAdminId)
+  // 4. Withdrawal Requests (Strictly Admin-Verified & Assigned to THIS Agent)
   let _initWdLoaded = false, _seenWdIds = new Set();
-  attachListener(db.ref('withdrawalRequests'), snap => {
+  attachListener(db.ref('withdrawalRequests').orderByChild('assignedAgentId').equalTo(currentAgentUid), snap => {
     const val = snap.val() || {};
     rawWithdrawals = Object.entries(val).map(([k, v]) => ({ id: k, ...v }));
     applyAgentScopeFilters();
@@ -1272,7 +1271,7 @@ function applyAgentCms() {
 function getAgentTotalBalance() { return Number(agentProfile && agentProfile.balance) || 0; }
 function getReservedAmount() {
   const srvRes = Number(agentProfile && agentProfile.reservedBalance) || 0;
-  const locRes = withdrawals.filter(w => w.status === 'Assigned' || w.status === 'AssignedToAgent' || w.status === 'Processing')
+  const locRes = withdrawals.filter(w => isWithdrawalAssigned(w))
     .reduce((s, w) => s + (Number(w.amount) || 0), 0);
   return Math.max(srvRes, locRes);
 }
@@ -1483,13 +1482,12 @@ function renderDeposits() {
 }
 
 function isWithdrawalAssigned(w) {
-  const st = String((w && w.status) || 'Pending');
-  return st === 'Pending' || st === 'Assigned' || st === 'AssignedToAgent' || st === 'Processing' || st === 'Verified';
+  const st = String((w && w.status) || '');
+  return !!(w && st === 'Pending' && w.adminVerified === true && w.forwardedToAgent === true && w.assignedAgentId === currentAgentUid);
 }
 
 function renderWithdrawals() {
   const q = (document.getElementById('withdrawSearch').value || '').toLowerCase();
-  const avail = getAgentAvailable();
   const list = withdrawals.filter(w => {
     const pl = usersMap[w.uid] || {};
     const pName = w.playerName || pl.name || pl.username || w.uid || '';
@@ -1499,11 +1497,12 @@ function renderWithdrawals() {
   });
 
   document.getElementById('withdrawList').innerHTML = list.length ? list.map(w => {
-    const st = w.status || 'Assigned';
+    const st = w.status || 'Pending';
     const pl = usersMap[w.uid] || {};
     const pName = w.playerName || pl.name || pl.username || w.uid || 'Player';
     const accNum = w.receiverNumber || w.accountNumber || w.number || w.account || 'N/A';
     const amt = Number(w.amount) || 0;
+    const isOpen = isWithdrawalAssigned(w);
     return `
       <div class="card">
        <div class="cardtop">
@@ -1514,14 +1513,19 @@ function renderWithdrawals() {
        <div class="detail"><span>Player</span><b>${escapeRequestText(pName)}</b></div>
        <div class="detail"><span>Payment Method</span><b>${escapeRequestText(w.method || 'bKash')}</b></div>
        <div class="detail"><span>Account Number</span><b>${escapeRequestText(accNum)}</b></div>
+       <div class="detail"><span>Verification</span><b style="color:#4ade80;">✓ Admin Verified (${escapeRequestText(w.verifiedByEmail || 'Admin')})</b></div>
+       ${w.adminNote ? `<div class="detail"><span>Admin Note</span><b>${escapeRequestText(w.adminNote)}</b></div>` : ''}
        ${w.paymentRef ? `<div class="detail"><span>Agent Payment TrxID</span><b>${escapeRequestText(w.paymentRef)}</b></div>` : ''}
-       ${isWithdrawalAssigned(w) ? (avail >= amt ? `
+       ${isOpen ? `
+       <div style="font-size:11.5px;color:#93c5fd;background:rgba(59,130,246,.12);border:1px solid rgba(59,130,246,.28);border-radius:10px;padding:8px 10px;margin:8px 0;">
+        💡 নিজ দায়িত্বে ইউজারের নম্বরে <b>${formatTaka(amt)}</b> ম্যানুয়ালি পাঠানোর পর Confirm করুন — Complete হলেই <b>+${formatTaka(amt)}</b> আপনার Agent Wallet-এ যোগ হবে।
+       </div>
        <div class="actions">
-        <button class="complete" onclick="completeWithdrawal('${escapeRequestText(w.id)}')">✓ PAY & COMPLETE</button>
-       </div>` : `<div class="warning">⚠️ Agent Wallet-এ পর্যাপ্ত Balance নেই (প্রয়োজন ${formatTaka(amt)}, আছে ${formatTaka(avail)})। Admin-এর কাছে Balance Request পাঠান।</div>`) : ''}
+        <button class="complete" onclick="completeWithdrawal('${escapeRequestText(w.id)}')">✓ পেমেন্ট সম্পন্ন করুন (PAY & COMPLETE)</button>
+       </div>` : ''}
       </div>
     `;
-  }).join('') : '<div class="empty"><span>📤</span><br>কোনো অ্যাসাইন করা উইথড্র রিকোয়েস্ট পাওয়া যায়নি।</div>';
+  }).join('') : '<div class="empty"><span>📤</span><br>Admin কর্তৃক যাচাই ও অ্যাসাইন করা কোনো উইথড্র রিকোয়েস্ট পাওয়া যায়নি।</div>';
   updateStats();
 }
 
@@ -1869,7 +1873,7 @@ function updateStats() {
   setOpt('optDepRejected', 'Rejected (' + rCount + ')');
   setOpt('optDepAll', 'All (' + deposits.length + ')');
 
-  setOpt('optWdAssigned', 'Assigned (' + wCount + ')');
+  setOpt('optWdAssigned', 'Pending / Assigned (' + wCount + ')');
   setOpt('optWdCompleted', 'Completed (' + cCount + ')');
   setOpt('optWdAll', 'All (' + withdrawals.length + ')');
 }

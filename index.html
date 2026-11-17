@@ -2534,6 +2534,11 @@
 
           <!-- Withdrawals Tab -->
           <div id="wallet-sub-withdrawals" style="display:none;">
+            <div style="margin-bottom:12px; padding:12px 14px; border-radius:10px; background:rgba(59,130,246,0.1); border:1px solid rgba(59,130,246,0.3); color:#dbeafe; font-size:0.84rem; line-height:1.5;">
+              <b>🛡️ উইথড্রয়াল কার্যপ্রক্রিয়া:</b> ইউজারের আবেদন প্রথমে User Admin যাচাই (ব্যালেন্স, টার্নওভার ও অ্যাসাইনড এজেন্ট) করে নির্দিষ্ট <b>Assigned Agent</b>-এর কাছে পাঠাবে।
+              এজেন্ট ম্যানুয়ালি টাকা পাঠিয়ে কনফার্ম না করা পর্যন্ত স্ট্যাটাস <b>Pending</b> থাকবে এবং Complete হওয়ার পর এজেন্টের ওয়ালেটে টাকা যোগ হবে।
+              <span style="color:#fde68a;">(Admin বা Master সরাসরি উইথড্র Complete করতে পারবে না)</span>
+            </div>
             <div class="card">
               <div class="card-header">
                 <div class="card-title">
@@ -2553,7 +2558,7 @@
                       <th>ব্যালেন্স ও টার্নওভার স্ট্যাটাস</th>
                       <th>সময়</th>
                       <th>স্ট্যাটাস</th>
-                      <th style="text-align: right;">পরিশোধ / রিফান্ড</th>
+                      <th style="text-align: right;">যাচাই / অ্যাকশন</th>
                     </tr>
                   </thead>
                   <tbody id="withdrawals-table-tbody">
@@ -4547,6 +4552,66 @@
     </div>
   </div>
 
+  <!-- MODAL: Verify Withdrawal & Forward to Assigned Agent -->
+  <div class="modal-overlay" id="modal-verify-forward-withdrawal">
+    <div class="modal" style="max-width: 520px;">
+      <div class="modal-header">
+        <div class="modal-title">🔍 উইথড্র যাচাই ও Assigned Agent-এ প্রেরণ</div>
+        <button class="modal-close" onclick="closeModal('modal-verify-forward-withdrawal')">&times;</button>
+      </div>
+      <div class="modal-body">
+        <input type="hidden" id="wd-vf-key">
+        <div style="background: var(--bg-card); border: 1px solid var(--border-color); border-radius: 12px; padding: 12px; margin-bottom: 12px;">
+          <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:6px;">
+            <span style="font-size:0.78rem; color:var(--text-dim);">প্লেয়ার</span>
+            <b id="wd-vf-player" style="color:#fff;">—</b>
+          </div>
+          <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:6px;">
+            <span style="font-size:0.78rem; color:var(--text-dim);">উত্তোলনের পরিমাণ</span>
+            <b id="wd-vf-amount" style="color:var(--accent); font-size:1.1rem;">৳ 0</b>
+          </div>
+          <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:6px;">
+            <span style="font-size:0.78rem; color:var(--text-dim);">পদ্ধতি ও নাম্বার</span>
+            <span id="wd-vf-method-num" style="font-family:monospace; color:#e2e8f0;">—</span>
+          </div>
+          <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:6px;">
+            <span style="font-size:0.78rem; color:var(--text-dim);">বর্তমান ওয়ালেট ব্যালেন্স</span>
+            <b id="wd-vf-live-bal" style="color:#4ade80;">৳ 0</b>
+          </div>
+          <div style="display:flex; justify-content:space-between; align-items:center;">
+            <span style="font-size:0.78rem; color:var(--text-dim);">টার্নওভার যাচাই</span>
+            <span id="wd-vf-turnover" style="font-size:0.82rem;">—</span>
+          </div>
+        </div>
+
+        <div id="wd-vf-turnover-warn" style="display:none; margin-bottom:12px; padding:10px 12px; border-radius:10px; background:rgba(239,68,68,0.14); border:1px solid rgba(239,68,68,0.4); color:#fecaca; font-size:0.82rem;">
+          ⚠️ সতর্কতা: এই প্লেয়ারের টার্নওভার এখনো অসম্পূর্ণ! যাচাই করে পাঠাতে চাইলে নিশ্চিত হয়ে নিন অথবা Reject করে রিফান্ড দিন।
+        </div>
+
+        <div class="form-group">
+          <label class="form-label" for="wd-vf-agent-sel">Assigned Agent নির্বাচন করুন *</label>
+          <select id="wd-vf-agent-sel" class="form-control">
+            <option value="">-- সক্রিয় Agent নির্বাচন করুন --</option>
+          </select>
+          <small id="wd-vf-agent-hint" style="display:block; margin-top:4px; color:var(--text-dim); font-size:0.76rem;"></small>
+        </div>
+
+        <div class="form-group" style="margin-top:10px;">
+          <label class="form-label" for="wd-vf-note">যাচাই নোট (ঐচ্ছিক)</label>
+          <input type="text" id="wd-vf-note" class="form-control" placeholder="যেমন: ব্যালেন্স ও একাউন্ট সঠিক, পেমেন্ট করুন">
+        </div>
+
+        <div style="margin-top:10px; padding:9px 11px; border-radius:8px; background:rgba(245,158,11,0.1); border:1px solid rgba(245,158,11,0.3); font-size:0.78rem; color:#fde68a;">
+          ℹ️ এজেন্টের কাছে পাঠানোর পরও স্ট্যাটাস <b>Pending</b> থাকবে। নির্ধারিত Agent ম্যানুয়ালি পেমেন্ট করে Confirm করলে তবেই <b>Completed</b> হবে এবং এজেন্টের ওয়ালেটে টাকা যোগ হবে।
+        </div>
+      </div>
+      <div class="modal-footer" style="display:flex; justify-content:flex-end; gap:8px;">
+        <button type="button" class="btn btn-secondary btn-sm" onclick="closeModal('modal-verify-forward-withdrawal')">বাতিল</button>
+        <button type="button" class="btn btn-primary btn-sm" id="wd-vf-submit-btn" onclick="submitVerifyForwardWithdrawal()">✓ যাচাই সম্পন্ন করে এজেন্টে পাঠান</button>
+      </div>
+    </div>
+  </div>
+
 
   <!-- ==================== JAVASCRIPT APPLICATION CODE ==================== -->
   <script src="./firebase-config.js?v=20261116c"></script>
@@ -4844,7 +4909,7 @@
           STATE.withdrawals = items;
 
           items.forEach(w => {
-            if (w.status === 'Pending' && !w.assignedAgentId) {
+            if (w.status === 'Pending' && !w.forwardedToAgent && !w.assignedAgentId) {
               if (isInitialWithdrawalsLoaded && !seenWithdrawalIds.has(w.id)) {
                 playRequestAlertSound('withdrawal');
                 showRequestVisualAlert('withdrawal', w.userName, w.amount, w.id);
@@ -5582,8 +5647,9 @@
         } else {
           tbody.innerHTML = recentItems.map(item => {
             const isDep = !!item.senderNumber;
-            const stCls = ['Verified','Processing'].includes(item.status) ? wdStatusMeta(item.status).cls : item.status === 'Pending' ? 'badge-pending' : (item.status === 'Approved' || item.status === 'Completed') ? 'badge-approved' : 'badge-rejected';
-            const stLbl = ['Verified','Processing'].includes(item.status) ? wdStatusMeta(item.status).label : item.status;
+            const wdMeta = !isDep ? wdStatusMeta(item) : null;
+            const stCls = wdMeta ? wdMeta.cls : (item.status === 'Pending' ? 'badge-pending' : (item.status === 'Approved' || item.status === 'Completed') ? 'badge-approved' : 'badge-rejected');
+            const stLbl = wdMeta ? wdMeta.label : item.status;
             return `
               <tr>
                 <td><span class="badge ${isDep ? 'badge-upcoming' : 'badge-completed'}">${isDep ? 'ডিপোজিট' : 'উইথড্র'}</span></td>
@@ -5603,7 +5669,7 @@
           cardsEl.innerHTML = recentItems.map(item => {
             const isDep = !!item.senderNumber;
             const amt = Number(item.amount || 0).toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
-            const stTxt = item.status || 'Pending';
+            const stTxt = isDep ? (item.status || 'Pending') : wdStatusMeta(item).label;
             const timeTxt = new Date(item.createdAt || Date.now()).toLocaleTimeString('bn-BD', { hour: '2-digit', minute: '2-digit' });
             return `
               <div class="tx-card-item" onclick="switchView('view-wallet')">
@@ -6562,17 +6628,26 @@
       const withTbody = document.getElementById('withdrawals-table-tbody');
       withTbody.innerHTML = STATE.withdrawals.map(w => {
         const wAgLbl = w.assignedAgentName || agentNameById(w.assignedAgentId);
+        const wMeta = wdStatusMeta(w);
+        const wOpen = isWithdrawalOpen(w.status);
+        const isForwarded = w.status === 'Pending' && (w.forwardedToAgent === true || (w.adminVerified === true && !!w.assignedAgentId));
+        const u = (STATE.users || []).find(x => x.uid === w.uid);
+        const liveBal = u && u.balance !== undefined ? Number(u.balance) : Number(w.currentBalance || 0);
         return `
         <tr>
           <td><small style="font-family:monospace;">${w.id || 'WTH'}</small></td>
-          <td><b>${escapeHtml(w.userName || 'Player')}</b><br><small style="color:var(--text-dim);">${w.uid}</small>${(w.assignedAgentId || w.assignedAgentName) ? `<div style="margin-top:2px;"><span class="badge badge-upcoming" style="font-size:0.68rem;">🤝 এজেন্টে পাঠানো: ${escapeHtml(wAgLbl)}</span></div>` : ''}</td>
-          <td><span class="badge badge-upcoming">${w.method}</span></td>
+          <td>
+            <b>${escapeHtml(w.userName || 'Player')}</b><br>
+            <small style="color:var(--text-dim);">${escapeHtml(w.uid || '')}</small>
+            ${isForwarded ? `<div style="margin-top:3px;"><span class="badge badge-approved" style="font-size:0.66rem;">✓ Admin Verified</span> <span class="badge badge-upcoming" style="font-size:0.66rem;">🤝 এজেন্ট: ${escapeHtml(wAgLbl)}</span></div>` : (w.assignedAgentId || w.assignedAgentName) ? `<div style="margin-top:3px;"><span class="badge badge-upcoming" style="font-size:0.66rem;">🤝 এজেন্ট: ${escapeHtml(wAgLbl)}</span></div>` : ''}
+            ${w.adminNote ? `<div style="font-size:0.7rem;color:#94a3b8;margin-top:2px;">📝 ${escapeHtml(w.adminNote)}</div>` : ''}
+          </td>
+          <td><span class="badge badge-upcoming">${escapeHtml(w.method || '')}</span></td>
           <td style="font-family:monospace;">${escapeHtml(w.receiverNumber || w.accountNumber || w.number || '—')}</td>
           <td><b style="color:var(--accent); font-size:1.05rem; font-family:var(--font-display);">৳ ${w.amount}</b></td>
           <td>
-            <div style="font-weight:600;">ব্যালেন্স: ৳ ${w.currentBalance || 0}</div>
+            <div style="font-weight:600;">ব্যালেন্স: ৳ ${liveBal}</div>
             ${(() => {
-              const u = (STATE.users || []).find(x => x.uid === w.uid);
               const req = parseFloat(u?.turnoverRequired) || 0;
               const comp = parseFloat(u?.turnoverDone !== undefined ? u?.turnoverDone : u?.turnoverCompleted) || 0;
               const rem = Math.max(0, Math.round((req - comp) * 100) / 100);
@@ -6584,7 +6659,8 @@
           <td style="color:var(--text-dim); font-size:0.8rem;">${w.createdAt ? new Date(w.createdAt).toLocaleTimeString('bn-BD') : 'সম্প্রতি'}</td>
           <td>
             <div style="display:flex; flex-direction:column; gap:4px;">
-              <div><span class="badge ${wdStatusMeta(w.status).cls}">${wdStatusMeta(w.status).label}</span></div>
+              <div><span class="badge ${wMeta.cls}">${wMeta.label}</span></div>
+              ${w.paymentRef ? `<small style="font-family:monospace; color:#4ade80; font-size:0.7rem;">TrxID: ${escapeHtml(w.paymentRef)}</small>` : ''}
               <select class="action-dropdown-select" onchange="npWdExtraMenu(this, '${w.uid}')" title="আরও অপশন" style="font-size:0.72rem; padding:3px 6px; max-width:150px;">
                 <option value="" disabled selected>⋯ আরও অপশন ▾</option>
                 <option value="bonus">🎁 BONUS / TURNOVER</option>
@@ -6594,20 +6670,16 @@
             </div>
           </td>
           <td style="text-align: right; white-space: nowrap;">
-            ${isWithdrawalOpen(w.status) ? `
+            ${wOpen ? `
               <div style="display:inline-flex; gap:6px; align-items:center; flex-wrap:wrap; justify-content:flex-end;">
-                <select class="action-dropdown-select" onchange="handleWithdrawalActionDropdown(this, '${w.id}')" title="অ্যাকশন নির্বাচন করুন">
-                  <option value="" disabled selected>⚡ ব্যবস্থা নিন ▾</option>
-                  <option value="verify" ${w.status === 'Verified' ? 'disabled' : ''} style="color:#3b82f6; font-weight:700;">🔍 ভেরিফাই করা হয়েছে</option>
-                  <option value="processing" ${w.status === 'Processing' ? 'disabled' : ''} style="color:#f59e0b; font-weight:700;">⏳ প্রসেসিং চলছে</option>
-                  <option value="complete" style="color:#22c55e; font-weight:700;">✓ কনফার্ম (টাকা পাঠানো হয়েছে)</option>
-                  <option value="reject" style="color:#ef4444; font-weight:700;">✕ রিফান্ড / বাতিল</option>
-                </select>
-                ${activeAgents.length ? `<select class="action-dropdown-select" style="font-size:0.72rem; max-width:140px;" onchange="if(this.value){assignRequestToAgent('withdrawal','${w.id}',this.value);this.selectedIndex=0;}" title="এজেন্টে পাঠান">
-                  <option value="" selected>🤝 এজেন্ট অ্যাসাইন ▾</option>${agentOptsHtml}
-                </select>` : ''}
+                ${isForwarded ? `
+                  <button class="btn btn-sm btn-secondary" onclick="openVerifyForwardWithdrawalModal('${w.id}')" title="Assigned Agent পরিবর্তন করুন">🔄 এজেন্ট পরিবর্তন</button>
+                ` : `
+                  <button class="btn btn-sm btn-primary" onclick="openVerifyForwardWithdrawalModal('${w.id}')">🔍 যাচাই ও এজেন্টে পাঠান</button>
+                `}
+                <button class="btn btn-sm btn-danger" onclick="rejectWithdrawal('${w.id}')">✕ বাতিল ও রিফান্ড</button>
               </div>
-            ` : `<span class="badge ${wdStatusMeta(w.status).cls}" style="font-size:0.75rem;">${wdStatusMeta(w.status).label}</span>`}
+            ` : `<span class="badge ${wMeta.cls}" style="font-size:0.75rem;">${wMeta.label}</span>`}
           </td>
         </tr>
       `; }).join('');
@@ -6639,36 +6711,47 @@
       }
     }
 
-    // Withdrawal status flow: Pending -> Verified -> Processing -> Completed (or Rejected)
-    function isWithdrawalOpen(status) {
-      return ['Pending', 'Verified', 'Processing', 'AssignedToAgent'].includes(status);
+    // Withdrawal status flow: Pending (ADMIN_PENDING) -> Pending + Verified/Forwarded (AGENT_ASSIGNED) -> Completed (by Assigned Agent ONLY) or Rejected (refunded)
+    function isWithdrawalOpen(wOrStatus) {
+      const st = typeof wOrStatus === 'object' && wOrStatus !== null ? wOrStatus.status : wOrStatus;
+      return ['Pending', 'Verified', 'Processing', 'AssignedToAgent'].includes(st);
     }
-    function wdStatusMeta(status) {
-      switch (status) {
-        case 'Pending':    return { label: '⏳ পেন্ডিং', cls: 'badge-pending' };
-        case 'AssignedToAgent': return { label: '🤝 এজেন্টে অ্যাসাইন', cls: 'badge-upcoming' };
-        case 'Verified':   return { label: '🔍 ভেরিফাইড', cls: 'badge-upcoming' };
-        case 'Processing': return { label: '⚙️ প্রসেসিং', cls: 'badge-pending' };
+    function wdStatusMeta(wOrStatus) {
+      const obj = typeof wOrStatus === 'object' && wOrStatus !== null ? wOrStatus : { status: wOrStatus };
+      const st = obj.status;
+      if (st === 'Pending') {
+        if (obj.forwardedToAgent === true || (obj.adminVerified === true && obj.assignedAgentId)) {
+          return { label: `🤝 এজেন্টে পাঠানো (${obj.assignedAgentName || 'Agent'}) · Pending`, cls: 'badge-upcoming' };
+        }
+        return { label: '⏳ Admin যাচাই অপেক্ষমাণ', cls: 'badge-pending' };
+      }
+      switch (st) {
+        case 'AssignedToAgent': return { label: '🤝 এজেন্টে অ্যাসাইন (Pending)', cls: 'badge-upcoming' };
+        case 'Verified':   return { label: '🔍 ভেরিফাইড (Pending)', cls: 'badge-upcoming' };
+        case 'Processing': return { label: '⚙️ প্রসেসিং (Pending)', cls: 'badge-pending' };
         case 'Completed':
-        case 'Approved':   return { label: '✓ সম্পন্ন', cls: 'badge-approved' };
-        case 'Rejected':   return { label: '✕ বাতিল', cls: 'badge-rejected' };
-        default:           return { label: status || '—', cls: 'badge-rejected' };
+        case 'Approved':   return { label: '✓ সম্পন্ন (Agent Paid)', cls: 'badge-approved' };
+        case 'Rejected':   return { label: '✕ বাতিল (Refunded)', cls: 'badge-rejected' };
+        default:           return { label: st || '—', cls: 'badge-rejected' };
       }
     }
 
     async function assignRequestToAgent(kind, reqId, agentUid) {
-      if (!db || !reqId || !agentUid) return;
+      if (!db || !reqId) return;
+      if (kind !== 'deposit') {
+        openVerifyForwardWithdrawalModal(reqId);
+        return;
+      }
+      if (!agentUid) return;
       const ag = (STATE.agents || []).find(a => a.id === agentUid);
       if (!ag) { showToast('সক্রিয় এজেন্ট পাওয়া যায়নি', 'error'); return; }
-      const node = kind === 'deposit' ? 'depositRequests' : 'withdrawalRequests';
       try {
         const updates = {};
-        updates[`${node}/${reqId}/assignedAgentId`] = agentUid;
-        updates[`${node}/${reqId}/assignedAgentName`] = ag.name || ag.email || 'Agent';
-        updates[`${node}/${reqId}/assignedAt`] = firebase.database.ServerValue.TIMESTAMP;
-        if (kind === 'withdrawal') updates[`${node}/${reqId}/status`] = 'AssignedToAgent';
+        updates[`depositRequests/${reqId}/assignedAgentId`] = agentUid;
+        updates[`depositRequests/${reqId}/assignedAgentName`] = ag.name || ag.email || 'Agent';
+        updates[`depositRequests/${reqId}/assignedAt`] = firebase.database.ServerValue.TIMESTAMP;
         await db.ref().update(updates);
-        recordAuditLog('ASSIGN_TO_AGENT', reqId, `${kind.toUpperCase()} assigned to ${ag.name || agentUid}`);
+        recordAuditLog('ASSIGN_TO_AGENT', reqId, `DEPOSIT assigned to ${ag.name || agentUid}`);
         showToast(`✅ এজেন্ট ${ag.name || agentUid}-এর কাছে পাঠানো হয়েছে`, 'success');
       } catch (err) {
         showToast('এজেন্ট অ্যাসাইন ব্যর্থ: ' + err.message, 'error');
@@ -6683,40 +6766,79 @@
       else if (v === 'report') openPlayerFinancialReport(uid);
     }
 
-    function handleWithdrawalActionDropdown(sel, withId) {
-      const val = sel.value;
-      sel.value = ''; // Reset select
-      if (val === 'verify') {
-        setWithdrawalStatus(withId, 'Verified');
-      } else if (val === 'processing') {
-        setWithdrawalStatus(withId, 'Processing');
-      } else if (val === 'complete') {
-        completeWithdrawal(withId);
-      } else if (val === 'reject') {
-        rejectWithdrawal(withId);
-      }
-    }
-
-    // Verify / Processing: updates the status the user sees in their account
-    async function setWithdrawalStatus(withKey, newStatus) {
-      const w = STATE.withdrawals.find(item => item.id === withKey);
-      if (!w || !db) return;
+    function openVerifyForwardWithdrawalModal(withKey) {
+      const w = (STATE.withdrawals || []).find(item => item.id === withKey);
+      if (!w) return;
       if (!isWithdrawalOpen(w.status)) {
         showToast('এই উইথড্র ইতিমধ্যে সম্পন্ন বা বাতিল হয়েছে', 'error');
         return;
       }
-      if (!['Verified', 'Processing'].includes(newStatus)) return;
+      const u = (STATE.users || []).find(x => x.uid === w.uid) || {};
+      const liveBal = u.balance !== undefined ? Number(u.balance) : Number(w.currentBalance || 0);
+      const req = parseFloat(u.turnoverRequired) || 0;
+      const comp = parseFloat(u.turnoverDone !== undefined ? u.turnoverDone : u.turnoverCompleted) || 0;
+      const rem = Math.max(0, Math.round((req - comp) * 100) / 100);
+
+      document.getElementById('wd-vf-key').value = withKey;
+      document.getElementById('wd-vf-player').innerText = `${w.userName || u.name || 'Player'} (${w.uid})`;
+      document.getElementById('wd-vf-amount').innerText = `৳ ${Number(w.amount || 0).toLocaleString('en-US')}`;
+      document.getElementById('wd-vf-method-num').innerText = `${w.method || 'Wallet'} · ${w.receiverNumber || w.accountNumber || w.number || '—'}`;
+      document.getElementById('wd-vf-live-bal').innerText = `৳ ${liveBal.toLocaleString('en-US')}`;
+      document.getElementById('wd-vf-turnover').innerHTML = req === 0
+        ? '<span class="badge" style="background:rgba(255,255,255,0.08);color:var(--text-dim);">টার্নওভার নেই</span>'
+        : rem <= 0
+          ? `<span class="badge badge-approved">✓ সম্পন্ন (৳${comp}/৳${req})</span>`
+          : `<span class="badge" style="background:#ef4444;color:#fff;">⚠️ বাকি ৳${rem} (৳${comp}/৳${req})</span>`;
+      document.getElementById('wd-vf-turnover-warn').style.display = (req > 0 && rem > 0) ? 'block' : 'none';
+      document.getElementById('wd-vf-note').value = w.adminNote || '';
+
+      const activeAgents = (STATE.agents || []).filter(a => a && a.active !== false);
+      const sel = document.getElementById('wd-vf-agent-sel');
+      const hint = document.getElementById('wd-vf-agent-hint');
+      const suggestedId = w.assignedAgentId || w.preferredAgentId || u.assignedAgentId || '';
+
+      sel.innerHTML = `<option value="">-- সক্রিয় Agent নির্বাচন করুন (${activeAgents.length} জন) --</option>` +
+        activeAgents.map(a => {
+          const agLabel = `${a.name || a.email || a.id} (ওয়ালেট: ৳${Math.round(Number(a.balance || 0))})`;
+          return `<option value="${escapeHtml(a.id)}" ${a.id === suggestedId ? 'selected' : ''}>${escapeHtml(agLabel)}</option>`;
+        }).join('');
+
+      if (!activeAgents.length) {
+        hint.innerHTML = '<span style="color:#f87171;">⚠️ আপনার লাইনে কোনো সক্রিয় Agent নেই! আগে Agents ট্যাব থেকে Agent তৈরি বা সক্রিয় করুন।</span>';
+      } else if (suggestedId && activeAgents.some(a => a.id === suggestedId)) {
+        const sugAg = activeAgents.find(a => a.id === suggestedId);
+        hint.innerHTML = `<span style="color:#4ade80;">✓ প্লেয়ারের Assigned Agent লাইন: <b>${escapeHtml(sugAg.name || sugAg.email || suggestedId)}</b></span>`;
+      } else {
+        hint.innerText = 'প্লেয়ারের লাইনের সঠিক Assigned Agent নির্বাচন করে Forward করুন।';
+      }
+
+      openModal('modal-verify-forward-withdrawal');
+    }
+
+    async function submitVerifyForwardWithdrawal() {
+      const withKey = (document.getElementById('wd-vf-key').value || '').trim();
+      const agentUid = (document.getElementById('wd-vf-agent-sel').value || '').trim();
+      const adminNote = (document.getElementById('wd-vf-note').value || '').trim();
+      if (!withKey) return;
+      if (!agentUid) {
+        showToast('অনুগ্রহ করে একজন Assigned Agent নির্বাচন করুন', 'error');
+        return;
+      }
+      const btn = document.getElementById('wd-vf-submit-btn');
+      if (btn) { btn.disabled = true; btn.innerText = 'পাঠানো হচ্ছে...'; }
       try {
-        const updates = {};
-        const stamp = firebase.database.ServerValue.TIMESTAMP;
-        updates[`withdrawalRequests/${withKey}/status`] = newStatus;
-        updates[`withdrawalRequests/${withKey}/${newStatus === 'Verified' ? 'verifiedAt' : 'processingAt'}`] = stamp;
-        updates[`withdrawalRequests/${withKey}/statusUpdatedAt`] = stamp;
-        await db.ref().update(updates);
-        recordAuditLog('WITHDRAWAL_' + newStatus.toUpperCase(), withKey, `Status -> ${newStatus} (৳${w.amount}, ${w.userName || w.uid})`);
-        showToast(newStatus === 'Verified' ? '🔍 ভেরিফাই করা হয়েছে। ইউজার তার অ্যাকাউন্টে স্ট্যাটাস দেখবে।' : '⚙️ প্রসেসিং স্ট্যাটাস দেওয়া হয়েছে। ইউজার তার অ্যাকাউন্টে দেখবে।', 'success');
+        const res = await window.mwApi('/api/v1/admin/withdrawals/decision', {
+          withKey,
+          decision: 'verify_forward',
+          agentUid,
+          adminNote
+        }, auth);
+        closeModal('modal-verify-forward-withdrawal');
+        showToast(`✅ যাচাই সম্পন্ন! এজেন্ট ${res.assignedAgentName || agentUid}-এর কাছে পাঠানো হয়েছে (Status: Pending)`, 'success');
       } catch (err) {
-        showToast('স্ট্যাটাস পরিবর্তন ব্যর্থ: ' + err.message, 'error');
+        showToast('যাচাই ও ফরোয়ার্ড ব্যর্থ: ' + err.message, 'error');
+      } finally {
+        if (btn) { btn.disabled = false; btn.innerText = '✓ যাচাই সম্পন্ন করে এজেন্টে পাঠান'; }
       }
     }
 
@@ -6822,37 +6944,7 @@
       }
     }
 
-    async function completeWithdrawal(withKey) {
-      const w = STATE.withdrawals.find(item => item.id === withKey);
-      if (!w || !db) return;
-
-      if (!isWithdrawalOpen(w.status)) { showToast('এই উইথড্র ইতিমধ্যে সম্পন্ন বা বাতিল হয়েছে', 'error'); return; }
-
-      const u = (STATE.users || []).find(x => x.uid === w.uid);
-      const req = parseFloat(u?.turnoverRequired) || 0;
-      const comp = parseFloat(u?.turnoverDone !== undefined ? u?.turnoverDone : u?.turnoverCompleted) || 0;
-      const rem = Math.max(0, Math.round((req - comp) * 100) / 100);
-      const enforce = STATE.settings.enforceTurnover !== false;
-
-      if (rem > 0 && enforce) {
-        const proceed = confirm(`⚠️ সতর্কবার্তা: ইউজারের টার্নওভার অপূর্ণ!\n\nইউজার: ${w.userName || w.uid}\nপ্রয়োজনীয় টার্নওভার: ৳${req}\nসম্পন্ন: ৳${comp}\nটার্নওভার বাকি: ৳${rem}\n\nটার্নওভার পূরণ না হলেও কি আপনি এই উইথড্র অনুমোদন করতে চান?`);
-        if (!proceed) return;
-      }
-
-      const wAmt = parseFloat(w.amount) || 0;
-      const refId = prompt(`ইউজার ${w.userName} কে ৳${wAmt} পাঠানোর পর আপনার পেমেন্ট TrxID লিখুন:`, 'TRX_' + Math.floor(Math.random() * 899999 + 100000));
-      if (!refId) return;
-
-      try {
-        const res = await window.mwApi('/api/v1/admin/withdrawals/decision', { withKey, decision: 'complete', paymentRef: refId }, auth);
-        if (typeof res.adminBalance === 'number') {
-          setAdminBalance(res.adminBalance, `Withdrawal Completed +৳${wAmt} from User ${w.userName}`);
-        }
-        showToast(`উইথড্র রিকোয়েস্ট সফলভাবে সম্পন্ন হয়েছে! ৳${wAmt} অ্যাডমিন ব্যালেন্সে জমা হয়েছে`, 'success');
-      } catch (err) {
-        showToast('সম্পন্ন ব্যর্থ: ' + err.message, 'error');
-      }
-    }
+    // Note: Direct Admin withdrawal completion removed — only Assigned Agent can complete payment after Admin verification.
 
     async function rejectWithdrawal(withKey) {
       const w = STATE.withdrawals.find(item => item.id === withKey);
@@ -8897,7 +8989,7 @@
 
     function updateAdminNotificationBadge() {
       const unreadDeps = STATE.deposits.filter(d => d.status === 'Pending' && !d.assignedAgentId && !STATE.adminReadNotifs.has(d.id)).length;
-      const unreadWiths = STATE.withdrawals.filter(w => w.status === 'Pending' && !w.assignedAgentId && !STATE.adminReadNotifs.has(w.id)).length;
+      const unreadWiths = STATE.withdrawals.filter(w => w.status === 'Pending' && !w.forwardedToAgent && !w.assignedAgentId && !STATE.adminReadNotifs.has(w.id)).length;
       const totalUnread = unreadDeps + unreadWiths;
 
       const badge = document.getElementById('admin-notif-badge-counter');
@@ -8969,11 +9061,14 @@
       container.innerHTML = filtered.map(item => {
         const isDep = item.reqType === 'DEPOSIT';
         const isRead = STATE.adminReadNotifs.has(item.id);
-        const isPending = item.status === 'Pending' || (item.reqType === 'WITHDRAWAL' && ['Verified', 'Processing'].includes(item.status));
+        const isPending = isDep ? item.status === 'Pending' : isWithdrawalOpen(item);
         const typeLabel = isDep ? 'ডিপোজিট আবেদন' : 'উইথড্র আবেদন';
         const badgeColor = isDep ? 'var(--primary)' : 'var(--accent)';
         const icon = isDep ? '📥' : '📤';
         const timeStr = item.createdAt ? new Date(item.createdAt).toLocaleTimeString('bn-BD') : 'সম্প্রতি';
+        const wdNotifMeta = !isDep ? wdStatusMeta(item) : null;
+        const notifStCls = wdNotifMeta ? wdNotifMeta.cls : (item.status === 'Pending' ? 'badge-pending' : (item.status === 'Approved' || item.status === 'Completed') ? 'badge-approved' : 'badge-rejected');
+        const notifStLbl = wdNotifMeta ? wdNotifMeta.label : item.status;
 
         return `
           <div style="background: ${isRead ? 'var(--bg-surface)' : 'linear-gradient(90deg, rgba(245, 158, 11, 0.08), var(--bg-card))'}; border: 1px solid ${isRead ? 'var(--border-subtle)' : 'var(--border-color)'}; border-left: 4px solid ${badgeColor}; border-radius: var(--radius-sm); padding: 12px 14px; display: flex; align-items: flex-start; justify-content: space-between; gap: 12px;">
@@ -8982,7 +9077,7 @@
               <div>
                 <div style="display: flex; align-items: center; gap: 8px; flex-wrap: wrap;">
                   <b style="color: #fff; font-size: 0.95rem;">${typeLabel}: ৳ ${item.amount}</b>
-                  <span class="badge ${['Verified','Processing'].includes(item.status) ? wdStatusMeta(item.status).cls : item.status === 'Pending' ? 'badge-pending' : item.status === 'Approved' || item.status === 'Completed' ? 'badge-approved' : 'badge-rejected'}" style="font-size: 0.68rem;">${['Verified','Processing'].includes(item.status) ? wdStatusMeta(item.status).label : item.status}</span>
+                  <span class="badge ${notifStCls}" style="font-size: 0.68rem;">${escapeHtml(notifStLbl || '')}</span>
                   ${!isRead && isPending ? '<span style="width: 7px; height: 7px; border-radius: 50%; background: var(--accent); box-shadow: 0 0 6px var(--accent);" title="অপঠিত"></span>' : ''}
                 </div>
                 <div style="font-size: 0.82rem; color: var(--text-main); margin-top: 3px;">
@@ -10094,7 +10189,7 @@
       "u_adjust":     { "fns": ["adjustUserBalance", "adjustBalanceFromSecModal"] },
       "u_bonus":      { "fns": ["openTurnoverBonusModal", "submitManualBonusCredit", "saveDirectTurnoverValues", "markUserTurnoverCompleted", "resetUserBonusAndTurnover"] },
       "dep":          { "fns": ["approveDeposit", "rejectDeposit", "handleDepositActionDropdown"] },
-      "wd":           { "fns": ["completeWithdrawal", "rejectWithdrawal", "setWithdrawalStatus", "handleWithdrawalActionDropdown"] },
+      "wd":           { "fns": ["openVerifyForwardWithdrawalModal", "submitVerifyForwardWithdrawal", "rejectWithdrawal"] },
       "bal_req":      { "fns": ["openAdminFundModal"] },
       "agent_manage": { "fns": ["createUserAdminAgent", "sendAgentFundAdmin", "reclaimAgentFundAdmin", "toggleAgentActiveAdmin", "approveAgentReqAdmin", "rejectAgentReqAdmin", "assignRequestToAgent"] },
       "aff_commission":{ "fns": ["createUserAdminAffiliate", "openAdminAffCommModal", "creditAffCommissionAdmin", "toggleAffActiveAdmin", "approveAffReqAdmin", "rejectAffReqAdmin"] },
