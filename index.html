@@ -4815,7 +4815,7 @@
           STATE.deposits = items;
 
           items.forEach(dep => {
-            if (dep.status === 'Pending') {
+            if (dep.status === 'Pending' && !dep.assignedAgentId) {
               if (isInitialDepositsLoaded && !seenDepositIds.has(dep.id)) {
                 playRequestAlertSound('deposit');
                 showRequestVisualAlert('deposit', dep.userName, dep.amount, dep.id);
@@ -4844,7 +4844,7 @@
           STATE.withdrawals = items;
 
           items.forEach(w => {
-            if (w.status === 'Pending') {
+            if (w.status === 'Pending' && !w.assignedAgentId) {
               if (isInitialWithdrawalsLoaded && !seenWithdrawalIds.has(w.id)) {
                 playRequestAlertSound('withdrawal');
                 showRequestVisualAlert('withdrawal', w.userName, w.amount, w.id);
@@ -6497,12 +6497,20 @@
       const activeAgents = (STATE.agents || []).filter(a => a.active !== false && a.status !== 'suspended');
       const agentOptsHtml = activeAgents.map(a => `<option value="${escapeHtml(a.id)}">🤝 ${escapeHtml(a.name || a.email)} (৳${Math.round(a.balance || 0)})</option>`).join('');
 
+      const agentNameById = id => {
+        if (!id) return '';
+        const ag = (STATE.agents || []).find(a => a.id === id);
+        return (ag && (ag.name || ag.email)) || 'Agent';
+      };
+
       // 1. Deposits Table
       const depTbody = document.getElementById('deposits-table-tbody');
-      depTbody.innerHTML = STATE.deposits.map(d => `
+      depTbody.innerHTML = STATE.deposits.map(d => {
+        const agLbl = d.assignedAgentName || agentNameById(d.assignedAgentId);
+        return `
         <tr>
           <td><small style="font-family:monospace;">${d.id || 'DEP'}</small></td>
-          <td><b>${escapeHtml(d.userName || 'Player')}</b><br><small style="color:var(--text-dim);">${d.uid}</small>${d.assignedAgentName ? `<div style="margin-top:2px;"><span class="badge badge-upcoming" style="font-size:0.68rem;">🤝 এজেন্ট: ${escapeHtml(d.assignedAgentName)}</span></div>` : ''}</td>
+          <td><b>${escapeHtml(d.userName || 'Player')}</b><br><small style="color:var(--text-dim);">${d.uid}</small>${(d.assignedAgentId || d.assignedAgentName) ? `<div style="margin-top:2px;"><span class="badge badge-upcoming" style="font-size:0.68rem;">🤝 এজেন্টে পাঠানো: ${escapeHtml(agLbl)}</span></div>` : ''}</td>
           <td><span class="badge badge-upcoming">${d.method}</span></td>
           <td style="font-family:monospace;">${escapeHtml(d.senderNumber)}</td>
           <td><b style="color:var(--primary); font-family:monospace;">${escapeHtml(d.trxId)}</b></td>
@@ -6528,14 +6536,16 @@
             ` : `<span class="badge ${d.status === 'Approved' ? 'badge-approved' : 'badge-rejected'}" style="font-size:0.75rem;">${d.status === 'Approved' ? '✓ অনুমোদিত' : '✕ বাতিল'}</span>`}
           </td>
         </tr>
-      `).join('');
+      `; }).join('');
 
       // 2. Withdrawals Table
       const withTbody = document.getElementById('withdrawals-table-tbody');
-      withTbody.innerHTML = STATE.withdrawals.map(w => `
+      withTbody.innerHTML = STATE.withdrawals.map(w => {
+        const wAgLbl = w.assignedAgentName || agentNameById(w.assignedAgentId);
+        return `
         <tr>
           <td><small style="font-family:monospace;">${w.id || 'WTH'}</small></td>
-          <td><b>${escapeHtml(w.userName || 'Player')}</b><br><small style="color:var(--text-dim);">${w.uid}</small>${w.assignedAgentName ? `<div style="margin-top:2px;"><span class="badge badge-upcoming" style="font-size:0.68rem;">🤝 এজেন্ট: ${escapeHtml(w.assignedAgentName)}</span></div>` : ''}</td>
+          <td><b>${escapeHtml(w.userName || 'Player')}</b><br><small style="color:var(--text-dim);">${w.uid}</small>${(w.assignedAgentId || w.assignedAgentName) ? `<div style="margin-top:2px;"><span class="badge badge-upcoming" style="font-size:0.68rem;">🤝 এজেন্টে পাঠানো: ${escapeHtml(wAgLbl)}</span></div>` : ''}</td>
           <td><span class="badge badge-upcoming">${w.method}</span></td>
           <td style="font-family:monospace;">${escapeHtml(w.receiverNumber || w.accountNumber || w.number || '—')}</td>
           <td><b style="color:var(--accent); font-size:1.05rem; font-family:var(--font-display);">৳ ${w.amount}</b></td>
@@ -6580,7 +6590,7 @@
             ` : `<span class="badge ${wdStatusMeta(w.status).cls}" style="font-size:0.75rem;">${wdStatusMeta(w.status).label}</span>`}
           </td>
         </tr>
-      `).join('');
+      `; }).join('');
 
       // 3. Ledger Table
       const ledTbody = document.getElementById('ledger-table-tbody');
@@ -8866,8 +8876,8 @@
     }
 
     function updateAdminNotificationBadge() {
-      const unreadDeps = STATE.deposits.filter(d => d.status === 'Pending' && !STATE.adminReadNotifs.has(d.id)).length;
-      const unreadWiths = STATE.withdrawals.filter(w => w.status === 'Pending' && !STATE.adminReadNotifs.has(w.id)).length;
+      const unreadDeps = STATE.deposits.filter(d => d.status === 'Pending' && !d.assignedAgentId && !STATE.adminReadNotifs.has(d.id)).length;
+      const unreadWiths = STATE.withdrawals.filter(w => w.status === 'Pending' && !w.assignedAgentId && !STATE.adminReadNotifs.has(w.id)).length;
       const totalUnread = unreadDeps + unreadWiths;
 
       const badge = document.getElementById('admin-notif-badge-counter');

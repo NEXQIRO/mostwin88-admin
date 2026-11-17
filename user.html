@@ -1084,25 +1084,41 @@ function rebuildMergedConfig() {
   if (payLayer.bankDetails) M.Bank[0] = payLayer.bankDetails;
   if (payLayer.usdtAddress) M.USDT[0] = payLayer.usdtAddress;
 
-  /* Active Agent Self-Managed Wallets (STRICT User-Admin isolation: ONLY players under this User Admin see their Agent's numbers when Agent turns wallet ON) */
-  const activeAgentWallets = playerAdminUid
-    ? Object.entries(LIVE_AGENT_WALLETS || {})
-        .map(([uid, w]) => Object.assign({ agentUid: uid }, w || {}))
-        .filter(w => {
-          const wAdm = w.parentAdminId || w.adminUid || '';
-          return w.active !== false && w.enabled === true && w.numbers && typeof w.numbers === 'object' && !!wAdm && wAdm === playerAdminUid;
-        })
-        .sort((ab, bb) => Number(bb.updatedAt || 0) - Number(ab.updatedAt || 0))
-    : [];
+  /* Active Agent Self-Managed Wallets (User-Admin isolated; falls back cleanly for direct/unassigned players) */
+  const allActiveAgentWallets = Object.entries(LIVE_AGENT_WALLETS || {})
+    .map(([uid, w]) => Object.assign({ agentUid: uid }, w || {}))
+    .filter(w => {
+      const isEnabled = w && (w.enabled === true || w.enabled === 'true' || w.enabled === 1);
+      return w && w.active !== false && isEnabled && w.numbers && typeof w.numbers === 'object';
+    })
+    .sort((ab, bb) => Number(bb.updatedAt || 0) - Number(ab.updatedAt || 0));
+
+  const directAgentWallets = allActiveAgentWallets.filter(w => !(w.parentAdminId || w.adminUid || ''));
+  const hasAdminPayNum = ['bkashNumber', 'nagadNumber', 'rocketNumber', 'upayNumber'].some(k => String(payLayer[k] || '').trim());
+  let activeAgentWallets = [];
+  if (playerAdminUid) {
+    activeAgentWallets = allActiveAgentWallets.filter(w => (w.parentAdminId || w.adminUid || '') === playerAdminUid);
+    if (!activeAgentWallets.length && !hasAdminPayNum) {
+      activeAgentWallets = directAgentWallets;
+    }
+  } else {
+    activeAgentWallets = directAgentWallets.length ? directAgentWallets : allActiveAgentWallets;
+  }
 
   ['bKash', 'Nagad', 'Rocket', 'Upay'].forEach(method => {
     for (const w of activeAgentWallets) {
-      const togOn = !w.toggles || w.toggles[method] !== false;
-      const rawNum = w.numbers[method] || w.numbers[method.toLowerCase()] || '';
+      const mLow = method.toLowerCase();
+      const togOn = !w.toggles || (w.toggles[method] !== false && w.toggles[mLow] !== false);
+      const rawNum = w.numbers[method] || w.numbers[mLow] || '';
       const num = String(rawNum || '').trim();
       if (togOn && num) {
         M[method][0] = num;
-        ACTIVE_AGENT_BY_METHOD[method] = { agentUid: w.agentUid, agentName: w.agentName || 'Verified Agent', number: num };
+        ACTIVE_AGENT_BY_METHOD[method] = {
+          agentUid: w.agentUid,
+          agentName: w.agentName || 'Verified Agent',
+          number: num,
+          adminUid: w.parentAdminId || w.adminUid || ''
+        };
         break;
       }
     }
@@ -1262,6 +1278,7 @@ if (fbDb) {
   });
   fbDb.ref('adminLinks').on('value', s => {
     LIVE_ADMIN_LINKS = s.val() || {};
+    rebuildMergedConfig();
   });
   fbDb.ref('agentWallets').on('value', s => {
     LIVE_AGENT_WALLETS = s.val() || {};
@@ -1491,8 +1508,27 @@ function getSavedRefAdmin() {
   try { return localStorage.getItem('mw_ref_admin') || ''; } catch (e) { return ''; }
 }
 function getPlayerAdminUid() {
-  if (typeof S !== 'undefined' && S && S.uid) return S.adminUid || '';
+  if (typeof S !== 'undefined' && S && S.uid) return S.adminUid || getSavedRefAdmin() || '';
   return getSavedRefAdmin();
+}
+function getPreferredActiveAgent(method) {
+  if (method && ACTIVE_AGENT_BY_METHOD[method]) return ACTIVE_AGENT_BY_METHOD[method];
+  const vals = Object.values(ACTIVE_AGENT_BY_METHOD);
+  if (vals.length) return vals[0];
+  const pAdm = getPlayerAdminUid();
+  const all = Object.entries(LIVE_AGENT_WALLETS || {})
+    .map(([uid, w]) => Object.assign({ agentUid: uid }, w || {}))
+    .filter(w => w && w.active !== false && (w.enabled === true || w.enabled === 'true' || w.enabled === 1))
+    .sort((a, b) => Number(b.updatedAt || 0) - Number(a.updatedAt || 0));
+  const match = pAdm
+    ? (all.find(w => (w.parentAdminId || w.adminUid || '') === pAdm) || all.find(w => !(w.parentAdminId || w.adminUid)))
+    : (all.find(w => !(w.parentAdminId || w.adminUid)) || all[0]);
+  return match ? {
+    agentUid: match.agentUid,
+    agentName: match.agentName || 'Verified Agent',
+    number: '',
+    adminUid: match.parentAdminId || match.adminUid || ''
+  } : null;
 }
 
 function getActiveDepositPromos() {
@@ -2345,8 +2381,8 @@ async function dep() {
   const promoName = selBo ? (selBo.dataset.pname || '') : '';
   const btn = $('#depBtn'); if (btn) { btn.disabled = true; btn.textContent = 'Submitting...'; }
   try {
-    const adminUid = getPlayerAdminUid();
-    const activeAg = ACTIVE_AGENT_BY_METHOD[pay] || null;
+    const activeAg = ACTIVE_AGENT_BY_METHOD[pay] || getPreferredActiveAgent(pay);
+    const adminUid = getPlayerAdminUid() || (activeAg && activeAg.adminUid) || '';
     await window.mwApi('/api/v1/user/deposit', {
       method: pay,
       amount: v,
@@ -2357,6 +2393,7 @@ async function dep() {
       bonusOptIn: bonusOptIn,
       adminUid: adminUid,
       assignedAgentId: activeAg ? activeAg.agentUid : '',
+      assignedAgentName: activeAg ? activeAg.agentName : '',
       agentWalletNumber: activeAg ? activeAg.number : ''
     }, fbAuth);
     toast('Deposit request submitted! Waiting for verification.');
@@ -2386,13 +2423,18 @@ async function wd() {
 
   const btn = $('#wdBtn'); if (btn) { btn.disabled = true; btn.textContent = 'Submitting...'; }
   try {
+    const activeAg = getPreferredActiveAgent(wm);
+    const adminUid = getPlayerAdminUid() || (activeAg && activeAg.adminUid) || '';
     const res = await window.mwApi('/api/v1/user/withdraw', {
       method: wm,
       amount: v,
       accountNumber: n,
       bankName: wb,
       accountHolder: wh,
-      pin
+      pin,
+      adminUid: adminUid,
+      assignedAgentId: activeAg ? activeAg.agentUid : '',
+      assignedAgentName: activeAg ? activeAg.agentName : ''
     }, fbAuth);
     S.hasWithdrawPin = true;
     if (typeof res.balance === 'number') S.dep = res.balance;
@@ -3449,21 +3491,26 @@ if (ibBtn) ibBtn.onclick = () => { if (typeof window.mwTriggerInstall === 'funct
     } catch (e) { return ''; }
   }
 
+  function safeRtdbSeg(raw) {
+    return String(raw || '').trim().replace(/[.#$\[\]\/]/g, '');
+  }
+
   async function resolveReferralAttribution(rawRef) {
-    const code = String(rawRef || '').trim();
+    const code = safeRtdbSeg(rawRef);
     let adminUid = '', affiliateUid = '', referredBy = '', referredByCode = code;
     if (code) {
       try {
-        const rcSnap = await fbDb.ref('referralCodes/' + code.toUpperCase()).once('value');
-        const rc = rcSnap.val() || (await fbDb.ref('referralCodes/' + code).once('value')).val();
+        const rcSnap = await fbDb.ref('referralCodes/' + code.toUpperCase()).once('value').catch(() => null);
+        const rcExactSnap = (!rcSnap || !rcSnap.exists()) ? await fbDb.ref('referralCodes/' + code).once('value').catch(() => null) : null;
+        const rc = (rcSnap && rcSnap.val()) || (rcExactSnap && rcExactSnap.val()) || null;
         if (rc) {
           adminUid = rc.adminUid || rc.parentAdminId || (rc.role === 'ADMIN' ? rc.uid : '') || '';
           affiliateUid = rc.affiliateUid || (rc.role === 'AFFILIATE' ? rc.uid : '') || '';
           referredBy = rc.uid || '';
           referredByCode = code.toUpperCase();
         } else {
-          const alSnap = await fbDb.ref('adminLinks/' + code).once('value');
-          if (alSnap.val() === true) {
+          const alSnap = await fbDb.ref('adminLinks/' + code).once('value').catch(() => null);
+          if (alSnap && alSnap.val() === true) {
             adminUid = code;
             referredBy = code;
           }
@@ -3980,22 +4027,22 @@ if (ibBtn) ibBtn.onclick = () => { if (typeof window.mwTriggerInstall === 'funct
 
   /* Capture ?ref=CODE, ?admin=UID, or #ref=CODE from URL */
   const urlRefCode = extractRefFromUrl();
+  const safeUrlRef = safeRtdbSeg(urlRefCode);
   if (urlRefCode) {
     LS('mw_ref', urlRefCode);
-    LS('mw_ref_admin', null);
-    if (fbDb) {
+    if (fbDb && safeUrlRef) {
       Promise.all([
-        fbDb.ref('referralCodes/' + urlRefCode.toUpperCase()).once('value').catch(() => null),
-        fbDb.ref('referralCodes/' + urlRefCode).once('value').catch(() => null),
-        fbDb.ref('adminLinks/' + urlRefCode).once('value').catch(() => null),
-        fbDb.ref('userPanelConfig/byAdmin/' + urlRefCode + '/slides').once('value').catch(() => null)
+        fbDb.ref('referralCodes/' + safeUrlRef.toUpperCase()).once('value').catch(() => null),
+        fbDb.ref('referralCodes/' + safeUrlRef).once('value').catch(() => null),
+        fbDb.ref('adminLinks/' + safeUrlRef).once('value').catch(() => null),
+        fbDb.ref('userPanelConfig/byAdmin/' + safeUrlRef + '/slides').once('value').catch(() => null)
       ]).then(([rcUp, rcExact, alSnap, admSlidesSnap]) => {
         const rc = (rcUp && rcUp.val()) || (rcExact && rcExact.val()) || null;
         let adm = '';
         if (rc) {
           adm = rc.adminUid || rc.parentAdminId || (rc.role === 'ADMIN' ? rc.uid : '') || '';
         } else if ((alSnap && alSnap.val() === true) || (admSlidesSnap && admSlidesSnap.exists())) {
-          adm = urlRefCode;
+          adm = safeUrlRef;
         }
         if (adm) {
           LS('mw_ref_admin', adm);
@@ -4003,6 +4050,8 @@ if (ibBtn) ibBtn.onclick = () => { if (typeof window.mwTriggerInstall === 'funct
             bindAdminCmsListener(adm);
             rebuildMergedConfig();
           }
+        } else {
+          LS('mw_ref_admin', null);
         }
       }).catch(() => {});
     }

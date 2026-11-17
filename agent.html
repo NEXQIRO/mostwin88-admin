@@ -900,12 +900,25 @@ let rawDeposits = [];
 let rawWithdrawals = [];
 
 function applyAgentScopeFilters() {
-  const myAdmin = (agentProfile && agentProfile.parentAdminId) || '';
+  const myAdmin = (agentProfile && (agentProfile.parentAdminId || agentProfile.adminUid)) || '';
+  const myNums = new Set(Object.values((agentProfile && agentProfile.paymentNumbers) || {}).map(x => String(x || '').trim()).filter(Boolean));
   deposits = rawDeposits
-    .filter(d => d.assignedAgentId === currentAgentUid || (!d.assignedAgentId && myAdmin && d.adminUid === myAdmin) || d.approvedByAgent === currentAgentUid || d.rejectedByAgent === currentAgentUid)
+    .filter(d =>
+      d.assignedAgentId === currentAgentUid ||
+      (d.agentWalletNumber && myNums.has(String(d.agentWalletNumber).trim())) ||
+      (!d.assignedAgentId && myAdmin && d.adminUid === myAdmin) ||
+      (!d.assignedAgentId && !d.adminUid && !myAdmin) ||
+      d.approvedByAgent === currentAgentUid ||
+      d.rejectedByAgent === currentAgentUid
+    )
     .sort((a, b) => (b.timestamp || b.createdAt || 0) - (a.timestamp || a.createdAt || 0));
   withdrawals = rawWithdrawals
-    .filter(w => w.assignedAgentId === currentAgentUid || w.completedByAgent === currentAgentUid)
+    .filter(w =>
+      w.assignedAgentId === currentAgentUid ||
+      (!w.assignedAgentId && myAdmin && w.adminUid === myAdmin) ||
+      (!w.assignedAgentId && !w.adminUid && !myAdmin) ||
+      w.completedByAgent === currentAgentUid
+    )
     .sort((a, b) => (b.timestamp || b.createdAt || 0) - (a.timestamp || a.createdAt || 0));
 }
 
@@ -941,16 +954,41 @@ function startLiveAgentSync() {
     document.getElementById('profileAvatar').textContent = (agentProfile.name || 'A').charAt(0).toUpperCase();
     document.getElementById('profileName').textContent = agentProfile.name || 'Agent';
     document.getElementById('profileMeta').textContent = (agentProfile.email || currentAgentUid) + ' · Active Agent';
-    // Ensure agentWallets stays synced with parentAdminId & active state
+    // Ensure agentWallets stays created & synced with parentAdminId, numbers, and active state
     db.ref('agentWallets/' + currentAgentUid).once('value').then(ws => {
       const wv = ws.val();
-      const adm = agentProfile.parentAdminId || '';
-      if (wv && (wv.parentAdminId !== adm || wv.adminUid !== adm || wv.active !== (agentProfile.active !== false))) {
-        db.ref('agentWallets/' + currentAgentUid).update({
+      const adm = agentProfile.parentAdminId || agentProfile.adminUid || '';
+      const profEnabled = agentProfile.walletEnabled === true;
+      const profNums = agentProfile.paymentNumbers || {};
+      const profTogs = agentProfile.paymentToggles || {};
+      const hasAnyNum = Object.values(profNums).some(v => !!String(v || '').trim());
+      if (!wv) {
+        if (profEnabled || hasAnyNum) {
+          db.ref('agentWallets/' + currentAgentUid).set({
+            agentUid: currentAgentUid,
+            agentName: agentProfile.name || 'Agent',
+            parentAdminId: adm,
+            adminUid: adm,
+            enabled: profEnabled,
+            active: agentProfile.active !== false,
+            numbers: profNums,
+            toggles: profTogs,
+            updatedAt: TS
+          }).catch(() => {});
+        }
+      } else if (wv.parentAdminId !== adm || wv.adminUid !== adm || wv.active !== (agentProfile.active !== false) || (profEnabled && wv.enabled !== true)) {
+        const up = {
           parentAdminId: adm,
           adminUid: adm,
           active: agentProfile.active !== false
-        }).catch(() => {});
+        };
+        if (profEnabled && hasAnyNum) {
+          up.enabled = true;
+          up.numbers = profNums;
+          up.toggles = profTogs;
+          up.updatedAt = TS;
+        }
+        db.ref('agentWallets/' + currentAgentUid).update(up).catch(() => {});
       }
     }).catch(() => {});
     applyAgentScopeFilters();
@@ -979,20 +1017,34 @@ function startLiveAgentSync() {
     renderWithdrawals();
   });
 
-  // 3. Deposit Requests (Assigned to this agent OR unassigned under same parentAdminId)
+  // 3. Deposit Requests (Assigned to this agent OR matching wallet/admin)
+  let _initDepLoaded = false, _seenDepIds = new Set();
   attachListener(db.ref('depositRequests'), snap => {
     const val = snap.val() || {};
     rawDeposits = Object.entries(val).map(([k, v]) => ({ id: k, ...v }));
     applyAgentScopeFilters();
+    if (_initDepLoaded) {
+      const fresh = deposits.find(d => d.status === 'Pending' && !_seenDepIds.has(d.id));
+      if (fresh) toast('📥 নতুন ডিপোজিট রিকোয়েস্ট: ' + formatTaka(fresh.amount));
+    }
+    deposits.forEach(d => _seenDepIds.add(d.id));
+    _initDepLoaded = true;
     renderDeposits();
     renderTransactionReport();
   });
 
-  // 4. Withdrawal Requests assigned to this agent
+  // 4. Withdrawal Requests (Assigned to this agent OR under same parentAdminId)
+  let _initWdLoaded = false, _seenWdIds = new Set();
   attachListener(db.ref('withdrawalRequests'), snap => {
     const val = snap.val() || {};
     rawWithdrawals = Object.entries(val).map(([k, v]) => ({ id: k, ...v }));
     applyAgentScopeFilters();
+    if (_initWdLoaded) {
+      const fresh = withdrawals.find(w => isWithdrawalAssigned(w) && !_seenWdIds.has(w.id));
+      if (fresh) toast('📤 নতুন উইথড্র রিকোয়েস্ট: ' + formatTaka(fresh.amount));
+    }
+    withdrawals.forEach(w => _seenWdIds.add(w.id));
+    _initWdLoaded = true;
     renderWithdrawals();
     renderWallet();
     renderTransactionReport();
@@ -1425,8 +1477,8 @@ function renderDeposits() {
 }
 
 function isWithdrawalAssigned(w) {
-  const st = w.status || '';
-  return st === 'Assigned' || st === 'AssignedToAgent' || st === 'Processing' || st === 'Verified';
+  const st = String((w && w.status) || 'Pending');
+  return st === 'Pending' || st === 'Assigned' || st === 'AssignedToAgent' || st === 'Processing' || st === 'Verified';
 }
 
 function renderWithdrawals() {
@@ -1681,25 +1733,24 @@ function collectAgentWalletPayload(overrideMaster) {
 
 async function persistAgentWallet(enabled, nums, toggles, msg) {
   if (!currentAgentUid || !agentProfile) return;
+  const adm = agentProfile.parentAdminId || agentProfile.adminUid || '';
   try {
-    await Promise.all([
-      db.ref('agentWallets/' + currentAgentUid).set({
-        agentUid: currentAgentUid,
-        agentName: agentProfile.name || 'Agent',
-        parentAdminId: agentProfile.parentAdminId || '',
-        adminUid: agentProfile.parentAdminId || '',
-        enabled: !!enabled,
-        active: agentProfile.active !== false,
-        numbers: nums,
-        toggles: toggles,
-        updatedAt: TS
-      }),
-      db.ref('agents/' + currentAgentUid).update({
-        walletEnabled: !!enabled,
-        paymentNumbers: nums,
-        paymentToggles: toggles
-      })
-    ]);
+    await db.ref('agentWallets/' + currentAgentUid).set({
+      agentUid: currentAgentUid,
+      agentName: agentProfile.name || 'Agent',
+      parentAdminId: adm,
+      adminUid: adm,
+      enabled: !!enabled,
+      active: agentProfile.active !== false,
+      numbers: nums,
+      toggles: toggles,
+      updatedAt: TS
+    });
+    await db.ref('agents/' + currentAgentUid).update({
+      walletEnabled: !!enabled,
+      paymentNumbers: nums,
+      paymentToggles: toggles
+    }).catch(() => {});
     agentProfile.walletEnabled = !!enabled;
     agentProfile.paymentNumbers = nums;
     agentProfile.paymentToggles = toggles;
