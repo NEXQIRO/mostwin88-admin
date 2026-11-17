@@ -1269,10 +1269,15 @@ function applyAgentCms() {
   }
 }
 
-function getAgentAvailable() { return Number(agentProfile && agentProfile.balance) || 0; }
+function getAgentTotalBalance() { return Number(agentProfile && agentProfile.balance) || 0; }
 function getReservedAmount() {
-  return withdrawals.filter(w => w.status === 'Assigned' || w.status === 'AssignedToAgent' || w.status === 'Processing')
+  const srvRes = Number(agentProfile && agentProfile.reservedBalance) || 0;
+  const locRes = withdrawals.filter(w => w.status === 'Assigned' || w.status === 'AssignedToAgent' || w.status === 'Processing')
     .reduce((s, w) => s + (Number(w.amount) || 0), 0);
+  return Math.max(srvRes, locRes);
+}
+function getAgentAvailable() {
+  return Math.max(0, getAgentTotalBalance() - (Number(agentProfile && agentProfile.reservedBalance) || 0));
 }
 
 /* Report Engine (100% live from Firebase transactions / deposits / withdrawals) */
@@ -1459,11 +1464,12 @@ function renderDeposits() {
         <strong>${escapeRequestText(d.id)}</strong>
         <span class="status ${st.toLowerCase()}">${escapeRequestText(st)}</span>
        </div>
-       <div class="amount">${formatTaka(d.amount)}</div>
+       <div class="amount">${formatTaka(d.amount)}${Number(d.bonusAmount) > 0 ? ` <small style="font-size:12px;color:#c084fc">+ বোনাস ${formatTaka(d.bonusAmount)}</small>` : ''}</div>
        <div class="detail"><span>Player</span><b>${escapeRequestText(pName)}</b></div>
        <div class="detail"><span>Payment Method</span><b>${escapeRequestText(d.method || 'bKash')}</b></div>
        ${d.senderNumber ? `<div class="detail"><span>Sender Number</span><b>${escapeRequestText(d.senderNumber)}</b></div>` : ''}
        <div class="detail"><span>Transaction ID</span><b>${escapeRequestText(trx)}</b></div>
+       ${d.promoName || Number(d.bonusAmount) > 0 ? `<div class="detail"><span>Bonus</span><b>${escapeRequestText(d.promoName || 'Bonus')} (${formatTaka(d.bonusAmount || 0)})</b></div>` : ''}
        ${st === 'Rejected' && (d.adminNote || d.reason) ? `<div class="reject-reason"><b>REJECT REASON</b>${escapeRequestText(d.adminNote || d.reason)}</div>` : ''}
        ${st === 'Pending' ? `
        <div class="actions">
@@ -1613,7 +1619,15 @@ async function applyDeposit(d, status, reason) {
       toast('ডিপোজিট বাতিল করা হয়েছে');
     }
   } catch (err) {
-    toast('ত্রুটি: ' + (err.message || err));
+    const rawMsg = (err && (err.message || err)) || 'অজানা ত্রুটি';
+    if (/ব্যালেন্স|balance/i.test(rawMsg)) {
+      const tot = getAgentTotalBalance();
+      const resv = Number(agentProfile && agentProfile.reservedBalance) || 0;
+      const bon = Number(d.bonusAmount) || 0;
+      toast(`ত্রুটি: ${rawMsg} (ওয়ালেট: ৳${tot}, রিজার্ভ: ৳${resv}${bon ? `, বোনাস: ৳${bon}` : ''})`);
+    } else {
+      toast('ত্রুটি: ' + rawMsg);
+    }
   }
 }
 
