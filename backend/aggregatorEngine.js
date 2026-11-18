@@ -41,30 +41,41 @@ function safeEqualStr(a, b) {
 async function txIncrement(path, delta) {
   const db = getDb();
   const ref = db.ref(path);
-  const preSnap = await ref.once('value');
-  const preVal = preSnap.exists() ? toNum(preSnap.val(), 0) : 0;
+  const keepAlive = () => {};
+  if (typeof ref.on === 'function') ref.on('value', keepAlive);
 
-  let beforeVal = preVal;
-  let afterVal = preVal;
+  try {
+    const preSnap = await ref.once('value');
+    const preExists = preSnap.exists();
+    const preVal = preExists ? toNum(preSnap.val(), 0) : 0;
 
-  const result = await ref.transaction(cur => {
-    const base = cur === null ? preVal : toNum(cur, 0);
-    const next = round2(base + delta);
-    if (next < 0) return undefined;
-    beforeVal = base;
-    afterVal = next;
-    return next;
-  });
+    let beforeVal = preVal;
+    let afterVal = preVal;
+    let sawServerValue = false;
 
-  if (!result.committed) {
-    return { committed: false, before: beforeVal, after: beforeVal };
+    const result = await ref.transaction(cur => {
+      const isSpeculativeNull = cur === null && !sawServerValue && preExists;
+      const base = isSpeculativeNull ? preVal : toNum(cur, 0);
+      sawServerValue = true;
+      const next = round2(base + delta);
+      if (next < 0) return undefined;
+      beforeVal = base;
+      afterVal = next;
+      return next;
+    });
+
+    if (!result.committed) {
+      return { committed: false, before: beforeVal, after: beforeVal };
+    }
+    const snapVal = result.snapshot ? result.snapshot.val() : afterVal;
+    return {
+      committed: true,
+      before: beforeVal,
+      after: snapVal !== null && snapVal !== undefined ? toNum(snapVal, afterVal) : afterVal
+    };
+  } finally {
+    if (typeof ref.off === 'function') ref.off('value', keepAlive);
   }
-  const snapVal = result.snapshot ? result.snapshot.val() : afterVal;
-  return {
-    committed: true,
-    before: beforeVal,
-    after: snapVal !== null && snapVal !== undefined ? toNum(snapVal, afterVal) : afterVal
-  };
 }
 
 async function writeAggLog(entry) {
