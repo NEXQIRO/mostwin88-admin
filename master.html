@@ -549,6 +549,7 @@ body[data-theme="light"] .bottom-nav{background:#FFFFFF;border-top-color:#E6DECB
         <li class="nav-item"><button id="t-wdmonitor" onclick="tab('wdmonitor')"><svg viewBox="0 0 24 24"><path d="M12 4.5C7 4.5 2.73 7.61 1 12c1.73 4.39 6 7.5 11 7.5s9.27-3.11 11-7.5c-1.73-4.39-6-7.5-11-7.5zM12 17c-2.76 0-5-2.24-5-5s2.24-5 5-5 5 2.24 5 5-2.24 5-5 5zm0-8c-1.66 0-3 1.34-3 3s1.34 3 3 3 3-1.34 3-3-1.34-3-3-3z"/></svg><span class="nav-label">উইথড্র মনিটর</span><span class="nav-badge" id="nav-wd-pending">0</span></button></li>
         <li class="nav-item"><button id="t-led" onclick="tab('led')"><svg viewBox="0 0 24 24"><path d="M14 2H6c-1.1 0-1.99.9-1.99 2L4 20c0 1.1.89 2 1.99 2H18c1.1 0 2-.9 2-2V8l-6-6zm2 16H8v-2h8v2zm0-4H8v-2h8v2zm-3-5V3.5L18.5 9H13z"/></svg><span class="nav-label">লেজার</span></button></li>
         <li class="nav-item"><button id="t-games" onclick="tab('games')"><svg viewBox="0 0 24 24"><path d="M3 13h8V3H3v10zm0 8h8v-6H3v6zm10 0h8V11h-8v10zm0-18v6h8V3h-8z"/></svg><span class="nav-label">গেম ম্যানেজমেন্ট</span></button></li>
+        <li class="nav-item"><button id="t-aggregator" onclick="tab('aggregator')"><svg viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-1 17.93c-3.95-.49-7-3.85-7-7.93 0-.62.08-1.21.21-1.79L9 15v1c0 1.1.9 2 2 2v1.93zm6.9-2.54c-.26-.81-1-1.39-1.9-1.39h-1v-3c0-.55-.45-1-1-1H8v-2h2c.55 0 1-.45 1-1V7h2c1.1 0 2-.9 2-2v-.41c2.93 1.19 5 4.06 5 7.41 0 2.08-.8 3.97-2.1 5.39z"/></svg><span class="nav-label">গেম অ্যাগ্রিগেটর API</span><span class="nav-badge" id="nav-agg-status">OFF</span></button></li>
         <li class="nav-item"><button id="t-userpanel" onclick="tab('userpanel')"><svg viewBox="0 0 24 24"><path d="M17 1H7c-1.1 0-2 .9-2 2v18c0 1.1.9 2 2 2h10c1.1 0 2-.9 2-2V3c0-1.1-.9-2-2-2zm0 18H7V5h10v14z"/></svg><span class="nav-label">ইউজার প্যানেল কন্ট্রোল</span></button></li>
         <li class="nav-item"><button id="t-players" onclick="tab('players')"><svg viewBox="0 0 24 24"><path d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z"/></svg><span class="nav-label">প্লেয়ার</span></button></li>
         <li class="nav-item"><button id="t-act" onclick="tab('act')"><svg viewBox="0 0 24 24"><path d="M19 3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zM9 17H7v-7h2v7zm4 0h-2V7h2v10zm4 0h-2v-4h2v4z"/></svg><span class="nav-label">গেম অ্যাক্টিভিটি</span></button></li>
@@ -717,7 +718,7 @@ body[data-theme="light"] .bottom-nav{background:#FFFFFF;border-top-color:#E6DECB
 const MAINCFG=window.NP_FIREBASE_CONFIG||{apiKey:"AIzaSyACoy90K8WHdxSU3_KtUiwWNPHGErT0P3w",authDomain:"mostwin88-febbf.firebaseapp.com",databaseURL:"https://mostwin88-febbf-default-rtdb.asia-southeast1.firebasedatabase.app",projectId:"mostwin88-febbf",storageBucket:"mostwin88-febbf.firebasestorage.app",messagingSenderId:"1091271266801",appId:"1:1091271266801:web:0b4da03572189864077450",measurementId:"G-5Q07GB1YD6"},MAINAPP=firebase.initializeApp(MAINCFG),TS=firebase.database.ServerValue.TIMESTAMP;
 let auth=MAINAPP.auth(),db=MAINAPP.database(),TID='main',TCFG=MAINCFG,TNAME='মূল প্রজেক্ট',LST=[],AUTHUNSUB=null;try{auth.setPersistence(firebase.auth.Auth.Persistence.LOCAL).catch(()=>{})}catch(e){}
 const $=i=>document.getElementById(i),fmt=n=>'৳ '+Math.round(n||0).toLocaleString('en-US'),esc=s=>String(s??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
-let ALK={},ADL=false,ALD=false,ADM={},REQ={},WDALL={},LED={},GAMES={},USERS={},ACT={},GTX={},DEVREG={},AGENTS={},AGREQ={},AFFS={},REFCLICKS={},AFFREQ={},MB=0,cur='admins',started=false,Q='',AQ_AG='',AQ_AF='',WQ='',AG_ADM_FILTER='',AF_ADM_FILTER='',WD_ADM_FILTER='',WD_STAGE_FILTER='ALL',FEAT={},SEL='',GV='',UAON=true,BON={};
+let ALK={},ADL=false,ALD=false,ADM={},REQ={},WDALL={},LED={},GAMES={},USERS={},ACT={},GTX={},DEVREG={},AGENTS={},AGREQ={},AFFS={},REFCLICKS={},AFFREQ={},AGGCFG={},AGGLOGS={},AGG_SUB='setup',AGG_TEST_OUT='',AGG_SYNC_OUT='',AGG_WH_OUT='',MB=0,cur='admins',started=false,Q='',AQ_AG='',AQ_AF='',WQ='',AG_ADM_FILTER='',AF_ADM_FILTER='',WD_ADM_FILTER='',WD_STAGE_FILTER='ALL',FEAT={},SEL='',GV='',UAON=true,BON={};
 const FL=[
   ["dashboard", "পেজ", "ড্যাশবোর্ড ও সারাংশ (পেজ)"],
   ["gameactivity", "পেজ", "গেম ও বেট ট্র্যাকার / লাইভ অ্যাক্টিভিটি (পেজ)"],
@@ -932,8 +933,10 @@ function attachAll(){
  on(db.ref('referralClicks'),s=>{REFCLICKS=s.val()||{};schedDraw()});
  on(db.ref('affiliateCommissionRequests').limitToLast(200),s=>{AFFREQ=s.val()||{};schedDraw()});
  on(db.ref('withdrawalRequests').limitToLast(500),s=>{WDALL=s.val()||{};schedDraw()});
- on(db.ref('balanceLedger').limitToLast(100),s=>{LED=s.val()||{};schedDraw()})}
-function detachAll(){LST.forEach(r=>{try{r.off()}catch(e){}});LST=[];started=false;ALK={};ADL=false;ALD=false;ADM={};REQ={};WDALL={};LED={};GAMES={};PROV_GAMES={};USERS={};ACT={};GTX={};DEVREG={};AGENTS={};AGREQ={};AFFS={};REFCLICKS={};AFFREQ={};MB=0;FEAT={};SEL='';UAON=true;BON={};AQ='';AFULL={};GTXFULL={};AQ_AG='';AQ_AF='';WQ='';WD_ADM_FILTER='';WD_STAGE_FILTER='ALL'}
+ on(db.ref('balanceLedger').limitToLast(100),s=>{LED=s.val()||{};schedDraw()});
+ on(db.ref('gameAggregatorSecrets/config'),s=>{AGGCFG=s.val()||{};schedDraw()});
+ on(db.ref('aggregatorLogs').limitToLast(60),s=>{AGGLOGS=s.val()||{};schedDraw()})}
+function detachAll(){LST.forEach(r=>{try{r.off()}catch(e){}});LST=[];started=false;ALK={};ADL=false;ALD=false;ADM={};REQ={};WDALL={};LED={};GAMES={};PROV_GAMES={};USERS={};ACT={};GTX={};DEVREG={};AGENTS={};AGREQ={};AFFS={};REFCLICKS={};AFFREQ={};AGGCFG={};AGGLOGS={};AGG_SUB='setup';AGG_TEST_OUT='';AGG_SYNC_OUT='';AGG_WH_OUT='';MB=0;FEAT={};SEL='';UAON=true;BON={};AQ='';AFULL={};GTXFULL={};AQ_AG='';AQ_AF='';WQ='';WD_ADM_FILTER='';WD_STAGE_FILTER='ALL'}
 function bindAuth(){if(AUTHUNSUB)AUTHUNSUB();const my=TID;
  AUTHUNSUB=auth.onAuthStateChanged(async u=>{if(my!==TID)return;
   if(!u){$('lt').textContent=TID==='main'?'MOSTWIN88':'লগইন: '+TNAME;$('lback').style.display=TID==='main'?'none':'block';$('login').style.display='flex';$('app').style.display='none';if(window.mwFitLogos)setTimeout(window.mwFitLogos,40);return}
@@ -967,7 +970,7 @@ function addTenant(){const name=$('tnm').value.trim(),c=parseCfg($('tcf').value)
 function delTenant(id){if(!confirm('এই প্রজেক্ট তালিকা থেকে সরাবেন? (সার্ভারের কোনো ডেটা মুছবে না)'))return;
  localStorage.setItem('np_tenants',JSON.stringify(getTenants().filter(x=>x.id!==id)));if(TID===id)switchTenant('main');drawTn();draw()}
 bindAuth();
-const M_TAB_TITLES={admins:'Dashboard',admin:'Admin Details',agents:'Agents',affiliates:'Affiliates',reqs:'Requests',wdmonitor:'Withdraw Monitor',led:'Ledger',games:'Games',userpanel:'User Panel',players:'Players',act:'Activity',feat:'Settings',promo:'Promotions',chat:'Support Chat',tenants:'Projects',guide:'Guide'};
+const M_TAB_TITLES={admins:'Dashboard',admin:'Admin Details',agents:'Agents',affiliates:'Affiliates',reqs:'Requests',wdmonitor:'Withdraw Monitor',led:'Ledger',games:'Games',aggregator:'Game Aggregator API',userpanel:'User Panel',players:'Players',act:'Activity',feat:'Settings',promo:'Promotions',chat:'Support Chat',tenants:'Projects',guide:'Guide'};
 function tab(t){if(t==='chat'){try{toggleSidebar(false)}catch(e){}toggleMasterFloatingChat(true);return}cur=t;if(t==='act')loadAct();try{toggleSidebar(false)}catch(e){}draw();window.scrollTo(0,0)}
 async function loadAct(){
  try{
@@ -1424,59 +1427,449 @@ async function delProvGameMaster(provId,gid){
  try{await db.ref('provider_games/'+provId+'/'+gid).remove();toast('গেম মুছে ফেলা হয়েছে')}catch(e){toast('ব্যর্থ: '+e.message)}
 }
 
-async function saveGameApiMaster(){
- const cfg={
-  enabled:!!($('gapi-on')&&$('gapi-on').checked),
-  providerName:($('gapi-name')&&$('gapi-name').value.trim())||'Custom Game API',
-  mode:($('gapi-mode')&&$('gapi-mode').value)||'rest_post',
-  launchUrl:($('gapi-launch')&&$('gapi-launch').value.trim())||'',
-  baseUrl:($('gapi-base')&&$('gapi-base').value.trim())||'',
-  operatorCode:($('gapi-op')&&$('gapi-op').value.trim())||'',
-  apiKey:($('gapi-key')&&$('gapi-key').value.trim())||'',
-  apiSecret:($('gapi-sec')&&$('gapi-sec').value.trim())||'',
-  currency:($('gapi-curr')&&$('gapi-curr').value.trim())||'BDT',
-  lang:($('gapi-lang')&&$('gapi-lang').value.trim())||'bn',
-  openMode:($('gapi-open')&&$('gapi-open').value)||'iframe',
-  callbackUrl:($('gapi-cb')&&$('gapi-cb').value.trim())||'',
-  updatedAt:TS
- };
- if(cfg.enabled&&!cfg.launchUrl){toast('Game API চালু রাখতে Launch Endpoint / URL Template দিন');return}
- try{
-  await db.ref('userPanelConfig/global/gameApi').set(cfg);
-  if(!UPCFG_ALL.global)UPCFG_ALL.global={};
-  UPCFG_ALL.global.gameApi=cfg;
-  toast('Game API কনফিগারেশন সেভ ও লাইভ হয়েছে ✅');
- }catch(e){toast('সেভ ব্যর্থ: '+e.message)}
+function getAggBackendUrl(){
+ return String(window.MW_BACKEND_URL||window.MW_DEFAULT_BACKEND_URL||'https://mostwin88-bakend.onrender.com').replace(/\/+$/,'');
 }
-async function testGameApiMaster(){
- const url=($('gapi-launch')&&$('gapi-launch').value.trim())||'';
- const mode=($('gapi-mode')&&$('gapi-mode').value)||'rest_post';
- const op=($('gapi-op')&&$('gapi-op').value.trim())||'';
- const key=($('gapi-key')&&$('gapi-key').value.trim())||'';
- const curr=($('gapi-curr')&&$('gapi-curr').value.trim())||'BDT';
- const lang=($('gapi-lang')&&$('gapi-lang').value.trim())||'bn';
- const out=$('gapi-test-out');
- if(!url){toast('আগে Launch Endpoint / URL দিন');return}
- if(out)out.textContent='⏳ API সংযোগ পরীক্ষা করা হচ্ছে...';
- const testGame='aviator';
- const resolved=url
-  .replace(/\{uid\}/g,'test_player').replace(/\{username\}/g,'test_player')
-  .replace(/\{gameCode\}/g,testGame).replace(/\{provider\}/g,'spribe')
-  .replace(/\{currency\}/g,curr).replace(/\{lang\}/g,lang)
-  .replace(/\{balance\}/g,'1000').replace(/\{operator\}/g,op).replace(/\{apiKey\}/g,key);
- if(mode==='direct_iframe'){
-  if(out)out.innerHTML='✅ Direct Template তৈরি হয়েছে:<br><code style="word-break:break-all;color:var(--ok)">'+esc(resolved)+'</code>';
-  return;
+function getEffectiveAggCfg(){
+ const pub=(UPCFG_ALL.global&&UPCFG_ALL.global.gameApi)||{};
+ const sec=AGGCFG&&typeof AGGCFG==='object'?AGGCFG:{};
+ return {
+  enabled:sec.enabled!==undefined?!!sec.enabled:!!pub.enabled,
+  providerName:sec.providerName||pub.providerName||'',
+  walletMode:sec.walletMode||pub.walletMode||'seamless',
+  mode:sec.mode||pub.mode||'rest_post',
+  openMode:sec.openMode||pub.openMode||'iframe',
+  baseUrl:sec.baseUrl||pub.baseUrl||'',
+  launchUrl:sec.launchUrl||pub.launchUrl||'',
+  gameListUrl:sec.gameListUrl||'',
+  callbackUrl:sec.callbackUrl||pub.callbackUrl||'',
+  operatorCode:sec.operatorCode||pub.operatorCode||'',
+  agentId:sec.agentId||'',
+  apiKey:sec.apiKey||pub.apiKey||'',
+  apiSecret:sec.apiSecret||pub.apiSecret||'',
+  webhookSecret:sec.webhookSecret||'',
+  authMethod:sec.authMethod||'bearer_xapikey',
+  signHeader:sec.signHeader||'X-Sign',
+  currency:sec.currency||pub.currency||'BDT',
+  lang:sec.lang||pub.lang||'bn',
+  whitelistIps:sec.whitelistIps||'',
+  customHeadersJson:sec.customHeadersJson||'',
+  updatedAt:sec.updatedAt||pub.updatedAt||null,
+  updatedBy:sec.updatedBy||''
+ };
+}
+function toggleAggSecretVis(id){
+ const el=$(id);if(!el)return;
+ el.type=el.type==='password'?'text':'password';
+}
+function insertAggPlaceholder(tok){
+ const el=$('agg-launch');if(!el)return;
+ const s=el.selectionStart??el.value.length,e=el.selectionEnd??el.value.length;
+ el.value=el.value.slice(0,s)+tok+el.value.slice(e);
+ el.focus();try{el.setSelectionRange(s+tok.length,s+tok.length)}catch(_){}
+}
+function applyAggPreset(preset){
+ const cbBase=getAggBackendUrl()+'/api/v1/aggregator/callback';
+ const presets={
+  generic_seamless:{
+   providerName:'Generic Seamless Aggregator',
+   walletMode:'seamless',
+   mode:'rest_post',
+   openMode:'iframe',
+   authMethod:'bearer_xapikey',
+   signHeader:'X-Sign',
+   baseUrl:'https://api.aggregator-example.com',
+   launchUrl:'https://api.aggregator-example.com/v1/game/launch',
+   gameListUrl:'https://api.aggregator-example.com/v1/games',
+   callbackUrl:cbBase
+  },
+  asian_nexus:{
+   providerName:'Asian Slot / NexusGG / Huidu Style',
+   walletMode:'seamless',
+   mode:'rest_post',
+   openMode:'iframe',
+   authMethod:'body_credentials',
+   signHeader:'X-Sign',
+   baseUrl:'https://api.nexus-example.com/api/v2',
+   launchUrl:'https://api.nexus-example.com/api/v2/game_launch',
+   gameListUrl:'https://api.nexus-example.com/api/v2/game_list',
+   callbackUrl:cbBase
+  },
+  slotegrator_hmac:{
+   providerName:'HMAC Signature Aggregator',
+   walletMode:'seamless',
+   mode:'rest_post',
+   openMode:'iframe',
+   authMethod:'hmac_sha256',
+   signHeader:'X-Sign',
+   baseUrl:'https://api.hmac-example.com/v1',
+   launchUrl:'https://api.hmac-example.com/v1/games/init',
+   gameListUrl:'https://api.hmac-example.com/v1/games',
+   callbackUrl:cbBase
+  },
+  direct_url:{
+   providerName:'Direct Iframe URL Aggregator',
+   walletMode:'direct',
+   mode:'direct_iframe',
+   openMode:'iframe',
+   authMethod:'bearer_xapikey',
+   signHeader:'X-Sign',
+   baseUrl:'',
+   launchUrl:'https://games.example.com/play?game={gameCode}&uid={uid}&currency={currency}&lang={lang}&token={sessionToken}',
+   gameListUrl:'',
+   callbackUrl:cbBase
+  }
+ };
+ const p=presets[preset];if(!p)return;
+ const setV=(id,v)=>{const el=$(id);if(el&&v!==undefined)el.value=v};
+ setV('agg-name',p.providerName);
+ setV('agg-wallet',p.walletMode);
+ setV('agg-mode',p.mode);
+ setV('agg-open',p.openMode);
+ setV('agg-auth',p.authMethod);
+ setV('agg-sign-hdr',p.signHeader);
+ setV('agg-base',p.baseUrl);
+ setV('agg-launch',p.launchUrl);
+ setV('agg-gamelist',p.gameListUrl);
+ setV('agg-cb',p.callbackUrl);
+ toast('টেমপ্লেট লোড হয়েছে ✅ এবার আপনার আসল API Endpoint, Operator ও Key বসিয়ে সেভ করুন');
+}
+function readAggFormPayload(){
+ const g=id=>$(id)?$(id).value.trim():'';
+ return {
+  enabled:!!($('agg-on')&&$('agg-on').checked),
+  providerName:g('agg-name')||'Custom Game Aggregator',
+  walletMode:g('agg-wallet')||'seamless',
+  mode:g('agg-mode')||'rest_post',
+  openMode:g('agg-open')||'iframe',
+  baseUrl:g('agg-base'),
+  launchUrl:g('agg-launch'),
+  gameListUrl:g('agg-gamelist'),
+  callbackUrl:g('agg-cb')||(getAggBackendUrl()+'/api/v1/aggregator/callback'),
+  operatorCode:g('agg-op'),
+  agentId:g('agg-agent'),
+  apiKey:g('agg-key'),
+  apiSecret:g('agg-sec'),
+  webhookSecret:g('agg-whsec'),
+  authMethod:g('agg-auth')||'bearer_xapikey',
+  signHeader:g('agg-sign-hdr')||'X-Sign',
+  currency:g('agg-curr')||'BDT',
+  lang:g('agg-lang')||'bn',
+  whitelistIps:g('agg-ips'),
+  customHeadersJson:g('agg-headers')
+ };
+}
+async function saveAggregatorMaster(){
+ const p=readAggFormPayload();
+ if(p.customHeadersJson){
+  try{const o=JSON.parse(p.customHeadersJson);if(!o||typeof o!=='object'||Array.isArray(o))throw new Error('Must be JSON Object')}
+  catch(e){toast('Extra Headers JSON সঠিক নয়: '+e.message);return}
  }
+ if(p.enabled&&!p.launchUrl){toast('Aggregator চালু রাখতে Launch Endpoint / URL Template দিন');return}
  try{
-  const headers={'Content-Type':'application/json'};
-  if(key){headers['X-API-Key']=key;headers['Authorization']='Bearer '+key;}
-  const res=await fetch(resolved,mode==='rest_post'?{method:'POST',headers,body:JSON.stringify({operatorCode:op,apiKey:key,uid:'test_player',username:'test_player',gameCode:testGame,provider:'spribe',currency:curr,lang,balance:1000})}:{method:'GET',headers});
-  const txt=await res.text();
-  if(out)out.innerHTML=(res.ok?'✅':'⚠️')+' HTTP '+res.status+': <code style="word-break:break-all">'+esc(txt.slice(0,260))+'</code>';
+  const res=await window.mwApi('/api/v1/master/aggregator/save',p,auth);
+  if(res&&res.config)AGGCFG=res.config;
+  if(!UPCFG_ALL.global)UPCFG_ALL.global={};
+  UPCFG_ALL.global.gameApi={enabled:p.enabled,providerName:p.providerName,walletMode:p.walletMode,mode:p.mode,openMode:p.openMode,currency:p.currency,lang:p.lang,launchUrl:p.mode==='direct_iframe'?p.launchUrl:'',updatedAt:Date.now()};
+  toast('Game Aggregator API সেভ ও সক্রিয় হয়েছে ✅ (Secrets সুরক্ষিত)');
+  draw();
+ }catch(e){toast('সেভ ব্যর্থ: '+(e.message||e))}
+}
+async function testAggregatorMaster(testType){
+ const p=readAggFormPayload();
+ p.testType=testType==='gamelist'?'gamelist':'launch';
+ p.gameCode=($('agg-test-code')&&$('agg-test-code').value.trim())||'aviator';
+ if(p.testType==='launch'&&!p.launchUrl){toast('আগে Launch Endpoint / URL দিন');return}
+ if(p.testType==='gamelist'&&!p.gameListUrl){toast('আগে Game List Endpoint URL দিন');return}
+ AGG_TEST_OUT='<span style="color:var(--gold)">⏳ Render সার্ভার থেকে Aggregator API টেস্ট করা হচ্ছে...</span>';
+ if($('agg-test-out'))$('agg-test-out').innerHTML=AGG_TEST_OUT;
+ try{
+  const res=await window.mwApi('/api/v1/master/aggregator/test',p,auth);
+  const okBadge=res.httpStatus>=200&&res.httpStatus<300?'✅ HTTP '+res.httpStatus:'⚠️ HTTP '+res.httpStatus;
+  AGG_TEST_OUT=`<div style="padding:10px;border-radius:10px;border:1px solid var(--bd);background:var(--in)">
+   <b>${okBadge}</b> · Latency: <b>${res.latencyMs||0} ms</b><br>
+   <small style="color:var(--mu)">Endpoint:</small> <code style="word-break:break-all">${esc(res.resolvedUrl||'')}</code>
+   ${res.extractedLaunchUrl?`<br><small style="color:var(--ok)">Extracted Game URL:</small> <code style="word-break:break-all;color:var(--ok)">${esc(res.extractedLaunchUrl)}</code>`:''}
+   ${res.extractedGamesCount?`<br><small style="color:var(--ok)">Detected Games in Response:</small> <b>${res.extractedGamesCount} টি</b>`:''}
+   ${res.preview?`<pre style="margin:8px 0 0;white-space:pre-wrap;word-break:break-all;font-size:11px;opacity:.9">${esc(res.preview)}</pre>`:''}
+  </div>`;
  }catch(e){
-  if(out)out.innerHTML='⚠️ ব্রাউজার থেকে সরাসরি কল ব্লক/ত্রুটি ('+esc(e.message)+') — সার্ভার ব্যাকএন্ড URL দিলে লাইভ কাজ করবে।';
+  AGG_TEST_OUT=`<div style="padding:10px;border-radius:10px;border:1px solid rgba(239,68,68,.4);color:var(--er)">❌ টেস্ট ব্যর্থ: ${esc(e.message||String(e))}</div>`;
  }
+ if($('agg-test-out'))$('agg-test-out').innerHTML=AGG_TEST_OUT;
+}
+async function syncAggregatorGamesMaster(fromJson){
+ const body={
+  gameListUrl:($('agg-sync-url')&&$('agg-sync-url').value.trim())||getEffectiveAggCfg().gameListUrl||'',
+  listMethod:($('agg-sync-method')&&$('agg-sync-method').value)||'GET',
+  providerFilter:($('agg-sync-prov')&&$('agg-sync-prov').value.trim())||'',
+  defaultCategory:($('agg-sync-cat')&&$('agg-sync-cat').value)||'',
+  alsoAddPopular:!!($('agg-sync-pop')&&$('agg-sync-pop').checked)
+ };
+ if(fromJson){
+  const raw=$('agg-sync-json')?$('agg-sync-json').value.trim():'';
+  if(!raw){toast('আগে Bulk JSON পেস্ট করুন');return}
+  body.gamesJson=raw;
+ }else if(!body.gameListUrl){
+  toast('আগে Game List Endpoint URL দিন অথবা Setup ট্যাবে সেভ করুন');return;
+ }
+ AGG_SYNC_OUT='<span style="color:var(--gold)">⏳ গেম ও প্রোভাইডার সিঙ্ক চলছে...</span>';
+ if($('agg-sync-out'))$('agg-sync-out').innerHTML=AGG_SYNC_OUT;
+ try{
+  const res=await window.mwApi('/api/v1/master/aggregator/sync-games',body,auth);
+  AGG_SYNC_OUT=`<div style="padding:10px;border-radius:10px;border:1px solid rgba(16,185,129,.4);color:var(--ok)">✅ সিঙ্ক সম্পন্ন! মোট প্রোভাইডার: <b>${res.providersCount||0}টি</b>, গেম: <b>${res.gamesCount||0}টি</b>${res.popularCount?', Popular Games-এ যোগ হয়েছে: <b>'+res.popularCount+'টি</b>':''}।</div>`;
+  toast('গেম ও প্রোভাইডার সিঙ্ক সম্পন্ন ✅');
+ }catch(e){
+  AGG_SYNC_OUT=`<div style="padding:10px;border-radius:10px;border:1px solid rgba(239,68,68,.4);color:var(--er)">❌ সিঙ্ক ব্যর্থ: ${esc(e.message||String(e))}</div>`;
+ }
+ if($('agg-sync-out'))$('agg-sync-out').innerHTML=AGG_SYNC_OUT;
+}
+function fillSampleAggGamesJson(){
+ const el=$('agg-sync-json');if(!el)return;
+ el.value=JSON.stringify([
+  {name:'Aviator',gameCode:'spribe_aviator',provider:'Spribe',category:'Crash & Arcade',popular:true,image:'https://placehold.co/300x200?text=Aviator'},
+  {name:'Super Ace',gameCode:'jili_super_ace',provider:'JILI',category:'Slots',popular:true,image:'https://placehold.co/300x200?text=Super+Ace'},
+  {name:'Crazy Time',gameCode:'evo_crazy_time',provider:'Evolution',category:'Live Casino',popular:true,image:'https://placehold.co/300x200?text=Crazy+Time'},
+  {name:'Gates of Olympus',gameCode:'pp_gates_olympus',provider:'Pragmatic Play',category:'Slots',popular:true,image:'https://placehold.co/300x200?text=Gates+of+Olympus'}
+ ],null,2);
+ toast('স্যাম্পল গেম JSON বসানো হয়েছে');
+}
+async function simulateAggregatorWebhookMaster(){
+ const uid=($('agg-wh-uid')&&$('agg-wh-uid').value.trim())||'';
+ const action=($('agg-wh-act')&&$('agg-wh-act').value)||'balance';
+ const amount=parseFloat($('agg-wh-amt')?$('agg-wh-amt').value:'0')||0;
+ const gameCode=($('agg-wh-code')&&$('agg-wh-code').value.trim())||'aviator';
+ const dryRun=$('agg-wh-dry')?$('agg-wh-dry').checked:true;
+ if(!uid){toast('একজন প্লেয়ার বা UID নির্বাচন করুন');return}
+ AGG_WH_OUT='<span style="color:var(--gold)">⏳ Webhook সিমুলেশন চলছে...</span>';
+ if($('agg-wh-out'))$('agg-wh-out').innerHTML=AGG_WH_OUT;
+ try{
+  const res=await window.mwApi('/api/v1/master/aggregator/simulate-webhook',{
+   uid,
+   action,
+   amount,
+   betAmount:action==='bet_win'?amount:undefined,
+   winAmount:action==='bet_win'?Math.round(amount*1.5*100)/100:undefined,
+   gameCode,
+   provider:getEffectiveAggCfg().providerName||'Aggregator',
+   trxId:'sim_'+Date.now(),
+   dryRun
+  },auth);
+  AGG_WH_OUT=`<pre style="padding:10px;border-radius:10px;border:1px solid rgba(16,185,129,.4);background:var(--in);white-space:pre-wrap;font-size:12px;color:var(--ok)">${esc(JSON.stringify(res,null,2))}</pre>`;
+ }catch(e){
+  AGG_WH_OUT=`<div style="padding:10px;border-radius:10px;border:1px solid rgba(239,68,68,.4);color:var(--er)">❌ সিমুলেশন ব্যর্থ: ${esc(e.message||String(e))}</div>`;
+ }
+ if($('agg-wh-out'))$('agg-wh-out').innerHTML=AGG_WH_OUT;
+}
+function renderAggregatorHubTab(embedded){
+ const cfg=getEffectiveAggCfg();
+ const beBase=getAggBackendUrl();
+ const sub=AGG_SUB||'setup';
+ const allProvs=getMergedAllProviders();
+ const activeProvs=allProvs.filter(p=>p.active!==false).length;
+ let provGamesCount=0;
+ Object.values(PROV_GAMES||{}).forEach(m=>{if(m&&typeof m==='object')provGamesCount+=Object.keys(m).length});
+ const logEntries=Object.entries(AGGLOGS||{}).reverse();
+ const cbUnified=beBase+'/api/v1/aggregator/callback';
+ const cbBalance=beBase+'/api/v1/aggregator/callback/balance';
+ const cbBet=beBase+'/api/v1/aggregator/callback/bet';
+ const cbWin=beBase+'/api/v1/aggregator/callback/win';
+ const cbBetWin=beBase+'/api/v1/aggregator/callback/bet_win';
+ const cbRollback=beBase+'/api/v1/aggregator/callback/rollback';
+ const playerOpts=Object.entries(USERS||{}).slice(0,120).map(([uid,u])=>`<option value="${esc(uid)}">${esc(u.name||u.username||u.email||uid)} (${fmt(u.balance)})</option>`).join('');
+
+ let subBody='';
+ if(sub==='callbacks'){
+  const mkUrlRow=(label,url)=>`<tr><td><b>${esc(label)}</b></td><td><code style="word-break:break-all;font-size:12px">${esc(url)}</code></td><td><button type="button" onclick="copyTxt('${esc(url)}')">📋 কপি</button></td></tr>`;
+  subBody=`
+  <div class="cd" style="margin-bottom:12px">
+   <b style="font-size:15px;color:var(--gold)">🔁 Seamless Wallet Webhook Endpoints (অ্যাগ্রিগেটর ড্যাশবোর্ডে বসান)</b>
+   <span>আপনার Game Aggregator সার্ভার থেকে বেট/উইন/ব্যালেন্স কল সরাসরি আপনার প্রাইভেট Render ব্যাকএন্ডে আসবে এবং Firebase RTDB ব্যালেন্স অ্যাটমিকভাবে আপডেট করবে।</span>
+   <div class="sc" style="margin-top:10px"><table>
+    <tr><th>অ্যাকশন / রুট</th><th>Webhook Endpoint URL (POST JSON)</th><th>কপি</th></tr>
+    ${mkUrlRow('Unified Callback (action in body)',cbUnified)}
+    ${mkUrlRow('Get Player Balance',cbBalance)}
+    ${mkUrlRow('Debit / Bet',cbBet)}
+    ${mkUrlRow('Credit / Win',cbWin)}
+    ${mkUrlRow('Combined Bet + Win',cbBetWin)}
+    ${mkUrlRow('Refund / Rollback',cbRollback)}
+   </table></div>
+  </div>
+  <div class="cd" style="margin-bottom:12px">
+   <b style="font-size:15px;color:var(--gold)">🧪 Seamless Wallet Webhook সিমুলেটর (সার্ভার টেস্ট)</b>
+   <span>প্রকৃত অ্যাগ্রিগেটর লাইভ করার আগে প্লেয়ার ব্যালেন্স, বেট ও উইন রিকোয়েস্ট নিরাপদে টেস্ট করুন (Dry Run অন রাখলে আসল ব্যালেন্স কাটবে না)।</span>
+   <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(190px,1fr));gap:8px;margin-top:10px">
+    <div><small>প্লেয়ার বাছাই করুন</small><select id="agg-wh-uid">${playerOpts||'<option value="">কোনো প্লেয়ার নেই</option>'}</select></div>
+    <div><small>Webhook অ্যাকশন</small><select id="agg-wh-act">
+     <option value="balance">balance (ব্যালেন্স চেক)</option>
+     <option value="bet">bet (টাকা কাটবে)</option>
+     <option value="win">win (টাকা যোগ)</option>
+     <option value="bet_win">bet_win (একসাথে)</option>
+     <option value="rollback">rollback (রিফান্ড)</option>
+    </select></div>
+    <div><small>পরিমাণ (৳)</small><input id="agg-wh-amt" type="number" min="0" step="any" value="50"></div>
+    <div><small>Game Code</small><input id="agg-wh-code" value="aviator"></div>
+   </div>
+   <div class="row" style="margin-top:10px;margin-bottom:0;align-items:center">
+    <label style="display:flex;align-items:center;gap:6px;font-size:13px"><input id="agg-wh-dry" type="checkbox" checked style="width:auto"> 🛡️ Dry Run (ব্যালেন্স পরিবর্তন না করে টেস্ট)</label>
+    <button type="button" class="p" onclick="simulateAggregatorWebhookMaster()">⚡ Webhook টেস্ট রান করুন</button>
+   </div>
+   <div id="agg-wh-out" style="margin-top:10px">${AGG_WH_OUT}</div>
+  </div>`;
+ }else if(sub==='sync'){
+  subBody=`
+  <div class="cd" style="margin-bottom:12px">
+   <b style="font-size:15px;color:var(--gold)">🔄 Game List API থেকে প্রোভাইডার ও গেম অটো সিঙ্ক</b>
+   <span>আপনার Aggregator-এর Game List Endpoint থেকে সব গেম সরাসরি ডাউনলোড করে <code>providers</code> এবং <code>provider_games</code>-এ যুক্ত করুন।</span>
+   <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(210px,1fr));gap:10px;margin-top:10px">
+    <div><small>Game List API Endpoint URL</small><input id="agg-sync-url" placeholder="https://api.example.com/v1/games" value="${esc(cfg.gameListUrl||'')}"></div>
+    <div><small>HTTP Method</small><select id="agg-sync-method"><option value="GET">GET</option><option value="POST">POST (JSON)</option></select></div>
+    <div><small>Provider ফিল্টার (ঐচ্ছিক)</small><input id="agg-sync-prov" placeholder="যেমন: JILI বা খালি রাখুন"></div>
+    <div><small>ডিফল্ট ক্যাটাগরি (ঐচ্ছিক)</small><select id="agg-sync-cat">
+     <option value="">অটো ডিটেক্ট (প্রস্তাবিত)</option>
+     <option value="Slots">Slots</option>
+     <option value="Live Casino">Live Casino</option>
+     <option value="Crash & Arcade">Crash & Arcade</option>
+     <option value="Fishing">Fishing</option>
+     <option value="Table Games">Table Games</option>
+     <option value="Sports">Sports</option>
+    </select></div>
+   </div>
+   <div class="row" style="margin-top:10px;margin-bottom:0;align-items:center">
+    <label style="display:flex;align-items:center;gap:6px;font-size:13px"><input id="agg-sync-pop" type="checkbox" style="width:auto"> ⭐ হোম পেজের Popular Games-এও যোগ করুন</label>
+    <button type="button" class="p" onclick="syncAggregatorGamesMaster(false)">🔄 API থেকে গেম সিঙ্ক করুন</button>
+    <button type="button" onclick="GM_SUB='providers';tab('games')">🏢 সব প্রোভাইডার দেখুন</button>
+    <button type="button" onclick="GM_SUB='provgames';tab('games')">🎲 প্রোভাইডার গেমস</button>
+   </div>
+  </div>
+  <div class="cd" style="margin-bottom:12px">
+   <div style="display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:8px">
+    <b style="font-size:15px">📥 অথবা Bulk JSON দিয়ে গেম ইমপোর্ট করুন</b>
+    <button type="button" onclick="fillSampleAggGamesJson()">📄 স্যাম্পল JSON লোড</button>
+   </div>
+   <span>অ্যাগ্রিগেটর ড্যাশবোর্ড থেকে পাওয়া JSON গেম লিস্ট নিচে পেস্ট করে এক ক্লিকে ইমপোর্ট করুন।</span>
+   <textarea id="agg-sync-json" rows="7" style="margin-top:8px;font-family:monospace;font-size:12px" placeholder='[{"name":"Aviator","gameCode":"spribe_aviator","provider":"Spribe","category":"Crash & Arcade","image":"https://..."}]'></textarea>
+   <div class="row" style="margin-top:10px;margin-bottom:0">
+    <button type="button" class="p" onclick="syncAggregatorGamesMaster(true)">📥 JSON থেকে গেম ইমপোর্ট করুন</button>
+   </div>
+  </div>
+  <div id="agg-sync-out">${AGG_SYNC_OUT}</div>`;
+ }else if(sub==='logs'){
+  subBody=`
+  <div class="cd">
+   <div style="display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:8px;margin-bottom:10px">
+    <b style="font-size:15px;color:var(--gold)">📜 লাইভ অ্যাগ্রিগেটর API ও Webhook লগ (শেষ ৬০টি)</b>
+    <span class="pl">${logEntries.length} টি ইভেন্ট</span>
+   </div>
+   <div class="sc"><table>
+    <tr><th>সময়</th><th>ধরন</th><th>স্ট্যাটাস</th><th>প্লেয়ার / Trx</th><th>গেম / পরিমাণ</th><th>বিস্তারিত</th></tr>`+
+    (logEntries.map(([,lg])=>{
+     const ok=lg.status==='OK';
+     return `<tr><td><small>${lg.timestamp?new Date(lg.timestamp).toLocaleString('bn-BD'):'—'}</small></td><td><b>${esc(lg.type||'EVENT')}</b></td><td><span class="pl ${ok?'':'b'}">${esc(lg.status||'INFO')} · ${esc(lg.httpStatus||'')}</span>${lg.latencyMs!==null&&lg.latencyMs!==undefined?`<br><small style="color:var(--mu)">${lg.latencyMs}ms</small>`:''}</td><td><small style="font-family:monospace">${esc(lg.uid||'—')}</small>${lg.trxId?`<br><small style="color:var(--mu)">${esc(lg.trxId)}</small>`:''}</td><td><small>${esc(lg.provider||'')} ${esc(lg.gameCode||'')}</small>${lg.amount!==null&&lg.amount!==undefined?`<br><b>${fmt(lg.amount)}</b>`:''}</td><td><small style="word-break:break-word">${esc(lg.message||'')}</small></td></tr>`;
+    }).join('')||`<tr><td colspan="6" style="text-align:center;color:var(--mu)">এখনো কোনো Aggregator লগ নেই</td></tr>`)+
+   `</table></div>
+  </div>`;
+ }else{
+  const phChips=['{uid}','{username}','{gameCode}','{provider}','{currency}','{lang}','{balance}','{operator}','{agentId}','{sessionToken}','{returnUrl}','{callbackUrl}'];
+  subBody=`
+  <div class="cd" style="margin-bottom:12px">
+   <b style="font-size:14px;color:var(--gold)">⚡ কুইক সেটআপ প্রিসেট (১ ক্লিকে ফরম্যাট লোড)</b>
+   <div class="row" style="margin-top:8px;margin-bottom:0">
+    <button type="button" onclick="applyAggPreset('generic_seamless')">🌐 Generic REST Seamless</button>
+    <button type="button" onclick="applyAggPreset('asian_nexus')">🎰 NexusGG / Huidu / Asian Style</button>
+    <button type="button" onclick="applyAggPreset('slotegrator_hmac')">🔐 HMAC-SHA256 Signed API</button>
+    <button type="button" onclick="applyAggPreset('direct_url')">🔗 Direct URL Template</button>
+   </div>
+  </div>
+  <div class="cd" style="margin-bottom:12px">
+   <div style="display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:10px;margin-bottom:12px;padding-bottom:10px;border-bottom:1px solid var(--bd)">
+    <label style="display:flex;align-items:center;gap:8px;cursor:pointer;font-weight:700;font-size:15px">
+     <input id="agg-on" type="checkbox" ${cfg.enabled?'checked':''} style="width:auto">
+     <span>✅ Game Aggregator API লাইভ চালু (ON)</span>
+    </label>
+    <span class="pl ${cfg.enabled?'':'b'}">${cfg.enabled?'🟢 LIVE (সকল প্লেয়ারের জন্য সক্রিয়)':'🔴 OFF (ডিফল্ট/অফলাইন)'}</span>
+   </div>
+   <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(230px,1fr));gap:10px">
+    <div><small>Aggregator / Provider নাম</small><input id="agg-name" placeholder="যেমন: JILI / Slotegrator / NexusGG" value="${esc(cfg.providerName||'')}"></div>
+    <div><small>ওয়ালেট আর্কিটেকচার</small><select id="agg-wallet">
+     <option value="seamless"${cfg.walletMode==='seamless'?' selected':''}>Seamless Wallet (ব্যাকএন্ড অটো-সিঙ্ক — প্রস্তাবিত)</option>
+     <option value="transfer"${cfg.walletMode==='transfer'?' selected':''}>Transfer Wallet (সেশন ট্রান্সফার)</option>
+     <option value="direct"${cfg.walletMode==='direct'?' selected':''}>Direct URL / Iframe Only</option>
+    </select></div>
+    <div><small>Launch API মেথড</small><select id="agg-mode">
+     <option value="rest_post"${cfg.mode==='rest_post'?' selected':''}>POST JSON Launch API (গেম URL দেয়)</option>
+     <option value="rest_get"${cfg.mode==='rest_get'?' selected':''}>GET Query Launch API</option>
+     <option value="direct_iframe"${cfg.mode==='direct_iframe'?' selected':''}>Direct URL টেমপ্লেট (সার্ভার প্রক্সি ছাড়া)</option>
+    </select></div>
+    <div><small>প্লেয়ার স্ক্রিনে ওপেন মোড</small><select id="agg-open">
+     <option value="iframe"${cfg.openMode==='iframe'?' selected':''}>ইন-অ্যাপ গেম প্লেয়ার (Iframe + ব্যাক)</option>
+     <option value="newtab"${cfg.openMode==='newtab'?' selected':''}>নতুন ব্রাউজার ট্যাব</option>
+    </select></div>
+    <div><small>API Base URL</small><input id="agg-base" placeholder="https://api.aggregator.com" value="${esc(cfg.baseUrl||'')}"></div>
+    <div><small>Game List Endpoint URL (গেম সিঙ্কের জন্য)</small><input id="agg-gamelist" placeholder="https://api.aggregator.com/v1/games" value="${esc(cfg.gameListUrl||'')}"></div>
+   </div>
+   <div style="margin-top:10px">
+    <small>Launch Endpoint / URL Template * (প্লেসহোল্ডার ক্লিক করে যোগ করুন)</small>
+    <input id="agg-launch" placeholder="https://api.aggregator.com/v1/game/launch" value="${esc(cfg.launchUrl||'')}">
+    <div style="display:flex;flex-wrap:wrap;gap:6px;margin-top:6px">${phChips.map(t=>`<button type="button" onclick="insertAggPlaceholder('${t}')" style="padding:3px 8px;font-size:11px;font-family:monospace">${t}</button>`).join('')}</div>
+   </div>
+   <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:10px;margin-top:12px">
+    <div><small>Operator / Merchant Code</small><input id="agg-op" placeholder="Merchant / Operator Code" value="${esc(cfg.operatorCode||'')}"></div>
+    <div><small>Agent / Hall ID (ঐচ্ছিক)</small><input id="agg-agent" placeholder="Agent ID" value="${esc(cfg.agentId||'')}"></div>
+    <div><small>API Key / Bearer Token (সুরক্ষিত)</small><div style="display:flex;gap:6px"><input id="agg-key" type="password" placeholder="API Key / Token" value="${esc(cfg.apiKey||'')}"><button type="button" onclick="toggleAggSecretVis('agg-key')" title="দেখুন/লুকান">👁</button></div></div>
+    <div><small>API Secret Key (HMAC/MD5 সাইনিং)</small><div style="display:flex;gap:6px"><input id="agg-sec" type="password" placeholder="API Secret" value="${esc(cfg.apiSecret||'')}"><button type="button" onclick="toggleAggSecretVis('agg-sec')" title="দেখুন/লুকান">👁</button></div></div>
+    <div><small>Webhook Secret (Callback ভেরিফিকেশন)</small><div style="display:flex;gap:6px"><input id="agg-whsec" type="password" placeholder="Webhook Secret" value="${esc(cfg.webhookSecret||'')}"><button type="button" onclick="toggleAggSecretVis('agg-whsec')" title="দেখুন/লুকান">👁</button></div></div>
+    <div><small>Auth ও Signature মেথড</small><select id="agg-auth">
+     <option value="bearer_xapikey"${cfg.authMethod==='bearer_xapikey'?' selected':''}>Bearer Token + X-API-Key Header</option>
+     <option value="hmac_sha256"${cfg.authMethod==='hmac_sha256'?' selected':''}>HMAC-SHA256 Signature Header</option>
+     <option value="hmac_sha1"${cfg.authMethod==='hmac_sha1'?' selected':''}>HMAC-SHA1 Signature Header</option>
+     <option value="md5_sign"${cfg.authMethod==='md5_sign'?' selected':''}>MD5 (Payload + Secret)</option>
+     <option value="body_credentials"${cfg.authMethod==='body_credentials'?' selected':''}>JSON Body Credentials (apiKey + apiSecret)</option>
+    </select></div>
+    <div><small>Signature Header নাম</small><input id="agg-sign-hdr" placeholder="X-Sign" value="${esc(cfg.signHeader||'X-Sign')}"></div>
+    <div><small>Seamless Callback URL</small><input id="agg-cb" placeholder="${esc(cbUnified)}" value="${esc(cfg.callbackUrl||cbUnified)}"></div>
+    <div><small>Currency</small><input id="agg-curr" placeholder="BDT" value="${esc(cfg.currency||'BDT')}"></div>
+    <div><small>Language</small><input id="agg-lang" placeholder="bn" value="${esc(cfg.lang||'bn')}"></div>
+    <div><small>Webhook Whitelist IPs (কমা দিয়ে, ঐচ্ছিক)</small><input id="agg-ips" placeholder="যেমন: 1.2.3.4, 5.6.7.8" value="${esc(cfg.whitelistIps||'')}"></div>
+    <div><small>Extra Custom Headers JSON (ঐচ্ছিক)</small><input id="agg-headers" placeholder='{"X-Custom":"value"}' value="${esc(cfg.customHeadersJson||'')}"></div>
+   </div>
+   <div class="row" style="margin-top:14px;margin-bottom:0;align-items:center">
+    <button type="button" class="p" onclick="saveAggregatorMaster()">💾 কনফিগ সেভ ও লাইভ করুন</button>
+    <input id="agg-test-code" placeholder="টেস্ট Game Code" value="aviator" style="max-width:150px">
+    <button type="button" onclick="testAggregatorMaster('launch')">🧪 Launch API টেস্ট (Render)</button>
+    <button type="button" onclick="testAggregatorMaster('gamelist')">🎲 Game List টেস্ট (Render)</button>
+   </div>
+   <div id="agg-test-out" style="margin-top:10px">${AGG_TEST_OUT}</div>
+  </div>`;
+ }
+
+ return `
+ ${embedded?'':`<div class="cd" style="margin-bottom:12px">
+  <div style="display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:10px">
+   <div>
+    <b style="font-size:17px;color:var(--gold)">🌐 Game Aggregator API ও Seamless Wallet হাব</b>
+    <span>এখান থেকে প্রফেশনাল গেম অ্যাগ্রিগেটর (JILI, Pragmatic, Evolution, Slotegrator, NexusGG ইত্যাদি) নিরাপদে কানেক্ট করুন। আপনার API Secret শুধুমাত্র প্রাইভেট <code>gameAggregatorSecrets</code> ও Render ব্যাকএন্ডে সুরক্ষিত থাকে।</span>
+   </div>
+   <div style="display:flex;gap:8px;flex-wrap:wrap;align-items:center">
+    <span class="pl">Backend: ${esc(beBase)}</span>
+    <button type="button" onclick="tab('games')">🎮 গেম ও প্রোভাইডার ম্যানেজমেন্ট</button>
+   </div>
+  </div>
+ </div>`}
+ <div class="g" style="margin-bottom:12px">
+  <div class="cd"><span>Aggregator স্ট্যাটাস</span><b style="color:${cfg.enabled?'var(--ok)':'var(--er)'}">${cfg.enabled?'🟢 LIVE (চালু)':'🔴 OFF (বন্ধ)'}</b><small>${esc(cfg.providerName||'সেট করা হয়নি')}</small></div>
+  <div class="cd"><span>ওয়ালেট মোড</span><b style="text-transform:uppercase">${esc(cfg.walletMode||'seamless')}</b><small>${esc(cfg.mode||'rest_post')}</small></div>
+  <div class="cd"><span>সক্রিয় প্রোভাইডার</span><b>${activeProvs} / ${allProvs.length}</b><small>সব গেম প্রোভাইডার</small></div>
+  <div class="cd"><span>প্রোভাইডার গেমস</span><b>${provGamesCount} টি</b><small>ইমপোর্ট/সিঙ্ককৃত গেম</small></div>
+  <div class="cd"><span>API ও Webhook লগ</span><b>${logEntries.length} টি</b><small>${cfg.updatedAt?'আপডেট: '+new Date(cfg.updatedAt).toLocaleTimeString('bn-BD'):'এখনো সেভ হয়নি'}</small></div>
+ </div>
+ <div class="row" style="margin-bottom:12px">
+  <button type="button" class="${sub==='setup'?'p':''}" onclick="AGG_SUB='setup';draw()">🔑 ১. API সেটআপ ও টেস্ট</button>
+  <button type="button" class="${sub==='callbacks'?'p':''}" onclick="AGG_SUB='callbacks';draw()">🔁 ২. Seamless Callback ও সিমুলেটর</button>
+  <button type="button" class="${sub==='sync'?'p':''}" onclick="AGG_SUB='sync';draw()">🎲 ৩. Game List সিঙ্ক ও JSON ইমপোর্ট</button>
+  <button type="button" class="${sub==='logs'?'p':''}" onclick="AGG_SUB='logs';draw()">📜 ৪. লাইভ API লগ (${logEntries.length})</button>
+ </div>
+ ${subBody}`;
 }
 function renderMasterGamesTab(){
  const sub=GM_SUB||'games';
@@ -1484,48 +1877,9 @@ function renderMasterGamesTab(){
  const activeGamesCnt=allGames.filter(g=>g.active!==false&&g.status!=='Inactive').length;
  const allProvs=getMergedAllProviders();
  const activeProvsCnt=allProvs.filter(p=>p.active!==false).length;
- const gApi=(UPCFG_ALL.global&&UPCFG_ALL.global.gameApi)||{};
  let body='';
  if(sub==='api'){
-  body=`
-  <div class="cd" style="margin-bottom:12px">
-   <b style="font-size:16px;color:var(--gold)">🔌 Game API ইন্টিগ্রেশন ও লাইভ সাইট রানার</b>
-   <span>যেকোনো গেম অ্যাগ্রিগেটর বা প্রোভাইডারের Launch API এখানে সেট করলে ইউজার প্যানেলের সব গেম ও প্রোভাইডার গেম সরাসরি আসল API দিয়ে চালু হবে (ইন-অ্যাপ প্লেয়ার অথবা নতুন ট্যাবে)।</span>
-   <div style="display:flex;align-items:center;gap:12px;margin-top:10px;flex-wrap:wrap">
-    <label style="display:flex;align-items:center;gap:8px;cursor:pointer;font-weight:700"><input id="gapi-on" type="checkbox" ${gApi.enabled?'checked':''} style="width:auto"> ✅ Game API চালু (ON)</label>
-    <span class="pl ${gApi.enabled?'':'b'}">${gApi.enabled?'API সক্রিয়':'API বন্ধ (ডিফল্ট/URL মোড)'}</span>
-   </div>
-  </div>
-  <div class="cd" style="margin-bottom:12px">
-   <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(230px,1fr));gap:10px">
-    <div><small>API প্রোভাইডার / অ্যাগ্রিগেটর নাম</small><input id="gapi-name" placeholder="যেমন: JILI / Pragmatic / Custom Aggregator" value="${esc(gApi.providerName||'')}"></div>
-    <div><small>API সংযোগ ধরন</small><select id="gapi-mode">
-     <option value="rest_post"${(gApi.mode||'rest_post')==='rest_post'?' selected':''}>POST JSON Launch API (গেম URL ফেরত দেয়)</option>
-     <option value="rest_get"${gApi.mode==='rest_get'?' selected':''}>GET Query Launch API (গেম URL ফেরত দেয়)</option>
-     <option value="direct_iframe"${gApi.mode==='direct_iframe'?' selected':''}>Direct URL টেমপ্লেট (সরাসরি প্লেয়ার ওপেন)</option>
-    </select></div>
-    <div><small>Launch Endpoint / URL Template *</small><input id="gapi-launch" placeholder="https://api.example.com/launch?game={gameCode}&uid={uid}" value="${esc(gApi.launchUrl||'')}"></div>
-    <div><small>API Base / Seamless Callback URL (ঐচ্ছিক)</small><input id="gapi-base" placeholder="https://api.example.com" value="${esc(gApi.baseUrl||'')}"></div>
-    <div><small>Operator / Agent Code</small><input id="gapi-op" placeholder="Operator ID / Merchant Code" value="${esc(gApi.operatorCode||'')}"></div>
-    <div><small>API Key / Token</small><input id="gapi-key" placeholder="API Key" value="${esc(gApi.apiKey||'')}"></div>
-    <div><small>API Secret (ঐচ্ছিক)</small><input id="gapi-sec" type="password" placeholder="API Secret" value="${esc(gApi.apiSecret||'')}"></div>
-    <div><small>Callback / Return URL (ঐচ্ছিক)</small><input id="gapi-cb" placeholder="https://yourdomain.com/callback" value="${esc(gApi.callbackUrl||'')}"></div>
-    <div><small>Currency</small><input id="gapi-curr" placeholder="BDT" value="${esc(gApi.currency||'BDT')}"></div>
-    <div><small>Language</small><input id="gapi-lang" placeholder="bn" value="${esc(gApi.lang||'bn')}"></div>
-    <div><small>ইউজার প্যানেলে গেম কীভাবে খুলবে</small><select id="gapi-open">
-     <option value="iframe"${(gApi.openMode||'iframe')==='iframe'?' selected':''}>অ্যাপের ভেতরে গেম প্লেয়ার (Iframe + ব্যাক বাটন)</option>
-     <option value="newtab"${gApi.openMode==='newtab'?' selected':''}>নতুন ব্রাউজার ট্যাবে খুলুন</option>
-    </select></div>
-   </div>
-   <div style="font-size:12px;color:var(--mu);margin-top:10px;line-height:1.6">
-    টিপস: Launch URL-এ প্লেসহোল্ডার ব্যবহার করতে পারেন — <code>{uid}</code>, <code>{username}</code>, <code>{gameCode}</code>, <code>{provider}</code>, <code>{currency}</code>, <code>{lang}</code>, <code>{balance}</code>, <code>{operator}</code>। প্রতিটি গেম ও প্রোভাইডারের নিজস্ব <b>Game Code</b> সেট করা যাবে।
-   </div>
-   <div class="row" style="margin-top:12px;margin-bottom:0">
-    <button type="button" class="p" onclick="saveGameApiMaster()">💾 Game API সেভ ও চালু করুন</button>
-    <button type="button" onclick="testGameApiMaster()">🧪 API সংযোগ টেস্ট করুন</button>
-   </div>
-   <div id="gapi-test-out" style="margin-top:10px;font-size:12px;color:var(--mu)"></div>
-  </div>`;
+  body=renderAggregatorHubTab(true);
  }else if(sub==='categories'){
   const catMap=getCatCfgMap(),spMap=getSportsCfgMap();
   body=`
@@ -2326,6 +2680,22 @@ const RULES_TXT=`{
         ".read": "auth != null && auth.uid == $uid"
       }
     },
+    "gameAggregatorSecrets": {
+      ".read": "auth != null && auth.token.email == 'mijanbabu2015@gmail.com'",
+      ".write": "auth != null && auth.token.email == 'mijanbabu2015@gmail.com'"
+    },
+    "aggregatorLogs": {
+      ".read": "auth != null && auth.token.email == 'mijanbabu2015@gmail.com'",
+      ".write": false
+    },
+    "aggregatorTransactions": {
+      ".read": "auth != null && auth.token.email == 'mijanbabu2015@gmail.com'",
+      ".write": false
+    },
+    "aggregatorSessions": {
+      ".read": false,
+      ".write": false
+    },
     "cm_queue": {
       ".read": false,
       ".write": false
@@ -2801,7 +3171,9 @@ function draw(){if(!started)return;
  if($('nav-agent-pending'))$('nav-agent-pending').textContent=AGP.length;
  if($('nav-aff-pending'))$('nav-aff-pending').textContent=AFP.length;
  if($('nav-wd-pending'))$('nav-wd-pending').textContent=WDP.length;
- drawTn();['admins','agents','affiliates','reqs','wdmonitor','led','games','userpanel','players','act','feat','promo','chat','tenants','guide'].forEach(t=>{const el=$('t-'+t);if(el)el.className=(t===cur||(t==='admins'&&cur==='admin'))?'on':''});let h='';
+ const _aggLive=!!((AGGCFG&&AGGCFG.enabled)||(UPCFG_ALL.global&&UPCFG_ALL.global.gameApi&&UPCFG_ALL.global.gameApi.enabled));
+ const _navAgg=$('nav-agg-status');if(_navAgg){_navAgg.textContent=_aggLive?'LIVE':'OFF';_navAgg.style.background=_aggLive?'rgba(16,185,129,.22)':'';_navAgg.style.color=_aggLive?'var(--ok)':'';}
+ drawTn();['admins','agents','affiliates','reqs','wdmonitor','led','games','aggregator','userpanel','players','act','feat','promo','chat','tenants','guide'].forEach(t=>{const el=$('t-'+t);if(el)el.className=(t===cur||(t==='admins'&&cur==='admin'))?'on':''});let h='';
  if(cur==='admins'){
   h=`<div class="cd" style="margin-bottom:14px;background:var(--in);border:1px solid var(--bg2)">
    <div style="display:flex;align-items:center;justify-content:space-between;gap:10px;flex-wrap:wrap">
@@ -3057,6 +3429,7 @@ function draw(){if(!started)return;
  if(cur==='led'){h=`<div class="row"><button class="d" onclick="clearAdminTx()">🗑 সব লেনদেন মুছুন</button></div><div class="sc"><table><tr><th>সময়</th><th>ধরন</th><th>অ্যাডমিন</th><th>পরিমাণ</th><th>নোট</th></tr>`+
   Object.values(LED).reverse().map(l=>`<tr><td>${l.time?new Date(l.time).toLocaleString('bn-BD'):''}</td><td>${esc(l.type)}</td><td>${esc(l.email)}</td><td>${fmt(l.amount)}</td><td>${esc(l.note)}</td></tr>`).join('')+`</table></div>`}
  if(cur==='games'){h=renderMasterGamesTab()}
+ if(cur==='aggregator'){h=renderAggregatorHubTab(false)}
  if(cur==='players'){const q=Q.toLowerCase();const _orph=Object.keys(USERS).filter(k=>!ADM[k]&&!(USERS[k].adminUid&&ADM[USERS[k].adminUid])).length;h=(_orph?`<div class="cd" style="margin-bottom:10px;border:1px solid #ef4444"><b>⚠ ${_orph} জন ইউজারের কোনো অ্যাডমিন নেই</b><span>অ্যাডমিন না থাকলে সে ডিপোজিট/উইথড্র করতে পারবে না এবং কোনো অ্যাডমিন তাকে দেখবে না।</span><div class="row"><button class="p" onclick="assignAllOrphans()">সবাইকে একজন অ্যাডমিনের অধীনে দিন</button></div></div>`:'')+`<div class="row"><input id="pq" placeholder="নাম/ইমেইল/ফোন/UID/IP দিয়ে খুঁজুন" value="${esc(Q)}" oninput="Q=this.value;draw();const p=$('pq');p.focus();p.setSelectionRange(Q.length,Q.length)"></div><div class="sc"><table><tr><th>প্লেয়ার ও UID</th><th>ব্যালেন্স</th><th>বেট সংখ্যা ও (− / +)</th><th>IP ও ডিভাইস</th><th>রোল / স্ট্যাটাস</th><th>অ্যাকশন</th></tr>`+
   Object.entries(USERS).filter(([k,u])=>!q||[u.name,u.email,u.phone,u.username,u.lastIp,u.lastDevice,k].join(' ').toLowerCase().includes(q)).slice(0,200).map(([k,u])=>{
    const isAlreadyAdmin=!!ADM[k],bs=getPlayerBetStats(k),idInf=getPlayerIpAndDev(k);

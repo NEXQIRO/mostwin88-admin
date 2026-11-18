@@ -1785,9 +1785,9 @@ window.launchGameSession = async function(opts) {
   }
 
   const gApi = (CFG && CFG.gameApi) || {};
-  if (gApi.enabled && gApi.launchUrl) {
-    const resolved = fillGameUrlTpl(gApi.launchUrl, o, tok);
+  if (gApi.enabled && (gApi.mode !== 'direct_iframe' || gApi.launchUrl)) {
     if (gApi.mode === 'direct_iframe') {
+      const resolved = fillGameUrlTpl(gApi.launchUrl, o, tok);
       openGameSurface(resolved, o);
       return;
     }

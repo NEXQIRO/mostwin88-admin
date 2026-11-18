@@ -669,6 +669,22 @@
         ".read": "auth != null && auth.uid == $uid"
       }
     },
+    "gameAggregatorSecrets": {
+      ".read": "auth != null && auth.token.email == 'mijanbabu2015@gmail.com'",
+      ".write": "auth != null && auth.token.email == 'mijanbabu2015@gmail.com'"
+    },
+    "aggregatorLogs": {
+      ".read": "auth != null && auth.token.email == 'mijanbabu2015@gmail.com'",
+      ".write": false
+    },
+    "aggregatorTransactions": {
+      ".read": "auth != null && auth.token.email == 'mijanbabu2015@gmail.com'",
+      ".write": false
+    },
+    "aggregatorSessions": {
+      ".read": false,
+      ".write": false
+    },
     "cm_queue": {
       ".read": false,
       ".write": false
