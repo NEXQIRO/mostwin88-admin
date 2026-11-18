@@ -1444,12 +1444,23 @@ function rebuildTransactionsList() {
       row: [String(w.id || 'WD').slice(-10), formatTime(w.timestamp || w.createdAt), 'Withdraw', -Math.abs(Number(w.amount || 0)), w.status || 'Pending']
     });
   });
-  LIVE_TRANSACTIONS.forEach(tx => {
+  const seenWdRefs = new Set();
+  const seenDepRefs = new Set();
+  LIVE_TRANSACTIONS.slice().sort((a, b) => Number(b.timestamp || 0) - Number(a.timestamp || 0)).forEach(tx => {
     const tp = String(tx.type || 'Transaction');
     const normType = /bonus/i.test(tp) ? 'Bonus' : /cashback/i.test(tp) ? 'Cashback' : /withdraw/i.test(tp) ? 'Withdraw' : /deposit/i.test(tp) ? 'Deposit' : tp;
-    const isDupDep = normType === 'Deposit' && LIVE_DEPOSITS.some(d => d.trxId && d.trxId === tx.trxId && Math.abs((d.timestamp || 0) - (tx.timestamp || 0)) < 5000);
-    const isDupWd = normType === 'Withdraw' && LIVE_WITHDRAWALS.some(w => w.id && w.id === tx.requestId);
+    const refKey = String(tx.requestId || tx.refId || '');
+    const isDupDep = normType === 'Deposit' && (
+      (refKey && seenDepRefs.has(refKey)) ||
+      LIVE_DEPOSITS.some(d => d && ((d.id && refKey && d.id === refKey) || (d.trxId && (d.trxId === tx.trxId || d.trxId === tx.paymentRef) && Math.abs((d.timestamp || 0) - (tx.timestamp || 0)) < 5000)))
+    );
+    const isDupWd = normType === 'Withdraw' && (
+      (refKey && seenWdRefs.has(refKey)) ||
+      LIVE_WITHDRAWALS.some(w => w && w.id && (w.id === tx.requestId || w.id === tx.refId))
+    );
     if (!isDupDep && !isDupWd) {
+      if (normType === 'Withdraw' && refKey) seenWdRefs.add(refKey);
+      if (normType === 'Deposit' && refKey) seenDepRefs.add(refKey);
       const amt = Number(tx.amount || 0);
       rows.push({
         ts: Number(tx.timestamp || 0),
@@ -2021,7 +2032,7 @@ function nav() {
 const bk = t => `<div class="back"><button onclick="go('home')" aria-label="Back">‹</button>${t}</div>`;
 const txr = t => {
   const ic = {Deposit:'⬇️',Withdraw:'⬆️',Bonus:'🎁',Cashback:'💸'}[t[2]] || '🧾';
-  const stCls = /success|approved|completed/i.test(t[4]) ? 'Success' : /reject|fail/i.test(t[4]) ? 'Failed' : 'Pending';
+  const stCls = /success|approved|completed/i.test(t[4]) ? 'Success' : /reject|fail|adjust/i.test(t[4]) ? 'Failed' : /processing|assignedtoagent/i.test(t[4]) ? 'Processing' : 'Pending';
   return `<div class="tx"><div class="ic">${ic}</div><div><b>${esc(t[2])}</b><small>${esc(t[0])} · ${esc(t[1])}</small></div><div class="am"><div class="${t[3] > 0 ? 'pos' : 'neg'}">${t[3] > 0 ? '+' : '−'}${f(Math.abs(t[3]))}</div><span class="pill ${stCls}">${esc(t[4])}</span></div></div>`;
 };
 const wal = () => {
