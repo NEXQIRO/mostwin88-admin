@@ -4553,65 +4553,65 @@
   </div>
 
   <!-- MODAL: Verify Withdrawal & Forward to Assigned Agent -->
-  <div class="modal-overlay" id="modal-verify-forward-withdrawal">
-    <div class="modal" style="max-width: 580px;">
+  <div class="modal-backdrop" id="modal-verify-forward-withdrawal" onclick="if(event.target===this)closeModal('modal-verify-forward-withdrawal')">
+    <div class="modal-card" style="max-width: 580px;">
       <div class="modal-header">
-        <div class="modal-title">🔍 উইথড্র যাচাই ও এজেন্টের কাছে পাঠান</div>
-        <button class="modal-close" onclick="closeModal('modal-verify-forward-withdrawal')">&times;</button>
+        <h3 class="modal-title">🔍 উইথড্র যাচাই ও এজেন্টের কাছে পাঠান</h3>
+        <button type="button" class="modal-close" onclick="closeModal('modal-verify-forward-withdrawal')">&times;</button>
       </div>
       <div class="modal-body">
         <input type="hidden" id="wd-vf-key">
-        <div style="background: var(--bg-card); border: 1px solid var(--border-color); border-radius: 12px; padding: 12px; margin-bottom: 12px;">
+        <div style="background: var(--c-inner); border: 1px solid var(--border-subtle); border-radius: 12px; padding: 12px;">
           <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:6px;">
-            <span style="font-size:0.78rem; color:var(--text-dim);">প্লেয়ার</span>
-            <b id="wd-vf-player" style="color:#fff;">—</b>
+            <span style="font-size:0.78rem; color:var(--text-muted);">প্লেয়ার</span>
+            <b id="wd-vf-player" style="color:var(--c-text);">—</b>
           </div>
           <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:6px;">
-            <span style="font-size:0.78rem; color:var(--text-dim);">উত্তোলনের পরিমাণ</span>
+            <span style="font-size:0.78rem; color:var(--text-muted);">উত্তোলনের পরিমাণ</span>
             <b id="wd-vf-amount" style="color:var(--accent); font-size:1.1rem;">৳ 0</b>
           </div>
           <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:6px;">
-            <span style="font-size:0.78rem; color:var(--text-dim);">পদ্ধতি ও নাম্বার</span>
-            <span id="wd-vf-method-num" style="font-family:monospace; color:#e2e8f0;">—</span>
+            <span style="font-size:0.78rem; color:var(--text-muted);">পদ্ধতি ও নাম্বার</span>
+            <span id="wd-vf-method-num" style="font-family:monospace; color:var(--c-text); font-weight:600;">—</span>
           </div>
           <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:6px;">
-            <span style="font-size:0.78rem; color:var(--text-dim);">বর্তমান ওয়ালেট ব্যালেন্স</span>
-            <b id="wd-vf-live-bal" style="color:#4ade80;">৳ 0</b>
+            <span style="font-size:0.78rem; color:var(--text-muted);">বর্তমান ওয়ালেট ব্যালেন্স</span>
+            <b id="wd-vf-live-bal" style="color:var(--success);">৳ 0</b>
           </div>
           <div style="display:flex; justify-content:space-between; align-items:center;">
-            <span style="font-size:0.78rem; color:var(--text-dim);">টার্নওভার যাচাই</span>
+            <span style="font-size:0.78rem; color:var(--text-muted);">টার্নওভার যাচাই</span>
             <span id="wd-vf-turnover" style="font-size:0.82rem;">—</span>
           </div>
         </div>
 
-        <div id="wd-vf-turnover-warn" style="display:none; margin-bottom:12px; padding:10px 12px; border-radius:10px; background:rgba(239,68,68,0.14); border:1px solid rgba(239,68,68,0.4); color:#fecaca; font-size:0.82rem;">
+        <div id="wd-vf-turnover-warn" style="display:none; padding:10px 12px; border-radius:10px; background:rgba(248,113,113,0.12); border:1px solid rgba(248,113,113,0.45); color:var(--accent); font-size:0.82rem; font-weight:600;">
           ⚠️ সতর্কতা: এই প্লেয়ারের টার্নওভার এখনো অসম্পূর্ণ! যাচাই করে পাঠাতে চাইলে নিশ্চিত হয়ে নিন অথবা Reject করে রিফান্ড দিন।
         </div>
 
         <div class="form-group">
-          <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:6px; gap:8px;">
-            <label class="form-label" for="wd-vf-agent-sel" style="margin-bottom:0;">আপনার লাইনের এজেন্ট নির্বাচন করুন *</label>
-            <span id="wd-vf-line-summary" style="font-size:0.74rem; color:#93c5fd; font-weight:600;"></span>
+          <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:4px; gap:8px;">
+            <label for="wd-vf-agent-sel" style="margin-bottom:0;">আপনার লাইনের এজেন্ট নির্বাচন করুন *</label>
+            <span id="wd-vf-line-summary" style="font-size:0.74rem; color:var(--info); font-weight:700;"></span>
           </div>
-          <div id="wd-vf-agent-list" style="display:flex; flex-direction:column; gap:8px; max-height:220px; overflow-y:auto; margin-bottom:10px;"></div>
+          <div id="wd-vf-agent-list" style="display:flex; flex-direction:column; gap:8px; max-height:220px; overflow-y:auto; margin-bottom:6px;"></div>
           <select id="wd-vf-agent-sel" class="form-control" onchange="syncVerifyForwardAgentSelection(this.value)">
             <option value="">-- সক্রিয় Agent নির্বাচন করুন --</option>
           </select>
-          <small id="wd-vf-agent-hint" style="display:block; margin-top:4px; color:var(--text-dim); font-size:0.76rem;"></small>
+          <small id="wd-vf-agent-hint" style="display:block; margin-top:4px; color:var(--text-muted); font-size:0.76rem;"></small>
         </div>
 
-        <div class="form-group" style="margin-top:10px;">
-          <label class="form-label" for="wd-vf-note">যাচাই নোট (ঐচ্ছিক)</label>
+        <div class="form-group">
+          <label for="wd-vf-note">যাচাই নোট (ঐচ্ছিক)</label>
           <input type="text" id="wd-vf-note" class="form-control" placeholder="যেমন: ব্যালেন্স ও একাউন্ট সঠিক, পেমেন্ট করুন">
         </div>
 
-        <div id="wd-vf-error" style="display:none; margin-top:10px; padding:9px 11px; border-radius:8px; background:rgba(239,68,68,0.16); border:1px solid rgba(239,68,68,0.45); color:#fecaca; font-size:0.8rem;"></div>
+        <div id="wd-vf-error" style="display:none; padding:9px 11px; border-radius:8px; background:rgba(248,113,113,0.14); border:1px solid rgba(248,113,113,0.5); color:var(--accent); font-size:0.8rem; font-weight:600;"></div>
 
-        <div style="margin-top:10px; padding:9px 11px; border-radius:8px; background:rgba(245,158,11,0.1); border:1px solid rgba(245,158,11,0.3); font-size:0.78rem; color:#fde68a;">
+        <div style="padding:9px 11px; border-radius:8px; background:rgba(245,158,11,0.12); border:1px solid rgba(245,158,11,0.38); font-size:0.78rem; color:var(--warning);">
           ℹ️ Send-এ ক্লিক করলে এজেন্টের প্যানেলে রিকোয়েস্ট চলে যাবে এবং স্ট্যাটাস <b>Processing</b> দেখাবে। নির্ধারিত Agent ম্যানুয়ালি পেমেন্ট করে Confirm করলে <b>Completed</b> হবে।
         </div>
       </div>
-      <div class="modal-footer" style="display:flex; justify-content:flex-end; gap:8px;">
+      <div class="modal-footer">
         <button type="button" class="btn btn-secondary btn-sm" onclick="closeModal('modal-verify-forward-withdrawal')">বাতিল</button>
         <button type="button" class="btn btn-primary btn-sm" id="wd-vf-submit-btn" onclick="submitVerifyForwardWithdrawal()">📤 Send / এজেন্টের কাছে পাঠান</button>
       </div>
@@ -4619,45 +4619,45 @@
   </div>
 
   <!-- MODAL: Adjust Withdrawal (Fraud / Corruption Balance Deduction) -->
-  <div class="modal-overlay" id="modal-adjust-withdrawal">
-    <div class="modal" style="max-width: 500px;">
+  <div class="modal-backdrop" id="modal-adjust-withdrawal" onclick="if(event.target===this)closeModal('modal-adjust-withdrawal')">
+    <div class="modal-card" style="max-width: 500px;">
       <div class="modal-header">
-        <div class="modal-title" style="color:#f87171;">⚖️ Adjust / দুর্নীতি ও অনিয়মে টাকা কর্তন</div>
-        <button class="modal-close" onclick="closeModal('modal-adjust-withdrawal')">&times;</button>
+        <h3 class="modal-title" style="color:var(--accent);">⚖️ Adjust / দুর্নীতি ও অনিয়মে টাকা কর্তন</h3>
+        <button type="button" class="modal-close" onclick="closeModal('modal-adjust-withdrawal')">&times;</button>
       </div>
       <div class="modal-body">
         <input type="hidden" id="wd-adj-key">
-        <div style="background: var(--bg-card); border: 1px solid rgba(239,68,68,0.35); border-radius: 12px; padding: 12px; margin-bottom: 12px;">
+        <div style="background: rgba(248,113,113,0.1); border: 1px solid rgba(248,113,113,0.38); border-radius: 12px; padding: 12px;">
           <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:6px;">
-            <span style="font-size:0.78rem; color:var(--text-dim);">প্লেয়ার</span>
-            <b id="wd-adj-player" style="color:#fff;">—</b>
+            <span style="font-size:0.78rem; color:var(--text-muted);">প্লেয়ার</span>
+            <b id="wd-adj-player" style="color:var(--c-text);">—</b>
           </div>
           <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:6px;">
-            <span style="font-size:0.78rem; color:var(--text-dim);">উইথড্র রিকোয়েস্ট পরিমাণ (বাজেয়াপ্ত হবে)</span>
-            <b id="wd-adj-amount" style="color:#f87171; font-size:1.1rem;">৳ 0</b>
+            <span style="font-size:0.78rem; color:var(--text-muted);">উইথড্র রিকোয়েস্ট পরিমাণ (বাজেয়াপ্ত হবে)</span>
+            <b id="wd-adj-amount" style="color:var(--accent); font-size:1.1rem;">৳ 0</b>
           </div>
           <div style="display:flex; justify-content:space-between; align-items:center;">
-            <span style="font-size:0.78rem; color:var(--text-dim);">বর্তমান অবশিষ্ট ওয়ালেট ব্যালেন্স</span>
-            <b id="wd-adj-live-bal" style="color:#4ade80;">৳ 0</b>
+            <span style="font-size:0.78rem; color:var(--text-muted);">বর্তমান অবশিষ্ট ওয়ালেট ব্যালেন্স</span>
+            <b id="wd-adj-live-bal" style="color:var(--success);">৳ 0</b>
           </div>
         </div>
 
-        <div style="margin-bottom:12px; padding:9px 11px; border-radius:8px; background:rgba(239,68,68,0.12); border:1px solid rgba(239,68,68,0.35); font-size:0.78rem; color:#fecaca;">
+        <div style="padding:9px 11px; border-radius:8px; background:rgba(245,158,11,0.12); border:1px solid rgba(245,158,11,0.38); font-size:0.78rem; color:var(--warning);">
           ⚠️ <b>সতর্কতা:</b> Adjust করলে এই উইথড্রর টাকা প্লেয়ারকে রিফান্ড করা হবে না (দুর্নীতি/অনিয়মের কারণে বাজেয়াপ্ত/কাটা হবে) এবং এজেন্ট পেমেন্ট করতে পারবে না।
         </div>
 
         <div class="form-group">
-          <label class="form-label" for="wd-adj-extra">ওয়ালেট থেকে অতিরিক্ত জরিমানা / কর্তন (ঐচ্ছিক, ৳)</label>
+          <label for="wd-adj-extra">ওয়ালেট থেকে অতিরিক্ত জরিমানা / কর্তন (ঐচ্ছিক, ৳)</label>
           <input type="number" id="wd-adj-extra" class="form-control" min="0" step="1" value="0" placeholder="শুধু উইথড্রর টাকা কাটতে চাইলে 0 রাখুন">
-          <small style="display:block; margin-top:4px; color:var(--text-dim); font-size:0.74rem;">শুধু এই উইথড্র রিকোয়েস্টের টাকা কাটতে চাইলে <b>0</b> রাখুন। প্লেয়ারের বাকি ওয়ালেট থেকেও আরও টাকা কাটতে চাইলে পরিমাণ লিখুন।</small>
+          <small style="display:block; margin-top:4px; color:var(--text-muted); font-size:0.74rem;">শুধু এই উইথড্র রিকোয়েস্টের টাকা কাটতে চাইলে <b>0</b> রাখুন। প্লেয়ারের বাকি ওয়ালেট থেকেও আরও টাকা কাটতে চাইলে পরিমাণ লিখুন।</small>
         </div>
 
-        <div class="form-group" style="margin-top:10px;">
-          <label class="form-label" for="wd-adj-reason">দুর্নীতি / টাকা কাটার কারণ *</label>
+        <div class="form-group">
+          <label for="wd-adj-reason">দুর্নীতি / টাকা কাটার কারণ *</label>
           <input type="text" id="wd-adj-reason" class="form-control" placeholder="যেমন: মাল্টি-অ্যাকাউন্ট / গেম জালিয়াতি / বোনাস অপব্যবহার">
         </div>
       </div>
-      <div class="modal-footer" style="display:flex; justify-content:flex-end; gap:8px;">
+      <div class="modal-footer">
         <button type="button" class="btn btn-secondary btn-sm" onclick="closeModal('modal-adjust-withdrawal')">বাতিল</button>
         <button type="button" class="btn btn-danger btn-sm" id="wd-adj-submit-btn" onclick="submitAdjustWithdrawal()">⚖️ নিশ্চিত করে টাকা কেটে নিন (Adjust)</button>
       </div>
@@ -4955,7 +4955,7 @@
       db.ref('withdrawalRequests').on('value', (snap) => {
         if (snap.exists()) {
           const val = snap.val();
-          const allItems = Object.keys(val).map(k => ({ id: k, ...val[k] })).reverse();
+          const allItems = Object.keys(val).map(k => ({ ...val[k], id: k })).reverse();
           NP_RAW.withdrawals = allItems;
           const items = allItems.filter(w => npOwns(w.uid, w.adminUid));
           STATE.withdrawals = items;
@@ -6939,9 +6939,9 @@
       if (listEl) {
         listEl.querySelectorAll('[data-vf-agent-id]').forEach(card => {
           const isMatch = card.getAttribute('data-vf-agent-id') === (agentId || '');
-          card.style.borderColor = isMatch ? '#3b82f6' : 'var(--border-color)';
-          card.style.background = isMatch ? 'rgba(59,130,246,0.16)' : 'rgba(255,255,255,0.03)';
-          card.style.boxShadow = isMatch ? '0 0 0 1px rgba(59,130,246,0.5)' : 'none';
+          card.style.borderColor = isMatch ? 'var(--primary)' : 'var(--border-subtle)';
+          card.style.background = isMatch ? 'rgba(245,158,11,0.12)' : 'var(--c-inner)';
+          card.style.boxShadow = isMatch ? '0 0 0 2px var(--primary-glow)' : 'none';
         });
       }
 
@@ -6950,7 +6950,7 @@
       if (ag) {
         const statsMap = getAgentWithdrawalSendStats();
         const st = statsMap[ag.id] || { total: 0, open: 0, completed: 0 };
-        hint.innerHTML = `<span style="color:#4ade80;">✓ নির্বাচিত Assigned Agent: <b>${escapeHtml(ag.name || ag.email || ag.id)}</b> · এপর্যন্ত <b>${st.total} বার</b> পাঠানো হয়েছে (প্রসেসিং: ${st.open}টি, সম্পন্ন: ${st.completed}টি)</span>`;
+        hint.innerHTML = `<span style="color:var(--success); font-weight:600;">✓ নির্বাচিত Assigned Agent: <b>${escapeHtml(ag.name || ag.email || ag.id)}</b> · এপর্যন্ত <b>${st.total} বার</b> পাঠানো হয়েছে (প্রসেসিং: ${st.open}টি, সম্পন্ন: ${st.completed}টি)</span>`;
       } else {
         hint.innerText = 'উপরের তালিকা থেকে আপনার লাইনের যেকোনো সক্রিয় Agent-এ ক্লিক করুন অথবা ড্রপডাউন থেকে বেছে Send করুন।';
       }
@@ -6958,7 +6958,10 @@
 
     function openVerifyForwardWithdrawalModal(withKey) {
       const w = (STATE.withdrawals || []).find(item => item.id === withKey);
-      if (!w) return;
+      if (!w) {
+        showToast('উইথড্র রিকোয়েস্ট পাওয়া যায়নি', 'error');
+        return;
+      }
       if (!isWithdrawalOpen(w.status)) {
         showToast('এই উইথড্র ইতিমধ্যে সম্পন্ন বা বাতিল হয়েছে', 'error');
         return;
@@ -6975,10 +6978,10 @@
       document.getElementById('wd-vf-method-num').innerText = `${w.method || 'Wallet'} · ${w.receiverNumber || w.accountNumber || w.number || '—'}`;
       document.getElementById('wd-vf-live-bal').innerText = `৳ ${liveBal.toLocaleString('en-US')}`;
       document.getElementById('wd-vf-turnover').innerHTML = req === 0
-        ? '<span class="badge" style="background:rgba(255,255,255,0.08);color:var(--text-dim);">টার্নওভার নেই</span>'
+        ? '<span class="badge" style="background:var(--c-surface); color:var(--text-muted); border:1px solid var(--border-subtle);">টার্নওভার নেই</span>'
         : rem <= 0
           ? `<span class="badge badge-approved">✓ সম্পন্ন (৳${comp}/৳${req})</span>`
-          : `<span class="badge" style="background:#ef4444;color:#fff;">⚠️ বাকি ৳${rem} (৳${comp}/৳${req})</span>`;
+          : `<span class="badge badge-rejected">⚠️ বাকি ৳${rem} (৳${comp}/৳${req})</span>`;
       document.getElementById('wd-vf-turnover-warn').style.display = (req > 0 && rem > 0) ? 'block' : 'none';
       document.getElementById('wd-vf-note').value = w.adminNote || '';
       const errBox = document.getElementById('wd-vf-error');
@@ -7004,7 +7007,7 @@
 
       if (listEl) {
         if (!allAgents.length) {
-          listEl.innerHTML = `<div style="padding:12px; border-radius:10px; background:rgba(239,68,68,0.12); border:1px dashed rgba(239,68,68,0.4); color:#fecaca; font-size:0.8rem; text-align:center;">
+          listEl.innerHTML = `<div style="padding:12px; border-radius:10px; background:rgba(248,113,113,0.12); border:1px dashed rgba(248,113,113,0.5); color:var(--accent); font-size:0.8rem; text-align:center;">
             ⚠️ আপনার User Admin লাইনে এখনো কোনো Agent পাওয়া যায়নি।<br>প্রথমে বাম মেনুর <b>এজেন্ট ম্যানেজমেন্ট</b> থেকে Agent তৈরি করুন।
           </div>`;
         } else {
@@ -7019,28 +7022,28 @@
             const subInfo = [a.email || '', a.phone || ''].filter(Boolean).join(' · ') || a.id;
             const bal = Math.round(Number(a.balance || 0));
             return `
-              <div ${isAct ? `data-vf-agent-id="${escapeHtml(a.id)}" onclick="syncVerifyForwardAgentSelection('${escapeHtml(a.id)}')"` : ''}
-                   style="padding:10px 12px; border-radius:10px; border:1px solid var(--border-color); background:rgba(255,255,255,0.03); cursor:${isAct ? 'pointer' : 'not-allowed'}; opacity:${isAct ? '1' : '0.55'}; transition:all 0.15s;">
+              <div ${isAct ? `data-vf-agent-id="${escapeHtml(a.id)}" onclick="syncVerifyForwardAgentSelection(this.getAttribute('data-vf-agent-id'))"` : ''}
+                   style="padding:10px 12px; border-radius:10px; border:1px solid var(--border-subtle); background:var(--c-inner); cursor:${isAct ? 'pointer' : 'not-allowed'}; opacity:${isAct ? '1' : '0.55'}; transition:all 0.15s;">
                 <div style="display:flex; justify-content:space-between; align-items:flex-start; gap:8px; flex-wrap:wrap;">
                   <div>
-                    <div style="font-weight:700; color:#fff; font-size:0.88rem;">
+                    <div style="font-weight:700; color:var(--c-text); font-size:0.88rem;">
                       ${escapeHtml(agName)}
                       ${isAct
                         ? `<span class="badge badge-approved" style="font-size:0.65rem; margin-left:4px;">🟢 লাইনে সক্রিয়</span>`
                         : `<span class="badge badge-rejected" style="font-size:0.65rem; margin-left:4px;">🔴 নিষ্ক্রিয়</span>`}
-                      ${onlineRecent ? `<span class="badge" style="background:rgba(34,197,94,0.18); color:#4ade80; font-size:0.63rem; margin-left:3px;">● অনলাইন</span>` : ''}
-                      ${walletOn ? `<span class="badge" style="background:rgba(59,130,246,0.18); color:#93c5fd; font-size:0.63rem; margin-left:3px;">Wallet ON</span>` : ''}
+                      ${onlineRecent ? `<span class="badge badge-approved" style="font-size:0.63rem; margin-left:3px;">● অনলাইন</span>` : ''}
+                      ${walletOn ? `<span class="badge badge-upcoming" style="font-size:0.63rem; margin-left:3px;">Wallet ON</span>` : ''}
                     </div>
-                    <div style="font-size:0.73rem; color:var(--text-dim); margin-top:2px;">${escapeHtml(subInfo)}</div>
+                    <div style="font-size:0.73rem; color:var(--text-muted); margin-top:2px;">${escapeHtml(subInfo)}</div>
                   </div>
                   <div style="text-align:right;">
                     <div style="font-size:0.8rem; font-weight:700; color:var(--primary);">ওয়ালেট: ৳${bal.toLocaleString('en-US')}</div>
                   </div>
                 </div>
                 <div style="display:flex; gap:6px; flex-wrap:wrap; margin-top:7px;">
-                  <span class="badge" style="background:rgba(245,158,11,0.15); color:#fde68a; font-size:0.68rem;">📤 মোট পাঠানো: ${st.total} বার</span>
-                  <span class="badge" style="background:rgba(59,130,246,0.15); color:#93c5fd; font-size:0.68rem;">⏳ প্রসেসিং: ${st.open}টি</span>
-                  <span class="badge" style="background:rgba(34,197,94,0.15); color:#86efac; font-size:0.68rem;">✅ সম্পন্ন: ${st.completed}টি</span>
+                  <span class="badge badge-pending" style="font-size:0.68rem;">📤 মোট পাঠানো: ${st.total} বার</span>
+                  <span class="badge badge-upcoming" style="font-size:0.68rem;">⏳ প্রসেসিং: ${st.open}টি</span>
+                  <span class="badge badge-approved" style="font-size:0.68rem;">✅ সম্পন্ন: ${st.completed}টি</span>
                 </div>
               </div>
             `;
@@ -7056,7 +7059,7 @@
         }).join('');
 
       if (!activeAgents.length) {
-        hint.innerHTML = '<span style="color:#f87171;">⚠️ আপনার লাইনে কোনো সক্রিয় Agent নেই! আগে Agents ট্যাব থেকে Agent তৈরি বা সক্রিয় করুন।</span>';
+        hint.innerHTML = '<span style="color:var(--accent); font-weight:600;">⚠️ আপনার লাইনে কোনো সক্রিয় Agent নেই! আগে এজেন্ট ম্যানেজমেন্ট থেকে Agent তৈরি বা সক্রিয় করুন।</span>';
       } else {
         syncVerifyForwardAgentSelection(suggestedId);
       }
