@@ -1482,8 +1482,8 @@ function renderDeposits() {
 }
 
 function isWithdrawalAssigned(w) {
-  const st = String((w && w.status) || '');
-  return !!(w && st === 'Pending' && w.adminVerified === true && w.forwardedToAgent === true && w.assignedAgentId === currentAgentUid);
+  const st = String((w && w.status) || '').toLowerCase();
+  return !!(w && ['pending', 'processing', 'assignedtoagent'].includes(st) && w.adminVerified === true && w.forwardedToAgent === true && w.assignedAgentId === currentAgentUid);
 }
 
 function renderWithdrawals() {

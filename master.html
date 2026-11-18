@@ -3369,40 +3369,44 @@ function draw(){if(!started)return;
   Object.entries(REQ).reverse().map(([k,r])=>`<tr><td>${esc(r.email)}</td><td>${fmt(r.amount)}</td><td>${esc(r.note)}</td><td>${r.createdAt?new Date(r.createdAt).toLocaleString('bn-BD'):''}</td><td><span class="pl ${r.status==='rejected'?'b':r.status==='pending'?'y':''}">${esc(r.status)}</span></td><td>${r.status==='pending'?`<button class="p" onclick="approve('${k}')">অনুমোদন</button> <button class="d" onclick="reject('${k}')">বাতিল</button>`:''}</td></tr>`).join('')+`</table></div>`}
  if(cur==='wdmonitor'){
   const wdAll=Object.entries(WDALL).reverse().map(([k,w])=>({id:k,...(w||{})}));
-  const admWait=wdAll.filter(w=>w.status==='Pending'&&!(w.forwardedToAgent===true&&w.adminVerified===true));
-  const agWait=wdAll.filter(w=>w.status==='Pending'&&w.forwardedToAgent===true&&w.adminVerified===true);
-  const compList=wdAll.filter(w=>w.status==='Completed'||w.status==='Approved');
-  const rejList=wdAll.filter(w=>w.status==='Rejected');
+  const isAgFn=w=>['pending','processing','assignedtoagent'].includes(String(w.status||'').toLowerCase())&&w.forwardedToAgent===true&&w.adminVerified===true;
+  const isVerFn=w=>String(w.status||'').toLowerCase()==='verifying';
+  const isCompFn=w=>['completed','approved'].includes(String(w.status||'').toLowerCase());
+  const isRejFn=w=>['rejected','adjusted'].includes(String(w.status||'').toLowerCase());
+  const isAdmFn=w=>String(w.status||'').toLowerCase()==='pending'&&!isAgFn(w);
+  const admWait=wdAll.filter(w=>isAdmFn(w)||isVerFn(w));
+  const agWait=wdAll.filter(isAgFn);
+  const compList=wdAll.filter(isCompFn);
+  const rejList=wdAll.filter(isRejFn);
   const qw=WQ.trim().toLowerCase();
   const admWdOpts=A.map(([u,a])=>`<option value="${esc(u)}" ${WD_ADM_FILTER===u?'selected':''}>${esc(a.name||a.email||u)}</option>`).join('');
   const filteredWd=wdAll.filter(w=>{
    if(WD_ADM_FILTER&&w.adminUid!==WD_ADM_FILTER)return false;
-   const isComp=w.status==='Completed'||w.status==='Approved',isRej=w.status==='Rejected',isAg=w.status==='Pending'&&w.forwardedToAgent===true&&w.adminVerified===true,isAdm=w.status==='Pending'&&!isAg;
-   if(WD_STAGE_FILTER==='ADMIN_PENDING'&&!isAdm)return false;
-   if(WD_STAGE_FILTER==='AGENT_ASSIGNED'&&!isAg)return false;
-   if(WD_STAGE_FILTER==='COMPLETED'&&!isComp)return false;
-   if(WD_STAGE_FILTER==='REJECTED'&&!isRej)return false;
+   if(WD_STAGE_FILTER==='ADMIN_PENDING'&&!(isAdmFn(w)||isVerFn(w)))return false;
+   if(WD_STAGE_FILTER==='AGENT_ASSIGNED'&&!isAgFn(w))return false;
+   if(WD_STAGE_FILTER==='COMPLETED'&&!isCompFn(w))return false;
+   if(WD_STAGE_FILTER==='REJECTED'&&!isRejFn(w))return false;
    return!qw||[w.id,w.uid,w.userName,w.method,w.receiverNumber,w.accountNumber,w.assignedAgentName,w.assignedAgentId,w.paymentRef].join(' ').toLowerCase().includes(qw);
   });
   h=`<div class="cd" style="margin-bottom:12px;background:rgba(59,130,246,0.08);border:1px solid rgba(59,130,246,0.35)">
     <b style="color:var(--gold)">👁️ উইথড্র মনিটরিং (Monitor Only)</b>
-    <span style="display:block;margin-top:4px;font-size:12.5px">Master Admin এবং User Admin কেবল উইথড্র রিকোয়েস্ট দেখতে ও মনিটর করতে পারবেন — সরাসরি Complete করতে পারবেন না। User Admin যাচাই করে Assigned Agent-এর কাছে পাঠালে কেবল ওই নির্ধারিত Assigned Agent ম্যানুয়াল পেমেন্ট করে Complete করবেন (এবং Complete হওয়ার পর এজেন্টের ওয়ালেটে টাকা যোগ হবে)।</span>
+    <span style="display:block;margin-top:4px;font-size:12.5px">Master Admin এবং User Admin কেবল উইথড্র রিকোয়েস্ট দেখতে ও মনিটর করতে পারবেন — সরাসরি Complete করতে পারবেন না। User Admin যাচাই করে Assigned Agent-এর কাছে পাঠালে (Processing) কেবল ওই নির্ধারিত Assigned Agent ম্যানুয়াল পেমেন্ট করে Complete করবেন (এবং Complete হওয়ার পর এজেন্টের ওয়ালেটে টাকা যোগ হবে)।</span>
    </div>
    <div class="stats-grid" style="margin-bottom:12px">
     <div class="cd"><span>মোট রিকোয়েস্ট</span><b>${wdAll.length} টি</b></div>
-    <div class="cd"><span>Admin যাচাই অপেক্ষমাণ (Pending)</span><b style="color:var(--gold)">${admWait.length} টি</b></div>
-    <div class="cd"><span>এজেন্টে পাঠানো / পেমেন্ট বাকি (Pending)</span><b style="color:#60a5fa">${agWait.length} টি</b></div>
+    <div class="cd"><span>Admin যাচাই / Verify হোল্ড</span><b style="color:var(--gold)">${admWait.length} টি</b></div>
+    <div class="cd"><span>এজেন্টে পাঠানো (Processing)</span><b style="color:#60a5fa">${agWait.length} টি</b></div>
     <div class="cd"><span>সম্পন্ন (Agent Paid)</span><b style="color:var(--ok)">${compList.length} টি (${fmt(compList.reduce((s,x)=>s+(+x.amount||0),0))})</b></div>
-    <div class="cd"><span>বাতিল / রিফান্ড</span><b style="color:var(--er)">${rejList.length} টি</b></div>
+    <div class="cd"><span>বাতিল / Adjust</span><b style="color:var(--er)">${rejList.length} টি</b></div>
    </div>
    <div class="row">
     <input id="wdq" placeholder="রিকোয়েস্ট ID / প্লেয়ার / নাম্বার / এজেন্ট / TrxID..." value="${esc(WQ)}" oninput="WQ=this.value;draw();const p=$('wdq');if(p){p.focus();p.setSelectionRange(WQ.length,WQ.length)}">
     <select onchange="WD_STAGE_FILTER=this.value;draw()">
      <option value="ALL" ${WD_STAGE_FILTER==='ALL'?'selected':''}>সব ধাপ (${wdAll.length})</option>
-     <option value="ADMIN_PENDING" ${WD_STAGE_FILTER==='ADMIN_PENDING'?'selected':''}>⏳ Admin যাচাই অপেক্ষমাণ (${admWait.length})</option>
-     <option value="AGENT_ASSIGNED" ${WD_STAGE_FILTER==='AGENT_ASSIGNED'?'selected':''}>🤝 এজেন্টে পাঠানো / Pending (${agWait.length})</option>
+     <option value="ADMIN_PENDING" ${WD_STAGE_FILTER==='ADMIN_PENDING'?'selected':''}>⏳ Admin যাচাই / Verify হোল্ড (${admWait.length})</option>
+     <option value="AGENT_ASSIGNED" ${WD_STAGE_FILTER==='AGENT_ASSIGNED'?'selected':''}>⚙️ এজেন্টে পাঠানো / Processing (${agWait.length})</option>
      <option value="COMPLETED" ${WD_STAGE_FILTER==='COMPLETED'?'selected':''}>✓ সম্পন্ন (${compList.length})</option>
-     <option value="REJECTED" ${WD_STAGE_FILTER==='REJECTED'?'selected':''}>✕ বাতিল (${rejList.length})</option>
+     <option value="REJECTED" ${WD_STAGE_FILTER==='REJECTED'?'selected':''}>✕ বাতিল / Adjust (${rejList.length})</option>
     </select>
     <select onchange="WD_ADM_FILTER=this.value;draw()"><option value="">সব User Admin</option>${admWdOpts}</select>
     ${(WD_ADM_FILTER||WD_STAGE_FILTER!=='ALL'||WQ)?`<button type="button" onclick="WD_ADM_FILTER='';WD_STAGE_FILTER='ALL';WQ='';draw()">✕ রিসেট</button>`:''}
@@ -3414,9 +3418,10 @@ function draw(){if(!started)return;
     const agObj=AGENTS[w.assignedAgentId]||{};
     const admLbl=admObj.name||admObj.email||(w.adminUid||'—');
     const agLbl=w.assignedAgentName||agObj.name||agObj.email||(w.forwardedToAgent?w.assignedAgentId:'এখনো অ্যাসাইন হয়নি');
-    const isComp=w.status==='Completed'||w.status==='Approved',isRej=w.status==='Rejected',isAg=w.status==='Pending'&&w.forwardedToAgent===true&&w.adminVerified===true;
+    const stl=String(w.status||'').toLowerCase();
+    const isComp=isCompFn(w),isAdj=stl==='adjusted',isRej=isRejFn(w),isAg=isAgFn(w),isVer=isVerFn(w);
     const stCls=isComp?'':(isRej?'b':'y');
-    const stageTxt=isComp?'✓ Completed (Agent Paid)':isRej?'✕ Rejected (Refunded)':isAg?'🤝 Pending · এজেন্টে পাঠানো':'⏳ Pending · Admin যাচাই অপেক্ষমাণ';
+    const stageTxt=isComp?'✓ Completed (Agent Paid)':isAdj?'⚖️ Adjusted (দুর্নীতি · টাকা কর্তন)':isRej?'✕ Rejected (Refunded)':isAg?'⚙️ Processing · এজেন্টে পাঠানো':isVer?'🔍 Verifying (Admin চেক করছে)':'⏳ Pending · Admin যাচাই অপেক্ষমাণ';
     return`<tr>
      <td><small style="font-family:monospace">${esc(w.id)}</small><br><small style="color:var(--mu)">${w.createdAt?new Date(w.createdAt).toLocaleString('bn-BD'):'—'}</small></td>
      <td><b>${esc(w.userName||u.name||w.uid)}</b><br><small style="font-family:monospace;color:var(--mu)">${esc(w.uid)}</small></td>
@@ -3424,7 +3429,7 @@ function draw(){if(!started)return;
      <td>${w.assignedAgentId?`<b>${esc(agLbl)}</b><br><small style="font-family:monospace;color:var(--mu)">${esc(w.assignedAgentId)}</small>`:`<span style="color:var(--mu)">— অপেক্ষমাণ</span>`}</td>
      <td><b style="color:var(--gold)">${fmt(w.amount)}</b><br><small>${esc(w.method||'')} · <span style="font-family:monospace">${esc(w.receiverNumber||w.accountNumber||'—')}</span></small></td>
      <td><span class="pl ${stCls}">${esc(stageTxt)}</span>${w.adminNote?`<br><small style="color:var(--mu)">📝 ${esc(w.adminNote)}</small>`:''}</td>
-     <td>${isComp?`<span style="font-family:monospace;color:var(--ok)">Trx: ${esc(w.paymentRef||'—')}</span><br><small style="color:var(--ok)">Agent Wallet +${fmt(w.amount)}</small>`:isRej?`<small style="color:var(--er)">${esc(w.adminNote||'রিফান্ড সম্পন্ন')}</small>`:`<small style="color:var(--mu)">Monitor Only (অ্যাকশন অনুমোদিত নয়)</small>`}</td>
+     <td>${isComp?`<span style="font-family:monospace;color:var(--ok)">Trx: ${esc(w.paymentRef||'—')}</span><br><small style="color:var(--ok)">Agent Wallet +${fmt(w.amount)}</small>`:isRej?`<small style="color:var(--er)">${esc(w.adminNote||(isAdj?'টাকা কর্তন সম্পন্ন':'রিফান্ড সম্পন্ন'))}</small>`:`<small style="color:var(--mu)">Monitor Only (অ্যাকশন অনুমোদিত নয়)</small>`}</td>
     </tr>`}).join('')||`<tr><td colspan="7" style="text-align:center;color:var(--mu)">কোনো উইথড্র রিকোয়েস্ট নেই</td></tr>`)+`</table></div>`}
  if(cur==='led'){h=`<div class="row"><button class="d" onclick="clearAdminTx()">🗑 সব লেনদেন মুছুন</button></div><div class="sc"><table><tr><th>সময়</th><th>ধরন</th><th>অ্যাডমিন</th><th>পরিমাণ</th><th>নোট</th></tr>`+
   Object.values(LED).reverse().map(l=>`<tr><td>${l.time?new Date(l.time).toLocaleString('bn-BD'):''}</td><td>${esc(l.type)}</td><td>${esc(l.email)}</td><td>${fmt(l.amount)}</td><td>${esc(l.note)}</td></tr>`).join('')+`</table></div>`}
