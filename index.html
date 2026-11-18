@@ -4554,9 +4554,9 @@
 
   <!-- MODAL: Verify Withdrawal & Forward to Assigned Agent -->
   <div class="modal-overlay" id="modal-verify-forward-withdrawal">
-    <div class="modal" style="max-width: 520px;">
+    <div class="modal" style="max-width: 580px;">
       <div class="modal-header">
-        <div class="modal-title">🔍 উইথড্র যাচাই ও Assigned Agent-এ প্রেরণ</div>
+        <div class="modal-title">🔍 উইথড্র যাচাই ও এজেন্টের কাছে পাঠান</div>
         <button class="modal-close" onclick="closeModal('modal-verify-forward-withdrawal')">&times;</button>
       </div>
       <div class="modal-body">
@@ -4589,8 +4589,12 @@
         </div>
 
         <div class="form-group">
-          <label class="form-label" for="wd-vf-agent-sel">Assigned Agent নির্বাচন করুন *</label>
-          <select id="wd-vf-agent-sel" class="form-control">
+          <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:6px; gap:8px;">
+            <label class="form-label" for="wd-vf-agent-sel" style="margin-bottom:0;">আপনার লাইনের এজেন্ট নির্বাচন করুন *</label>
+            <span id="wd-vf-line-summary" style="font-size:0.74rem; color:#93c5fd; font-weight:600;"></span>
+          </div>
+          <div id="wd-vf-agent-list" style="display:flex; flex-direction:column; gap:8px; max-height:220px; overflow-y:auto; margin-bottom:10px;"></div>
+          <select id="wd-vf-agent-sel" class="form-control" onchange="syncVerifyForwardAgentSelection(this.value)">
             <option value="">-- সক্রিয় Agent নির্বাচন করুন --</option>
           </select>
           <small id="wd-vf-agent-hint" style="display:block; margin-top:4px; color:var(--text-dim); font-size:0.76rem;"></small>
@@ -4601,13 +4605,15 @@
           <input type="text" id="wd-vf-note" class="form-control" placeholder="যেমন: ব্যালেন্স ও একাউন্ট সঠিক, পেমেন্ট করুন">
         </div>
 
+        <div id="wd-vf-error" style="display:none; margin-top:10px; padding:9px 11px; border-radius:8px; background:rgba(239,68,68,0.16); border:1px solid rgba(239,68,68,0.45); color:#fecaca; font-size:0.8rem;"></div>
+
         <div style="margin-top:10px; padding:9px 11px; border-radius:8px; background:rgba(245,158,11,0.1); border:1px solid rgba(245,158,11,0.3); font-size:0.78rem; color:#fde68a;">
-          ℹ️ এজেন্টের কাছে পাঠানোর পর স্ট্যাটাস <b>Processing</b> দেখাবে। নির্ধারিত Agent ম্যানুয়ালি পেমেন্ট করে Confirm করলে তবেই <b>Completed</b> হবে এবং এজেন্টের ওয়ালেটে টাকা যোগ হবে।
+          ℹ️ Send-এ ক্লিক করলে এজেন্টের প্যানেলে রিকোয়েস্ট চলে যাবে এবং স্ট্যাটাস <b>Processing</b> দেখাবে। নির্ধারিত Agent ম্যানুয়ালি পেমেন্ট করে Confirm করলে <b>Completed</b> হবে।
         </div>
       </div>
       <div class="modal-footer" style="display:flex; justify-content:flex-end; gap:8px;">
         <button type="button" class="btn btn-secondary btn-sm" onclick="closeModal('modal-verify-forward-withdrawal')">বাতিল</button>
-        <button type="button" class="btn btn-primary btn-sm" id="wd-vf-submit-btn" onclick="submitVerifyForwardWithdrawal()">✓ যাচাই সম্পন্ন করে এজেন্টে পাঠান (Processing)</button>
+        <button type="button" class="btn btn-primary btn-sm" id="wd-vf-submit-btn" onclick="submitVerifyForwardWithdrawal()">📤 Send / এজেন্টের কাছে পাঠান</button>
       </div>
     </div>
   </div>
@@ -5023,11 +5029,22 @@
       });
 
       // 6c. Agents & Agent Balance Requests (Live Agent App Sync — Strictly scoped to this User Admin)
-      db.ref('agents').on('value', (snap) => {
-        const val = snap.val() || {};
+      let _rawAgentsMap = {};
+      function rebuildScopedAgents() {
         const me = npMyUid();
-        STATE.agents = Object.keys(val).map(k => ({ id: k, ...val[k] }))
-          .filter(a => !!me && (a.parentAdminId || a.adminUid || '') === me);
+        const wallets = STATE.agentWallets || {};
+        STATE.agents = Object.keys(_rawAgentsMap).map(k => ({ id: k, ..._rawAgentsMap[k] }))
+          .filter(a => {
+            if (!me) return false;
+            const w = wallets[a.id] || {};
+            const owner = a.parentAdminId || a.adminUid || w.parentAdminId || w.adminUid || '';
+            return owner === me;
+          });
+      }
+
+      db.ref('agents').on('value', (snap) => {
+        _rawAgentsMap = snap.val() || {};
+        rebuildScopedAgents();
         renderAgents();
         renderWallet();
         try { if (typeof renderNpcPeerBar === 'function') renderNpcPeerBar(); } catch (e) {}
@@ -5035,7 +5052,9 @@
 
       db.ref('agentWallets').on('value', (snap) => {
         STATE.agentWallets = snap.val() || {};
+        rebuildScopedAgents();
         renderAgents();
+        renderWallet();
       }, (err) => { console.warn('Agent wallets listener notice:', err); });
 
       db.ref('agentBalanceRequests').on('value', (snap) => {
@@ -6893,6 +6912,50 @@
       }
     }
 
+    function getAgentWithdrawalSendStats() {
+      const stats = {};
+      (STATE.withdrawals || []).forEach(w => {
+        if (!w) return;
+        const agId = w.assignedAgentId || w.completedByAgent || '';
+        if (!agId) return;
+        if (!stats[agId]) stats[agId] = { total: 0, open: 0, completed: 0, amount: 0 };
+        stats[agId].total += 1;
+        stats[agId].amount += Number(w.amount) || 0;
+        const st = String(w.status || '').toLowerCase();
+        if (st === 'completed' || st === 'approved') stats[agId].completed += 1;
+        else if (isWithdrawalOpen(st)) stats[agId].open += 1;
+      });
+      return stats;
+    }
+
+    function syncVerifyForwardAgentSelection(agentId) {
+      const sel = document.getElementById('wd-vf-agent-sel');
+      const hint = document.getElementById('wd-vf-agent-hint');
+      const errBox = document.getElementById('wd-vf-error');
+      if (errBox) { errBox.style.display = 'none'; errBox.innerText = ''; }
+      if (sel && sel.value !== (agentId || '')) sel.value = agentId || '';
+
+      const listEl = document.getElementById('wd-vf-agent-list');
+      if (listEl) {
+        listEl.querySelectorAll('[data-vf-agent-id]').forEach(card => {
+          const isMatch = card.getAttribute('data-vf-agent-id') === (agentId || '');
+          card.style.borderColor = isMatch ? '#3b82f6' : 'var(--border-color)';
+          card.style.background = isMatch ? 'rgba(59,130,246,0.16)' : 'rgba(255,255,255,0.03)';
+          card.style.boxShadow = isMatch ? '0 0 0 1px rgba(59,130,246,0.5)' : 'none';
+        });
+      }
+
+      if (!hint) return;
+      const ag = (STATE.agents || []).find(a => a.id === agentId);
+      if (ag) {
+        const statsMap = getAgentWithdrawalSendStats();
+        const st = statsMap[ag.id] || { total: 0, open: 0, completed: 0 };
+        hint.innerHTML = `<span style="color:#4ade80;">✓ নির্বাচিত Assigned Agent: <b>${escapeHtml(ag.name || ag.email || ag.id)}</b> · এপর্যন্ত <b>${st.total} বার</b> পাঠানো হয়েছে (প্রসেসিং: ${st.open}টি, সম্পন্ন: ${st.completed}টি)</span>`;
+      } else {
+        hint.innerText = 'উপরের তালিকা থেকে আপনার লাইনের যেকোনো সক্রিয় Agent-এ ক্লিক করুন অথবা ড্রপডাউন থেকে বেছে Send করুন।';
+      }
+    }
+
     function openVerifyForwardWithdrawalModal(withKey) {
       const w = (STATE.withdrawals || []).find(item => item.id === withKey);
       if (!w) return;
@@ -6918,25 +6981,84 @@
           : `<span class="badge" style="background:#ef4444;color:#fff;">⚠️ বাকি ৳${rem} (৳${comp}/৳${req})</span>`;
       document.getElementById('wd-vf-turnover-warn').style.display = (req > 0 && rem > 0) ? 'block' : 'none';
       document.getElementById('wd-vf-note').value = w.adminNote || '';
+      const errBox = document.getElementById('wd-vf-error');
+      if (errBox) { errBox.style.display = 'none'; errBox.innerText = ''; }
 
-      const activeAgents = (STATE.agents || []).filter(a => a && a.active !== false && a.status !== 'suspended' && a.status !== 'inactive');
+      const allAgents = (STATE.agents || []).slice().sort((a, b) => {
+        const aAct = (a && a.active !== false && a.status !== 'suspended' && a.status !== 'inactive') ? 0 : 1;
+        const bAct = (b && b.active !== false && b.status !== 'suspended' && b.status !== 'inactive') ? 0 : 1;
+        return aAct - bAct;
+      });
+      const activeAgents = allAgents.filter(a => a && a.active !== false && a.status !== 'suspended' && a.status !== 'inactive');
+      const statsMap = getAgentWithdrawalSendStats();
+      const awMap = STATE.agentWallets || {};
       const sel = document.getElementById('wd-vf-agent-sel');
       const hint = document.getElementById('wd-vf-agent-hint');
+      const listEl = document.getElementById('wd-vf-agent-list');
+      const sumEl = document.getElementById('wd-vf-line-summary');
       const suggestedId = w.assignedAgentId || w.preferredAgentId || u.assignedAgentId || (activeAgents.length === 1 ? activeAgents[0].id : '');
+
+      if (sumEl) {
+        sumEl.innerText = `মোট এজেন্ট: ${allAgents.length} জন (সক্রিয়: ${activeAgents.length})`;
+      }
+
+      if (listEl) {
+        if (!allAgents.length) {
+          listEl.innerHTML = `<div style="padding:12px; border-radius:10px; background:rgba(239,68,68,0.12); border:1px dashed rgba(239,68,68,0.4); color:#fecaca; font-size:0.8rem; text-align:center;">
+            ⚠️ আপনার User Admin লাইনে এখনো কোনো Agent পাওয়া যায়নি।<br>প্রথমে বাম মেনুর <b>এজেন্ট ম্যানেজমেন্ট</b> থেকে Agent তৈরি করুন।
+          </div>`;
+        } else {
+          const nowMs = Date.now();
+          listEl.innerHTML = allAgents.map(a => {
+            const isAct = a.active !== false && a.status !== 'suspended' && a.status !== 'inactive';
+            const st = statsMap[a.id] || { total: 0, open: 0, completed: 0, amount: 0 };
+            const wEntry = awMap[a.id] || {};
+            const walletOn = (wEntry.enabled !== undefined ? wEntry.enabled === true : a.walletEnabled === true) && isAct;
+            const onlineRecent = a.lastSeen && (nowMs - Number(a.lastSeen)) < 10 * 60 * 1000;
+            const agName = a.name || a.email || a.id;
+            const subInfo = [a.email || '', a.phone || ''].filter(Boolean).join(' · ') || a.id;
+            const bal = Math.round(Number(a.balance || 0));
+            return `
+              <div ${isAct ? `data-vf-agent-id="${escapeHtml(a.id)}" onclick="syncVerifyForwardAgentSelection('${escapeHtml(a.id)}')"` : ''}
+                   style="padding:10px 12px; border-radius:10px; border:1px solid var(--border-color); background:rgba(255,255,255,0.03); cursor:${isAct ? 'pointer' : 'not-allowed'}; opacity:${isAct ? '1' : '0.55'}; transition:all 0.15s;">
+                <div style="display:flex; justify-content:space-between; align-items:flex-start; gap:8px; flex-wrap:wrap;">
+                  <div>
+                    <div style="font-weight:700; color:#fff; font-size:0.88rem;">
+                      ${escapeHtml(agName)}
+                      ${isAct
+                        ? `<span class="badge badge-approved" style="font-size:0.65rem; margin-left:4px;">🟢 লাইনে সক্রিয়</span>`
+                        : `<span class="badge badge-rejected" style="font-size:0.65rem; margin-left:4px;">🔴 নিষ্ক্রিয়</span>`}
+                      ${onlineRecent ? `<span class="badge" style="background:rgba(34,197,94,0.18); color:#4ade80; font-size:0.63rem; margin-left:3px;">● অনলাইন</span>` : ''}
+                      ${walletOn ? `<span class="badge" style="background:rgba(59,130,246,0.18); color:#93c5fd; font-size:0.63rem; margin-left:3px;">Wallet ON</span>` : ''}
+                    </div>
+                    <div style="font-size:0.73rem; color:var(--text-dim); margin-top:2px;">${escapeHtml(subInfo)}</div>
+                  </div>
+                  <div style="text-align:right;">
+                    <div style="font-size:0.8rem; font-weight:700; color:var(--primary);">ওয়ালেট: ৳${bal.toLocaleString('en-US')}</div>
+                  </div>
+                </div>
+                <div style="display:flex; gap:6px; flex-wrap:wrap; margin-top:7px;">
+                  <span class="badge" style="background:rgba(245,158,11,0.15); color:#fde68a; font-size:0.68rem;">📤 মোট পাঠানো: ${st.total} বার</span>
+                  <span class="badge" style="background:rgba(59,130,246,0.15); color:#93c5fd; font-size:0.68rem;">⏳ প্রসেসিং: ${st.open}টি</span>
+                  <span class="badge" style="background:rgba(34,197,94,0.15); color:#86efac; font-size:0.68rem;">✅ সম্পন্ন: ${st.completed}টি</span>
+                </div>
+              </div>
+            `;
+          }).join('');
+        }
+      }
 
       sel.innerHTML = `<option value="">-- সক্রিয় Agent নির্বাচন করুন (${activeAgents.length} জন) --</option>` +
         activeAgents.map(a => {
-          const agLabel = `${a.name || a.email || a.id} (ওয়ালেট: ৳${Math.round(Number(a.balance || 0))})`;
+          const st = statsMap[a.id] || { total: 0, open: 0, completed: 0 };
+          const agLabel = `${a.name || a.email || a.id} · পাঠানো: ${st.total} বার (প্রসেসিং ${st.open}, সম্পন্ন ${st.completed}) · ওয়ালেট: ৳${Math.round(Number(a.balance || 0))}`;
           return `<option value="${escapeHtml(a.id)}" ${a.id === suggestedId ? 'selected' : ''}>${escapeHtml(agLabel)}</option>`;
         }).join('');
 
       if (!activeAgents.length) {
         hint.innerHTML = '<span style="color:#f87171;">⚠️ আপনার লাইনে কোনো সক্রিয় Agent নেই! আগে Agents ট্যাব থেকে Agent তৈরি বা সক্রিয় করুন।</span>';
-      } else if (suggestedId && activeAgents.some(a => a.id === suggestedId)) {
-        const sugAg = activeAgents.find(a => a.id === suggestedId);
-        hint.innerHTML = `<span style="color:#4ade80;">✓ নির্বাচিত Assigned Agent লাইন: <b>${escapeHtml(sugAg.name || sugAg.email || suggestedId)}</b></span>`;
       } else {
-        hint.innerText = 'প্লেয়ারের লাইনের সঠিক Assigned Agent নির্বাচন করে Forward করুন।';
+        syncVerifyForwardAgentSelection(suggestedId);
       }
 
       openModal('modal-verify-forward-withdrawal');
@@ -6946,9 +7068,13 @@
       const withKey = (document.getElementById('wd-vf-key').value || '').trim();
       const agentUid = (document.getElementById('wd-vf-agent-sel').value || '').trim();
       const adminNote = (document.getElementById('wd-vf-note').value || '').trim();
+      const errBox = document.getElementById('wd-vf-error');
+      if (errBox) { errBox.style.display = 'none'; errBox.innerText = ''; }
       if (!withKey) return;
       if (!agentUid) {
-        showToast('অনুগ্রহ করে একজন Assigned Agent নির্বাচন করুন', 'error');
+        const msg = 'অনুগ্রহ করে আপনার লাইনের তালিকা থেকে একজন সক্রিয় Agent সিলেক্ট করুন।';
+        if (errBox) { errBox.innerText = '⚠️ ' + msg; errBox.style.display = 'block'; }
+        showToast(msg, 'error');
         return;
       }
       const btn = document.getElementById('wd-vf-submit-btn');
@@ -6960,12 +7086,20 @@
           agentUid,
           adminNote
         }, auth);
+        const stMap = getAgentWithdrawalSendStats();
+        const prevCnt = (stMap[agentUid] && stMap[agentUid].total) || 0;
+        const nextCnt = prevCnt + 1;
         closeModal('modal-verify-forward-withdrawal');
-        showToast(`✅ যাচাই সম্পন্ন! এজেন্ট ${res.assignedAgentName || agentUid}-এর কাছে পাঠানো হয়েছে (Status: Processing)`, 'success');
+        showToast(`✅ এজেন্ট ${res.assignedAgentName || agentUid}-এর কাছে পাঠানো হয়েছে (মোট ${nextCnt} বার · Processing)`, 'success');
       } catch (err) {
-        showToast('যাচাই ও ফরোয়ার্ড ব্যর্থ: ' + err.message, 'error');
+        const msg = (err && err.message) || 'অজানা সার্ভার ত্রুটি';
+        if (errBox) {
+          errBox.innerText = '❌ পাঠানো যায়নি: ' + msg;
+          errBox.style.display = 'block';
+        }
+        showToast('যাচাই ও ফরোয়ার্ড ব্যর্থ: ' + msg, 'error');
       } finally {
-        if (btn) { btn.disabled = false; btn.innerText = '✓ যাচাই সম্পন্ন করে এজেন্টে পাঠান (Processing)'; }
+        if (btn) { btn.disabled = false; btn.innerText = '📤 Send / এজেন্টের কাছে পাঠান'; }
       }
     }
 
@@ -9572,14 +9706,16 @@
 
       if (agBody) {
         const awMap = STATE.agentWallets || {};
+        const wdStats = getAgentWithdrawalSendStats();
         agBody.innerHTML = agents.length ? agents.map(a => {
           const isAct = a.active !== false && a.status !== 'suspended';
           const wEntry = awMap[a.id] || {};
           const walletOn = (wEntry.enabled !== undefined ? wEntry.enabled === true : a.walletEnabled === true) && isAct;
           const pm = wEntry.numbers || a.paymentNumbers || {};
           const pmTxt = [pm.bKash ? 'bKash: ' + pm.bKash : '', pm.Nagad ? 'Nagad: ' + pm.Nagad : '', pm.Rocket ? 'Rocket: ' + pm.Rocket : '', pm.Upay ? 'Upay: ' + pm.Upay : ''].filter(Boolean).join(' | ') || (a.phone || '—');
+          const st = wdStats[a.id] || { total: 0, open: 0, completed: 0 };
           return `<tr>
-            <td><b>${escapeHtml(a.name || 'Agent')}</b><br><small style="color:var(--text-dim);">${escapeHtml(a.email || a.id)}</small></td>
+            <td><b>${escapeHtml(a.name || 'Agent')}</b><br><small style="color:var(--text-dim);">${escapeHtml(a.email || a.id)}</small><div style="margin-top:3px;"><span class="badge" style="background:rgba(245,158,11,0.14); color:#fde68a; font-size:0.66rem;">📤 উইথড্র পাঠানো: ${st.total} বার (${st.open} প্রসেসিং)</span></div></td>
             <td style="font-size:0.8rem; font-family:monospace;">
               <div>${escapeHtml(pmTxt)}</div>
               <div style="margin-top:4px;"><span class="badge ${walletOn ? 'badge-approved' : 'badge-rejected'}" style="font-size:0.7rem;">${walletOn ? '🟢 Wallet ON (শুধু আপনার ইউজাররা দেখছে)' : '🔴 Wallet OFF'}</span></div>

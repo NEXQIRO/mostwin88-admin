@@ -777,8 +777,10 @@ function detachListeners() {
   boundParentAdminId = '';
 }
 
-function attachListener(ref, cb) {
-  ref.on('value', cb);
+function attachListener(ref, cb, errCb) {
+  ref.on('value', cb, errCb || function (err) {
+    console.warn('Listener error:', err && err.message ? err.message : err);
+  });
   listeners.push(ref);
 }
 
@@ -1047,6 +1049,9 @@ function startLiveAgentSync() {
     renderWithdrawals();
     renderWallet();
     renderTransactionReport();
+  }, err => {
+    console.error('Withdrawal listener error:', err);
+    toast('⚠️ উইথড্র রিকোয়েস্ট লোড ত্রুটি (RTDB Rules চেক করুন): ' + (err && err.message ? err.message : 'Permission Denied'));
   });
 
   // 5. Agent Balance Requests
@@ -1490,7 +1495,7 @@ function renderWithdrawals() {
   const q = (document.getElementById('withdrawSearch').value || '').toLowerCase();
   const list = withdrawals.filter(w => {
     const pl = usersMap[w.uid] || {};
-    const pName = w.playerName || pl.name || pl.username || w.uid || '';
+    const pName = w.playerName || w.userName || pl.name || pl.username || w.uid || '';
     const matchTab = wdFilter === 'All' || (wdFilter === 'Assigned' ? isWithdrawalAssigned(w) : (w.status === 'Completed' || w.status === 'Approved'));
     const matchQ = !q || [w.id, pName, w.method, w.receiverNumber, w.accountNumber, w.number, w.uid].join(' ').toLowerCase().includes(q);
     return matchTab && matchQ;
@@ -1499,7 +1504,7 @@ function renderWithdrawals() {
   document.getElementById('withdrawList').innerHTML = list.length ? list.map(w => {
     const st = w.status || 'Pending';
     const pl = usersMap[w.uid] || {};
-    const pName = w.playerName || pl.name || pl.username || w.uid || 'Player';
+    const pName = w.playerName || w.userName || pl.name || pl.username || w.uid || 'Player';
     const accNum = w.receiverNumber || w.accountNumber || w.number || w.account || 'N/A';
     const amt = Number(w.amount) || 0;
     const isOpen = isWithdrawalAssigned(w);
@@ -1640,7 +1645,7 @@ function completeWithdrawal(id) {
   if (!w || !isWithdrawalAssigned(w)) return;
   const amt = Number(w.amount) || 0;
   const pl = usersMap[w.uid] || {};
-  const pName = w.playerName || pl.name || pl.username || w.uid;
+  const pName = w.playerName || w.userName || pl.name || pl.username || w.uid;
   openDialog({
     kind: 'ok',
     title: 'উইথড্র পেমেন্ট সম্পন্ন করবেন?',
