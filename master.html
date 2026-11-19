@@ -441,8 +441,9 @@ body[data-theme="light"] .hero-fund-meta{border-top-color:rgba(0,0,0,.08)}
 .tx-card-right{text-align:right;flex-shrink:0}
 .tx-card-amt{display:block;font-family:var(--font-display);font-size:.96rem;font-weight:700;color:var(--primary);white-space:nowrap}
 
-/* Show Hero & Recent TX only on Admins/Home tab */
-.content-area:not(.m-is-home) .m-home-card-only{display:none !important}
+/* Show Hero, Dashboard KPI Cards & Recent TX only on Admins/Home tab */
+.content-area:not(.m-is-home) .m-home-card-only,
+.content-area:not(.m-is-home) .m-home-only{display:none !important}
 
 /* Bottom Navigation Bar (Mobile) */
 .bottom-nav{display:none;position:fixed;bottom:0;left:0;right:0;background:#0A0B0E;border-top:1px solid rgba(255,255,255,.08);z-index:95;justify-content:space-around;align-items:center;padding:6px 4px max(6px,env(safe-area-inset-bottom));min-height:62px}
@@ -477,7 +478,6 @@ body[data-theme="light"] .bottom-nav{background:#FFFFFF;border-top-color:#E6DECB
   .topbar{padding:0 12px;height:58px;flex-wrap:nowrap !important}
   .topbar-actions{gap:6px;flex-wrap:nowrap !important}
   #tn,#btn-sound,#btn-topbar-set-bal{display:none !important}
-  .content-area:not(.m-is-home) .m-home-only{display:none !important}
   .stats-grid{grid-template-columns:repeat(2,minmax(0,1fr)) !important;gap:10px !important;margin-bottom:16px}
   .stat-card{padding:12px !important;gap:10px !important;border-radius:14px !important}
   .stat-icon{width:38px !important;height:38px !important;border-radius:10px !important}

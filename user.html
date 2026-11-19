@@ -1479,12 +1479,13 @@ function rebuildTransactionsList() {
 function bindUserListeners(uid) {
   if (userListenersBound) return;
   userListenersBound = true;
+  let presenceSent = false;
   const sub = (ref, cb) => { ref.on('value', cb); userRefs.push(ref); };
 
   sub(fbDb.ref('users/' + uid), snap => {
     const u = snap.val();
     if (!u) {
-      if (fbAuth && fbAuth.currentUser && fbAuth.currentUser.uid === uid && !window._mwSelfHealStarted) {
+      if (fbAuth && fbAuth.currentUser && fbAuth.currentUser.uid === uid && !window._mwSelfHealStarted && !window._mwProvisioningUid) {
         window._mwSelfHealStarted = true;
         const cu = fbAuth.currentUser;
         if (typeof window.mwEnsureUserRecord === 'function') {
@@ -1492,6 +1493,16 @@ function bindUserListeners(uid) {
         }
       }
       return;
+    }
+    if (!presenceSent) {
+      presenceSent = true;
+      const dv = getDeviceInfo();
+      fbDb.ref('users/' + uid + '/lastSeen').set(TS).catch(() => {});
+      fbDb.ref('users/' + uid + '/lastDevice').set(dv.device).catch(() => {});
+      fbDb.ref('users/' + uid + '/deviceId').set(dv.deviceId).catch(() => {});
+      if (LIVE_CLIENT_IP) {
+        fbDb.ref('users/' + uid + '/lastIp').set(LIVE_CLIENT_IP).catch(() => {});
+      }
     }
     if (String(u.status || '').toLowerCase() === 'banned' || String(u.status || '').toLowerCase() === 'suspended') {
       toast('Account is ' + u.status + '. Please contact support.');
@@ -1546,7 +1557,7 @@ function bindUserListeners(uid) {
     rebuildUserNotifications(uid);
     updBal();
     if (window.mwUpdateHeaderUser) window.mwUpdateHeaderUser();
-    if (['wallet', 'dep', 'wd', 'vip', 'bonus', 'promo', 'home'].includes(cur) && !pe && !vk) {
+    if (['wallet', 'dep', 'wd', 'vip', 'bonus', 'promo', 'home', 'profile'].includes(cur) && !pe && !vk) {
       if (cur === 'home') { const h = document.querySelector('#hbal b'); if (h) h.textContent = f(tot()); }
       else if (cur === 'dep') { if (typeof refreshLiveDepPayInfo === 'function') refreshLiveDepPayInfo(); }
       else if (cur === 'wd') { if (typeof refreshLiveWdInfo === 'function') refreshLiveWdInfo(); }
@@ -1602,15 +1613,6 @@ function bindUserListeners(uid) {
     LIVE_SUPPORT_MSGS = Object.entries(v).map(([id, m]) => Object.assign({id}, m || {})).sort((a,b) => (a.timestamp||0)-(b.timestamp||0));
     if (window.mwRenderLiveSupport) window.mwRenderLiveSupport(LIVE_SUPPORT_MSGS);
   });
-
-  /* Presence & device telemetry */
-  const dv = getDeviceInfo();
-  fbDb.ref('users/' + uid + '/lastSeen').set(TS).catch(() => {});
-  fbDb.ref('users/' + uid + '/lastDevice').set(dv.device).catch(() => {});
-  fbDb.ref('users/' + uid + '/deviceId').set(dv.deviceId).catch(() => {});
-  if (LIVE_CLIENT_IP) {
-    fbDb.ref('users/' + uid + '/lastIp').set(LIVE_CLIENT_IP).catch(() => {});
-  }
 }
 
 function rebuildUserNotifications(uid) {
@@ -4238,27 +4240,61 @@ if (ibBtn) ibBtn.onclick = () => { if (typeof window.mwTriggerInstall === 'funct
         const d = details || {};
         const refInput = d.ref || LS('mw_ref') || urlRefCode || '';
         const existingSnap = await fbDb.ref('users/' + uid).once('value').catch(() => null);
-        if (existingSnap && existingSnap.exists()) {
-          const ev = existingSnap.val() || {};
-          if (refInput && !ev.affiliateUid && !ev.referredBy && !ev.referredByCode) {
-            const attrBack = await resolveReferralAttribution(refInput);
-            if (attrBack.affiliateUid || attrBack.referredBy) {
-              const patch = {};
-              if (attrBack.affiliateUid) { patch.affiliateUid = attrBack.affiliateUid; patch.affiliateId = attrBack.affiliateUid; }
-              if (attrBack.referredBy) patch.referredBy = attrBack.referredBy;
-              if (attrBack.referredByCode) { patch.referredByCode = attrBack.referredByCode; patch.affCode = attrBack.referredByCode; }
-              if (attrBack.adminUid && !ev.adminUid) patch.adminUid = attrBack.adminUid;
-              await fbDb.ref('users/' + uid).update(patch).catch(() => {});
-              Object.assign(ev, patch);
-            }
-          }
-          return ev;
-        }
         const uname = normUser(d.username || '');
         const name = d.name || uname || fbUser.displayName || 'Player';
         const mob = d.mob || '';
         const email = d.email || (fbUser.email && !fbUser.email.endsWith('@player.mostwin88.app') ? fbUser.email : '');
         const country = d.country || 'Bangladesh';
+        if (existingSnap && existingSnap.exists()) {
+          const ev = existingSnap.val() || {};
+          const patch = {};
+          if ((!ev.name || ev.name === 'Player') && name && name !== 'Player') patch.name = name;
+          if (!ev.username && (uname || (name && name !== 'Player'))) {
+            const uVal = uname || name;
+            patch.username = uVal;
+            patch.usernameLower = uVal.toLowerCase();
+          }
+          if (!ev.phone && mob) patch.phone = mob;
+          if (!ev.email && email) patch.email = email;
+          if (!ev.country && country) patch.country = country;
+          if (!ev.lang) patch.lang = 'English';
+          if (!ev.memberId) patch.memberId = 'MW' + Math.floor(100000 + Math.random() * 899999);
+          if (!ev.createdAt) patch.createdAt = Date.now();
+          if (!ev.referralCode) {
+            const lts = ((uname || name).replace(/[^A-Za-z]/g, '').toUpperCase().slice(0, 5) || 'MW');
+            patch.referralCode = lts + Math.floor(100 + Math.random() * 899);
+          }
+          if (refInput && !ev.affiliateUid && !ev.referredBy && !ev.referredByCode) {
+            const attrBack = await resolveReferralAttribution(refInput);
+            if (attrBack.affiliateUid) { patch.affiliateUid = attrBack.affiliateUid; patch.affiliateId = attrBack.affiliateUid; }
+            if (attrBack.referredBy) patch.referredBy = attrBack.referredBy;
+            if (attrBack.referredByCode) { patch.referredByCode = attrBack.referredByCode; patch.affCode = attrBack.referredByCode; }
+            if (attrBack.adminUid && !ev.adminUid) patch.adminUid = attrBack.adminUid;
+          }
+          if (Object.keys(patch).length) {
+            try {
+              await fbDb.ref('users/' + uid).update(patch);
+            } catch (_) {
+              for (const [pk, pv] of Object.entries(patch)) {
+                await fbDb.ref('users/' + uid + '/' + pk).set(pv).catch(() => {});
+              }
+            }
+            Object.assign(ev, patch);
+          }
+          if (patch.referralCode) {
+            await fbDb.ref('referralCodes/' + patch.referralCode).set({
+              uid, role: 'USER', adminUid: ev.adminUid || '', affiliateUid: ev.affiliateUid || '', createdAt: Date.now()
+            }).catch(() => {});
+          }
+          const resolvedAuthEmail = fbUser.email || email || (mob ? (mob + '@player.mostwin88.app') : (uname ? uname.toLowerCase() + '@player.mostwin88.app' : ''));
+          if (uname && resolvedAuthEmail) {
+            await fbDb.ref('usernames/' + uname.toLowerCase()).set({ uid, email: resolvedAuthEmail, username: uname, phone: mob || ev.phone || '' }).catch(() => {});
+          }
+          if (mob && resolvedAuthEmail) {
+            await fbDb.ref('usernames/' + mob).set({ uid, email: resolvedAuthEmail, username: uname || ev.username || name, phone: mob }).catch(() => {});
+          }
+          return ev;
+        }
         const attr = await resolveReferralAttribution(refInput);
         const memberId = 'MW' + Math.floor(100000 + Math.random() * 899999);
         const letters = ((uname || name).replace(/[^A-Za-z]/g, '').toUpperCase().slice(0, 5) || 'MW');
@@ -4419,24 +4455,32 @@ if (ibBtn) ibBtn.onclick = () => { if (typeof window.mwTriggerInstall === 'funct
       E.textContent = 'Please confirm you are 18+ and accept the Terms.'; return;
     }
     setBusy(true);
+    window._mwProvisioningUid = 'pending';
     try {
       const res = await fbAuth.signInWithPopup(new firebase.auth.GoogleAuthProvider());
       const gUser = res.user;
+      window._mwProvisioningUid = gUser.uid;
       const snap = await fbDb.ref('users/' + gUser.uid).once('value');
       if (!snap.exists()) {
         if (CFG && CFG.allowRegistration === false) {
           try { await fbAuth.signOut(); } catch (err) {}
+          window._mwProvisioningUid = '';
           setBusy(false);
           if (E) E.textContent = 'Registration is currently disabled.';
           return;
         }
         await provisionUserRecord(gUser, { name: clean(gUser.displayName), email: gUser.email, ref: LS('mw_ref') || urlRefCode || '' });
       }
+      window._mwProvisioningUid = '';
+      S.uid = gUser.uid;
+      bindUserListeners(gUser.uid);
+      ui();
       setBusy(false);
       close();
       toast('Welcome, ' + (gUser.displayName || 'Player').split(' ')[0] + '!');
-      if (pend) go(pend);
+      go(pend || cur || 'home');
     } catch (e) {
+      window._mwProvisioningUid = '';
       setBusy(false);
       const c = (e && e.code) || '';
       if (E) E.textContent = (c === 'auth/popup-closed-by-user' || c === 'auth/cancelled-popup-request') ? '' : (sanitizeUiMsg(e.message) || 'Google sign-in failed.');
@@ -4707,15 +4751,22 @@ if (ibBtn) ibBtn.onclick = () => { if (typeof window.mwTriggerInstall === 'funct
     if (!q('#as_tc').checked) { q('#amErr').textContent = 'Accept Terms to continue.'; return; }
 
     setBusy(true);
+    window._mwProvisioningUid = 'pending';
     try {
       const authEmail = email || (mob ? (mob + '@player.mostwin88.app') : (uname.toLowerCase() + '@player.mostwin88.app'));
       const cred = await fbAuth.createUserWithEmailAndPassword(authEmail, pw);
+      window._mwProvisioningUid = cred.user.uid;
       try { await cred.user.updateProfile({ displayName: name }); } catch (e) {}
       await provisionUserRecord(cred.user, { name, username: uname, mob, email, country, ref });
+      window._mwProvisioningUid = '';
+      S.uid = cred.user.uid;
+      bindUserListeners(cred.user.uid);
+      ui();
       const target = pend;
       setBusy(false); close(); toast('Account created! Welcome, ' + name.split(' ')[0] + '.');
-      if (target) go(target);
+      go(target || cur || 'home');
     } catch (e) {
+      window._mwProvisioningUid = '';
       setBusy(false);
       q('#amErr').textContent = translateUserAuthErr(e);
     }
@@ -4829,6 +4880,9 @@ if (ibBtn) ibBtn.onclick = () => { if (typeof window.mwTriggerInstall === 'funct
   if (fbAuth) {
     fbAuth.onAuthStateChanged(async fbUser => {
       if (fbUser) {
+        if (window._mwProvisioningUid === 'pending' || window._mwProvisioningUid === fbUser.uid) {
+          return;
+        }
         S.uid = fbUser.uid;
         try {
           if (fbDb && !busy) {
