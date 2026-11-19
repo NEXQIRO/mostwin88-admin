@@ -5636,18 +5636,36 @@
       const totalSessions = (STATE.gameSessions || []).length;
       const pendingDeps = STATE.deposits.filter(d => d.status === 'Pending').length;
       const pendingWiths = STATE.withdrawals.filter(w => isWithdrawalOpen(w.status)).length;
-      const totalCasinoBets = STATE.ledger
+      const gTxIds = new Set((STATE.gameTransactions || []).map(x => x && x.id).filter(Boolean));
+      const gTxBets = (STATE.gameTransactions || [])
+        .filter(g => {
+          const t = (g && g.type || '').toUpperCase();
+          return (t === 'GAME_BET' || t === 'BET' || t === 'CASINO_BET') || (parseFloat(g && g.bet) > 0);
+        })
+        .reduce((acc, g) => acc + (parseFloat(g.bet != null ? g.bet : g.amount) || 0), 0);
+      const ledgerBets = STATE.ledger
         .filter(l => {
+          if (l && l.id && gTxIds.has(l.id)) return false;
           const t = (l.type || '').toUpperCase();
           return (t === 'GAME_BET' || t === 'BET' || t === 'CASINO_BET' || t === 'ENTRY_FEE' || t.includes('JOIN'));
         })
         .reduce((acc, l) => acc + (parseFloat(l.amount) || 0), 0);
-      const totalCasinoPayouts = STATE.ledger
+      const totalCasinoBets = gTxBets + ledgerBets;
+
+      const gTxPayouts = (STATE.gameTransactions || [])
+        .filter(g => {
+          const t = (g && g.type || '').toUpperCase();
+          return (t === 'GAME_WIN' || t === 'WIN' || t === 'CASINO_WIN' || t === 'CASHOUT') || (parseFloat(g && (g.win != null ? g.win : g.payout)) > 0);
+        })
+        .reduce((acc, g) => acc + (parseFloat(g.win != null ? g.win : (g.payout != null ? g.payout : g.amount)) || 0), 0);
+      const ledgerPayouts = STATE.ledger
         .filter(l => {
+          if (l && l.id && gTxIds.has(l.id)) return false;
           const t = (l.type || '').toUpperCase();
           return (t === 'GAME_WIN' || t === 'CASINO_WIN' || t === 'PRIZE_PAYOUT' || t === 'CASHOUT');
         })
         .reduce((acc, l) => acc + (parseFloat(l.amount) || 0), 0);
+      const totalCasinoPayouts = gTxPayouts + ledgerPayouts;
 
       // Financial Summary: ONLY Approved Deposits & Completed Withdrawals (Pending/Rejected excluded!)
       const approvedDeposits = STATE.deposits.filter(d => (d.status || '').toLowerCase() === 'approved' && finAfterReset(d.approvedAt || d.createdAt));
@@ -8658,19 +8676,36 @@
       const rejectedWithCount = filteredRejectedWiths.length;
 
       // 6. Pro Casino Operations P&L
+      const gTxFinIds = new Set((STATE.gameTransactions || []).map(x => x && x.id).filter(Boolean));
+      const filteredGtxBets = (STATE.gameTransactions || []).filter(g => {
+        const t = (g && g.type || '').toUpperCase();
+        return ((t === 'GAME_BET' || t === 'BET' || t === 'CASINO_BET') || (parseFloat(g && g.bet) > 0)) &&
+          isDateInPeriod(g.timestamp || g.time, period, cStart, cEnd);
+      });
       const filteredBetTransactions = STATE.ledger.filter(l => {
+        if (l && l.id && gTxFinIds.has(l.id)) return false;
         const t = (l.type || '').toUpperCase();
         return (t === 'GAME_BET' || t === 'BET' || t === 'CASINO_BET' || t === 'ENTRY_FEE' || t.includes('JOIN')) &&
           isDateInPeriod(l.timestamp, period, cStart, cEnd);
       });
-      const totalCasinoBets = filteredBetTransactions.reduce((acc, l) => acc + (parseFloat(l.amount) || 0), 0);
+      const totalCasinoBets =
+        filteredGtxBets.reduce((acc, g) => acc + (parseFloat(g.bet != null ? g.bet : g.amount) || 0), 0) +
+        filteredBetTransactions.reduce((acc, l) => acc + (parseFloat(l.amount) || 0), 0);
 
+      const filteredGtxPayouts = (STATE.gameTransactions || []).filter(g => {
+        const t = (g && g.type || '').toUpperCase();
+        return ((t === 'GAME_WIN' || t === 'WIN' || t === 'CASINO_WIN' || t === 'CASHOUT') || (parseFloat(g && (g.win != null ? g.win : g.payout)) > 0)) &&
+          isDateInPeriod(g.timestamp || g.time, period, cStart, cEnd);
+      });
       const filteredPayoutTransactions = STATE.ledger.filter(l => {
+        if (l && l.id && gTxFinIds.has(l.id)) return false;
         const t = (l.type || '').toUpperCase();
         return (t === 'GAME_WIN' || t === 'CASINO_WIN' || t === 'PRIZE_PAYOUT' || t === 'CASHOUT') &&
           isDateInPeriod(l.timestamp, period, cStart, cEnd);
       });
-      const totalCasinoPayouts = filteredPayoutTransactions.reduce((acc, l) => acc + (parseFloat(l.amount) || 0), 0);
+      const totalCasinoPayouts =
+        filteredGtxPayouts.reduce((acc, g) => acc + (parseFloat(g.win != null ? g.win : (g.payout != null ? g.payout : g.amount)) || 0), 0) +
+        filteredPayoutTransactions.reduce((acc, l) => acc + (parseFloat(l.amount) || 0), 0);
 
       const operationalMargin = totalCasinoBets - totalCasinoPayouts;
 
@@ -10326,7 +10361,7 @@
 
       const bonusBal = parseFloat(u.bonusBalance) || 0;
       const reqTurnover = parseFloat(u.turnoverRequired) || 0;
-      const compTurnover = parseFloat(u.turnoverCompleted) || 0;
+      const compTurnover = parseFloat(u.turnoverDone != null ? u.turnoverDone : u.turnoverCompleted) || 0;
       const remainingTurnover = Math.max(0, reqTurnover - compTurnover);
       const pct = reqTurnover > 0 ? Math.min(100, Math.round((compTurnover / reqTurnover) * 100)) : 100;
 

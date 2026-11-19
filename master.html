@@ -923,7 +923,7 @@ function attachAll(){
  on(db.ref('adminSettings/depositBonus'),s=>{BON=s.val()||{};schedDraw()});
  on(db.ref('adminSettings/userAdminOn'),s=>{UAON=s.val()!==false;schedDraw()});
  on(db.ref('games'),s=>{GAMES=s.val()||{};schedDraw()});
- on(db.ref('provider_games'),s=>{PROV_GAMES=s.val()||{};if(cur==='games')schedDraw()});
+ on(db.ref('provider_games'),s=>{PROV_GAMES=s.val()||{};if(cur==='games'||cur==='aggregator')schedDraw()});
  on(db.ref('users'),s=>{USERS=s.val()||{};schedDraw()});
  on(db.ref('device_registry'),s=>{DEVREG=s.val()||{};schedDraw()});
  on(db.ref('game_transactions').limitToLast(2500),s=>{GTX=s.val()||{};schedDraw()});

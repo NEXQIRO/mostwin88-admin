@@ -1059,6 +1059,7 @@ function rebuildMergedConfig() {
         c: gm.category || gm.c || prev.c || 'Popular Games',
         apiGameCode: gm.apiGameCode || gm.gameCode || prev.apiGameCode || '',
         provider: gm.provider || prev.provider || 'Casino',
+        providerApi: gm.providerApi || prev.providerApi || '',
         integrated: gm.integrated === true,
         healthUrl: gm.healthUrl || prev.healthUrl || '',
         order: gm.order != null ? Number(gm.order) : (prev.order != null ? prev.order : (100 + k)),
@@ -1716,10 +1717,11 @@ function lk(n) {
   toast('Opening ' + n + '...');
   go('games');
 }
-function fillGameUrlTpl(tpl, opts, tok) {
+function fillGameUrlTpl(tpl, opts, tok, sessTok) {
   const gApi = (CFG && CFG.gameApi) || {};
   const gCode = opts.gameCode || String(opts.name || '').toLowerCase().replace(/[^a-z0-9]+/g, '_');
   const prov = opts.providerApi || opts.provider || 'casino';
+  const sTok = sessTok || tok || '';
   return String(tpl || '')
     .replace(/\{uid\}/g, encodeURIComponent(S.uid || ''))
     .replace(/\{username\}/g, encodeURIComponent(S.username || S.name || S.uid || ''))
@@ -1729,12 +1731,17 @@ function fillGameUrlTpl(tpl, opts, tok) {
     .replace(/\{lang\}/g, encodeURIComponent(gApi.lang || 'bn'))
     .replace(/\{balance\}/g, encodeURIComponent(String(tot())))
     .replace(/\{operator\}/g, encodeURIComponent(gApi.operatorCode || ''))
-    .replace(/\{apiKey\}/g, encodeURIComponent(gApi.apiKey || ''))
-    .replace(/\{token\}/g, encodeURIComponent(tok || ''));
+    .replace(/\{agentId\}/g, encodeURIComponent(gApi.agentId || ''))
+    .replace(/\{sessionToken\}/g, encodeURIComponent(sTok))
+    .replace(/\{token\}/g, encodeURIComponent(sTok))
+    .replace(/\{returnUrl\}/g, encodeURIComponent(location.href || ''))
+    .replace(/\{callbackUrl\}/g, encodeURIComponent(gApi.callbackUrl || ''))
+    .replace(/\{apiKey\}/g, encodeURIComponent(gApi.apiKey || ''));
 }
 function openGameSurface(finalUrl, opts) {
   const gApi = (CFG && CFG.gameApi) || {};
-  const openMode = gApi.openMode || 'iframe';
+  const openMode = (opts && opts.openMode) || gApi.openMode || 'iframe';
+  window._activeGameMeta = { name: opts.name || 'Game', provider: opts.provider || 'Casino' };
   if (openMode === 'newtab') {
     const w = window.open(finalUrl, '_blank', 'noopener');
     if (w) return;
@@ -1761,22 +1768,49 @@ window.closeGamePlayer = function() {
   if (fr) fr.src = 'about:blank';
   if (box) box.classList.remove('o');
   document.body.classList.remove('am-lock');
+  if (window._activeGameSession && window._activeGameSession.key && fbDb && S.uid) {
+    const sess = window._activeGameSession;
+    const endBal = tot();
+    fbDb.ref('game_sessions/' + sess.key).update({
+      uid: S.uid,
+      status: 'COMPLETED',
+      endTime: Date.now(),
+      exitBalance: endBal,
+      netWinLoss: Math.round((endBal - (Number(sess.entryBalance) || 0)) * 100) / 100
+    }).catch(() => {});
+  }
+  window._activeGameSession = null;
+  window._activeGameMeta = null;
 };
 window.launchGameSession = async function(opts) {
   const o = opts || {};
   if (!S.uid) return window.openAuth ? openAuth('login') : toast('Please login to play');
   const dv = getDeviceInfo();
-  fbDb.ref('game_sessions').push({
-    uid: S.uid,
-    userName: S.name,
-    gameName: o.name || 'Casino Game',
-    provider: o.provider || 'Casino',
-    adminUid: S.adminUid || '',
-    startTime: Date.now(),
-    startServerAt: TS,
-    ip: LIVE_CLIENT_IP || '',
-    device: dv.device
-  }).catch(() => {});
+  const entryBal = tot();
+  let gsKey = '';
+  try {
+    const gsRef = fbDb.ref('game_sessions').push({
+      uid: S.uid,
+      userName: S.name,
+      gameName: o.name || 'Casino Game',
+      provider: o.provider || 'Casino',
+      providerApi: o.providerApi || '',
+      adminUid: S.adminUid || '',
+      status: 'ACTIVE',
+      entryBalance: entryBal,
+      exitBalance: entryBal,
+      betAmt: 0,
+      winAmt: 0,
+      betCount: 0,
+      startTime: Date.now(),
+      startServerAt: TS,
+      ip: LIVE_CLIENT_IP || '',
+      device: dv.device
+    });
+    gsKey = gsRef.key || '';
+    gsRef.catch(() => {});
+  } catch (e) {}
+  window._activeGameSession = gsKey ? { key: gsKey, entryBalance: entryBal } : null;
   fbDb.ref('users/' + S.uid + '/lastSeen').set(TS).catch(() => {});
 
   if (o.healthUrl) {
@@ -1799,27 +1833,28 @@ window.launchGameSession = async function(opts) {
 
   const gApi = (CFG && CFG.gameApi) || {};
   if (gApi.enabled && (gApi.mode !== 'direct_iframe' || gApi.launchUrl)) {
-    if (gApi.mode === 'direct_iframe') {
-      const resolved = fillGameUrlTpl(gApi.launchUrl, o, tok);
-      openGameSurface(resolved, o);
-      return;
-    }
     toast('Launching ' + (o.name || 'game') + '...');
     try {
       const json = await window.mwApi('/api/v1/game/launch', {
         gameCode: o.gameCode || String(o.name || '').toLowerCase().replace(/[^a-z0-9]+/g, '_'),
         provider: o.providerApi || o.provider || 'casino',
         gameName: o.name || '',
-        returnUrl: location.href
+        returnUrl: location.href,
+        gameSessionId: gsKey
       }, fbAuth);
       const gameLaunch = json && json.gameUrl;
       if (gameLaunch) {
-        openGameSurface(gameLaunch, o);
+        openGameSurface(gameLaunch, Object.assign({}, o, { openMode: json.openMode || gApi.openMode }));
       } else {
         toast('Game API থেকে Launch URL পাওয়া যায়নি');
       }
     } catch (e) {
-      toast('Game API সংযোগ ব্যর্থ — সার্ভার সেটিংস যাচাই করুন');
+      if (gApi.mode === 'direct_iframe' && gApi.launchUrl) {
+        const resolved = fillGameUrlTpl(gApi.launchUrl, o, tok);
+        openGameSurface(resolved, o);
+      } else {
+        toast((e && e.message) ? e.message : 'Game API সংযোগ ব্যর্থ — সার্ভার সেটিংস যাচাই করুন');
+      }
     }
     return;
   }
@@ -1833,6 +1868,7 @@ function play(n) {
     url: g.u || '',
     gameCode: g.apiGameCode || '',
     provider: g.provider || 'Casino',
+    providerApi: g.providerApi || '',
     integrated: !!g.integrated,
     healthUrl: g.healthUrl || ''
   });
@@ -2019,6 +2055,11 @@ function go(s) {
 function updBal() {
   const hb = $('#hbal');
   if (hb) hb.innerHTML = '<span class="em">👛</span><span><b>' + f(tot()) + '</b></span>';
+  const mt = document.getElementById('gpMeta');
+  if (mt && document.getElementById('mwGamePlayer')?.classList.contains('o')) {
+    const prov = (window._activeGameMeta && window._activeGameMeta.provider) || 'Casino';
+    mt.textContent = prov + ' · Balance: ' + f(tot());
+  }
   updAv();
 }
 
@@ -3837,18 +3878,20 @@ if (ibBtn) ibBtn.onclick = () => { if (typeof window.mwTriggerInstall === 'funct
     return u ? `<img src="${E(u)}" alt="${E(p.name)}" loading="lazy" onerror="this.replaceWith(document.createTextNode('${c}'))">` : c;
   }
   function baseGamesFor(p) {
+    if (p && p.source === 'aggregator') return [];
     return (GB[p.id] || FB[p.category] || FB.Slots).map((n, i) => ({id: p.id + "_" + i, name: n, order: i, active: true, maintenance: false}));
   }
   function mergeGamesFor(p, v) {
     const map = new Map();
-    baseGamesFor(p).forEach(bg => map.set(bg.id, Object.assign({}, bg)));
-    if (v && typeof v === "object") {
-      Object.entries(v).forEach(([id, g]) => {
-        if (!g) return;
-        const prev = map.get(id) || {};
-        map.set(id, Object.assign({}, prev, g, {id}));
-      });
+    const entries = (v && typeof v === "object") ? Object.entries(v).filter(([, g]) => !!g) : [];
+    const hasAggEntries = (p && p.source === 'aggregator') || entries.some(([, g]) => g && g.source === 'aggregator');
+    if (!hasAggEntries) {
+      baseGamesFor(p).forEach(bg => map.set(bg.id, Object.assign({}, bg)));
     }
+    entries.forEach(([id, g]) => {
+      const prev = map.get(id) || {};
+      map.set(id, Object.assign({}, prev, g, {id}));
+    });
     return Array.from(map.values());
   }
   const list = () => st.providers.filter(p => p.active !== false && catOn(p.category)).sort((a,b) => (a.order||0) - (b.order||0));
@@ -3884,7 +3927,12 @@ if (ibBtn) ibBtn.onclick = () => { if (typeof window.mwTriggerInstall === 'funct
   function gamesHtml(p, games) {
     const items = games.filter(g => g.active !== false && g.status !== "Inactive").sort((a,b) => (a.order||0) - (b.order||0));
     if (!items.length) return '<div class="pv-empty">কোনো গেম পাওয়া যায়নি</div>';
-    return items.map(g => `<div class="pv-gc ${g.maintenance?"pv-off":""}" data-n="${E(g.name)}" data-u="${E(g.url||'')}" data-gc="${E(g.gameCode||g.apiGameCode||'')}" data-pa="${E(p.apiCode||'')}" onclick="pvGame(this,${g.maintenance?1:0},'${E(p.name)}')">${g.maintenance?'<span class="pv-badge">Maintenance</span>':""}<div class="pv-th" style="background:${(g.thumbnail||g.img)?`url('${imgUrl(g.thumbnail||g.img)}') center/cover,`:""}${grad(g.name)}">${(g.thumbnail||g.img)?"":E(g.name[0])}</div><div class="pv-gn">${E(g.name)}</div></div>`).join("");
+    return items.map(g => {
+      const thumb = g.thumbnail || g.img || g.image || g.imageUrl || '';
+      const gc = g.gameCode || g.apiGameCode || g.code || '';
+      const pa = g.providerApi || p.apiCode || '';
+      return `<div class="pv-gc ${g.maintenance?"pv-off":""}" data-n="${E(g.name)}" data-u="${E(g.url||'')}" data-gc="${E(gc)}" data-pa="${E(pa)}" onclick="pvGame(this,${g.maintenance?1:0},'${E(p.name)}')">${g.maintenance?'<span class="pv-badge">Maintenance</span>':""}<div class="pv-th" style="background:${thumb?`url('${imgUrl(thumb)}') center/cover,`:""}${grad(g.name)}">${thumb?"":E(g.name[0])}</div><div class="pv-gn">${E(g.name)}</div></div>`;
+    }).join("");
   }
   function banner(games, p) {
     stopBan();
