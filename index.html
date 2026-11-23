@@ -3982,6 +3982,43 @@
     </div>
   </div>
 
+  <!-- AFFILIATE REFERRED USERS CHECK MODAL -->
+  <div class="modal-backdrop" id="modal-aff-users" onclick="if(event.target===this)closeAdminAffUsersModal()">
+    <div class="modal-card" style="max-width:860px;">
+      <div class="modal-header">
+        <div>
+          <h3 class="modal-title" id="modal-aff-users-title">👥 অ্যাফিলিয়েটের ইউজার তালিকা</h3>
+          <div id="modal-aff-users-sub" style="font-size:0.78rem; color:#cbd5e1; margin-top:2px;"></div>
+        </div>
+        <button type="button" class="modal-close" onclick="closeAdminAffUsersModal()">✕</button>
+      </div>
+      <div class="modal-body" style="padding:18px; display:flex; flex-direction:column; gap:12px; overflow-y:auto;">
+        <div id="admin-aff-users-stats" style="display:grid; grid-template-columns:repeat(auto-fit, minmax(150px, 1fr)); gap:10px;"></div>
+        <div class="form-group" style="margin:0;">
+          <input type="text" id="admin-aff-users-search" class="form-control" placeholder="নাম / ইমেইল / ফোন / UID দিয়ে ইউজার খুঁজুন..." oninput="renderAdminAffUsersBody()">
+        </div>
+        <div class="table-container" style="max-height:50vh; overflow:auto;">
+          <table>
+            <thead>
+              <tr>
+                <th>ইউজার ও UID</th>
+                <th>মোবাইল / ইমেইল</th>
+                <th>ব্যালেন্স</th>
+                <th>টার্নওভার / বেট</th>
+                <th>স্ট্যাটাস</th>
+                <th>যোগদান</th>
+              </tr>
+            </thead>
+            <tbody id="admin-aff-users-tbody"></tbody>
+          </table>
+        </div>
+      </div>
+      <div class="modal-footer" style="padding:12px 18px; display:flex; justify-content:flex-end;">
+        <button type="button" class="btn btn-secondary" onclick="closeAdminAffUsersModal()">বন্ধ করুন</button>
+      </div>
+    </div>
+  </div>
+
   <!-- MOBILE BOTTOM NAV -->
   <nav class="bottom-nav">
     <button class="bottom-nav-btn active" onclick="switchView('view-dashboard')">
@@ -9886,10 +9923,12 @@
       const totWallet = affs.reduce((s, a) => s + (parseFloat(a.commissionBalance) || 0), 0);
       const totPaid = affs.reduce((s, a) => s + (parseFloat(a.totalCommissionPaid) || 0), 0);
       const usersList = STATE.users || [];
+      const totAffUsers = usersList.filter(u => u && affs.some(af => u.referredBy === af.id || u.affiliateUid === af.id || u.affiliateId === af.id || (af.referralCode && String(u.affCode || u.referredByCode || '').trim().toUpperCase() === String(af.referralCode).trim().toUpperCase()))).length;
 
       if (sumEl) {
         sumEl.innerHTML = `
           <div class="stat-card"><div class="stat-info"><div class="stat-title">মোট লাইভ অ্যাফিলিয়েট</div><div class="stat-value">${affs.length}</div></div></div>
+          <div class="stat-card"><div class="stat-info"><div class="stat-title">মোট রেফার্ড ইউজার</div><div class="stat-value" style="color:var(--info, #38bdf8);">${totAffUsers} জন</div></div></div>
           <div class="stat-card"><div class="stat-info"><div class="stat-title">পেন্ডিং কমিশন রিকোয়েস্ট</div><div class="stat-value" style="color:var(--accent);">${pendReqs.length}</div></div></div>
           <div class="stat-card"><div class="stat-info"><div class="stat-title">বকেয়া কমিশন ওয়ালেট</div><div class="stat-value" style="color:var(--primary);">৳ ${Math.round(totWallet).toLocaleString('en-US')}</div></div></div>
           <div class="stat-card"><div class="stat-info"><div class="stat-title">মোট প্রদত্ত কমিশন</div><div class="stat-value" style="color:var(--success);">৳ ${Math.round(totPaid).toLocaleString('en-US')}</div></div></div>
@@ -9926,7 +9965,7 @@
           const wdBadge = (wdPct > 0 || af.commissionType === 'profit_share') ? ` · জিতলে −${wdPct}%` : '';
           return `<tr>
             <td><b>${escapeHtml(af.name || 'Affiliate')}</b> · <span class="badge badge-upcoming">${escapeHtml(af.referralCode || '—')}</span><br><small style="color:var(--text-dim);">${escapeHtml(af.email || af.id)} ${af.phone ? '· ' + escapeHtml(af.phone) : ''}</small></td>
-            <td><b>${refCnt} জন</b><br><small style="color:var(--text-dim);">ক্লিক: ${liveClk}</small></td>
+            <td><button type="button" class="btn btn-sm btn-outline" onclick="openAdminAffUsersModal('${escapeHtml(String(af.id))}')" title="এই অ্যাফিলিয়েটের ইউজার তালিকা দেখুন">👥 <b>${refCnt} জন</b></button><br><small style="color:var(--text-dim);">ক্লিক: ${liveClk}</small></td>
             <td>
               <span class="badge ${cOn ? 'badge-approved' : 'badge-rejected'}">${cOn ? 'ON' : 'OFF'}</span>
               <div style="font-size:0.78rem; margin-top:4px;">${escapeHtml(modeMap[af.commissionType || 'profit_share'] || 'কমিশন %')} · <b>${Number(af.commissionRate || 0)}%</b>${escapeHtml(wdBadge)} (মিন ৳${Math.round(af.minCommissionPayout || 500)})</div>
@@ -9934,6 +9973,7 @@
             <td><b style="color:var(--primary);">৳ ${Math.round(af.commissionBalance || 0).toLocaleString('en-US')}</b><br><small style="color:var(--success);">পেইড: ৳ ${Math.round(af.totalCommissionPaid || 0).toLocaleString('en-US')}</small></td>
             <td><span class="badge ${isAct ? 'badge-approved' : 'badge-rejected'}">${isAct ? 'সক্রিয়' : 'স্থগিত'}</span></td>
             <td style="text-align:right; white-space:nowrap;">
+              <button type="button" class="btn btn-sm btn-outline" onclick="openAdminAffUsersModal('${escapeHtml(String(af.id))}')">👥 ইউজার (${refCnt})</button>
               <button class="btn btn-sm btn-secondary" onclick="openChatThread('affiliate','${af.id}')">💬 চ্যাট</button>
               <button class="btn btn-sm btn-primary" onclick="openAdminAffCommModal('${af.id}')">⚙ কমিশন</button>
               <button class="btn btn-sm btn-outline" onclick="creditAffCommissionAdmin('${af.id}')">💰 ক্রেডিট</button>
@@ -10017,6 +10057,89 @@
     function closeAdminAffCommModal() {
       const modal = document.getElementById('modal-aff-commission');
       if (modal) modal.classList.remove('active');
+    }
+
+    let _adminAffUsersId = '';
+    function getAdminAffUsers(affId) {
+      const af = (STATE.affiliates || []).find(x => x.id === affId) || {};
+      const code = String(af.referralCode || '').trim().toUpperCase();
+      return (STATE.users || []).filter(u => u && (
+        u.referredBy === affId ||
+        u.affiliateUid === affId ||
+        u.affiliateId === affId ||
+        (code && String(u.affCode || u.referredByCode || '').trim().toUpperCase() === code)
+      ));
+    }
+
+    function openAdminAffUsersModal(affId) {
+      const af = (STATE.affiliates || []).find(x => x.id === affId);
+      if (!af) return;
+      _adminAffUsersId = affId;
+      const titleEl = document.getElementById('modal-aff-users-title');
+      const subEl = document.getElementById('modal-aff-users-sub');
+      const searchEl = document.getElementById('admin-aff-users-search');
+      if (titleEl) titleEl.textContent = '👥 অ্যাফিলিয়েটের ইউজার — ' + (af.name || af.email || affId);
+      if (subEl) subEl.textContent = 'রেফার কোড: ' + (af.referralCode || '—') + ' · ইমেইল: ' + (af.email || '—') + (af.phone ? ' · ' + af.phone : '');
+      if (searchEl) searchEl.value = '';
+      renderAdminAffUsersBody();
+      const modal = document.getElementById('modal-aff-users');
+      if (modal) modal.classList.add('active');
+    }
+
+    function closeAdminAffUsersModal() {
+      const modal = document.getElementById('modal-aff-users');
+      if (modal) modal.classList.remove('active');
+    }
+
+    function renderAdminAffUsersBody() {
+      if (!_adminAffUsersId) return;
+      const all = getAdminAffUsers(_adminAffUsersId);
+      const q = String(document.getElementById('admin-aff-users-search')?.value || '').trim().toLowerCase();
+      const list = all.filter(u => !q || [u.name, u.username, u.email, u.phone, u.uid, u.memberId].join(' ').toLowerCase().includes(q));
+      const activeCnt = all.filter(u => String(u.status || 'ACTIVE').toUpperCase() === 'ACTIVE').length;
+      const totBal = all.reduce((s, u) => s + (parseFloat(u.balance) || 0), 0);
+      const totTurn = all.reduce((s, u) => s + (parseFloat(u.turnoverDone != null ? u.turnoverDone : u.turnoverCompleted) || 0), 0);
+
+      const statsEl = document.getElementById('admin-aff-users-stats');
+      if (statsEl) {
+        statsEl.innerHTML = `
+          <div style="padding:10px 12px; border:1px solid #e2e8f0; border-radius:10px; background:#f8fafc;">
+            <div style="font-size:0.75rem; color:#475569;">মোট ইউজার</div>
+            <div style="font-size:1.15rem; font-weight:800; color:#9a6b00;">${all.length} জন</div>
+          </div>
+          <div style="padding:10px 12px; border:1px solid #e2e8f0; border-radius:10px; background:#f8fafc;">
+            <div style="font-size:0.75rem; color:#475569;">সক্রিয় ইউজার</div>
+            <div style="font-size:1.15rem; font-weight:800; color:#15803d;">${activeCnt} জন</div>
+          </div>
+          <div style="padding:10px 12px; border:1px solid #e2e8f0; border-radius:10px; background:#f8fafc;">
+            <div style="font-size:0.75rem; color:#475569;">মোট ইউজার ব্যালেন্স</div>
+            <div style="font-size:1.15rem; font-weight:800; color:#0f172a;">৳ ${Math.round(totBal).toLocaleString('en-US')}</div>
+          </div>
+          <div style="padding:10px 12px; border:1px solid #e2e8f0; border-radius:10px; background:#f8fafc;">
+            <div style="font-size:0.75rem; color:#475569;">মোট টার্নওভার</div>
+            <div style="font-size:1.15rem; font-weight:800; color:#0369a1;">৳ ${Math.round(totTurn).toLocaleString('en-US')}</div>
+          </div>
+        `;
+      }
+
+      const tb = document.getElementById('admin-aff-users-tbody');
+      if (tb) {
+        tb.innerHTML = list.length ? list.map(u => {
+          const st = String(u.status || 'ACTIVE').toUpperCase();
+          const turn = parseFloat(u.turnoverDone != null ? u.turnoverDone : u.turnoverCompleted) || 0;
+          const bets = parseInt(u.betCount || 0, 10) || 0;
+          const bal = parseFloat(u.balance) || 0;
+          const bonus = parseFloat(u.bonusBalance) || 0;
+          return `<tr>
+            <td><b>${escapeHtml(u.name || u.username || 'Player')}</b>${u.memberId ? ` <small style="color:#9a6b00;">(${escapeHtml(u.memberId)})</small>` : ''}<br><small style="font-family:monospace; color:#64748b;">${escapeHtml(String(u.uid || ''))}</small></td>
+            <td><div>${escapeHtml(u.phone || '—')}</div><small style="color:#64748b;">${escapeHtml(u.email || '—')}</small></td>
+            <td><b>৳ ${Math.round(bal).toLocaleString('en-US')}</b>${bonus > 0 ? `<br><small style="color:#0369a1;">বোনাস: ৳ ${Math.round(bonus).toLocaleString('en-US')}</small>` : ''}</td>
+            <td><b>৳ ${Math.round(turn).toLocaleString('en-US')}</b><br><small style="color:#64748b;">বেট: ${bets} বার</small></td>
+            <td><span class="badge ${st === 'ACTIVE' ? 'badge-approved' : 'badge-rejected'}">${escapeHtml(st)}</span></td>
+            <td><small>${u.createdAt ? new Date(u.createdAt).toLocaleDateString('bn-BD') : '—'}</small></td>
+          </tr>`;
+        }).join('') : `<tr><td colspan="6" style="text-align:center; padding:18px; color:#64748b;">${all.length ? 'খোঁজা শব্দের সাথে কোনো ইউজার মেলেনি' : 'এই অ্যাফিলিয়েটের অধীনে এখনো কোনো ইউজার রেজিস্টার করেনি'}</td></tr>`;
+      }
     }
 
     async function saveAdminAffCommission(e) {
