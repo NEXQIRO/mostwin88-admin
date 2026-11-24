@@ -5633,6 +5633,52 @@
     }
 
     // --- Secure Admin Login Persistence Engine (Requirement 2) ---
+    function syncAdminSelfProfile(user, adminData, providerHint) {
+      if (!db || !user || !user.uid) return;
+      const uid = user.uid;
+      const a = (adminData && typeof adminData === 'object') ? adminData : {};
+      const resolvedEmail = String(user.email || a.email || '').trim();
+      const resolvedName = String(a.name || user.displayName || (resolvedEmail && !/@(admin|npapp)\.local$/i.test(resolvedEmail) ? resolvedEmail.split('@')[0] : '') || '').trim();
+      const up = {
+        emailVerified: true,
+        lastLoginAt: firebase.database.ServerValue.TIMESTAMP,
+        updatedAt: firebase.database.ServerValue.TIMESTAMP
+      };
+      if (providerHint) up.loginProvider = providerHint;
+      if (resolvedEmail && (!a.email || a.email !== resolvedEmail)) {
+        up.email = resolvedEmail;
+      }
+      if (resolvedName && !a.name) {
+        up.name = resolvedName;
+      }
+      db.ref(`admins/${uid}`).update(up).catch(() => {
+        db.ref(`admins/${uid}/emailVerified`).set(true).catch(() => {});
+        if (up.email) db.ref(`admins/${uid}/email`).set(up.email).catch(() => {});
+        if (up.name) db.ref(`admins/${uid}/name`).set(up.name).catch(() => {});
+        db.ref(`admins/${uid}/lastLoginAt`).set(firebase.database.ServerValue.TIMESTAMP).catch(() => {});
+      });
+      if (resolvedEmail && !/@(admin|npapp)\.local$/i.test(resolvedEmail)) {
+        const cleanLocal = resolvedEmail.split('@')[0].toLowerCase().replace(/[^a-z0-9_]/g, '');
+        const cleanName = resolvedName.toLowerCase().replace(/[^a-z0-9_]/g, '');
+        if (cleanLocal) {
+          db.ref(`usernames/${cleanLocal}`).set({
+            uid,
+            email: resolvedEmail,
+            isAdmin: true,
+            updatedAt: firebase.database.ServerValue.TIMESTAMP
+          }).catch(() => {});
+        }
+        if (cleanName && cleanName !== cleanLocal) {
+          db.ref(`usernames/${cleanName}`).set({
+            uid,
+            email: resolvedEmail,
+            isAdmin: true,
+            updatedAt: firebase.database.ServerValue.TIMESTAMP
+          }).catch(() => {});
+        }
+      }
+    }
+
     function initAdminAuthPersistence() {
       if (!auth) return;
 
@@ -5644,21 +5690,23 @@
 
       auth.onAuthStateChanged(async (user) => {
         if (user) {
-          const userEmail = (user.email || '').toLowerCase();
-          const isSuperAdminEmail = false;
-          let hasAdminRole = isSuperAdminEmail;
+          let hasAdminRole = false;
+          let adminData = null;
 
-          if (!hasAdminRole && db) {
+          if (db) {
             try {
               const adminSnap = await db.ref(`admins/${user.uid}`).once('value');
               if (adminSnap.exists() && adminSnap.val().active !== false) {
                 hasAdminRole = true;
+                adminData = adminSnap.val() || {};
               }
             } catch (e) {}
           }
 
           if (hasAdminRole) {
-            completeLogin(user.email, user.uid);
+            const effEmail = user.email || (adminData && adminData.email) || user.uid;
+            syncAdminSelfProfile(user, adminData);
+            completeLogin(effEmail, user.uid);
             initFirebaseListeners();
           } else {
             executeLogoutUI();
@@ -5685,12 +5733,29 @@
       return (err && err.message) ? err.message : 'লগইন ব্যর্থ হয়েছে।';
     }
 
-    function showAdminLoginErr(msg) {
+    function showAdminLoginErr(msg, uidToCopy) {
       const box = document.getElementById('admin-login-err');
       if (!box) return;
       if (!msg) { box.style.display = 'none'; box.textContent = ''; return; }
       const clean = String(msg).replace(/Firebase:\s*/gi,'').replace(/\s*\(auth\/[^)]+\)\.?/gi,'').replace(/\b(firebase|github|render)\b/gi,'server').replace(/ফায়ারবেস|ফায়ারবেস|গিটহাব|রেন্ডার/g,'সার্ভার').trim();
       box.textContent = clean;
+      if (uidToCopy) {
+        const row = document.createElement('div');
+        row.style.cssText = 'margin-top:8px;display:flex;align-items:center;gap:6px;flex-wrap:wrap;font-family:monospace;font-size:0.75rem;';
+        const span = document.createElement('span');
+        span.textContent = 'UID: ' + uidToCopy;
+        const btn = document.createElement('button');
+        btn.type = 'button';
+        btn.textContent = 'UID কপি করুন';
+        btn.style.cssText = 'padding:3px 8px;border-radius:6px;border:1px solid rgba(255,255,255,0.25);background:rgba(255,255,255,0.1);color:inherit;cursor:pointer;font-size:0.72rem;';
+        btn.onclick = () => {
+          try { navigator.clipboard.writeText(uidToCopy); showToast('UID কপি হয়েছে: ' + uidToCopy, 'success'); }
+          catch (_) { prompt('UID কপি করুন:', uidToCopy); }
+        };
+        row.appendChild(span);
+        row.appendChild(btn);
+        box.appendChild(row);
+      }
       box.style.display = 'block';
     }
 
@@ -5717,8 +5782,9 @@
           const uSnap = await db.ref(`usernames/${cleanUser}`).once('value');
           if (uSnap.exists() && uSnap.val().email) email = uSnap.val().email;
         }
-        if (!email.includes('@') || email.endsWith('@npapp.local') || email.endsWith('@admin.local')) {
-          showAdminLoginErr('এই অ্যাকাউন্টে আসল ইমেইল যুক্ত নেই। Master Admin-এর কাছ থেকে পাসওয়ার্ড রিসেট নিন।');
+        email = String(email || '').trim();
+        if (!email.includes('@') || /@(npapp|admin)\.local$/i.test(email)) {
+          showAdminLoginErr('এই অ্যাকাউন্টে আসল ইমেইল যুক্ত নেই। Master Admin-এর কাছ থেকে ইমেইল/পাসওয়ার্ড ঠিক করে নিন।');
           return;
         }
         await auth.sendPasswordResetEmail(email);
@@ -5736,19 +5802,30 @@
       try {
         const cred = await auth.signInWithPopup(new firebase.auth.GoogleAuthProvider());
         let hasAdminRole = false;
+        let isDisabled = false;
+        let adminData = null;
         if (db && cred && cred.user) {
           const adminSnap = await db.ref(`admins/${cred.user.uid}`).once('value');
-          if (adminSnap.exists() && adminSnap.val().active !== false) hasAdminRole = true;
+          if (adminSnap.exists()) {
+            adminData = adminSnap.val() || {};
+            if (adminData.active !== false) hasAdminRole = true;
+            else isDisabled = true;
+          }
         }
         if (!hasAdminRole) {
+          const badUid = cred && cred.user ? cred.user.uid : '';
           await auth.signOut();
-          const msg = 'এই Google অ্যাকাউন্টটির অনুমোদিত User Admin অ্যাক্সেস নেই।';
-          showAdminLoginErr(msg);
+          const msg = isDisabled
+            ? 'এই User Admin অ্যাকাউন্টটি Master Admin সাময়িকভাবে বন্ধ রেখেছেন।'
+            : 'এই Google অ্যাকাউন্টটির অনুমোদিত User Admin অ্যাক্সেস নেই। Master Admin প্যানেল থেকে এই UID যুক্ত করুন।';
+          showAdminLoginErr(msg, badUid);
           showToast(msg, 'error');
           return;
         }
         showAdminLoginErr('');
-        completeLogin(cred.user.email, cred.user.uid);
+        const effEmail = cred.user.email || (adminData && adminData.email) || cred.user.uid;
+        syncAdminSelfProfile(cred.user, adminData, 'google');
+        completeLogin(effEmail, cred.user.uid);
         resetAdminInactivity();
       } catch (err) {
         const msg = translateAdminAuthErr(err);
@@ -5761,7 +5838,7 @@
     async function handleAdminLogin(event) {
       event.preventDefault();
       showAdminLoginErr('');
-      const inputVal = document.getElementById('login-email').value.trim();
+      const inputVal = (document.getElementById('login-email').value || '').trim();
       const pass = document.getElementById('login-password').value;
 
       if (!inputVal || !pass) {
@@ -5785,56 +5862,72 @@
         if (!inputVal.includes('@')) {
           const cleanUser = inputVal.toLowerCase().replace(/[^a-z0-9_]/g, '');
           let foundEmail = '';
-          if (db) {
+          if (db && cleanUser) {
             try {
               const uSnap = await db.ref(`usernames/${cleanUser}`).once('value');
-              if (uSnap.exists() && uSnap.val().email) foundEmail = uSnap.val().email;
+              if (uSnap.exists() && uSnap.val().email) foundEmail = String(uSnap.val().email).trim();
             } catch (_) {}
           }
           resolvedEmail = foundEmail || (cleanUser + '@npapp.local');
+        } else {
+          resolvedEmail = inputVal.replace(/\s+/g, '');
         }
 
         const cred = await auth.signInWithEmailAndPassword(resolvedEmail, pass);
         let hasAdminRole = false;
+        let isDisabled = false;
+        let adminData = null;
         if (db) {
           const adminSnap = await db.ref(`admins/${cred.user.uid}`).once('value');
-          if (adminSnap.exists() && adminSnap.val().active !== false) {
-            hasAdminRole = true;
+          if (adminSnap.exists()) {
+            adminData = adminSnap.val() || {};
+            if (adminData.active !== false) hasAdminRole = true;
+            else isDisabled = true;
           }
         }
 
         if (!hasAdminRole) {
+          const badUid = cred && cred.user ? cred.user.uid : '';
           await auth.signOut();
-          const msg = 'অননুমোদিত অ্যাক্সেস! এই অ্যাকাউন্টে সক্রিয় User Admin পারমিশন নেই।';
-          showAdminLoginErr(msg);
+          const msg = isDisabled
+            ? 'এই User Admin অ্যাকাউন্টটি Master Admin সাময়িকভাবে বন্ধ রেখেছেন।'
+            : 'অননুমোদিত অ্যাক্সেস! এই ইমেইলের UID-তে এখনো User Admin পারমিশন নেই। Master Admin প্যানেলে গিয়ে নিচের UID দিয়ে পারমিশন দিন বা ডাটা ট্রান্সফার করুন।';
+          showAdminLoginErr(msg, badUid);
           showToast(msg, 'error');
           return;
         }
 
-        // Master-authorized admins (registered in admins/$uid) can log in directly without email verification block
-        if (!cred.user.emailVerified) {
-          try {
-            if (db) db.ref(`admins/${cred.user.uid}/emailVerified`).set(true).catch(() => {});
-          } catch (e) {}
-        }
+        syncAdminSelfProfile(cred.user, adminData, 'password');
 
         // Keep username mapping stored for future quick login
         if (db && !inputVal.includes('@')) {
           const cleanUser = inputVal.toLowerCase().replace(/[^a-z0-9_]/g, '');
-          db.ref(`usernames/${cleanUser}`).set({
-            uid: cred.user.uid,
-            email: cred.user.email,
-            isAdmin: true,
-            updatedAt: firebase.database.ServerValue.TIMESTAMP
-          }).catch(() => {});
+          if (cleanUser) {
+            db.ref(`usernames/${cleanUser}`).set({
+              uid: cred.user.uid,
+              email: cred.user.email || resolvedEmail,
+              isAdmin: true,
+              updatedAt: firebase.database.ServerValue.TIMESTAMP
+            }).catch(() => {});
+          }
         }
 
-        db.ref(`admins/${cred.user.uid}/emailVerified`).set(true).catch(() => {});
         showAdminLoginErr('');
-        completeLogin(cred.user.email, cred.user.uid);
+        completeLogin(cred.user.email || resolvedEmail, cred.user.uid);
         resetAdminInactivity();
       } catch (err) {
-        const msg = translateAdminAuthErr(err);
+        let msg = translateAdminAuthErr(err);
+        const code = (err && err.code) || '';
+        if ((code === 'auth/invalid-credential' || code === 'auth/wrong-password' || code === 'auth/user-not-found' || code === 'auth/invalid-login-credentials') && resolvedEmail.includes('@') && typeof auth.fetchSignInMethodsForEmail === 'function') {
+          try {
+            const methods = await auth.fetchSignInMethodsForEmail(resolvedEmail);
+            if (Array.isArray(methods) && methods.includes('google.com') && !methods.includes('password')) {
+              msg = 'এই ইমেইলটি শুধু Google দিয়ে খোলা (পাসওয়ার্ড সেট করা নেই)। নিচের "Google দিয়ে লগইন করুন" বাটনে চাপ দিন অথবা "পাসওয়ার্ড রিসেট" ব্যবহার করে পাসওয়ার্ড সেট করুন।';
+            } else if (Array.isArray(methods) && methods.length === 0) {
+              msg = 'এই ইমেইল দিয়ে কোনো অ্যাকাউন্ট পাওয়া যায়নি। Master Admin প্যানেলের "✏️ ইমেইল/তথ্য" থেকে ইমেইল যাচাই বা নতুন ইমেইলে ট্রান্সফার করুন।';
+            }
+          } catch (_) {}
+        }
         showAdminLoginErr(msg);
         showToast(msg, 'error');
       } finally {
@@ -5846,20 +5939,23 @@
       showToast('এডমিন অ্যাকাউন্ট শুধু MASTER ADMINISTRATOR খুলতে পারবেন।', 'error');
     }
     function completeLogin(email, uid) {
-      STATE.adminUser = { uid, email, role: 'USER_ADMIN' };
+      const safeEmail = String(email || uid || 'Admin').trim();
+      STATE.adminUser = { uid, email: safeEmail, role: 'USER_ADMIN' };
       if (db && uid) db.ref('adminLinks/' + uid).set(true).catch(() => {});
       attachMyBalance(uid);
       attachFeatureFlags();
       try { attachPromotions(); } catch (e) { console.warn('Promotions:', e); }
-      document.getElementById('sidebar-email').innerText = email;
-      document.getElementById('sidebar-avatar').innerText = email.charAt(0).toUpperCase();
+      const sbEm = document.getElementById('sidebar-email');
+      const sbAv = document.getElementById('sidebar-avatar');
+      if (sbEm) sbEm.innerText = safeEmail;
+      if (sbAv) sbAv.innerText = (safeEmail.charAt(0) || 'A').toUpperCase();
       document.getElementById('login-overlay').style.display = 'none';
       if (typeof window.mwFitLogos === 'function') setTimeout(window.mwFitLogos, 40);
       const fab = document.getElementById('uaLiveChatFab');
       if (fab) fab.style.display = 'flex';
 
-      recordAuditLog('ADMIN_LOGIN', 'ADMIN_SESSION', `Signed in as ${email}`);
-      showToast(`স্বাগতম, ${email}!`, 'success');
+      recordAuditLog('ADMIN_LOGIN', 'ADMIN_SESSION', `Signed in as ${safeEmail}`);
+      showToast(`স্বাগতম, ${safeEmail}!`, 'success');
       renderDashboard();
       resetAdminInactivity();
     }
