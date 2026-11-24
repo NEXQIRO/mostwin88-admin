@@ -11,6 +11,9 @@
 <link rel="icon" type="image/png" href="./agent-icon-192.png">
 <link rel="apple-touch-icon" href="./agent-icon-192.png">
 <title>MOSTWIN88 AGENT</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Hind+Siliguri:wght@400;500;600;700&family=JetBrains+Mono:wght@500;600&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
 <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-app-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-auth-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-database-compat.js"></script>
@@ -349,6 +352,129 @@ body.light .chat-msgs{background:transparent}
 body.light .cmsg:not(.me){background:rgba(255,255,255,.08);color:#EAF0FF;border-color:rgba(255,255,255,.08)}
 body.light .chat-bar{background:#08122b;border-color:rgba(255,255,255,.08)}
 body.light .chat-bar input{background:#0a1530;color:#EAF0FF;border-color:rgba(255,255,255,.11)}
+
+/* ===== Human-Crafted Midnight Slate Fintech Polish ===== */
+:root{
+  --bg:#080B12;
+  --surface:#0E131D;
+  --panel:#141A27;
+  --panel2:#1A2232;
+  --line:rgba(255,255,255,.08);
+  --gold:#F2B938;
+  --gold2:#FDE68A;
+  --gold-dark:#D49617;
+  --pink:#E11D64;
+  --pink-light:#F43F7A;
+  --green:#10B981;
+  --green-light:#34D399;
+  --blue:#3B82F6;
+  --blue-light:#60A5FA;
+  --red:#EF4444;
+  --red-light:#F87171;
+  --yellow:#F59E0B;
+  --muted:#94A3B8;
+  --text:#F1F5F9;
+}
+body{
+  background:radial-gradient(ellipse at 50% -15%,rgba(59,130,246,.08) 0%,#080B12 65%);
+  color:var(--text);
+  font-family:'Plus Jakarta Sans','Hind Siliguri',system-ui,-apple-system,sans-serif;
+  -webkit-font-smoothing:antialiased;
+  -moz-osx-font-smoothing:grayscale;
+}
+.phone{
+  background:var(--surface);
+  border-left:1px solid rgba(255,255,255,.06);
+  border-right:1px solid rgba(255,255,255,.06);
+  box-shadow:0 0 60px rgba(0,0,0,.65);
+}
+.login{background:radial-gradient(circle at 50% 8%,rgba(225,29,100,.08) 0%,#080B12 65%)}
+.login-form{background:#121826;border:1px solid rgba(255,255,255,.09);border-radius:18px;box-shadow:0 20px 50px rgba(0,0,0,.5)}
+.login-form input,.search,.filter-select,.balance-request-form input,.balance-request-form textarea,.dlg-field select,.dlg-field textarea,.dlg-field input{
+  background:#090D16;
+  border:1px solid rgba(255,255,255,.1);
+  border-radius:11px;
+  color:var(--text);
+}
+.login-form input:focus,.search:focus,.filter-select:focus,.balance-request-form input:focus,.balance-request-form textarea:focus{
+  border-color:var(--pink);
+  box-shadow:0 0 0 3px rgba(225,29,100,.16);
+}
+header{
+  background:rgba(14,19,29,.88);
+  backdrop-filter:blur(16px);
+  -webkit-backdrop-filter:blur(16px);
+  border-bottom:1px solid rgba(255,255,255,.08);
+  box-shadow:none;
+}
+.headbtn{background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.09);border-radius:10px}
+.headbtn:hover{background:rgba(255,255,255,.09);border-color:rgba(255,255,255,.16)}
+.balance{
+  background:linear-gradient(135deg,#2B1022 0%,#521536 55%,#7A1A48 100%);
+  border:1px solid rgba(244,63,122,.28);
+  border-radius:18px;
+  box-shadow:0 14px 32px -12px rgba(0,0,0,.65),inset 0 1px 0 rgba(255,255,255,.08);
+}
+.balance h1{font-variant-numeric:tabular-nums;letter-spacing:-.02em}
+.stat,.quick button,.card,.report-card,.balance-request-form,.ag-wsetup,.home-wallet-bar,.profile,.menu{
+  background:#141A27;
+  border:1px solid rgba(255,255,255,.08);
+  border-radius:16px;
+  box-shadow:0 4px 16px -6px rgba(0,0,0,.35);
+}
+.stat:hover,.quick button:hover{border-color:rgba(255,255,255,.16)}
+.reportlink{background:linear-gradient(135deg,#1C1810,#141A27);border-color:rgba(242,185,56,.26)}
+.primary{
+  background:linear-gradient(135deg,#E11D64,#BE124F);
+  border-radius:12px;
+  box-shadow:0 8px 20px -8px rgba(225,29,100,.5);
+}
+.approve{background:linear-gradient(135deg,#10B981,#059669)}
+.reject{background:linear-gradient(135deg,#EF4444,#DC2626)}
+.complete{background:linear-gradient(135deg,#3B82F6,#2563EB)}
+.tabs{background:#0B1019;border:1px solid rgba(255,255,255,.08);border-radius:12px}
+.tab.active{background:var(--pink);box-shadow:0 4px 12px -4px rgba(225,29,100,.45)}
+.bottom{
+  background:rgba(14,19,29,.92);
+  backdrop-filter:blur(16px);
+  -webkit-backdrop-filter:blur(16px);
+  border-top:1px solid rgba(255,255,255,.08);
+  box-shadow:none;
+}
+.nav.active{color:var(--pink-light)}
+.nav.active:before{background:var(--pink)}
+.dlg,.modal{
+  background:#141A27;
+  border:1px solid rgba(255,255,255,.12);
+  border-radius:20px;
+}
+.dlg-info,.ag-wrow{background:#0B1019;border-color:rgba(255,255,255,.08)}
+.chat-fab{
+  background:linear-gradient(135deg,#F6CA5E,#D8991A);
+  color:#1E1400;
+  border:1.5px solid rgba(255,255,255,.28);
+  box-shadow:0 10px 24px -6px rgba(0,0,0,.65),0 0 0 3px rgba(8,11,18,.85);
+}
+.chat-fab::after{background:#10B981;border-color:#080B12}
+.chat-drawer{
+  background:#0E131D;
+  border:1px solid rgba(242,185,56,.28);
+  border-radius:18px;
+}
+.chat-head{background:rgba(255,255,255,.03);border-bottom:1px solid rgba(255,255,255,.07)}
+.chat-av,.cmsg.me,.chat-bar button{background:linear-gradient(135deg,#F6CA5E,#D8991A);color:#1E1400;box-shadow:none}
+.chat-bar{background:#090D16;border-top:1px solid rgba(255,255,255,.08)}
+.chat-bar input{background:#141A27;border-color:rgba(255,255,255,.1)}
+body.light{background:#EFF3F8;color:#0F172A}
+body.light .phone{background:#F8FAFC;border-color:#E2E8F0;box-shadow:0 0 40px rgba(15,23,42,.08)}
+body.light header,body.light .bottom{background:rgba(255,255,255,.94);border-color:#E2E8F0}
+body.light .stat,body.light .card,body.light .quick button,body.light .menu,body.light .profile,body.light .balance-request-form,body.light .report-card,body.light .ag-wsetup,body.light .home-wallet-bar{
+  background:#FFFFFF;border-color:#E2E8F0;box-shadow:0 1px 3px rgba(15,23,42,.06);
+}
+body.light .tabs{background:#E2E8F0;border-color:#CBD5E1}
+body.light .chat-drawer{background:#0E131D;border-color:rgba(242,185,56,.32)}
+body.light .chat-bar{background:#090D16}
+body.light .chat-bar input{background:#141A27}
 </style>
 </head>
 <body>

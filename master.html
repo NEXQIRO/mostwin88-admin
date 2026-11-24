@@ -12,7 +12,7 @@
 <link rel="icon" type="image/png" href="master-icon-192.png">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Hind+Siliguri:wght@400;500;600;700&family=Rajdhani:wght@500;600;700&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Hind+Siliguri:wght@400;500;600;700&family=JetBrains+Mono:wght@500;600&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Rajdhani:wght@600;700&display=swap" rel="stylesheet">
 <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-app-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-auth-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-database-compat.js"></script>
@@ -492,6 +492,188 @@ body[data-theme="light"] .bottom-nav{background:#FFFFFF;border-top-color:#E6DECB
   .m-chat-fab i{font-size:18px}
   .m-chat-fab .fab-lbl{font-size:6.8px}
 }
+
+/* ========================================================
+   Human-Crafted Obsidian Slate & Warm Amber Polish
+   ======================================================== */
+:root,body[data-theme="dark"]{
+  --font-body:'Plus Jakarta Sans','Hind Siliguri',-apple-system,BlinkMacSystemFont,sans-serif;
+  --font-display:'Plus Jakarta Sans','Hind Siliguri',sans-serif;
+  --bg-base:#090B0F;
+  --bg-surface:#0F1218;
+  --bg-card:#12161F;
+  --bg-card-hover:#181D29;
+  --bg-inner:#171C27;
+  --border-subtle:rgba(255,255,255,.08);
+  --border-color:rgba(242,169,30,.42);
+  --primary:#F2A91E;
+  --primary-hover:#FBBF3B;
+  --success:#10B981;
+  --accent:#F87171;
+  --info:#38BDF8;
+  --text-main:#F1F5F9;
+  --text-muted:#94A3B8;
+  --text-dim:#64748B;
+  --c-base:#090B0F;
+  --c-deep:#0C0F15;
+  --c-surface:#12161F;
+  --c-inner:#171C27;
+  --c-line:rgba(255,255,255,.08);
+  --c-gold-line:rgba(242,169,30,.42);
+  --c-text:#F1F5F9;
+  --c-muted:#94A3B8;
+  --c-dim:#64748B;
+}
+body[data-theme="light"]{
+  --bg-base:#F4F6F9;
+  --bg-surface:#FFFFFF;
+  --bg-card:#FFFFFF;
+  --bg-card-hover:#F8FAFC;
+  --bg-inner:#F1F5F9;
+  --border-subtle:#E2E8F0;
+  --border-color:#D97706;
+  --primary:#D97706;
+  --primary-hover:#B45309;
+  --success:#059669;
+  --accent:#DC2626;
+  --info:#0284C7;
+  --text-main:#0F172A;
+  --text-muted:#475569;
+  --text-dim:#64748B;
+  --c-base:#F4F6F9;
+  --c-deep:#EEF2F6;
+  --c-surface:#FFFFFF;
+  --c-inner:#F1F5F9;
+  --c-line:#E2E8F0;
+  --c-gold-line:#D97706;
+  --c-text:#0F172A;
+  --c-muted:#475569;
+  --c-dim:#64748B;
+}
+body{
+  font-family:var(--font-body);
+  -webkit-font-smoothing:antialiased;
+  -moz-osx-font-smoothing:grayscale;
+  font-variant-numeric:tabular-nums;
+}
+h1,h2,h3,h4,.font-heading{
+  font-family:var(--font-body);
+  text-transform:none;
+  letter-spacing:-.01em;
+  font-weight:700;
+}
+.stat-value,.bal,.bal-pill b,.hero-fund-val,.tx-card-amt,.cd b{
+  font-family:'Rajdhani','Plus Jakarta Sans',sans-serif;
+  text-transform:none;
+  font-variant-numeric:tabular-nums;
+}
+.sidebar{background:var(--bg-surface);border-right:1px solid var(--border-subtle)}
+.brand-header{background:var(--bg-surface);border-bottom:1px solid var(--border-subtle)}
+.sidebar-footer{background:var(--c-deep);border-top:1px solid var(--border-subtle)}
+.nav-item button{border-radius:10px;font-weight:500;font-size:.89rem;padding:10px 12px}
+.nav-item button.on{background:rgba(242,169,30,.1);border-color:rgba(242,169,30,.32);color:var(--primary);font-weight:600}
+body[data-theme="light"] .nav-item button.on{background:rgba(217,119,6,.08);border-color:rgba(217,119,6,.32)}
+.topbar{
+  background:rgba(15,18,24,.88);
+  backdrop-filter:blur(14px);
+  -webkit-backdrop-filter:blur(14px);
+  border-bottom:1px solid var(--border-subtle);
+}
+body[data-theme="light"] .topbar{background:rgba(255,255,255,.92);backdrop-filter:blur(14px)}
+.stat-card,.cd{
+  background:var(--bg-card);
+  border:1px solid var(--border-subtle);
+  border-radius:14px;
+  box-shadow:0 1px 3px rgba(0,0,0,.2) !important;
+  transition:border-color .18s ease,background .18s ease;
+}
+body[data-theme="light"] .stat-card,body[data-theme="light"] .cd{
+  box-shadow:0 1px 3px rgba(15,23,42,.06),0 1px 2px rgba(15,23,42,.04) !important;
+}
+.stat-card:hover,.cd:hover{border-color:rgba(242,169,30,.35)}
+.hero-fund-card{
+  background:linear-gradient(135deg,rgba(242,169,30,.08) 0%,var(--bg-card) 68%) !important;
+  border:1px solid rgba(242,169,30,.32) !important;
+  border-radius:16px !important;
+  box-shadow:0 8px 24px -12px rgba(0,0,0,.45) !important;
+}
+body[data-theme="light"] .hero-fund-card{
+  background:linear-gradient(135deg,#FFFBEB 0%,#FFFFFF 72%) !important;
+  border-color:rgba(217,119,6,.38) !important;
+  box-shadow:0 4px 16px -8px rgba(15,23,42,.1) !important;
+}
+button{border-radius:10px;font-weight:600;transition:background .16s ease,border-color .16s ease,color .16s ease}
+button.on,button.p{background:var(--primary);color:#111827;border-color:transparent;font-weight:700}
+button.on:hover,button.p:hover{background:var(--primary-hover);color:#111827}
+button.d{background:#EF4444;color:#FFFFFF;border-color:transparent}
+button.d:hover{background:#DC2626}
+input,textarea,select{
+  background:var(--c-inner);
+  border:1px solid var(--border-subtle);
+  border-radius:10px;
+}
+input:focus,textarea:focus,select:focus{
+  border-color:var(--primary);
+  box-shadow:0 0 0 3px rgba(242,169,30,.14) !important;
+}
+.sc{border:1px solid var(--border-subtle);border-radius:12px;background:var(--bg-card)}
+table th{
+  font-family:var(--font-body);
+  font-size:.73rem;
+  text-transform:uppercase;
+  letter-spacing:.05em;
+  background:var(--c-inner);
+  color:var(--text-muted);
+  padding:11px 14px;
+}
+table td{padding:11px 14px;font-size:.86rem}
+.sc td button{padding:5px 10px;font-size:12px;border-radius:8px}
+.pl{border-radius:999px;font-weight:600;font-size:11px;padding:3px 10px}
+.m-modal-bg{background:rgba(5,8,15,.72);backdrop-filter:blur(6px);-webkit-backdrop-filter:blur(6px)}
+.m-modal-card{
+  background:var(--bg-card);
+  border:1px solid var(--border-subtle);
+  border-radius:16px;
+  box-shadow:0 24px 60px rgba(0,0,0,.55) !important;
+}
+body[data-theme="light"] .m-modal-card{box-shadow:0 20px 50px rgba(15,23,42,.18) !important}
+#toast{
+  background:var(--bg-card);
+  border:1px solid var(--border-subtle);
+  border-left:4px solid var(--primary);
+  border-radius:12px;
+  box-shadow:0 16px 40px rgba(0,0,0,.4) !important;
+}
+#notif-drawer{
+  background:var(--bg-card);
+  border:1px solid var(--border-subtle);
+  box-shadow:0 20px 50px rgba(0,0,0,.48) !important;
+}
+.bottom-nav{background:var(--bg-surface);border-top:1px solid var(--border-subtle)}
+/* Harmonize Master Live Chat & Support Center with Obsidian Slate */
+.mcp-drawer,.npm{
+  background:#0F1218;
+  border:1px solid rgba(242,169,30,.28);
+  border-radius:18px;
+  font-family:var(--font-body);
+  box-shadow:0 24px 60px rgba(0,0,0,.62) !important;
+}
+.mcp-head,.npm-head{background:rgba(255,255,255,.03);border-bottom:1px solid rgba(255,255,255,.07)}
+.mcp-logo,.npm-logo{background:linear-gradient(135deg,#F6CA5E,#D8991A);color:#111827}
+.mcp-tab.active,.mcp-msg.me .mcp-bub,.npm-m.me .npm-b,.mcp-bar button,.npm-bar button{
+  background:linear-gradient(135deg,#F6CA5E,#D8991A);
+  color:#111827;
+}
+.mcp-peers,.npm-list{background:#0B0E14;border-color:rgba(255,255,255,.07)}
+.mcp-bar,.npm-bar{background:#0B0E14;border-top:1px solid rgba(255,255,255,.07)}
+.mcp-bar textarea,.npm-bar textarea{background:#151A24;border-color:rgba(255,255,255,.1)}
+.m-chat-fab{
+  background:linear-gradient(135deg,#F6CA5E,#D8991A);
+  color:#111827;
+  border:1.5px solid rgba(255,255,255,.28);
+  box-shadow:0 10px 26px -6px rgba(0,0,0,.65),0 0 0 3px rgba(9,11,15,.85) !important;
+}
+.m-chat-fab::after{background:#10B981;border-color:#090B0F}
 </style>
 </head>
 <body data-theme="dark">

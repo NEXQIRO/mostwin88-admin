@@ -12,6 +12,9 @@
 <link rel="icon" type="image/png" href="./affiliate-icon-192.png">
 <link rel="apple-touch-icon" href="./affiliate-icon-192.png">
 <title>MOSTWIN88 — Live Affiliate Workspace</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Hind+Siliguri:wght@400;500;600;700&family=JetBrains+Mono:wght@500;600&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
 <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-app-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-auth-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-database-compat.js"></script>
@@ -226,6 +229,122 @@ body.light .inline-chat-box{background:linear-gradient(180deg,rgba(10,22,52,.98)
 body.light .cmsg:not(.me){background:rgba(255,255,255,.08)!important;color:#EAF0FF!important;border-color:rgba(255,255,255,.08)!important}
 body.light .chat-bar{background:#08122b!important;border-color:rgba(255,255,255,.08)!important}
 body.light .chat-bar input{background:#0a1530!important;color:#EAF0FF!important;border-color:rgba(255,255,255,.11)!important}
+
+/* ===== Human-Crafted Charcoal & Warm Amber SaaS Polish ===== */
+:root{
+  --bg:#0A0C10;
+  --panel:#12161E;
+  --panel2:#181D27;
+  --line:rgba(255,255,255,.08);
+  --text:#F1F5F9;
+  --muted:#94A3B8;
+  --orange:#F59E0B;
+  --gold:#FBBF24;
+  --green:#10B981;
+  --red:#EF4444;
+  --shadow:0 10px 30px -10px rgba(0,0,0,.5);
+}
+body{
+  background:radial-gradient(900px 400px at 80% -10%,rgba(245,158,11,.07),transparent 55%),#0A0C10;
+  font-family:'Plus Jakarta Sans','Hind Siliguri',system-ui,-apple-system,sans-serif;
+  -webkit-font-smoothing:antialiased;
+  -moz-osx-font-smoothing:grayscale;
+  font-variant-numeric:tabular-nums;
+}
+.sidebar{background:#0E1117;border-right:1px solid rgba(255,255,255,.08)}
+.nav button{border-radius:10px;font-weight:500;color:#94A3B8}
+.nav button:hover{background:rgba(255,255,255,.04);color:#F1F5F9}
+.nav button.active{
+  background:rgba(245,158,11,.1);
+  color:#FBBF24;
+  font-weight:600;
+  box-shadow:inset 3px 0 0 #F59E0B;
+}
+.card,.simple-card,.login-card{
+  background:#12161E;
+  border:1px solid rgba(255,255,255,.08);
+  border-radius:14px;
+  box-shadow:0 2px 10px rgba(0,0,0,.22);
+}
+.ref-card{
+  background:linear-gradient(115deg,rgba(245,158,11,.1),#12161E 70%);
+  border-color:rgba(245,158,11,.28);
+}
+.ref-link code{
+  background:#090B0F;
+  border:1px solid rgba(255,255,255,.1);
+  font-family:'JetBrains Mono',monospace;
+  color:#FBBF24;
+}
+.btn-primary{
+  background:linear-gradient(135deg,#F59E0B,#D97706);
+  color:#111827;
+  font-weight:700;
+  box-shadow:0 6px 16px -6px rgba(245,158,11,.45);
+}
+.icon-btn,.select,.btn{background:#12161E;border:1px solid rgba(255,255,255,.1);border-radius:10px}
+.toolbar input,.toolbar select,.fgrp input{background:#0B0E14;border:1px solid rgba(255,255,255,.1);border-radius:10px}
+.stat-value{font-weight:800;letter-spacing:-.02em}
+table th{color:#94A3B8;font-size:11px;border-bottom:1px solid rgba(255,255,255,.08)}
+table td{border-bottom:1px solid rgba(255,255,255,.05)}
+.ring:after{background:#12161E}
+/* Harmonize Chat Drawer & Inline Chat Box with Charcoal Slate */
+.chat-fab{
+  background:linear-gradient(135deg,#F6CA5E,#D8991A);
+  color:#111827;
+  border:1.5px solid rgba(255,255,255,.28);
+  box-shadow:0 10px 24px -6px rgba(0,0,0,.65),0 0 0 3px rgba(10,12,16,.85);
+}
+.chat-fab::after{background:#10B981;border-color:#0A0C10}
+.chat-drawer,.inline-chat-box{
+  background:#0E1117 !important;
+  border:1px solid rgba(245,158,11,.28) !important;
+  border-radius:18px;
+}
+.chat-head{background:rgba(255,255,255,.03);border-bottom:1px solid rgba(255,255,255,.07)}
+.chat-av,.cmsg.me,.chat-bar button{background:linear-gradient(135deg,#F6CA5E,#D8991A);color:#111827;box-shadow:none}
+.chat-bar{background:#090B0F !important;border-top:1px solid rgba(255,255,255,.08) !important}
+.chat-bar input{background:#141922 !important;border-color:rgba(255,255,255,.1) !important}
+/* Clean Semantic Light Mode (Preserve hierarchy & status colors) */
+body.light{
+  --bg:#F4F6F9;--panel:#FFFFFF;--panel2:#F8FAFC;--line:#E2E8F0;--text:#0F172A;--muted:#64748B;--orange:#D97706;--gold:#B45309;--green:#15803D;--red:#DC2626;
+  background:#F4F6F9 !important;
+  color:#0F172A !important;
+}
+body.light *:not(.chat-fab):not(.chat-fab *):not(.chat-fab-badge):not(#liveChatDrawer):not(#liveChatDrawer *):not(#inlineChatMsgs):not(#inlineChatMsgs *):not(.cmsg.me):not(.btn-primary):not(.up):not(.down):not(.status):not(.live-pill):not(.nav button.active):not(.brand-mark .word .gold):not(.brand-mark .tagline){
+  color:inherit !important;
+  box-shadow:none !important;
+  text-shadow:none !important;
+}
+body.light .sidebar{background:#FFFFFF !important;border-right-color:#E2E8F0 !important}
+body.light .main{background:#F4F6F9 !important}
+body.light .bottom-nav{background:#FFFFFF !important;border-top-color:#E2E8F0 !important}
+body.light .card,body.light .simple-card,body.light .toast,body.light .login-card{
+  background:#FFFFFF !important;
+  border:1px solid #E2E8F0 !important;
+  box-shadow:0 1px 3px rgba(15,23,42,.06) !important;
+}
+body.light .ref-card{
+  background:linear-gradient(115deg,#FFFBEB,#FFFFFF 70%) !important;
+  border-color:rgba(217,119,6,.32) !important;
+}
+body.light .ref-link code{background:#F8FAFC !important;border-color:#E2E8F0 !important;color:#B45309 !important}
+body.light .nav button{color:#475569 !important;background:transparent !important}
+body.light .nav button:hover{background:#F1F5F9 !important;color:#0F172A !important}
+body.light .nav button.active{background:#FEF3C7 !important;color:#92400E !important;box-shadow:inset 3px 0 0 #D97706 !important}
+body.light .btn-primary{background:linear-gradient(135deg,#F59E0B,#D97706) !important;color:#111827 !important}
+body.light .stat-top,body.light .stat-foot,body.light .heading p,body.light .card-head small,body.light .crumb,body.light .profile-mini small,body.light .activity-item small,body.light th,body.light .key-row{color:#64748B !important}
+body.light .up{color:#15803D !important}
+body.light .down{color:#DC2626 !important}
+body.light .status{background:#DCFCE7 !important;color:#15803D !important}
+body.light .status.pending{background:#FEF3C7 !important;color:#B45309 !important}
+body.light .status.inactive{background:#FEE2E2 !important;color:#DC2626 !important}
+body.light .live-pill{background:#DCFCE7 !important;color:#15803D !important;border-color:#BBF7D0 !important}
+body.light .live-pill.offline{background:#FEE2E2 !important;color:#DC2626 !important;border-color:#FECACA !important}
+body.light .ring:after{background:#FFFFFF !important}
+body.light .icon-btn,body.light .select,body.light .btn,body.light .toolbar input,body.light .toolbar select,body.light .fgrp input{
+  background:#FFFFFF !important;border-color:#CBD5E1 !important;color:#0F172A !important;
+}
 </style>
 </head>
 <body>
