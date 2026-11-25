@@ -1378,6 +1378,24 @@ body.dark .mw-dw-wrap .gateway-theme-upay{--gw:#14b8a6;--gw-soft:#08211f;--gw-pa
 body.dark .mw-dw-wrap .gateway-theme-bank{--gw:#eab308;--gw-soft:#1c1604;--gw-pale:#2e2306;--gw-ink:#fde047}
 body.dark #toast,body.dark #ins{background:#101014!important;color:#F8FAFC!important;border:1.5px solid #D97706!important}
 @media(max-width:600px){body.dark .lcd.o{box-shadow:0 0 0 100vmax rgba(0,0,0,.78),0 -14px 40px rgba(0,0,0,.6)!important}}
+
+/* ===== Clean Human-Crafted App UI Polish (Zero AI Glare) ===== */
+body:not(.dark){background:#F5F6F8!important}
+html:has(body.dark),body.dark{background:#09090B!important}
+body:not(.dark) header,body:not(.dark) nav,body:not(.dark) aside{background:#FFFFFF!important;border-color:#E5E7EB!important;box-shadow:none!important;backdrop-filter:none!important}
+body.dark header,body.dark nav,body.dark aside{background:#0C0C0E!important;border-color:#1E1E24!important;box-shadow:none!important;backdrop-filter:none!important}
+aside button{border-radius:6px!important;box-shadow:none!important;font-weight:500!important}
+body:not(.dark) aside button.cur{background:#FEF9C3!important;color:#78350F!important;border-left:3px solid #CA8A04!important;font-weight:600!important}
+body.dark aside button.cur{background:rgba(234,179,8,.14)!important;color:#FACC15!important;border-left:3px solid #EAB308!important;font-weight:600!important}
+.card,.gm,.q,.nb,.pv-card,.pv-gc,.pv-mc,.pt,.ct button,.pc,.bs,.st,.dk-vip,.dk-ad-card,.am-p,.mw-dw-wrap{border-radius:8px!important;box-shadow:none!important}
+body:not(.dark) .card,body:not(.dark) .gm,body:not(.dark) .q,body:not(.dark) .pv-card,body:not(.dark) .pv-gc,body:not(.dark) .pv-mc,body:not(.dark) .pt,body:not(.dark) .pc,body:not(.dark) .bs,body:not(.dark) .st{background:#FFFFFF!important;border:1px solid #E5E7EB!important}
+body.dark .card,body.dark .gm,body.dark .q,body.dark .pv-card,body.dark .pv-gc,body.dark .pv-mc,body.dark .pt,body.dark .pc,body.dark .bs,body.dark .st{background:#111115!important;border:1px solid #222228!important}
+.wallet,.dbn,.mw-dw-wrap .dw-wallet{border-radius:8px!important;box-shadow:none!important}
+body:not(.dark) .wallet,body:not(.dark) .dbn,body:not(.dark) .mw-dw-wrap .dw-wallet{background:#FFFFFF!important;border:1px solid #E5E7EB!important;border-left:4px solid #EAB308!important}
+body.dark .wallet,body.dark .dbn,body.dark .mw-dw-wrap .dw-wallet{background:#111115!important;border:1px solid #27272A!important;border-left:4px solid #EAB308!important}
+.ib,.ahl,.ahs,.btn,.btn-primary,.btn-outline,.pv-more,.pc u,.bs u,.dk-ad-cta,.pv-tabs .pv-tab,.ct button.on,.mw-dw-wrap .dw-tab.active,input,select,.mw-sel{border-radius:6px!important;box-shadow:none!important}
+body:not(.dark) .ahs,body:not(.dark) .btn.bgold,body:not(.dark) .btn-primary,body:not(.dark) .pv-more,body:not(.dark) .pc u,body:not(.dark) .bs u,body:not(.dark) .dk-ad-cta,body:not(.dark) .pv-tabs .pv-tab.on,body:not(.dark) .ct button.on,body:not(.dark) .mw-dw-wrap .dw-tab.active{background:#FACC15!important;border:1px solid #CA8A04!important;color:#111827!important;font-weight:600!important}
+body.dark .ahs,body.dark .btn.bgold,body.dark .btn-primary,body.dark .pv-more,body.dark .pc u,body.dark .bs u,body.dark .dk-ad-cta,body.dark .pv-tabs .pv-tab.on,body.dark .ct button.on,body.dark .mw-dw-wrap .dw-tab.active{background:#EAB308!important;border:1px solid #CA8A04!important;color:#09090B!important;font-weight:700!important}
 </style>
 <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-app-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-auth-compat.js"></script>
