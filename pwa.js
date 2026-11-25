@@ -73,7 +73,16 @@
     '.mw-pwa-x{background:transparent;border:0;color:var(--mw-pwa-x,#64748B);font-size:16px;padding:4px 6px;cursor:pointer;flex:none}' +
     'body[data-theme="dark"],body.dark,html[data-mw-app="agent"] body:not(.light),html[data-mw-app="affiliate"] body:not(.light){' +
     '--mw-pwa-bg:linear-gradient(145deg,#141418,#09090B);--mw-pwa-border:#FACC15;--mw-pwa-shadow:rgba(0,0,0,.8);' +
-    '--mw-pwa-text:#F8FAFC;--mw-pwa-sub:#A1A1AA;--mw-pwa-btn-bg:linear-gradient(135deg,#FACC15,#CA8A04);--mw-pwa-btn-text:#050506;--mw-pwa-btn-border:#FDE047;--mw-pwa-x:#A1A1AA}';
+    '--mw-pwa-text:#F8FAFC;--mw-pwa-sub:#A1A1AA;--mw-pwa-btn-bg:linear-gradient(135deg,#FACC15,#CA8A04);--mw-pwa-btn-text:#050506;--mw-pwa-btn-border:#FDE047;--mw-pwa-x:#A1A1AA;' +
+    '--mw-xbar-track:#121216;--mw-xbar-border:rgba(250,204,21,.28);--mw-xbar-thumb:#EAB308;--mw-xbar-thumb-hover:#FACC15}' +
+    '.mw-top-xscroll{display:none;width:100%;flex:0 0 auto;overflow-x:auto;overflow-y:hidden;-webkit-overflow-scrolling:touch;margin:0 0 6px 0;border-radius:999px;background:var(--mw-xbar-track,#FEF9C3);border:1px solid var(--mw-xbar-border,#FDE68A);scrollbar-width:thin;scrollbar-color:var(--mw-xbar-thumb,#EAB308) transparent}' +
+    '.mw-top-xscroll::-webkit-scrollbar{height:11px}' +
+    '.mw-top-xscroll::-webkit-scrollbar-track{background:transparent;border-radius:999px}' +
+    '.mw-top-xscroll::-webkit-scrollbar-thumb{background:var(--mw-xbar-thumb,#EAB308);border-radius:999px;border:2px solid transparent;background-clip:content-box}' +
+    '.mw-top-xscroll::-webkit-scrollbar-thumb:hover{background:var(--mw-xbar-thumb-hover,#CA8A04);border:1px solid transparent;background-clip:content-box}' +
+    '.mw-top-xscroll-inner{height:1px;pointer-events:none}' +
+    '.mw-xscroll-host::-webkit-scrollbar:horizontal{height:0 !important;display:none !important}' +
+    '.mw-xscroll-host.mw-xscroll-no-y{scrollbar-width:none}';
   document.head.appendChild(styleEl);
 
   var banner = null;
@@ -175,4 +184,136 @@
 
   if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', onReady);
   else onReady();
+
+  // Universal Top Horizontal Scrollbar for all scrollable tables (moves bottom h-scroll to top)
+  (function initTopTableScrollbars() {
+    var hosts = new Set();
+    var ro = typeof ResizeObserver === 'function' ? new ResizeObserver(function () { scheduleSync(); }) : null;
+    var rafId = 0;
+
+    function findScrollHost(tbl) {
+      var p = tbl.parentElement;
+      while (p && p !== document.body && p !== document.documentElement) {
+        if (p.matches('.modal, .modal-body, .modal-card, .m-modal-card, .m-modal-bg, .main, .main-wrapper, .app')) break;
+        if (p.matches('.table-container, .sc, .table-wrap')) return p;
+        try {
+          var ox = window.getComputedStyle(p).overflowX;
+          if (ox === 'auto' || ox === 'scroll') return p;
+        } catch (e) {}
+        p = p.parentElement;
+      }
+      return null;
+    }
+
+    function attachHost(host, tbl) {
+      if (!host || !host.parentNode || host._mwTopBar) return;
+      var bar = document.createElement('div');
+      bar.className = 'mw-top-xscroll';
+      var inner = document.createElement('div');
+      inner.className = 'mw-top-xscroll-inner';
+      bar.appendChild(inner);
+      host.classList.add('mw-xscroll-host');
+      host.parentNode.insertBefore(bar, host);
+      host._mwTopBar = bar;
+      host._mwTopInner = inner;
+      host._mwTable = tbl;
+      bar._mwHost = host;
+
+      var lock = 0;
+      bar.addEventListener('scroll', function () {
+        if (lock === 2) return;
+        lock = 1;
+        host.scrollLeft = bar.scrollLeft;
+        requestAnimationFrame(function () { if (lock === 1) lock = 0; });
+      }, { passive: true });
+      host.addEventListener('scroll', function () {
+        if (lock === 1) return;
+        lock = 2;
+        bar.scrollLeft = host.scrollLeft;
+        requestAnimationFrame(function () { if (lock === 2) lock = 0; });
+      }, { passive: true });
+
+      if (ro) {
+        try { ro.observe(host); if (tbl) ro.observe(tbl); } catch (e) {}
+      }
+      hosts.add(host);
+    }
+
+    function syncOne(host) {
+      var bar = host._mwTopBar;
+      var inner = host._mwTopInner;
+      if (!bar || !inner) return;
+      if (!host.isConnected) {
+        if (bar.parentNode) bar.parentNode.removeChild(bar);
+        hosts.delete(host);
+        return;
+      }
+      if (host.previousElementSibling !== bar && host.parentNode) {
+        host.parentNode.insertBefore(bar, host);
+      }
+      var sw = host.scrollWidth || 0;
+      var cw = host.clientWidth || 0;
+      var show = cw > 0 && sw > cw + 2;
+      var wantDisp = show ? 'block' : 'none';
+      if (bar.style.display !== wantDisp) bar.style.display = wantDisp;
+      if (show) {
+        var wStr = sw + 'px';
+        if (inner.style.width !== wStr) inner.style.width = wStr;
+        if (Math.abs(bar.scrollLeft - host.scrollLeft) > 1) bar.scrollLeft = host.scrollLeft;
+        var noY = host.scrollHeight <= host.clientHeight + 2;
+        if (host.classList.contains('mw-xscroll-no-y') !== noY) host.classList.toggle('mw-xscroll-no-y', noY);
+      } else {
+        if (host.classList.contains('mw-xscroll-no-y')) host.classList.remove('mw-xscroll-no-y');
+      }
+    }
+
+    function scanAndSync() {
+      rafId = 0;
+      if (!document.body) return;
+      var tables = document.querySelectorAll('table');
+      for (var i = 0; i < tables.length; i++) {
+        var host = findScrollHost(tables[i]);
+        if (host) {
+          if (!host._mwTopBar) attachHost(host, tables[i]);
+          else if (ro && host._mwTable !== tables[i]) {
+            host._mwTable = tables[i];
+            try { ro.observe(tables[i]); } catch (e) {}
+          }
+        }
+      }
+      hosts.forEach(syncOne);
+      var orphanBars = document.querySelectorAll('.mw-top-xscroll');
+      for (var j = 0; j < orphanBars.length; j++) {
+        var b = orphanBars[j];
+        if (!b._mwHost || !b._mwHost.isConnected || b.nextElementSibling !== b._mwHost) {
+          if (b.parentNode) b.parentNode.removeChild(b);
+        }
+      }
+    }
+
+    function scheduleSync() {
+      if (rafId) return;
+      rafId = requestAnimationFrame(scanAndSync);
+    }
+
+    function startObserver() {
+      if (!document.body) return;
+      var mo = new MutationObserver(function (muts) {
+        for (var i = 0; i < muts.length; i++) {
+          var t = muts[i].target;
+          if (t && t.nodeType === 1 && (t.classList.contains('mw-top-xscroll') || t.classList.contains('mw-top-xscroll-inner'))) continue;
+          scheduleSync();
+          return;
+        }
+      });
+      mo.observe(document.body, { childList: true, subtree: true, attributes: true, attributeFilter: ['style', 'class'] });
+      window.addEventListener('resize', scheduleSync, { passive: true });
+      window.addEventListener('mw:view', scheduleSync);
+      document.addEventListener('click', function () { setTimeout(scheduleSync, 40); }, { passive: true });
+      scanAndSync();
+    }
+
+    if (document.body) startObserver();
+    else document.addEventListener('DOMContentLoaded', startObserver);
+  })();
 })();

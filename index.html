@@ -1457,7 +1457,7 @@
     .modal-card .table-container { background: #fff; border: 1px solid #e2e8f0; border-radius: 10px; }
     .modal-card table th { background: #f1f5f9; color: #334155; border-color: #e2e8f0; }
     .modal-card table td { color: #0f172a; border-color: #eef2f6; }
-    .modal-card table tr:hover td { background: #f8fafc; }
+    body[data-theme="light"] .modal-card table tr:hover td { background: #FFFBEB; }
     .modal-card .badge-upcoming { background: #e0f2fe; color: #0369a1; border-color: #bae6fd; }
     .modal-card .badge-live { background: #fee2e2; color: #b91c1c; border-color: #fecaca; }
     .modal-card .badge-completed,
@@ -1466,21 +1466,21 @@
     .modal-card .badge-rejected { background: #fee2e2; color: #b91c1c; border-color: #fecaca; }
     .modal-card .badge-pending { background: #fef3c7; color: #92400e; border-color: #fde68a; }
 
-    /* Old dark-theme inline colours inside popup */
-    .modal-card [style*="#F5EFE0"], .modal-card [style*="#f5efe0"] { color: #0f172a !important; }
-    .modal-card [style*="#A89F8A"], .modal-card [style*="#a89f8a"] { color: #475569 !important; }
-    .modal-card [style*="#fbbf24"] { color: #9a6b00 !important; }
-    .modal-card [style*="#f87171"], .modal-card [style*="#ef4444"] { color: #b91c1c !important; }
-    .modal-card [style*="#38bdf8"] { color: #0369a1 !important; }
-    .modal-card [style*="#10b981"] { color: #15803d !important; }
-    .modal-card [style*="linear-gradient"],
-    .modal-card [style*="rgba(0,0,0,0.25)"],
-    .modal-card [style*="rgba(0, 0, 0, 0.25)"] { background: #f8fafc !important; }
-    .modal-card [style*="color: #fff"], .modal-card [style*="color:#fff"] { color: #0f172a !important; }
-    .modal-card .btn-primary, .modal-card .btn-accent, .modal-card .btn-success, .modal-card .btn-danger,
-    .modal-card .btn[style*="color: #fff"], .modal-card .btn[style*="color:#fff"] { color: #fff !important; }
-    .modal-card .btn-secondary, .modal-card .btn-outline { color: #0f172a !important; }
-    .modal-card .modal-header [style*="color"] { color: #fff !important; }
+    /* Old dark-theme inline colours inside popup (light mode only) */
+    body[data-theme="light"] .modal-card [style*="#F5EFE0"], body[data-theme="light"] .modal-card [style*="#f5efe0"] { color: #0f172a !important; }
+    body[data-theme="light"] .modal-card [style*="#A89F8A"], body[data-theme="light"] .modal-card [style*="#a89f8a"] { color: #475569 !important; }
+    body[data-theme="light"] .modal-card [style*="#fbbf24"] { color: #9a6b00 !important; }
+    body[data-theme="light"] .modal-card [style*="#f87171"], body[data-theme="light"] .modal-card [style*="#ef4444"] { color: #b91c1c !important; }
+    body[data-theme="light"] .modal-card [style*="#38bdf8"] { color: #0369a1 !important; }
+    body[data-theme="light"] .modal-card [style*="#10b981"] { color: #15803d !important; }
+    body[data-theme="light"] .modal-card [style*="linear-gradient"],
+    body[data-theme="light"] .modal-card [style*="rgba(0,0,0,0.25)"],
+    body[data-theme="light"] .modal-card [style*="rgba(0, 0, 0, 0.25)"] { background: #f8fafc !important; }
+    body[data-theme="light"] .modal-card [style*="color: #fff"], body[data-theme="light"] .modal-card [style*="color:#fff"] { color: #0f172a !important; }
+    body[data-theme="light"] .modal-card .btn-primary, body[data-theme="light"] .modal-card .btn-accent, body[data-theme="light"] .modal-card .btn-success, body[data-theme="light"] .modal-card .btn-danger,
+    body[data-theme="light"] .modal-card .btn[style*="color: #fff"], body[data-theme="light"] .modal-card .btn[style*="color:#fff"] { color: #fff !important; }
+    body[data-theme="light"] .modal-card .btn-secondary, body[data-theme="light"] .modal-card .btn-outline { color: #0f172a !important; }
+    body[data-theme="light"] .modal-card .modal-header [style*="color"] { color: #fff !important; }
 
     /* Toast */
     .toast {
@@ -2341,6 +2341,12 @@
       color: #0F172A !important;
       border-color: #F1F5F9 !important;
     }
+    body[data-theme="light"] tr:hover td,
+    body[data-theme="light"] tbody tr:hover td,
+    body[data-theme="light"] .modal-card table tr:hover td {
+      background: #FFFBEB !important;
+      color: #0F172A !important;
+    }
     body[data-theme="light"] .modal-backdrop {
       background: rgba(15, 23, 42, 0.45) !important;
     }
@@ -2502,12 +2508,31 @@
     }
     body[data-theme="dark"] table th { background: #16161B !important; color: #FACC15 !important; border-bottom: 1px solid rgba(245, 158, 11, 0.22) !important; }
     body[data-theme="dark"] table td { color: #F8FAFC !important; border-color: rgba(255, 255, 255, 0.06) !important; }
+    body[data-theme="dark"] tr:hover td,
+    body[data-theme="dark"] tbody tr:hover td,
+    body[data-theme="dark"] .modal-card table tr:hover td { background: #1C1C24 !important; color: #F8FAFC !important; }
     body[data-theme="dark"] .modal-card {
       background: #101014 !important; color: #F8FAFC !important; border: 1.5px solid #D97706 !important;
     }
     body[data-theme="dark"] .modal-card .modal-header,
     body[data-theme="dark"] .modal-card .modal-footer { background: #09090B !important; border-color: rgba(245, 158, 11, 0.24) !important; }
-    body[data-theme="dark"] .modal-card .modal-body { background: #101014 !important; }
+    body[data-theme="dark"] .modal-card .modal-body { background: #101014 !important; color: #F8FAFC !important; }
+    body[data-theme="dark"] .modal-card .table-container { background: #0C0C10 !important; border-color: rgba(250, 204, 21, 0.2) !important; }
+    body[data-theme="dark"] .modal-card table th { background: #16161B !important; color: #FACC15 !important; border-color: rgba(245, 158, 11, 0.22) !important; }
+    body[data-theme="dark"] .modal-card table td { color: #F8FAFC !important; border-color: rgba(255, 255, 255, 0.07) !important; }
+    body[data-theme="dark"] .modal-card .form-group label { color: #E4E4E7 !important; }
+    body[data-theme="dark"] .modal-card select option { background: #121216 !important; color: #F8FAFC !important; }
+    body[data-theme="dark"] .modal-card .btn-secondary,
+    body[data-theme="dark"] .modal-card .btn-outline { background: #18181F !important; color: #F8FAFC !important; border-color: rgba(250, 204, 21, 0.28) !important; }
+    body[data-theme="dark"] .modal-card .btn-secondary:hover,
+    body[data-theme="dark"] .modal-card .btn-outline:hover { background: #23232C !important; color: #FACC15 !important; border-color: #FACC15 !important; }
+    body[data-theme="dark"] .modal-card .badge-upcoming { background: rgba(56, 189, 248, 0.14) !important; color: #38BDF8 !important; border-color: rgba(56, 189, 248, 0.35) !important; }
+    body[data-theme="dark"] .modal-card .badge-live,
+    body[data-theme="dark"] .modal-card .badge-cancelled,
+    body[data-theme="dark"] .modal-card .badge-rejected { background: rgba(239, 68, 68, 0.16) !important; color: #FCA5A5 !important; border-color: rgba(239, 68, 68, 0.35) !important; }
+    body[data-theme="dark"] .modal-card .badge-completed,
+    body[data-theme="dark"] .modal-card .badge-approved { background: rgba(34, 197, 94, 0.16) !important; color: #86EFAC !important; border-color: rgba(34, 197, 94, 0.35) !important; }
+    body[data-theme="dark"] .modal-card .badge-pending { background: rgba(250, 204, 21, 0.16) !important; color: #FACC15 !important; border-color: rgba(250, 204, 21, 0.35) !important; }
     body[data-theme="dark"] .modal-card .btn-primary {
       background: linear-gradient(135deg, #FACC15, #CA8A04) !important; color: #09090B !important;
     }
