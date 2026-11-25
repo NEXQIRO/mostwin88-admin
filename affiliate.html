@@ -411,12 +411,141 @@ body.light .chat-notice{background:#FEF9C3 !important;color:#78350F !important;b
 body.light .cmsg:not(.me){background:#F8FAFC !important;color:#0F172A !important;border:1px solid #E2E8F0 !important;}
 body.light .chat-bar{background:#FFFDF5 !important;border-top:1px solid #FDE68A !important;}
 body.light .chat-bar input{background:#FFFFFF !important;color:#0F172A !important;border:1px solid #CBD5E1 !important;}
+
+/* ===== Dark Mode: Deep Yellow & Deep Black Theme Override ===== */
+body:not(.light){
+  --bg:#040405;--panel:#101014;--panel2:#16161B;--line:rgba(250,204,21,.16);
+  --text:#F8FAFC;--muted:#A1A1AA;--orange:#FACC15;--gold:#F59E0B;--green:#22C55E;--red:#EF4444;
+  --shadow:0 16px 40px rgba(0,0,0,.78);
+  background:radial-gradient(900px 420px at 80% -10%,rgba(234,179,8,.11),transparent 58%),#040405 !important;
+  color:#F8FAFC !important;
+  color-scheme:dark;
+}
+body:not(.light) .login-gate{
+  background:radial-gradient(circle at 50% 0%,rgba(234,179,8,.16),transparent 55%),#040405 !important;
+}
+body:not(.light) .login-card{
+  background:linear-gradient(155deg,#121216,#09090B) !important;
+  border:1.5px solid rgba(250,204,21,.34) !important;
+  box-shadow:0 24px 52px rgba(0,0,0,.86) !important;
+  color:#F8FAFC !important;
+}
+body:not(.light) .brand-mark .word .white{color:#FFFFFF !important;}
+body:not(.light) .brand-mark .word .gold{color:#FACC15 !important;}
+body:not(.light) .brand-mark .tagline{color:#FACC15 !important;}
+body:not(.light) .brand-mark .logo-o svg circle[stroke="#fff"]{stroke:#FFFFFF !important;}
+body:not(.light) .sidebar{
+  background:#09090B !important;
+  border-right:1px solid rgba(250,204,21,.16) !important;
+  box-shadow:6px 0 28px rgba(0,0,0,.7) !important;
+}
+body:not(.light) .main{background:transparent !important;}
+body:not(.light) .bottom-nav{
+  background:#09090B !important;
+  border-top:1px solid rgba(250,204,21,.18) !important;
+}
+body:not(.light) .bottom-nav button{color:#A1A1AA !important;}
+body:not(.light) .bottom-nav button.active{color:#FACC15 !important;}
+body:not(.light) .card,
+body:not(.light) .simple-card,
+body:not(.light) .toast{
+  background:linear-gradient(155deg,#141418,#0C0C0F) !important;
+  border:1px solid rgba(250,204,21,.16) !important;
+  box-shadow:0 10px 28px rgba(0,0,0,.6) !important;
+  color:#F8FAFC !important;
+}
+body:not(.light) .toast{border-left:4px solid #FACC15 !important;}
+body:not(.light) .ref-card{
+  background:linear-gradient(120deg,rgba(234,179,8,.18) 0%,#121216 55%,#09090B 100%) !important;
+  border:1.5px solid rgba(250,204,21,.36) !important;
+  box-shadow:0 14px 34px rgba(0,0,0,.72) !important;
+}
+body:not(.light) .ref-link code{
+  background:#060608 !important;
+  border:1px solid rgba(250,204,21,.32) !important;
+  color:#FACC15 !important;
+}
+body:not(.light) .nav button{color:#A1A1AA !important;background:transparent !important;}
+body:not(.light) .nav button:hover{background:rgba(250,204,21,.08) !important;color:#FEF9C3 !important;}
+body:not(.light) .nav button.active{
+  background:linear-gradient(90deg,rgba(250,204,21,.2),rgba(234,179,8,.05)) !important;
+  color:#FACC15 !important;
+  font-weight:700 !important;
+  box-shadow:inset 4px 0 0 #FACC15 !important;
+}
+body:not(.light) .btn-primary{
+  background:linear-gradient(135deg,#FACC15,#CA8A04) !important;
+  color:#050506 !important;
+  border:1px solid #FDE047 !important;
+  box-shadow:0 6px 20px rgba(234,179,8,.32) !important;
+}
+body:not(.light) .stat-icon,
+body:not(.light) .activity-icon{
+  background:rgba(250,204,21,.14) !important;
+  border:1px solid rgba(250,204,21,.24) !important;
+  color:#FACC15 !important;
+}
+body:not(.light) .stat-top,body:not(.light) .stat-foot,body:not(.light) .heading p,body:not(.light) .card-head small,body:not(.light) .crumb,body:not(.light) .profile-mini small,body:not(.light) .activity-item small,body:not(.light) .key-row{color:#A1A1AA !important;}
+body:not(.light) th{background:#121216 !important;color:#FACC15 !important;border-bottom:1px solid rgba(250,204,21,.18) !important;}
+body:not(.light) td{color:#F8FAFC !important;border-bottom:1px solid rgba(255,255,255,.06) !important;}
+body:not(.light) .ring:after{background:#101014 !important;}
+body:not(.light) .chart{background:#09090B !important;border:1px solid rgba(250,204,21,.16) !important;}
+body:not(.light) .icon-btn,
+body:not(.light) .select,
+body:not(.light) .btn,
+body:not(.light) .toolbar input,
+body:not(.light) .toolbar select,
+body:not(.light) .fgrp input,
+body:not(.light) select,
+body:not(.light) textarea{
+  background:#09090B !important;
+  border:1px solid rgba(250,204,21,.22) !important;
+  color:#F8FAFC !important;
+}
+body:not(.light) .icon-btn:hover,
+body:not(.light) .btn:hover{border-color:#FACC15 !important;color:#FACC15 !important;}
+body:not(.light) .pw-eye{background:#18181D !important;border-color:rgba(250,204,21,.28) !important;color:#FACC15 !important;}
+body:not(.light) .chat-fab{
+  background:linear-gradient(135deg,#FACC15,#CA8A04) !important;
+  color:#050506 !important;
+  border:2px solid #040405 !important;
+  box-shadow:0 12px 28px rgba(0,0,0,.78),0 0 0 3px rgba(250,204,21,.24) !important;
+}
+body:not(.light) .chat-fab::after{border-color:#040405 !important;}
+body:not(.light) .chat-drawer,
+body:not(.light) .inline-chat-box{
+  background:#0A0A0C !important;
+  color:#F8FAFC !important;
+  border:1.5px solid rgba(250,204,21,.4) !important;
+  box-shadow:0 24px 60px rgba(0,0,0,.9) !important;
+}
+body:not(.light) .chat-head{
+  background:linear-gradient(135deg,#18181D,#0C0C0F) !important;
+  border-bottom:1px solid rgba(250,204,21,.2) !important;
+  color:#F8FAFC !important;
+}
+body:not(.light) .chat-av,
+body:not(.light) .cmsg.me,
+body:not(.light) .chat-bar button{
+  background:linear-gradient(135deg,#FACC15,#CA8A04) !important;
+  color:#050506 !important;
+}
+body:not(.light) .chat-close{background:#16161B !important;border-color:rgba(250,204,21,.24) !important;color:#F8FAFC !important;}
+body:not(.light) .chat-officer{background:#101014 !important;border-bottom:1px solid rgba(250,204,21,.14) !important;}
+body:not(.light) .chat-officer-av{background:#1A1A20 !important;border-color:#FACC15 !important;}
+body:not(.light) .chat-officer-av::after{border-color:#0A0A0C !important;}
+body:not(.light) .chat-notice{background:rgba(250,204,21,.1) !important;color:#FDE047 !important;border-bottom-color:rgba(250,204,21,.2) !important;}
+body:not(.light) .cmsg:not(.me){background:#16161B !important;color:#F8FAFC !important;border:1px solid rgba(250,204,21,.14) !important;}
+body:not(.light) .chat-bar{background:#08080A !important;border-top:1px solid rgba(250,204,21,.18) !important;}
+body:not(.light) .chat-bar input{background:#141418 !important;color:#F8FAFC !important;border:1px solid rgba(250,204,21,.22) !important;}
 </style>
 </head>
 <body class="light">
+<script>try{var _t=JSON.parse(localStorage.getItem('mw88_aff_theme_v2')||'"light"');if(_t==='dark'){document.body.classList.remove('light');var _m=document.querySelector('meta[name="theme-color"]');if(_m)_m.setAttribute('content','#040405');}}catch(e){}</script>
 
 <!-- LOGIN GATE -->
 <section id="loginGate" class="login-gate">
+ <button type="button" class="icon-btn" id="affLoginThemeBtn" title="Toggle theme" style="position:fixed;top:14px;right:14px;z-index:10" onclick="applyTheme(document.body.classList.contains('light') ? 'dark' : 'light')">☼</button>
  <form class="login-card" onsubmit="affiliateLogin(event)">
   <div style="display:flex;justify-content:center;">
    <div class="brand-mark" aria-label="MOSTWIN88 — PLAY BIG, WIN BIGGER">
@@ -839,8 +968,11 @@ document.getElementById('menu').addEventListener('click', () => document.getElem
 function applyTheme(theme) {
   document.body.classList.toggle('light', theme === 'light');
   storage.set('theme_v2', theme);
+  const ic = theme === 'light' ? '☼' : '☾';
+  const tb1 = document.getElementById('theme'); if (tb1) tb1.textContent = ic;
+  const tb2 = document.getElementById('affLoginThemeBtn'); if (tb2) tb2.textContent = ic;
   const meta = document.querySelector('meta[name="theme-color"]');
-  if (meta) meta.setAttribute('content', theme === 'light' ? '#FFFFFF' : '#0A0C10');
+  if (meta) meta.setAttribute('content', theme === 'light' ? '#FFFFFF' : '#040405');
 }
 document.getElementById('theme').addEventListener('click', () => applyTheme(document.body.classList.contains('light') ? 'dark' : 'light'));
 applyTheme(storage.get('theme_v2', 'light'));
