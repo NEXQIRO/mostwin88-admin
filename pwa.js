@@ -62,14 +62,14 @@
   var styleEl = document.createElement('style');
   styleEl.id = 'mw-pwa-style';
   styleEl.textContent =
-    '#mwPwaBanner{position:fixed;left:12px;right:12px;bottom:calc(74px + env(safe-area-inset-bottom));max-width:440px;margin:0 auto;z-index:2147482000;background:linear-gradient(145deg,#12141c,#090a0f);border:1px solid rgba(255,184,0,.48);border-radius:16px;padding:12px 14px;display:none;align-items:center;gap:12px;box-shadow:0 16px 40px rgba(0,0,0,.78);color:#f8fafc;font-family:inherit;animation:mwPwaSlide .28s ease-out}' +
+    '#mwPwaBanner{position:fixed;left:12px;right:12px;bottom:calc(74px + env(safe-area-inset-bottom));max-width:440px;margin:0 auto;z-index:2147482000;background:linear-gradient(145deg,#FFFFFF,#FFFBEB);border:1.5px solid #FACC15;border-radius:16px;padding:12px 14px;display:none;align-items:center;gap:12px;box-shadow:0 16px 36px rgba(15,23,42,.16);color:#0F172A;font-family:inherit;animation:mwPwaSlide .28s ease-out}' +
     '@media(min-width:960px){#mwPwaBanner{bottom:20px;left:auto;right:20px;width:390px}}' +
     '@keyframes mwPwaSlide{from{opacity:0;transform:translateY(16px)}to{opacity:1;transform:none}}' +
-    '.mw-pwa-ic{width:44px;height:44px;border-radius:12px;flex:none;object-fit:cover;border:1px solid rgba(255,184,0,.35)}' +
-    '.mw-pwa-txt{flex:1;min-width:0}.mw-pwa-txt b{display:block;font-size:13.5px;color:#fff;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}' +
-    '.mw-pwa-txt small{display:block;font-size:11.5px;color:#9ca3af;margin-top:2px;line-height:1.3}' +
-    '.mw-pwa-btn{background:#FFB800;color:#09090B;border:0;border-radius:10px;padding:9px 14px;font-weight:800;font-size:12.5px;cursor:pointer;white-space:nowrap;flex:none}' +
-    '.mw-pwa-x{background:transparent;border:0;color:#9ca3af;font-size:16px;padding:4px 6px;cursor:pointer;flex:none}';
+    '.mw-pwa-ic{width:44px;height:44px;border-radius:12px;flex:none;object-fit:cover;border:1.5px solid #FACC15}' +
+    '.mw-pwa-txt{flex:1;min-width:0}.mw-pwa-txt b{display:block;font-size:13.5px;color:#0F172A;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}' +
+    '.mw-pwa-txt small{display:block;font-size:11.5px;color:#475569;margin-top:2px;line-height:1.3}' +
+    '.mw-pwa-btn{background:linear-gradient(135deg,#FFE84D,#FFD000);color:#111827;border:1px solid #EAB308;border-radius:10px;padding:9px 14px;font-weight:800;font-size:12.5px;cursor:pointer;white-space:nowrap;flex:none}' +
+    '.mw-pwa-x{background:transparent;border:0;color:#64748B;font-size:16px;padding:4px 6px;cursor:pointer;flex:none}';
   document.head.appendChild(styleEl);
 
   var banner = null;

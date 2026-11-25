@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
-<meta name="theme-color" content="#0c1220">
+<meta name="theme-color" content="#FFFFFF">
 <meta name="mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
@@ -475,9 +475,238 @@ body.light .tabs{background:#E2E8F0;border-color:#CBD5E1}
 body.light .chat-drawer{background:#0E131D;border-color:rgba(242,185,56,.32)}
 body.light .chat-bar{background:#090D16}
 body.light .chat-bar input{background:#141A27}
+
+/* ===== Bright Yellow & Bright White Theme Override (Default Light Mode) ===== */
+body.light{
+  --bg:#FFFDF5; --surface:#FFFFFF; --panel:#FFFFFF; --panel2:#FFFBEB;
+  --line:#E5E7EB; --gold:#CA8A04; --gold2:#92400E; --gold-dark:#A16207;
+  --pink:#EAB308; --pink-light:#CA8A04; --green:#16A34A; --green-light:#15803D;
+  --blue:#0284C7; --blue-light:#0369A1; --red:#DC2626; --red-light:#B91C1C;
+  --yellow:#D97706; --muted:#475569; --text:#0F172A;
+  background:radial-gradient(ellipse at 50% -10%,rgba(255,214,0,.22) 0%,#FFFDF5 62%) !important;
+  color:#0F172A !important;
+  color-scheme:light;
+}
+body.light .phone{
+  background:#FFFDF5 !important;
+  border-color:#FDE68A !important;
+  box-shadow:0 0 42px rgba(202,138,4,.1) !important;
+  color:#0F172A !important;
+}
+body.light .login{
+  background:radial-gradient(circle at 50% 8%,rgba(255,214,0,.26) 0%,#FFFDF5 62%) !important;
+}
+body.light .login h1{color:#0F172A !important;}
+body.light .login p{color:#475569 !important;}
+body.light .live-label,
+body.light .live-tag{
+  background:#DCFCE7 !important;color:#15803D !important;border-color:#86EFAC !important;
+}
+body.light .login-form{
+  background:#FFFFFF !important;
+  border:1.5px solid #FACC15 !important;
+  box-shadow:0 18px 44px rgba(202,138,4,.14) !important;
+}
+body.light .login-form label{color:#334155 !important;}
+body.light .login-form input,
+body.light .search,
+body.light .filter-select,
+body.light .balance-request-form input,
+body.light .balance-request-form textarea,
+body.light .dlg-field select,
+body.light .dlg-field textarea,
+body.light .dlg-field input{
+  background:#FFFFFF !important;
+  border:1px solid #CBD5E1 !important;
+  color:#0F172A !important;
+}
+body.light .login-form input:focus,
+body.light .search:focus,
+body.light .filter-select:focus,
+body.light .balance-request-form input:focus,
+body.light .balance-request-form textarea:focus,
+body.light .dlg-field select:focus,
+body.light .dlg-field textarea:focus,
+body.light .dlg-field input:focus{
+  border-color:#EAB308 !important;
+  box-shadow:0 0 0 3px rgba(250,204,21,.28) !important;
+}
+body.light .warning{
+  background:#FEF9C3 !important;border:1px solid #FACC15 !important;color:#78350F !important;
+}
+body.light .logo .w,
+body.light .logo .r,
+body.light header .w,
+body.light header .r{color:#111827 !important;}
+body.light .logo .lm{color:#CA8A04 !important;}
+body.light .logo .tag{color:#92400E !important;}
+body.light .lo{filter:none !important;}
+body.light .lo circle[stroke="#fff"],
+body.light header .lo circle[stroke="#fff"]{stroke:#111827 !important;}
+body.light .lo circle[stroke*="255,255,255"]{stroke:rgba(17,24,39,.25) !important;}
+body.light header,
+body.light .bottom{
+  background:rgba(255,255,255,.95) !important;
+  border-color:#FDE68A !important;
+}
+body.light .headbtn{
+  background:#FFFBEB !important;
+  border:1px solid #FDE68A !important;
+  color:#0F172A !important;
+}
+body.light .balance{
+  background:linear-gradient(135deg,#FEF08A 0%,#FFE14D 55%,#FFD000 100%) !important;
+  border:1.5px solid #EAB308 !important;
+  color:#111827 !important;
+  box-shadow:0 12px 28px -8px rgba(234,179,8,.38) !important;
+}
+body.light .balance small,
+body.light .balance h1,
+body.light .balance p{color:#111827 !important;}
+body.light .stat,
+body.light .card,
+body.light .quick button,
+body.light .menu,
+body.light .profile,
+body.light .balance-request-form,
+body.light .report-card,
+body.light .ag-wsetup,
+body.light .home-wallet-bar{
+  background:#FFFFFF !important;
+  border:1px solid #E5E7EB !important;
+  color:#0F172A !important;
+  box-shadow:0 2px 10px rgba(15,23,42,.05) !important;
+}
+body.light .stat:hover,
+body.light .quick button:hover{border-color:#FACC15 !important;}
+body.light .reportlink{
+  background:linear-gradient(135deg,#FEF9C3,#FFFFFF) !important;
+  border:1.5px solid #FACC15 !important;
+  color:#0F172A !important;
+}
+body.light .reportlink b{color:#92400E !important;}
+body.light .primary{
+  background:linear-gradient(135deg,#FFE84D,#FFD000) !important;
+  color:#111827 !important;
+  border:1px solid #EAB308 !important;
+  box-shadow:0 8px 20px -8px rgba(234,179,8,.45) !important;
+  font-weight:800 !important;
+}
+body.light .tabs{
+  background:#FEF9C3 !important;
+  border:1px solid #FDE68A !important;
+}
+body.light .tab{color:#78350F !important;}
+body.light .tab.active{
+  background:linear-gradient(135deg,#FFE84D,#FFD000) !important;
+  color:#111827 !important;
+  font-weight:800 !important;
+  box-shadow:0 3px 10px rgba(234,179,8,.28) !important;
+}
+body.light .ag-wrow{
+  background:#FFFDF5 !important;
+  border:1px solid #FDE68A !important;
+}
+body.light .ag-wrow input{color:#0F172A !important;}
+body.light .ag-wrow-lbl{color:#92400E !important;}
+body.light .ag-whead{border-bottom-color:#F1F5F9 !important;}
+body.light .walletrow{border-bottom-color:#F1F5F9 !important;}
+body.light .walletrow b,
+body.light .menu button,
+body.light .profile b,
+body.light .home-wallet-bar b{color:#0F172A !important;}
+body.light .menu button{border-bottom-color:#F1F5F9 !important;}
+body.light .avatar{
+  background:linear-gradient(135deg,#FFE84D,#FFD000) !important;
+  color:#111827 !important;
+}
+body.light .rseg,
+body.light .bars,
+body.light .report-stats > div{
+  background:#FFFBEB !important;
+  border-color:#FDE68A !important;
+  color:#0F172A !important;
+}
+body.light .rseg button.active{
+  background:#FFD600 !important;
+  color:#111827 !important;
+}
+body.light .report-footer{border-top-color:#E5E7EB !important;color:#475569 !important;}
+body.light .nav{color:#64748B !important;}
+body.light .nav.active{color:#92400E !important;}
+body.light .nav.active:before{background:linear-gradient(90deg,#FFD600,#EAB308) !important;}
+body.light .dlgback,
+body.light .modalback{background:rgba(15,23,42,.45) !important;}
+body.light .dlg,
+body.light .modal{
+  background:#FFFFFF !important;
+  border:1.5px solid #FACC15 !important;
+  color:#0F172A !important;
+  box-shadow:0 24px 60px rgba(15,23,42,.18) !important;
+}
+body.light .dlg h3,
+body.light .modal h3{color:#0F172A !important;}
+body.light .modal p{color:#475569 !important;}
+body.light .dlg-info{background:#FFFBEB !important;border-color:#FDE68A !important;}
+body.light .dlg-info div{border-bottom-color:#FDE68A !important;}
+body.light .dlg-cancel{background:#FFFBEB !important;color:#0F172A !important;border-color:#FDE68A !important;}
+body.light .toast{
+  background:#FFFFFF !important;
+  color:#0F172A !important;
+  border:1px solid #FDE68A !important;
+  border-left:4px solid #FFD600 !important;
+  box-shadow:0 12px 30px rgba(15,23,42,.15) !important;
+}
+body.light .notification-item{background:#FFFDF5 !important;border-color:#E5E7EB !important;color:#0F172A !important;}
+body.light .notification-item.unread{background:#FEF9C3 !important;border-color:#EAB308 !important;}
+body.light .notification-tools button{background:#FFFBEB !important;border-color:#FDE68A !important;color:#0F172A !important;}
+body.light #agentCmsBanner{
+  background:#FEF9C3 !important;border:1.5px solid #EAB308 !important;color:#0F172A !important;
+}
+body.light #agentCmsBanner [style*="#ffd23f" i]{color:#92400E !important;}
+body.light #agentCmsBanner [style*="#eaf0ff" i]{color:#0F172A !important;}
+body.light #agentCmsBanner [style*="#4ade80" i]{color:#15803D !important;}
+body.light .chat-fab{
+  background:linear-gradient(135deg,#FFE84D,#FFD000) !important;
+  color:#111827 !important;
+  border:2px solid #FFFFFF !important;
+  box-shadow:0 10px 24px rgba(234,179,8,.4) !important;
+}
+body.light .chat-fab::after{border-color:#FFFFFF !important;}
+body.light .chat-drawer{
+  background:#FFFFFF !important;
+  color:#0F172A !important;
+  border:1.5px solid #FACC15 !important;
+  box-shadow:0 20px 50px rgba(15,23,42,.18) !important;
+}
+body.light .chat-head{
+  background:linear-gradient(135deg,#FEF9C3,#FFFFFF) !important;
+  border-bottom:1px solid #FDE68A !important;
+  color:#0F172A !important;
+}
+body.light .chat-av,
+body.light .cmsg.me,
+body.light .chat-bar button{
+  background:linear-gradient(135deg,#FFE84D,#FFD000) !important;
+  color:#111827 !important;
+}
+body.light .chat-head b,
+body.light .chat-officer-info strong,
+body.light .chat-officer-lbl strong{color:#0F172A !important;}
+body.light .chat-head small,
+body.light .chat-officer-lbl,
+body.light .chat-div{color:#475569 !important;}
+body.light .chat-close{background:#FFFBEB !important;border-color:#FDE68A !important;color:#0F172A !important;}
+body.light .chat-officer{background:#FFFBEB !important;border-bottom:1px solid #FDE68A !important;}
+body.light .chat-officer-av{background:#FEF08A !important;border-color:#EAB308 !important;}
+body.light .chat-officer-av::after{border-color:#FFFFFF !important;}
+body.light .chat-notice{background:#FEF9C3 !important;color:#78350F !important;border-bottom-color:#FDE68A !important;}
+body.light .cmsg:not(.me){background:#F8FAFC !important;color:#0F172A !important;border-color:#E2E8F0 !important;}
+body.light .chat-bar{background:#FFFDF5 !important;border-top:1px solid #FDE68A !important;}
+body.light .chat-bar input{background:#FFFFFF !important;color:#0F172A !important;border-color:#CBD5E1 !important;}
 </style>
 </head>
-<body>
+<body class="light">
 
 <div class="phone">
 
@@ -517,7 +746,7 @@ body.light .chat-bar input{background:#141A27}
  </div>
  <div class="header-right">
   <button class="headbtn compact" id="languageToggle" onclick="toggleLanguage()">EN</button>
-  <button class="headbtn" id="themeToggle" onclick="toggleTheme()">☀</button>
+  <button class="headbtn" id="themeToggle" onclick="toggleTheme()">☾</button>
   <button class="headbtn notification-btn" onclick="showNotifications()">🔔<span id="notificationBadge" class="notification-badge hidden">0</span></button>
  </div>
 </header>
@@ -843,7 +1072,7 @@ let depFilter = 'Pending';
 let wdFilter = 'Assigned';
 let reportMode = 'daily';
 let currentLanguage = 'bn';
-let currentTheme = 'dark';
+let currentTheme = 'light';
 let listeners = [];
 
 /* Exact logo tagline alignment */
@@ -2176,6 +2405,8 @@ function toggleTheme() {
   currentTheme = currentTheme === 'dark' ? 'light' : 'dark';
   document.body.classList.toggle('light', currentTheme === 'light');
   document.getElementById('themeToggle').textContent = currentTheme === 'light' ? '☾' : '☀';
+  const meta = document.querySelector('meta[name="theme-color"]');
+  if (meta) meta.setAttribute('content', currentTheme === 'light' ? '#FFFFFF' : '#0c1220');
 }
 </script>
 <script src="./pwa.js"></script>

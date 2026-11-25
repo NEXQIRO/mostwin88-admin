@@ -6,7 +6,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>MOSTWIN88 ADMIN PANEL</title>
   <link rel="manifest" href="admin-manifest.json">
-  <meta name="theme-color" content="#0A0A0A">
+  <meta name="theme-color" content="#FFFFFF">
   <meta name="mobile-web-app-capable" content="yes">
   <meta name="apple-mobile-web-app-capable" content="yes">
   <meta name="apple-mobile-web-app-title" content="MOSTWIN88 Admin">
@@ -2153,10 +2153,249 @@
       box-shadow: 0 10px 26px -6px rgba(0, 0, 0, 0.65), 0 0 0 3px rgba(9, 11, 15, 0.85) !important;
     }
     .ua-chat-fab::after { background: #10B981; border-color: #090B0F; }
+
+    /* ===== Bright Yellow & Bright White Theme Override (Default Light Mode) ===== */
+    body[data-theme="light"] {
+      --bg-base: #FFFDF5;
+      --bg-surface: #FFFFFF;
+      --bg-card: #FFFFFF;
+      --bg-card-hover: #FFFBEB;
+      --bg-inner: #FFFBEB;
+      --border-subtle: #E5E7EB;
+      --border-color: #EAB308;
+      --primary: #CA8A04;
+      --primary-hover: #A16207;
+      --primary-glow: rgba(250, 204, 21, 0.28);
+      --accent: #DC2626;
+      --accent-hover: #B91C1C;
+      --success: #15803D;
+      --warning: #B45309;
+      --info: #0284C7;
+      --text-main: #0F172A;
+      --text-muted: #475569;
+      --text-dim: #64748B;
+      --c-base: #FFFDF5;
+      --c-deep: #FEF9C3;
+      --c-surface: #FFFFFF;
+      --c-inner: #FFFBEB;
+      --c-line: #E5E7EB;
+      --c-gold-line: #EAB308;
+      --c-text: #0F172A;
+      --c-muted: #475569;
+      --c-dim: #64748B;
+      background: radial-gradient(circle at 12% 0%, rgba(255, 214, 0, 0.2) 0%, transparent 48%), #FFFDF5 !important;
+      color: #0F172A !important;
+      color-scheme: light;
+    }
+    body[data-theme="light"] #login-overlay {
+      background: radial-gradient(circle at 50% 0%, rgba(255, 214, 0, 0.25) 0%, transparent 56%), #FFFDF5 !important;
+    }
+    body[data-theme="light"] .login-box {
+      background: #FFFFFF !important;
+      border: 1.5px solid #FACC15 !important;
+      box-shadow: 0 18px 42px -12px rgba(202, 138, 4, 0.18) !important;
+    }
+    body[data-theme="light"] .login-sub { color: #475569 !important; }
+    body[data-theme="light"] .login-forgot-btn { color: #92400E !important; }
+    body[data-theme="light"] .google-login-btn {
+      background: #FFFFFF !important; color: #0F172A !important; border-color: #E5E7EB !important;
+    }
+    body[data-theme="light"] .logo .w,
+    body[data-theme="light"] .logo .r { color: #111827 !important; }
+    body[data-theme="light"] .logo .lm { color: #CA8A04 !important; }
+    body[data-theme="light"] .logo .tag { color: #92400E !important; }
+    body[data-theme="light"] .lo { filter: none !important; }
+    body[data-theme="light"] .lo circle[stroke="#fff"] { stroke: #111827 !important; }
+    body[data-theme="light"] .lo circle[stroke*="255,255,255"] { stroke: rgba(17, 24, 39, 0.25) !important; }
+    body[data-theme="light"] .sidebar {
+      background: #FFFFFF !important;
+      border-right: 1px solid #FDE68A !important;
+      box-shadow: 2px 0 14px rgba(15, 23, 42, 0.05) !important;
+    }
+    body[data-theme="light"] .brand-header {
+      background: #FFFFFF !important;
+      border-bottom: 1px solid #FDE68A !important;
+    }
+    body[data-theme="light"] .brand-sub { color: #92400E !important; font-weight: 700; }
+    body[data-theme="light"] .sidebar-footer {
+      background: #FFFDF5 !important;
+      border-top: 1px solid #FDE68A !important;
+    }
+    body[data-theme="light"] .admin-pill {
+      background: #FFFBEB !important;
+      border: 1px solid #FDE68A !important;
+    }
+    body[data-theme="light"] .admin-avatar {
+      background: linear-gradient(135deg, #FFE84D, #FFD000) !important;
+      color: #111827 !important;
+    }
+    body[data-theme="light"] .nav-item button,
+    body[data-theme="light"] .nav-btn { color: #334155 !important; }
+    body[data-theme="light"] .nav-item button:hover,
+    body[data-theme="light"] .nav-btn:hover { background: #FFFBEB !important; color: #111827 !important; }
+    body[data-theme="light"] .nav-item.active > button,
+    body[data-theme="light"] .nav-item button.active,
+    body[data-theme="light"] .nav-btn.active {
+      background: linear-gradient(90deg, #FEF08A, #FEF9C3) !important;
+      border: 1px solid #FACC15 !important;
+      border-left: 4px solid #EAB308 !important;
+      color: #92400E !important;
+      font-weight: 700 !important;
+    }
+    body[data-theme="light"] .nav-badge {
+      background: #FFD600 !important;
+      color: #111827 !important;
+    }
+    body[data-theme="light"] .topbar {
+      background: rgba(255, 255, 255, 0.94) !important;
+      border-bottom: 1px solid #FDE68A !important;
+    }
+    body[data-theme="light"] .mobile-menu-btn,
+    body[data-theme="light"] .lang-mini-btn {
+      background: #FFFBEB !important;
+      border: 1px solid #FACC15 !important;
+      color: #92400E !important;
+    }
+    body[data-theme="light"] .bal-pill {
+      background: #FEF9C3 !important;
+      border: 1.5px solid #EAB308 !important;
+      color: #92400E !important;
+    }
+    body[data-theme="light"] .bal-pill b,
+    body[data-theme="light"] #topbar-admin-balance-val { color: #92400E !important; }
+    body[data-theme="light"] .bal-plus-dot {
+      background: #FFD600 !important;
+      color: #111827 !important;
+    }
+    body[data-theme="light"] .hero-fund-card {
+      background: linear-gradient(135deg, #FEF08A 0%, #FFFBEB 60%, #FFFFFF 100%) !important;
+      border: 1.5px solid #EAB308 !important;
+      box-shadow: 0 8px 24px -8px rgba(234, 179, 8, 0.24) !important;
+    }
+    body[data-theme="light"] .hero-fund-lbl { color: #78350F !important; }
+    body[data-theme="light"] .hero-fund-val { color: #92400E !important; }
+    body[data-theme="light"] .hero-fund-btn {
+      background: linear-gradient(135deg, #FFE84D, #FFD000) !important;
+      color: #111827 !important;
+      border: 1px solid #EAB308 !important;
+      box-shadow: 0 4px 12px rgba(255, 214, 0, 0.32) !important;
+    }
+    body[data-theme="light"] .hero-meta-alloc { color: #0369A1 !important; }
+    body[data-theme="light"] .hero-meta-parent { color: #15803D !important; }
+    body[data-theme="light"] .card,
+    body[data-theme="light"] .stat-card,
+    body[data-theme="light"] .cd,
+    body[data-theme="light"] .tx-card-item,
+    body[data-theme="light"] .table-container {
+      background: #FFFFFF !important;
+      border: 1px solid #E5E7EB !important;
+      box-shadow: 0 2px 8px rgba(15, 23, 42, 0.05) !important;
+    }
+    body[data-theme="light"] .card:hover,
+    body[data-theme="light"] .stat-card:hover {
+      border-color: #FACC15 !important;
+    }
+    body[data-theme="light"] .btn-primary {
+      background: linear-gradient(135deg, #FFE84D, #FFD000) !important;
+      color: #111827 !important;
+      border: 1px solid #EAB308 !important;
+      font-weight: 700 !important;
+    }
+    body[data-theme="light"] .btn-primary:hover {
+      background: linear-gradient(135deg, #FFD600, #FACC15) !important;
+      color: #111827 !important;
+    }
+    body[data-theme="light"] .btn-secondary,
+    body[data-theme="light"] .btn-outline,
+    body[data-theme="light"] .btn-icon {
+      background: #FFFBEB !important;
+      color: #0F172A !important;
+      border: 1px solid #E5E7EB !important;
+    }
+    body[data-theme="light"] .form-control,
+    body[data-theme="light"] input:not([type="checkbox"]):not([type="radio"]),
+    body[data-theme="light"] select,
+    body[data-theme="light"] textarea {
+      background: #FFFFFF !important;
+      color: #0F172A !important;
+      border: 1px solid #CBD5E1 !important;
+    }
+    body[data-theme="light"] .form-control:focus,
+    body[data-theme="light"] input:focus,
+    body[data-theme="light"] select:focus,
+    body[data-theme="light"] textarea:focus {
+      border-color: #EAB308 !important;
+      box-shadow: 0 0 0 3px rgba(250, 204, 21, 0.28) !important;
+    }
+    body[data-theme="light"] table th {
+      background: #FEF9C3 !important;
+      color: #78350F !important;
+      border-bottom: 1px solid #FDE68A !important;
+    }
+    body[data-theme="light"] table td {
+      color: #0F172A !important;
+      border-color: #F1F5F9 !important;
+    }
+    body[data-theme="light"] .modal-backdrop {
+      background: rgba(15, 23, 42, 0.45) !important;
+    }
+    body[data-theme="light"] .modal-card {
+      background: #FFFFFF !important;
+      color: #0F172A !important;
+      border: 1.5px solid #FACC15 !important;
+      box-shadow: 0 20px 50px rgba(15, 23, 42, 0.18) !important;
+    }
+    body[data-theme="light"] .modal-card .modal-header {
+      background: linear-gradient(135deg, #FEF9C3, #FFFBEB) !important;
+      border-bottom: 2px solid #FACC15 !important;
+    }
+    body[data-theme="light"] .modal-card .modal-title,
+    body[data-theme="light"] .modal-card .modal-header [style*="color"] { color: #111827 !important; }
+    body[data-theme="light"] .modal-card .modal-title svg { fill: #92400E !important; }
+    body[data-theme="light"] .modal-card .modal-title i { color: #92400E !important; }
+    body[data-theme="light"] .modal-card .modal-close {
+      background: #FFFFFF !important;
+      color: #111827 !important;
+      border: 1px solid #FACC15 !important;
+    }
+    body[data-theme="light"] .modal-card .modal-body { background: #FFFFFF !important; color: #0F172A !important; }
+    body[data-theme="light"] .modal-card .modal-footer { background: #FFFDF5 !important; border-top: 1px solid #FDE68A !important; }
+    body[data-theme="light"] .modal-card .btn-primary {
+      background: linear-gradient(135deg, #FFE84D, #FFD000) !important;
+      color: #111827 !important;
+      border: 1px solid #EAB308 !important;
+    }
+    body[data-theme="light"] .toast {
+      background: #FFFFFF !important;
+      color: #0F172A !important;
+      border: 1px solid #FDE68A !important;
+      border-left: 5px solid #FFD600 !important;
+    }
+    body[data-theme="light"] .bottom-nav {
+      background: #FFFFFF !important;
+      border-top: 1px solid #FDE68A !important;
+    }
+    body[data-theme="light"] .bottom-nav-btn { color: #64748B !important; }
+    body[data-theme="light"] .bottom-nav-btn.active { color: #92400E !important; }
+    body[data-theme="light"] .bottom-nav-btn.active .bottom-nav-ic {
+      background: #FEF08A !important;
+      color: #111827 !important;
+    }
+    body[data-theme="light"] .ua-chat-fab {
+      background: linear-gradient(135deg, #FFE84D, #FFD000) !important;
+      color: #111827 !important;
+      border: 2px solid #FFFFFF !important;
+      box-shadow: 0 10px 24px rgba(234, 179, 8, 0.4) !important;
+    }
+    body[data-theme="light"] .ua-chat-fab::after { border-color: #FFFFFF !important; }
+    body[data-theme="light"] [style*="#141c30" i]:not(.modal-card *):not(.toast),
+    body[data-theme="light"] .accent-border { background-color: #FFFBEB !important; border-color: #FDE68A !important; }
+    body[data-theme="light"] [style*="#ffd23f" i]:not(.btn):not(.badge),
+    body[data-theme="light"] [style*="#fbbf24" i]:not(.btn):not(.badge) { color: #92400E !important; }
 </style>
 </head>
-<body data-theme="dark">
-<script>try{var __t=localStorage.getItem("np_admin_theme");if(__t==="light"||__t==="dark")document.body.setAttribute("data-theme",__t);}catch(e){}</script>
+<body data-theme="light">
+<script>try{var __t=localStorage.getItem("mw_admin_theme_v2");if(__t==="light"||__t==="dark")document.body.setAttribute("data-theme",__t);}catch(e){}</script>
 
   <!-- ==================== LOGIN OVERLAY ==================== -->
   <div id="login-overlay">
@@ -8452,7 +8691,7 @@
           <meta charset="utf-8">
           <meta name="viewport" content="width=device-width, initial-scale=1.0">
           <style>
-            body { margin: 0; padding: 12px; font-family: sans-serif; display: flex; align-items: center; justify-content: center; height: 100vh; box-sizing: border-box; background: #0f172a; color: #94a3b8; text-align: center; font-size: 13px; }
+            body { margin: 0; padding: 12px; font-family: sans-serif; display: flex; align-items: center; justify-content: center; height: 100vh; box-sizing: border-box; background: #FFFDF5; color: #64748B; text-align: center; font-size: 13px; }
           </style>
         </head>
         <body>
@@ -10034,9 +10273,9 @@
 
     function applyTheme(theme) {
       document.body.setAttribute('data-theme', theme);
-      try { localStorage.setItem('np_admin_theme', theme); } catch (e) {}
+      try { localStorage.setItem('mw_admin_theme_v2', theme); } catch (e) {}
       const meta = document.querySelector('meta[name="theme-color"]');
-      if (meta) meta.setAttribute('content', theme === 'light' ? '#F4F1EA' : '#0A0A0A');
+      if (meta) meta.setAttribute('content', theme === 'light' ? '#FFFFFF' : '#0A0A0A');
       document.querySelectorAll('.theme-toggle-btn').forEach(function (b) {
         b.innerHTML = theme === 'light' ? THEME_ICON_SUN : THEME_ICON_MOON;
         b.title = theme === 'light' ? 'ডার্ক থিমে যান' : 'লাইট থিমে যান';
@@ -10044,12 +10283,12 @@
     }
 
     function cycleTheme() {
-      const current = document.body.getAttribute('data-theme') || 'dark';
+      const current = document.body.getAttribute('data-theme') || 'light';
       const next = current === 'dark' ? 'light' : 'dark';
       applyTheme(next);
       showToast(next === 'light' ? '☀️ লাইট থিম চালু হয়েছে' : '🌙 ডার্ক থিম চালু হয়েছে', 'success');
     }
-    applyTheme(document.body.getAttribute('data-theme') || 'dark');
+    applyTheme(document.body.getAttribute('data-theme') || 'light');
 
     // ---------- Per-User Bet Count, -Bet / +Win Telemetry ----------
     function getUserBetStats(uid) {
@@ -11266,6 +11505,33 @@
     #npc-overlay .npc-bar textarea:focus { border-color: #F2A91E; }
     #npc-overlay .npc-bar button { flex: 0 0 42px; width: 42px; height: 42px; display: grid; place-items: center; padding: 0; border: 0; border-radius: 50%; background: linear-gradient(135deg, #F6CA5E, #D8991A); color: #111827; font-size: 16px; font-weight: 900; line-height: 1; cursor: pointer; }
     #npc-overlay .npc-bar button:disabled { opacity: 0.6; cursor: not-allowed; }
+    body[data-theme="light"] #npc-overlay { color: #0F172A; }
+    body[data-theme="light"] #npc-overlay .npc-app { background: #FFFFFF; border: 1.5px solid #FACC15; box-shadow: 0 20px 50px rgba(15, 23, 42, 0.18) !important; }
+    body[data-theme="light"] #npc-overlay .npc-header { background: linear-gradient(135deg, #FEF9C3, #FFFFFF); color: #0F172A; border-bottom: 1px solid #FDE68A; }
+    body[data-theme="light"] #npc-overlay .npc-logo { background: linear-gradient(135deg, #FFE84D, #FFD000); color: #111827; }
+    body[data-theme="light"] #npc-overlay .npc-hinfo h1,
+    body[data-theme="light"] #npc-overlay .npc-oinfo h2,
+    body[data-theme="light"] #npc-overlay .npc-olabel strong { color: #0F172A; }
+    body[data-theme="light"] #npc-overlay .npc-hinfo p,
+    body[data-theme="light"] #npc-overlay .npc-olabel { color: #475569; }
+    body[data-theme="light"] #npc-overlay .npc-x { background: #FFFBEB; border-color: #FDE68A; color: #0F172A; }
+    body[data-theme="light"] #npc-overlay .npc-tabs { background: #FFFDF5; border-bottom: 1px solid #FDE68A; }
+    body[data-theme="light"] #npc-overlay .npc-tab { background: #FFFFFF; border-color: #E5E7EB; color: #334155; }
+    body[data-theme="light"] #npc-overlay .npc-tab.active { background: linear-gradient(135deg, #FFE84D, #FFD000); color: #111827; border-color: transparent; }
+    body[data-theme="light"] #npc-overlay .npc-peers { background: #FFFDF5; border-bottom: 1px solid #FDE68A; }
+    body[data-theme="light"] #npc-overlay .npc-peer { background: #FFFFFF; border-color: #E5E7EB; color: #0F172A; }
+    body[data-theme="light"] #npc-overlay .npc-peer.sel { background: #FEF9C3; border-color: #EAB308; color: #92400E; }
+    body[data-theme="light"] #npc-overlay .npc-officer { background: #FFFBEB; border-bottom: 1px solid #FDE68A; }
+    body[data-theme="light"] #npc-overlay .npc-avfb,
+    body[data-theme="light"] #npc-overlay .npc-mav { background: #FEF08A; border-color: #EAB308; color: #92400E; }
+    body[data-theme="light"] #npc-overlay .npc-dot { border-color: #FFFFFF; }
+    body[data-theme="light"] #npc-overlay .npc-notice { background: #FEF9C3; color: #78350F; border-bottom: 1px solid #FDE68A; }
+    body[data-theme="light"] #npc-overlay .npc-div span { background: #FEF9C3; color: #78350F; border-color: #FDE68A; }
+    body[data-theme="light"] #npc-overlay .npc-bub { background: #F8FAFC; color: #0F172A; border-color: #E2E8F0; }
+    body[data-theme="light"] #npc-overlay .npc-me .npc-bub { background: linear-gradient(135deg, #FFE84D, #FFD000); color: #111827; border-color: transparent; }
+    body[data-theme="light"] #npc-overlay .npc-bar { background: #FFFDF5; border-top: 1px solid #FDE68A; }
+    body[data-theme="light"] #npc-overlay .npc-bar textarea { background: #FFFFFF; color: #0F172A; border-color: #CBD5E1; }
+    body[data-theme="light"] #npc-overlay .npc-bar button { background: linear-gradient(135deg, #FFE84D, #FFD000); color: #111827; }
   </style>
   <div id="npc-overlay" role="dialog" aria-modal="true" aria-label="MOSTWIN88 Live Chat Hub">
     <div class="npc-app">
