@@ -8,20 +8,30 @@
 
   var path = (location.pathname || '').toLowerCase();
   var search = (location.search || '').toLowerCase();
-  var appKey = 'user';
-  if (path.indexOf('master') !== -1) appKey = 'master';
-  else if (path.indexOf('index') !== -1 || path.indexOf('/admin') !== -1) appKey = 'admin';
-  else if (path.indexOf('agent') !== -1) appKey = 'agent';
-  else if (path.indexOf('affiliate') !== -1) appKey = 'affiliate';
-  else if (path.indexOf('user') !== -1 || search.indexOf('ref=') !== -1 || path === '/' || path === '') appKey = 'user';
+  var metaApp = document.querySelector('meta[name="mw-app"]');
+  var explicitApp = metaApp ? (metaApp.getAttribute('content') || '').toLowerCase().trim() : '';
+  var appKey = (explicitApp === 'user' || explicitApp === 'admin' || explicitApp === 'master' || explicitApp === 'agent' || explicitApp === 'affiliate') ? explicitApp : '';
+  if (!appKey) {
+    var cleanPath = path.replace(/\/index\.html$/i, '').replace(/\/+$/, '');
+    var lastSeg = (cleanPath.split('/').pop() || '').toLowerCase();
+    if (lastSeg.indexOf('master') !== -1) appKey = 'master';
+    else if (lastSeg.indexOf('agent') !== -1) appKey = 'agent';
+    else if (lastSeg.indexOf('affiliate') !== -1) appKey = 'affiliate';
+    else if (lastSeg === 'user' || lastSeg === 'user.html' || search.indexOf('ref=') !== -1) appKey = 'user';
+    else if (lastSeg === 'admin' || lastSeg === 'admin.html') appKey = 'admin';
+    else appKey = 'user';
+  }
   document.documentElement.setAttribute('data-mw-app', appKey);
 
+  var scriptSrc = (document.currentScript && document.currentScript.src) ? document.currentScript.src : '';
+  var rootBase = scriptSrc ? scriptSrc.replace(/[^/]*([?#].*)?$/, '') : '../';
+
   var APP_INFO = {
-    user:      { title: 'MOSTWIN88',           icon: './icon-192.png' },
-    admin:     { title: 'MOSTWIN88 ADMIN',     icon: './admin-icon-192.png' },
-    master:    { title: 'MOSTWIN88 MASTER',    icon: './master-icon-192.png' },
-    agent:     { title: 'MOSTWIN88 AGENT',     icon: './agent-icon-192.png' },
-    affiliate: { title: 'MOSTWIN88 AFFILIATE', icon: './affiliate-icon-192.png' }
+    user:      { title: 'MOSTWIN88',           icon: rootBase + 'icon-192.png?v=3' },
+    admin:     { title: 'MOSTWIN88 ADMIN',     icon: rootBase + 'admin-icon-192.png' },
+    master:    { title: 'MOSTWIN88 MASTER',    icon: rootBase + 'master-icon-192.png' },
+    agent:     { title: 'MOSTWIN88 AGENT',     icon: rootBase + 'agent-icon-192.png' },
+    affiliate: { title: 'MOSTWIN88 AFFILIATE', icon: rootBase + 'affiliate-icon-192.png' }
   }[appKey];
 
   var G = window.NPPasskey || {

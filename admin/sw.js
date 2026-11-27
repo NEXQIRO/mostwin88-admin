@@ -1,13 +1,14 @@
-const CACHE_NAME = 'mw-agent-v5';
-const ENTRY = './agent.html';
+const CACHE_NAME = 'mw-admin-folder-v1';
+const ENTRY = './';
 const PRECACHE = [
   ENTRY,
-  './pwa.js',
-  './passkey.js',
-  './firebase-config.js',
-  './agent-manifest.json',
-  './agent-icon-192.png',
-  './agent-icon-512.png'
+  './index.html',
+  './manifest.json',
+  '../pwa.js',
+  '../passkey.js',
+  '../firebase-config.js',
+  '../admin-icon-192.png',
+  '../admin-icon-512.png'
 ];
 
 self.addEventListener('install', (e) => {
@@ -19,7 +20,7 @@ self.addEventListener('install', (e) => {
 self.addEventListener('activate', (e) => {
   e.waitUntil(
     caches.keys().then((keys) =>
-      Promise.all(keys.filter((k) => k.startsWith('mw-agent-') && k !== CACHE_NAME).map((k) => caches.delete(k)))
+      Promise.all(keys.filter((k) => k.startsWith('mw-admin-') && k !== CACHE_NAME).map((k) => caches.delete(k)))
     ).then(() => self.clients.claim())
   );
 });
@@ -29,7 +30,7 @@ self.addEventListener('fetch', (e) => {
   if (req.method !== 'GET') return;
   const u = new URL(req.url);
   if (u.origin !== self.location.origin) return;
-  if (u.pathname.startsWith('/api/') || u.pathname === '/health' || u.pathname.endsWith('-sw.js')) return;
+  if (u.pathname.startsWith('/api/') || u.pathname === '/health' || u.pathname.endsWith('/sw.js') || u.pathname.endsWith('-sw.js')) return;
 
   if (req.mode === 'navigate' || u.pathname.endsWith('.html') || u.pathname.endsWith('.js')) {
     e.respondWith(
@@ -60,9 +61,15 @@ self.addEventListener('fetch', (e) => {
 
 self.addEventListener('notificationclick', (e) => {
   e.notification.close();
+  const targetView = (e.notification.data && e.notification.data.view) || '';
   e.waitUntil(
     self.clients.matchAll({ type: 'window', includeUncontrolled: true }).then((cls) => {
-      for (const c of cls) { if ('focus' in c) return c.focus(); }
+      for (const c of cls) {
+        if ('focus' in c) {
+          if (targetView) c.postMessage({ view: targetView });
+          return c.focus();
+        }
+      }
       if (self.clients.openWindow) return self.clients.openWindow(ENTRY);
     })
   );

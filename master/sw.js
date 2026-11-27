@@ -1,13 +1,14 @@
-const CACHE_NAME = 'mw-master-v5';
-const ENTRY = './master.html';
+const CACHE_NAME = 'mw-master-folder-v1';
+const ENTRY = './';
 const PRECACHE = [
   ENTRY,
-  './pwa.js',
-  './passkey.js',
-  './firebase-config.js',
-  './master-manifest.json',
-  './master-icon-192.png',
-  './master-icon-512.png'
+  './index.html',
+  './manifest.json',
+  '../pwa.js',
+  '../passkey.js',
+  '../firebase-config.js',
+  '../master-icon-192.png',
+  '../master-icon-512.png'
 ];
 
 self.addEventListener('install', (e) => {
@@ -29,7 +30,7 @@ self.addEventListener('fetch', (e) => {
   if (req.method !== 'GET') return;
   const u = new URL(req.url);
   if (u.origin !== self.location.origin) return;
-  if (u.pathname.startsWith('/api/') || u.pathname === '/health' || u.pathname.endsWith('-sw.js')) return;
+  if (u.pathname.startsWith('/api/') || u.pathname === '/health' || u.pathname.endsWith('/sw.js') || u.pathname.endsWith('-sw.js')) return;
 
   if (req.mode === 'navigate' || u.pathname.endsWith('.html') || u.pathname.endsWith('.js')) {
     e.respondWith(
@@ -60,9 +61,15 @@ self.addEventListener('fetch', (e) => {
 
 self.addEventListener('notificationclick', (e) => {
   e.notification.close();
+  const targetView = (e.notification.data && e.notification.data.view) || '';
   e.waitUntil(
     self.clients.matchAll({ type: 'window', includeUncontrolled: true }).then((cls) => {
-      for (const c of cls) { if ('focus' in c) return c.focus(); }
+      for (const c of cls) {
+        if ('focus' in c) {
+          if (targetView) c.postMessage({ view: targetView });
+          return c.focus();
+        }
+      }
       if (self.clients.openWindow) return self.clients.openWindow(ENTRY);
     })
   );

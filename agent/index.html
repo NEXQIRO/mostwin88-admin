@@ -1,0 +1,2572 @@
+<!DOCTYPE html>
+<html lang="bn">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<meta name="mw-app" content="agent">
+<meta name="theme-color" content="#040405">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<link rel="manifest" href="./manifest.json">
+<link rel="icon" type="image/png" href="../agent-icon-192.png">
+<link rel="apple-touch-icon" href="../agent-icon-192.png">
+<title>MOSTWIN88 AGENT</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Hind+Siliguri:wght@400;500;600;700&family=JetBrains+Mono:wght@500;600&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-auth-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-database-compat.js"></script>
+<script src="../firebase-config.js?v=20261116c"></script>
+<script>if(typeof window.mwApi!=='function'){window.MW_DEFAULT_BACKEND_URL=window.MW_DEFAULT_BACKEND_URL||'https://mostwin88-bakend.onrender.com';window.MW_BACKEND_URL=window.MW_BACKEND_URL||(location.origin===window.MW_DEFAULT_BACKEND_URL?'':window.MW_DEFAULT_BACKEND_URL);window.mwApiUrl=function(p){p=String(p||'');if(/^https?:\/\//i.test(p))return p;var b=String(window.MW_BACKEND_URL||'').replace(/\/+$/,'');return b+(p[0]==='/'?p:'/'+p);};window.mwApi=async function(p,b,a){var ai=a;if(!ai&&typeof firebase!=='undefined'&&firebase.apps&&firebase.apps.length){try{ai=firebase.auth();}catch(_){}}var u=ai&&ai.currentUser;if(!u)throw new Error('অ্যাকাউন্ট লগইন করা নেই।');var t=await u.getIdToken();var r=await fetch(window.mwApiUrl(p),{method:'POST',headers:{'Content-Type':'application/json','Authorization':'Bearer '+t},body:JSON.stringify(b||{})});var d=null;try{d=await r.json();}catch(_){}if(!r.ok||!d||d.ok===false){var e=new Error((d&&d.error)||('সার্ভার ত্রুটি ('+r.status+')'));e.status=r.status;e.code=(d&&d.code)||'API_ERROR';throw e;}return d;};}</script>
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --bg:#070b13;--surface:#0c1220;--panel:#162238;--panel2:#1d2c46;--line:#2e3f5c;
+  --gold:#ffd23f;--gold2:#fff0b5;--gold-dark:#e8c36a;
+  --pink:#f04489;--pink-light:#ff5f9b;--pink-dark:#b51d60;
+  --green:#20c997;--green-light:#39d9a6;--green-dark:#173c31;
+  --blue:#3b82f6;--blue-light:#60a5fa;--blue-dark:#172b4d;
+  --red:#ff667c;--red-light:#ff8299;--red-dark:#43232c;
+  --yellow:#ffbd59;--muted:#9fb1c9;--text:#ffffff
+}
+html{min-height:100%;-webkit-text-size-adjust:100%;font-variant-numeric:tabular-nums}
+body{min-height:100dvh;background:radial-gradient(ellipse at 50% -10%,#24334f 0%,#070b13 60%);color:var(--text);font-family:Inter,-apple-system,BlinkMacSystemFont,"Segoe UI","Noto Sans Bengali","Hind Siliguri",Roboto,Arial,sans-serif;overflow-x:hidden}
+button,input,select,textarea{font:inherit}
+button{cursor:pointer}
+.phone{max-width:480px;width:100%;min-height:100dvh;margin:0 auto;background:var(--surface);position:relative;box-shadow:0 0 60px rgba(0,0,0,.8)}
+.hidden{display:none!important}
+
+/* EXACT MOSTWIN88 ANIMATED LOGO */
+.logo{--fs:42px;display:flex;flex-direction:column;align-items:flex-start;width:max-content;white-space:normal;text-align:left;margin:0 auto 14px}
+.logo.sm{--fs:22px;display:inline-flex;margin:0}
+.lm{display:block;width:max-content;white-space:nowrap;font-weight:900;letter-spacing:.5px;line-height:1;font-size:var(--fs);color:#ffd23f}
+.w,.r{color:#fff}
+.lo{display:inline-block;position:relative;width:.76em;height:.76em;margin:0 .035em;vertical-align:baseline;overflow:visible;filter:drop-shadow(0 0 .04em #ffffff77)}
+.lo svg{position:absolute;left:0;top:0;width:100%;height:100%;display:block;overflow:visible;transform:scale(1.12);transform-origin:50% 50%}
+.lo-r{transform-box:view-box;transform-origin:50px 50px;animation:loSpin 6s cubic-bezier(.2,.7,.2,1) infinite}
+@keyframes loSpin{0%,25%{transform:rotate(0deg)}70%,100%{transform:rotate(1440deg)}}
+.tag{display:block;width:max-content;white-space:nowrap;font-weight:700;color:#ffd23f;font-size:calc(var(--fs)*.17);margin-top:.55em;overflow:visible;line-height:1.15}
+@media (prefers-reduced-motion:reduce){.lo-r{animation:none}}
+
+/* LOGIN */
+.login{min-height:100vh;min-height:100svh;display:flex;align-items:center;justify-content:center;padding:24px 18px;background:radial-gradient(circle at 50% 10%,#0e1c3f 0%,#050B1A 65%)}
+.loginbox{width:100%;max-width:440px;text-align:center;margin:auto}
+.login h1{font-size:20px;letter-spacing:1.5px;font-weight:900;margin-top:4px}
+.login p{color:var(--muted);font-size:12px;margin:6px 0 16px}
+.live-label{display:inline-block;background:#173a30;color:#42e0aa;border:1px solid #28674f;padding:6px 14px;border-radius:20px;font-size:10px;font-weight:800;margin-bottom:16px}
+.login-form{background:#141e30;border:1px solid #334460;border-radius:20px;padding:20px;text-align:left;box-shadow:0 12px 30px rgba(0,0,0,.4)}
+.login-form label{display:block;color:#cbd5e1;font-size:11px;font-weight:700;margin-bottom:6px}
+.login-form input{width:100%;height:46px;margin-bottom:14px;padding:0 14px;background:#0b1321;border:1px solid #354664;border-radius:12px;color:#fff;outline:none;font-size:13px}
+.login-form input:focus{border-color:var(--pink);box-shadow:0 0 0 2px rgba(240,68,137,.25)}
+.login-err{background:rgba(255,102,124,.15);border:1px solid rgba(255,102,124,.4);color:#ff9aa8;border-radius:10px;padding:10px 12px;font-size:11.5px;margin-bottom:12px;display:none}
+.primary{background:linear-gradient(110deg,#c81f68,#ff5f9b);color:#fff;border:0;border-radius:14px;padding:14px;width:100%;font-weight:800;font-size:13.5px;letter-spacing:.4px;box-shadow:0 8px 24px rgba(240,68,137,.35);transition:transform .15s}
+.primary:active{transform:scale(.98)}
+.primary:disabled{opacity:.6;cursor:not-allowed}
+.warning{background:#332a1c;color:#ffd58a;border:1px solid #65502c;border-radius:14px;padding:12px 14px;font-size:11px;line-height:1.6;margin-top:14px}
+
+/* HEADER */
+header{height:60px;background:rgba(18,27,44,.98);border-bottom:1px solid rgba(232,195,106,.25);display:flex;justify-content:space-between;align-items:center;padding:0 14px;position:sticky;top:0;z-index:20;box-shadow:0 4px 20px rgba(0,0,0,.4)}
+.brand{display:flex;align-items:center;gap:10px}
+.header-right{display:flex;gap:7px;align-items:center}
+.headbtn{background:#23324a;color:#fff;border:1px solid var(--line);min-width:36px;height:36px;border-radius:11px;display:grid;place-items:center;font-size:13px;font-weight:800;padding:0 8px}
+.headbtn.compact{font-size:11px}
+.headbtn:active{transform:scale(.95)}
+.notification-btn{position:relative}
+.notification-badge{position:absolute;top:-4px;right:-4px;min-width:18px;height:18px;padding:0 4px;border-radius:10px;background:#ff365f;color:#fff;font-size:9px;font-weight:900;display:grid;place-items:center;border:2px solid #141e30}
+
+/* CONTENT */
+.content{padding:16px 14px 96px}
+.page{display:none}
+.page.active{display:block}
+.title{font-size:24px;font-weight:900;letter-spacing:-.3px}
+.subtitle{font-size:12px;color:var(--muted);margin-top:3px;line-height:1.5}
+.live-tag{display:inline-flex;align-items:center;gap:6px;font-size:10px;font-weight:800;color:#42e0aa;background:#173a30;border:1px solid #28674f;padding:5px 12px;border-radius:20px;margin:10px 0 14px}
+.live-tag.offline{color:#ffbd59;background:#332a1c;border-color:#65502c}
+
+/* BALANCE CARD */
+.balance{padding:22px;border-radius:22px;background:linear-gradient(125deg,#8d174d 0%,#d92b75 52%,#f47aa5 100%);border:1px solid rgba(255,176,204,.4);box-shadow:0 12px 30px rgba(240,68,137,.25);position:relative;overflow:hidden;margin-bottom:20px}
+.balance:after{content:"";position:absolute;width:190px;height:190px;border:1px solid rgba(255,255,255,.18);border-radius:50%;right:-60px;top:-90px;box-shadow:0 0 0 16px rgba(255,255,255,.05),0 0 0 34px rgba(255,255,255,.03)}
+.balance small{display:block;font-size:11px;color:#ffe0ec;font-weight:800;letter-spacing:1.4px}
+.balance h1{font-size:34px;font-weight:900;margin:10px 0 6px;letter-spacing:-.6px;color:#fff}
+.balance p{font-size:11px;color:#ffe6ef;margin-top:4px}
+
+/* SECTION TITLE */
+.sectiontitle{display:flex;justify-content:space-between;align-items:center;margin:22px 0 10px}
+.sectiontitle h3{font-size:12px;letter-spacing:1.6px;text-transform:uppercase;color:var(--gold);font-weight:900}
+
+/* 4 STATS */
+.stats{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:18px}
+.stat{background:linear-gradient(155deg,#1b2940 0%,#131e31 100%);border:1px solid #334460;border-radius:18px;padding:14px;position:relative;box-shadow:0 8px 24px rgba(0,0,0,.3);transition:transform .18s,border-color .18s;cursor:pointer}
+.stat:active{transform:scale(.97)}
+.stat-top{display:flex;align-items:center;justify-content:space-between;margin-bottom:10px}
+.stat-icon{width:38px;height:38px;border-radius:12px;display:grid;place-items:center;font-size:19px;font-weight:900}
+.stat-chip{font-size:9px;font-weight:900;padding:3px 7px;border-radius:10px;letter-spacing:.3px}
+.stat h2{font-size:26px;font-weight:900;color:#fff;margin:2px 0 4px;line-height:1.1}
+.stat small{display:block;font-size:11.5px;font-weight:700;line-height:1.3}
+.stat.stat-pending{border-color:rgba(255,210,63,.3)}
+.stat.stat-pending .stat-icon{background:rgba(255,210,63,.15);border:1px solid rgba(255,210,63,.35);color:var(--gold)}
+.stat.stat-pending .stat-chip{background:rgba(255,189,89,.15);color:var(--yellow);border:1px solid rgba(255,189,89,.3)}
+.stat.stat-pending small{color:#f6d289}
+.stat.stat-withdraw{border-color:rgba(96,165,250,.3)}
+.stat.stat-withdraw .stat-icon{background:rgba(96,165,250,.15);border:1px solid rgba(96,165,250,.35);color:var(--blue-light)}
+.stat.stat-withdraw .stat-chip{background:rgba(96,165,250,.15);color:var(--blue-light);border:1px solid rgba(96,165,250,.3)}
+.stat.stat-withdraw small{color:#a5ccfc}
+.stat.stat-approved{border-color:rgba(57,217,166,.3)}
+.stat.stat-approved .stat-icon{background:rgba(57,217,166,.15);border:1px solid rgba(57,217,166,.35);color:var(--green-light)}
+.stat.stat-approved .stat-chip{background:rgba(57,217,166,.15);color:var(--green-light);border:1px solid rgba(57,217,166,.3)}
+.stat.stat-approved small{color:#98ebd0}
+.stat.stat-completed{border-color:rgba(240,68,137,.3)}
+.stat.stat-completed .stat-icon{background:rgba(240,68,137,.15);border:1px solid rgba(240,68,137,.35);color:var(--pink-light)}
+.stat.stat-completed .stat-chip{background:rgba(240,68,137,.15);color:var(--pink-light);border:1px solid rgba(240,68,137,.3)}
+.stat.stat-completed small{color:#fba4c7}
+
+/* QUICK ACTIONS */
+.quick{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:16px}
+.quick button{padding:15px 14px;background:linear-gradient(155deg,#1b2940,#131e31);border:1px solid #334460;border-radius:18px;color:#fff;text-align:left;transition:transform .18s,border-color .18s}
+.quick button:active{transform:scale(.97)}
+.quick span{display:grid;place-items:center;width:40px;height:40px;border-radius:12px;background:rgba(232,195,106,.12);border:1px solid rgba(232,195,106,.3);font-size:20px;color:var(--gold)}
+.quick b{display:block;font-size:12.5px;font-weight:800;margin:10px 0 4px}
+.quick small{color:var(--muted);font-size:10px}
+
+/* CARDS */
+.card{background:linear-gradient(150deg,#1a2840,#121d30);border:1px solid #334460;padding:16px;border-radius:18px;margin:12px 0;box-shadow:0 8px 24px rgba(0,0,0,.25)}
+.cardtop{display:flex;justify-content:space-between;align-items:center;gap:10px}
+.cardtop strong{font-size:13px;font-weight:900}
+.status{padding:5px 10px;border-radius:20px;font-size:10px;font-weight:900;letter-spacing:.3px}
+.status.pending{background:#3b3020;color:var(--yellow);border:1px solid rgba(255,189,89,.3)}
+.status.assigned,.status.assignedtoagent,.status.processing{background:#172b4d;color:var(--blue-light);border:1px solid rgba(96,165,250,.35)}
+.status.approved,.status.completed{background:#173c31;color:#47e2ad;border:1px solid rgba(71,226,173,.3)}
+.status.rejected{background:#43232c;color:#ff8798;border:1px solid rgba(255,135,152,.3)}
+.amount{font-size:25px;font-weight:900;color:#fff;margin:12px 0 8px}
+.detail{display:flex;justify-content:space-between;gap:10px;padding:9px 0;border-bottom:1px solid rgba(255,255,255,.07);font-size:12px}
+.detail span{color:var(--muted)}
+.detail b{text-align:right;word-break:break-word}
+.actions{display:flex;gap:10px;margin-top:14px}
+.actions button{flex:1;padding:12px 6px;border:0;border-radius:12px;font-size:11px;font-weight:900;letter-spacing:.3px;transition:transform .15s}
+.actions button:active{transform:scale(.97)}
+.approve{background:linear-gradient(110deg,#14835f,#20c997);color:#fff}
+.reject{background:linear-gradient(110deg,#8b273b,#d93854);color:#fff}
+.complete{background:linear-gradient(110deg,#2555a3,#3b82f6);color:#fff}
+.reject-reason{margin-top:12px;padding:10px 12px;border-radius:12px;background:rgba(255,102,124,.12);border:1px solid rgba(255,102,124,.3);font-size:11.5px;line-height:1.5;color:#ffb0bc}
+.reject-reason b{display:block;font-size:9.5px;letter-spacing:1px;color:var(--red-light);margin-bottom:3px;font-weight:900}
+
+/* TABS, DROPDOWNS & SEARCH */
+.tabs{display:flex;gap:4px;background:#0d1626;border:1px solid #334460;border-radius:14px;padding:4px;margin:12px 0}
+.tab{flex:1;padding:10px 2px;border:0;background:none;color:var(--muted);border-radius:10px;font-size:11px;font-weight:700}
+.tab.active{background:linear-gradient(135deg,#d92776,#ff6aa2);color:#fff;font-weight:900;box-shadow:0 4px 14px rgba(240,68,137,.35)}
+.filter-select{width:100%;height:46px;padding:0 14px;background:#0f1827;border:1px solid #334460;border-radius:12px;color:#fff;outline:none;font-size:13px;font-weight:700;margin:10px 0 4px;cursor:pointer}
+.filter-select:focus{border-color:var(--pink);box-shadow:0 0 0 2px rgba(240,68,137,.25)}
+.pw-wrap{position:relative;display:flex;align-items:center;margin-bottom:14px}
+.pw-wrap input{margin-bottom:0!important;padding-right:64px}
+.pw-eye{position:absolute;right:6px;top:50%;transform:translateY(-50%);background:#1c2940;color:var(--gold);border:1px solid #354664;border-radius:8px;padding:5px 10px;font-size:11px;font-weight:700}
+.search{width:100%;height:46px;padding:0 14px;background:#0f1827;border:1px solid #334460;border-radius:12px;color:#fff;outline:none;font-size:13px;margin:10px 0 12px}
+.search:focus{border-color:var(--pink);box-shadow:0 0 0 2px rgba(240,68,137,.25)}
+.empty{text-align:center;padding:36px 16px;background:linear-gradient(150deg,#18253b,#121c2e);border:1px dashed #3a4c6a;border-radius:18px;color:var(--muted);font-size:12px}
+.empty span{display:block;font-size:32px;margin-bottom:10px}
+
+/* REPORT */
+.report-card{background:linear-gradient(145deg,#18263d,#101a2b);border:1px solid #3a4d6b;border-radius:20px;padding:16px;margin:12px 0 18px;box-shadow:0 12px 30px rgba(0,0,0,.3)}
+.report-heading{display:flex;align-items:center;justify-content:space-between;padding-bottom:12px;border-bottom:1px solid var(--line)}
+.report-heading b{display:block;color:var(--gold2);font-size:13px;letter-spacing:1px}
+.report-heading small{display:block;color:var(--muted);font-size:10px;margin-top:4px}
+.rseg{margin-top:14px}
+.rdate{display:flex;gap:8px;margin:12px 0 6px}
+.rdate button{width:44px;border:1px solid #43536d;background:#0d1727;color:#fff;border-radius:12px;font-size:20px}
+.rdate input,.rrange input{flex:1;width:100%;height:44px;border:1px solid #43536d;border-radius:12px;background:#0d1727;color:#fff;padding:0 12px;font-size:13px;outline:none;color-scheme:dark}
+.rrange{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin:12px 0 6px}
+.rrange label{display:block;font-size:10px;color:#9eacc1;margin-bottom:5px}
+.rnote{font-size:10.5px;color:var(--yellow);margin:6px 2px 0;font-weight:700}
+.report-range{font-size:11px;color:var(--gold2);margin:14px 2px 8px;font-weight:800}
+.report-stats{display:grid;grid-template-columns:repeat(3,1fr);gap:8px}
+.report-stats>div{background:#0d1828;border:1px solid #34445e;border-radius:13px;padding:10px 8px}
+.report-stats small{display:block;color:#9eacc1;font-size:9.5px;min-height:22px}
+.report-stats b{display:block;font-size:13.5px;margin-top:4px}
+#reportPlus{color:var(--green-light)}#reportMinus{color:var(--red-light)}#reportNet{color:var(--gold2)}
+.bars{display:flex;align-items:flex-end;gap:3px;height:84px;margin:14px 0 4px;padding:8px 6px 0;background:#0a1322;border:1px solid #34445e;border-radius:14px}
+.bars i{flex:1;height:100%;display:flex;align-items:flex-end;gap:1px;min-width:0}
+.bars b{flex:1;display:block;border-radius:2px 2px 0 0}
+.bars .p{background:var(--green-light)}.bars .m{background:var(--red-light)}
+details.dayrow{border-top:1px solid #34445e}
+details.dayrow summary{list-style:none;display:flex;justify-content:space-between;align-items:center;gap:8px;padding:12px 2px;cursor:pointer}
+details.dayrow summary::-webkit-details-marker{display:none}
+.dayrow .dl{font-size:12.5px;font-weight:800}
+.dayrow .dv{text-align:right;font-size:11px;font-weight:700;line-height:1.6}
+.dayrow .net{font-size:9.5px;color:#9eacc1}
+.transaction-row{display:flex;justify-content:space-between;gap:10px;align-items:center;padding:9px 2px;border-bottom:1px solid rgba(255,255,255,.05)}
+.transaction-row b{display:block;font-size:11.5px}
+.transaction-row small{display:block;color:var(--muted);font-size:9.5px;margin-top:3px}
+.transaction-row strong{font-size:13px}
+.positive{color:var(--green-light)}.negative{color:var(--red-light)}
+.report-footer{font-size:10px;color:#9aa9bd;line-height:1.6;margin-top:14px;padding-top:10px;border-top:1px solid #34445e}
+
+/* WALLET & FORM */
+.walletrow{display:flex;justify-content:space-between;padding:12px 0;border-bottom:1px solid rgba(255,255,255,.07);font-size:12px}
+.walletrow span{color:var(--muted)}
+.walletrow b{color:#fff}
+.balance-request-form{background:linear-gradient(150deg,#1a2840,#121d30);border:1px solid #334460;border-radius:18px;padding:16px;margin:12px 0}
+.balance-request-form label{display:block;font-size:11px;color:#cbd5e1;font-weight:700;margin:12px 0 6px}
+.balance-request-form input,.balance-request-form textarea{width:100%;padding:12px;background:#0d1727;border:1px solid #354664;border-radius:12px;color:#fff;outline:none;font-size:13px}
+.balance-request-form textarea{min-height:76px;resize:vertical}
+.balance-request-form input:focus,.balance-request-form textarea:focus{border-color:var(--pink);box-shadow:0 0 0 2px rgba(240,68,137,.25)}
+.balance-request-form .primary{margin-top:14px}
+.reportlink{width:100%;display:flex;align-items:center;gap:12px;text-align:left;padding:16px;border-radius:18px;border:1px solid rgba(232,195,106,.35);background:linear-gradient(135deg,#2a2412,#151c2c);color:#fff;margin-top:10px}
+.reportlink b{display:block;font-size:13px;color:var(--gold2)}
+.reportlink small{display:block;color:var(--muted);font-size:10px;margin-top:3px}
+.ag-wsetup{background:linear-gradient(150deg,#1a2840,#121d30);border:1px solid rgba(255,210,63,.28);border-radius:18px;padding:16px;margin:12px 0}
+.ag-whead{display:flex;align-items:center;justify-content:space-between;gap:10px;padding-bottom:12px;border-bottom:1px solid rgba(255,255,255,.08)}
+.ag-wstatus{margin-top:10px;padding:9px 12px;border-radius:11px;font-size:11.5px;font-weight:700;display:flex;align-items:center;justify-content:space-between;gap:8px}
+.ag-wstatus.on{background:rgba(0,230,118,.12);color:#47e2ad;border:1px solid rgba(0,230,118,.3)}
+.ag-wstatus.off{background:rgba(255,102,124,.12);color:#ff8ea2;border:1px solid rgba(255,102,124,.3)}
+.ag-wrow{display:flex;align-items:center;gap:8px;margin-top:10px;background:#0d1727;border:1px solid #354664;border-radius:12px;padding:8px 10px}
+.ag-wrow-lbl{width:64px;font-size:11.5px;font-weight:800;color:var(--gold2);flex:none}
+.ag-wrow input[type="tel"],.ag-wrow input[type="text"]{flex:1;min-width:0;background:transparent;border:0;color:#fff;outline:none;font-size:13px;font-weight:700;padding:4px 0}
+.sw{position:relative;display:inline-block;width:44px;height:24px;flex:none}
+.sw input{opacity:0;width:0;height:0}
+.sw i{position:absolute;inset:0;background:#334155;border-radius:24px;cursor:pointer;transition:.2s;border:1px solid rgba(255,255,255,.15)}
+.sw i::before{content:"";position:absolute;width:18px;height:18px;left:2px;top:2px;background:#fff;border-radius:50%;transition:.2s;box-shadow:0 2px 5px rgba(0,0,0,.4)}
+.sw input:checked+i{background:linear-gradient(135deg,#128a66,#25c595);border-color:rgba(71,226,173,.6)}
+.sw input:checked+i::before{transform:translateX(20px)}
+.home-wallet-bar{display:flex;align-items:center;justify-content:space-between;gap:10px;background:linear-gradient(145deg,#17243b,#111a2b);border:1px solid rgba(255,210,63,.25);border-radius:16px;padding:12px 14px;margin-top:12px}
+.home-wallet-bar b{display:block;font-size:12.5px}
+.home-wallet-bar small{display:block;font-size:10.5px;color:var(--muted);margin-top:2px}
+
+/* PROFILE */
+.profile{display:flex;gap:14px;align-items:center;padding:18px;background:linear-gradient(150deg,#1b2940,#131e31);border:1px solid #334460;border-radius:18px;margin:14px 0}
+.avatar{width:50px;height:50px;background:var(--pink);border-radius:16px;display:grid;place-items:center;font-size:22px;font-weight:900;color:#fff}
+.profile b{font-size:14px}
+.profile small{display:block;color:var(--muted);font-size:11px;margin-top:3px}
+.menu{background:linear-gradient(150deg,#1a2840,#121d30);border:1px solid #334460;border-radius:18px;overflow:hidden}
+.menu button{width:100%;text-align:left;padding:16px;color:#fff;background:transparent;border:0;border-bottom:1px solid rgba(255,255,255,.07);font-size:13px;font-weight:700}
+.menu button:last-child{border:0}
+
+/* BOTTOM NAVIGATION */
+.bottom{position:fixed;left:50%;transform:translateX(-50%);bottom:0;width:min(100vw,480px);height:calc(62px + env(safe-area-inset-bottom));background:rgba(15,23,38,.98);border-top:1px solid rgba(232,195,106,.25);display:flex;justify-content:space-around;z-index:50;padding:0 0 env(safe-area-inset-bottom);box-shadow:0 -8px 24px rgba(0,0,0,.5)}
+.nav{flex:1;border:0;background:none;color:#8796ad;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:3px;font-size:9px;font-weight:700;position:relative}
+.nav span{font-size:18px;line-height:1}
+.nav.active{color:#ff75a9}
+.nav.active:before{content:"";position:absolute;top:0;left:28%;right:28%;height:3px;border-radius:0 0 4px 4px;background:linear-gradient(90deg,var(--gold),var(--pink))}
+
+/* CENTER DIALOG POPUP */
+.dlgback{position:fixed;inset:0;z-index:90;display:none;align-items:center;justify-content:center;padding:18px;background:rgba(3,7,14,.84)}
+.dlgback.show{display:flex;animation:dlgFade .18s ease}
+.dlg{width:100%;max-width:390px;max-height:92vh;overflow:auto;background:linear-gradient(160deg,#1d2b44,#121b2c);border:1px solid rgba(255,255,255,.18);border-radius:24px;padding:24px 20px 20px;box-shadow:0 30px 80px rgba(0,0,0,.9);text-align:center;animation:dlgPop .22s cubic-bezier(.2,.9,.3,1.2)}
+@keyframes dlgFade{from{opacity:0}to{opacity:1}}
+@keyframes dlgPop{from{opacity:0;transform:translateY(16px) scale(.94)}to{opacity:1;transform:none}}
+.dlg-icon{width:60px;height:60px;margin:0 auto 14px;border-radius:50%;display:grid;place-items:center;font-size:28px;font-weight:900}
+.dlg.ok .dlg-icon{background:rgba(28,158,118,.2);color:#47e2ad;border:2px solid #20c997}
+.dlg.bad .dlg-icon{background:rgba(255,102,124,.2);color:#ff8299;border:2px solid #ff667c}
+.dlg h3{font-size:18px;margin-bottom:14px;font-weight:900}
+.dlg-info{background:#0b1424;border:1px solid rgba(255,255,255,.1);border-radius:14px;padding:6px 14px;margin-bottom:14px;text-align:left}
+.dlg-info div{display:flex;justify-content:space-between;gap:10px;padding:8px 0;border-bottom:1px solid rgba(255,255,255,.07);font-size:12px}
+.dlg-info div:last-child{border:0}.dlg-info span{color:var(--muted)}.dlg-info b{text-align:right}
+.dlg-field{text-align:left;margin-bottom:12px}
+.dlg-field label{display:block;font-size:11px;color:#cbd5e1;margin-bottom:6px;font-weight:700}
+.dlg-field select,.dlg-field textarea,.dlg-field input{width:100%;background:#0b1424;border:1px solid #43536d;border-radius:12px;color:#fff;padding:12px;font-size:13px;outline:none}
+.dlg-field select{height:46px;padding:0 10px}.dlg-field textarea{min-height:70px;resize:none}
+.dlg-field select:focus,.dlg-field textarea:focus,.dlg-field input:focus{border-color:var(--pink);box-shadow:0 0 0 2px rgba(240,68,137,.25)}
+.dlg-err{color:var(--red-light);font-size:11px;margin:-4px 0 10px;text-align:left;font-weight:700}
+.dlg-btns{display:grid;grid-template-columns:1fr 1.3fr;gap:10px;margin-top:10px}
+.dlg-btns button{padding:14px 8px;border-radius:13px;font-size:12px;font-weight:800;border:0}
+.dlg-cancel{background:#26344a;color:#dbe4f2;border:1px solid rgba(255,255,255,.12)!important}
+.dlg-ok.ok{background:linear-gradient(110deg,#128a66,#25c595);color:#fff}
+.dlg-ok.bad{background:linear-gradient(110deg,#a7243d,#eb546f);color:#fff}
+
+/* TOAST & MODAL */
+.toast{position:fixed;bottom:76px;left:50%;transform:translateX(-50%);background:#23324a;color:#fff;padding:12px 18px;border-radius:14px;font-size:12px;font-weight:700;z-index:99;display:none;max-width:90%;text-align:center;border:1px solid rgba(255,255,255,.15);box-shadow:0 10px 30px rgba(0,0,0,.6)}
+.toast.show{display:block;animation:dlgFade .15s ease}
+.modalback{position:fixed;inset:0;background:rgba(3,7,14,.84);z-index:85;display:none;align-items:center;justify-content:center;padding:18px}
+.modalback.show{display:flex}
+.modal{width:100%;max-width:400px;background:#18253b;border:1px solid rgba(255,255,255,.15);border-radius:24px;padding:22px;box-shadow:0 20px 60px rgba(0,0,0,.8)}
+.modal h3{margin-bottom:12px;font-size:17px;font-weight:800}
+.modal p{font-size:12.5px;color:#cbd5e1;line-height:1.7}
+.modal button{margin-top:16px}
+.notification-list{max-height:55vh;overflow:auto;margin:10px 0}
+.notification-item{padding:12px;margin:8px 0;border:1px solid var(--line);border-radius:12px;background:#1f2d44;text-align:left}
+.notification-item.unread{border-color:var(--pink);background:#332235}
+.notification-item b{display:block;font-size:12.5px;margin-bottom:4px}
+.notification-item small{display:block;color:var(--muted);font-size:10px;margin-top:6px}
+.notification-tools{display:flex;gap:8px}
+.notification-tools button{flex:1;margin-top:8px;padding:10px;border:1px solid var(--line);border-radius:10px;background:#26344a;color:#fff;font-size:11px;font-weight:700}
+
+/* LIGHT THEME */
+body.light{background:#eef2f8;color:#172033}
+body.light .phone{background:#f5f7fb;color:#172033}
+body.light header,body.light .bottom{background:#ffffff;border-color:#d6deea}
+body.light header .w,body.light header .r{color:#172033}
+body.light header .lo circle[stroke="#fff"]{stroke:#172033}
+body.light .headbtn{background:#eef2f8;color:#172033;border-color:#d7dfeb}
+body.light .stat,body.light .card,body.light .quick button,body.light .menu,body.light .profile,body.light .balance-request-form,body.light .search{background:#fff;color:#172033;border-color:#d7dfeb}
+body.light .stat h2,body.light .amount,body.light .detail b,body.light .walletrow b,body.light .quick button{color:#172033}
+body.light .tabs{background:#e5eaf2;border-color:#cbd5e1}body.light .tab{color:#58677d}
+body.light .filter-select{background:#fff;color:#172033;border-color:#d7dfeb}
+body.light .subtitle,body.light .detail span,body.light .walletrow span{color:#64748b}
+body.light .dlg{background:#fff;color:#172033;border-color:#d7dfeb}
+body.light .dlg-info,body.light .dlg-field select,body.light .dlg-field textarea,body.light .dlg-field input{background:#f5f7fb;color:#172033;border-color:#d7dfeb}
+body.light .dlg-field label{color:#334155}body.light .dlg-cancel{background:#edf1f7;color:#172033}
+body.light .report-card{background:#fff;border-color:#d5deea}
+body.light .rseg,body.light .bars{background:#eef2f8;border-color:#d7dfeb}
+body.light .rdate button,body.light .rdate input,body.light .rrange input{background:#f7f9fc;color:#172033;border-color:#cbd5e1;color-scheme:light}
+body.light details.dayrow{border-color:#d7dfeb}
+body.light .ag-wsetup,body.light .home-wallet-bar{background:#fff;border-color:#d7dfeb;color:#172033}
+body.light .ag-wrow{background:#f5f7fb;border-color:#cbd5e1}
+body.light .ag-wrow input{color:#172033}
+body.light .ag-wrow-lbl{color:#b45309}
+/* LIVE CHAT FAB & DRAWER (user.html Support Popup Style) */
+@keyframes mwChatPulse{0%{box-shadow:0 0 0 0 rgba(0,230,118,.6)}70%{box-shadow:0 0 0 10px rgba(0,230,118,0)}100%{box-shadow:0 0 0 0 rgba(0,230,118,0)}}
+.chat-fab{position:fixed;right:18px;bottom:82px;width:58px;height:58px;padding:0;border-radius:50%;border:2px solid rgba(255,255,255,.35);background:linear-gradient(135deg,#ffe27a,#f5b82e 55%,#e49a00);color:#2a1c00;display:flex;flex-direction:column;align-items:center;justify-content:center;box-shadow:0 10px 24px -6px rgba(255,210,63,.55),0 0 0 4px rgba(5,11,26,.7);z-index:88;cursor:pointer;transition:transform .2s}
+.chat-fab.hidden{display:none!important}
+body.chat-open .chat-fab{display:none!important}
+.chat-fab:hover{transform:scale(1.06)}
+.chat-fab i{font-style:normal;font-size:21px;line-height:1}
+.chat-fab .fab-lbl{font-size:7.5px;font-weight:800;letter-spacing:.3px;color:#2a1c00;margin-top:1px}
+.chat-fab::after{content:"";position:absolute;top:3px;right:3px;width:11px;height:11px;border-radius:50%;background:#00E676;border:2px solid #050B1A;animation:mwChatPulse 1.8s infinite}
+.chat-fab-badge{position:absolute;top:-4px;left:-4px;min-width:20px;height:20px;padding:0 5px;border-radius:20px;background:#ef4444;color:#fff;font-size:10px;font-weight:800;display:none;place-items:center;border:2px solid #050B1A;z-index:2}
+.chat-drawer{position:fixed;right:16px;bottom:16px;width:min(380px,calc(100vw - 24px));height:min(580px,calc(100dvh - 32px));z-index:92;display:flex;flex-direction:column;border-radius:20px;overflow:hidden;background:linear-gradient(180deg,rgba(10,22,52,.99),rgba(5,11,26,.99));border:1px solid rgba(255,210,63,.35);box-shadow:0 24px 60px -12px rgba(0,0,0,.85);opacity:0;pointer-events:none;transform:translateY(24px) scale(.96);transform-origin:bottom right;transition:opacity .28s,transform .28s cubic-bezier(.2,.8,.2,1);color:#EAF0FF}
+.chat-drawer.open{opacity:1;pointer-events:auto;transform:none}
+.chat-head{display:flex;align-items:center;justify-content:space-between;gap:10px;padding:max(14px,env(safe-area-inset-top)) 14px 14px;background:linear-gradient(135deg,rgba(255,210,63,.16),rgba(255,255,255,.02));border-bottom:1px solid rgba(255,255,255,.06);color:#EAF0FF}
+.chat-head-left{display:flex;align-items:center;gap:12px;min-width:0}
+.chat-av{width:42px;height:42px;border-radius:50%;display:grid;place-items:center;background:linear-gradient(135deg,#ffe27a,#e49a00);color:#2a1c00;font-size:13px;font-weight:900;letter-spacing:.5px;flex:none;box-shadow:0 0 14px rgba(255,210,63,.45)}
+.chat-head b{display:block;font-size:15px;font-weight:800;color:#EAF0FF}
+.chat-head small{display:flex;align-items:center;gap:6px;font-size:11px;color:#8E9BB8}
+.chat-head .cdot{width:8px;height:8px;border-radius:50%;background:#00E676;box-shadow:0 0 8px #00E676;display:inline-block}
+.chat-close{width:36px;height:36px;border-radius:10px;background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.11);color:#EAF0FF;display:grid;place-items:center;font-size:16px;flex:none;cursor:pointer}
+.chat-officer{display:flex;align-items:center;gap:11px;padding:10px 14px;background:rgba(255,255,255,.045)}
+.chat-officer-av{position:relative;width:44px;height:44px;border-radius:50%;display:grid;place-items:center;background:linear-gradient(135deg,#1f3466,#0c1836);border:2px solid rgba(255,210,63,.55);font-size:18px;flex:none}
+.chat-officer-av::after{content:"";position:absolute;right:0;bottom:0;width:11px;height:11px;background:#00E676;border:2px solid #07102a;border-radius:50%}
+.chat-officer-info{flex:1;min-width:0}.chat-officer-info strong{display:block;font-size:13.5px;color:#EAF0FF}.chat-officer-info span{display:block;font-size:11px;color:#00E676}
+.chat-officer-lbl{font-size:10px;color:#8E9BB8;text-align:right;line-height:1.45}.chat-officer-lbl strong{display:block;font-size:11px;color:#EAF0FF}
+.chat-notice{padding:8px 14px;font-size:11.5px;line-height:1.5;color:#f5d98a;background:rgba(255,210,63,.08);border-bottom:1px solid rgba(255,210,63,.12)}
+.chat-msgs{flex:1;min-height:0;overflow-x:hidden;overflow-y:auto;overscroll-behavior:contain;padding:12px 14px 18px;display:flex;flex-direction:column;gap:8px;background:transparent}
+.chat-div{text-align:center;margin:2px 0 8px;font-size:10px;letter-spacing:1px;color:#8E9BB8}
+.cmsg{max-width:82%;padding:9px 12px;border-radius:14px 14px 14px 4px;background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.08);color:#EAF0FF;font-size:13.5px;line-height:1.5;overflow-wrap:anywhere;align-self:flex-start}
+.cmsg.me{align-self:flex-end;background:linear-gradient(135deg,#ffe27a,#e49a00);border-color:transparent;color:#2a1c00;font-weight:600;border-radius:14px 14px 4px 14px}
+.cmsg small{display:block;font-size:9.5px;opacity:.65;margin-top:3px;text-align:right}
+.chat-bar{display:flex;gap:8px;padding:10px 12px;padding-bottom:max(10px,env(safe-area-inset-bottom));background:#08122b;border-top:1px solid rgba(255,255,255,.08)}
+.chat-bar input{flex:1;min-height:42px;background:#0a1530;border:1px solid rgba(255,255,255,.11);color:#EAF0FF;border-radius:21px;padding:0 14px;font-size:14px;outline:none}
+.chat-bar input:focus{border-color:#FFD23F}
+.chat-bar button{width:42px;height:42px;border-radius:50%;border:0;background:linear-gradient(135deg,#ffe27a,#e49a00);color:#2a1c00;font-size:16px;font-weight:900;flex:none;display:grid;place-items:center;cursor:pointer}
+@media(max-width:600px){.chat-drawer{inset:0;width:100%;max-width:none;height:100dvh;max-height:none;border-radius:0;border:0;transform:translateY(100%)}.chat-drawer.open{transform:none}}
+body.light .chat-drawer{background:linear-gradient(180deg,rgba(10,22,52,.98),rgba(5,11,26,.98));color:#EAF0FF;border-color:rgba(255,210,63,.35)}
+body.light .chat-msgs{background:transparent}
+body.light .cmsg:not(.me){background:rgba(255,255,255,.08);color:#EAF0FF;border-color:rgba(255,255,255,.08)}
+body.light .chat-bar{background:#08122b;border-color:rgba(255,255,255,.08)}
+body.light .chat-bar input{background:#0a1530;color:#EAF0FF;border-color:rgba(255,255,255,.11)}
+
+/* ===== Human-Crafted Midnight Slate Fintech Polish ===== */
+:root{
+  --bg:#080B12;
+  --surface:#0E131D;
+  --panel:#141A27;
+  --panel2:#1A2232;
+  --line:rgba(255,255,255,.08);
+  --gold:#F2B938;
+  --gold2:#FDE68A;
+  --gold-dark:#D49617;
+  --pink:#E11D64;
+  --pink-light:#F43F7A;
+  --green:#10B981;
+  --green-light:#34D399;
+  --blue:#3B82F6;
+  --blue-light:#60A5FA;
+  --red:#EF4444;
+  --red-light:#F87171;
+  --yellow:#F59E0B;
+  --muted:#94A3B8;
+  --text:#F1F5F9;
+}
+body{
+  background:radial-gradient(ellipse at 50% -15%,rgba(59,130,246,.08) 0%,#080B12 65%);
+  color:var(--text);
+  font-family:'Plus Jakarta Sans','Hind Siliguri',system-ui,-apple-system,sans-serif;
+  -webkit-font-smoothing:antialiased;
+  -moz-osx-font-smoothing:grayscale;
+}
+.phone{
+  background:var(--surface);
+  border-left:1px solid rgba(255,255,255,.06);
+  border-right:1px solid rgba(255,255,255,.06);
+  box-shadow:0 0 60px rgba(0,0,0,.65);
+}
+.login{background:radial-gradient(circle at 50% 8%,rgba(225,29,100,.08) 0%,#080B12 65%)}
+.login-form{background:#121826;border:1px solid rgba(255,255,255,.09);border-radius:18px;box-shadow:0 20px 50px rgba(0,0,0,.5)}
+.login-form input,.search,.filter-select,.balance-request-form input,.balance-request-form textarea,.dlg-field select,.dlg-field textarea,.dlg-field input{
+  background:#090D16;
+  border:1px solid rgba(255,255,255,.1);
+  border-radius:11px;
+  color:var(--text);
+}
+.login-form input:focus,.search:focus,.filter-select:focus,.balance-request-form input:focus,.balance-request-form textarea:focus{
+  border-color:var(--pink);
+  box-shadow:0 0 0 3px rgba(225,29,100,.16);
+}
+header{
+  background:rgba(14,19,29,.88);
+  backdrop-filter:blur(16px);
+  -webkit-backdrop-filter:blur(16px);
+  border-bottom:1px solid rgba(255,255,255,.08);
+  box-shadow:none;
+}
+.headbtn{background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.09);border-radius:10px}
+.headbtn:hover{background:rgba(255,255,255,.09);border-color:rgba(255,255,255,.16)}
+.balance{
+  background:linear-gradient(135deg,#2B1022 0%,#521536 55%,#7A1A48 100%);
+  border:1px solid rgba(244,63,122,.28);
+  border-radius:18px;
+  box-shadow:0 14px 32px -12px rgba(0,0,0,.65),inset 0 1px 0 rgba(255,255,255,.08);
+}
+.balance h1{font-variant-numeric:tabular-nums;letter-spacing:-.02em}
+.stat,.quick button,.card,.report-card,.balance-request-form,.ag-wsetup,.home-wallet-bar,.profile,.menu{
+  background:#141A27;
+  border:1px solid rgba(255,255,255,.08);
+  border-radius:16px;
+  box-shadow:0 4px 16px -6px rgba(0,0,0,.35);
+}
+.stat:hover,.quick button:hover{border-color:rgba(255,255,255,.16)}
+.reportlink{background:linear-gradient(135deg,#1C1810,#141A27);border-color:rgba(242,185,56,.26)}
+.primary{
+  background:linear-gradient(135deg,#E11D64,#BE124F);
+  border-radius:12px;
+  box-shadow:0 8px 20px -8px rgba(225,29,100,.5);
+}
+.approve{background:linear-gradient(135deg,#10B981,#059669)}
+.reject{background:linear-gradient(135deg,#EF4444,#DC2626)}
+.complete{background:linear-gradient(135deg,#3B82F6,#2563EB)}
+.tabs{background:#0B1019;border:1px solid rgba(255,255,255,.08);border-radius:12px}
+.tab.active{background:var(--pink);box-shadow:0 4px 12px -4px rgba(225,29,100,.45)}
+.bottom{
+  background:rgba(14,19,29,.92);
+  backdrop-filter:blur(16px);
+  -webkit-backdrop-filter:blur(16px);
+  border-top:1px solid rgba(255,255,255,.08);
+  box-shadow:none;
+}
+.nav.active{color:var(--pink-light)}
+.nav.active:before{background:var(--pink)}
+.dlg,.modal{
+  background:#141A27;
+  border:1px solid rgba(255,255,255,.12);
+  border-radius:20px;
+}
+.dlg-info,.ag-wrow{background:#0B1019;border-color:rgba(255,255,255,.08)}
+.chat-fab{
+  background:linear-gradient(135deg,#F6CA5E,#D8991A);
+  color:#1E1400;
+  border:1.5px solid rgba(255,255,255,.28);
+  box-shadow:0 10px 24px -6px rgba(0,0,0,.65),0 0 0 3px rgba(8,11,18,.85);
+}
+.chat-fab::after{background:#10B981;border-color:#080B12}
+.chat-drawer{
+  background:#0E131D;
+  border:1px solid rgba(242,185,56,.28);
+  border-radius:18px;
+}
+.chat-head{background:rgba(255,255,255,.03);border-bottom:1px solid rgba(255,255,255,.07)}
+.chat-av,.cmsg.me,.chat-bar button{background:linear-gradient(135deg,#F6CA5E,#D8991A);color:#1E1400;box-shadow:none}
+.chat-bar{background:#090D16;border-top:1px solid rgba(255,255,255,.08)}
+.chat-bar input{background:#141A27;border-color:rgba(255,255,255,.1)}
+body.light{background:#EFF3F8;color:#0F172A}
+body.light .phone{background:#F8FAFC;border-color:#E2E8F0;box-shadow:0 0 40px rgba(15,23,42,.08)}
+body.light header,body.light .bottom{background:rgba(255,255,255,.94);border-color:#E2E8F0}
+body.light .stat,body.light .card,body.light .quick button,body.light .menu,body.light .profile,body.light .balance-request-form,body.light .report-card,body.light .ag-wsetup,body.light .home-wallet-bar{
+  background:#FFFFFF;border-color:#E2E8F0;box-shadow:0 1px 3px rgba(15,23,42,.06);
+}
+body.light .tabs{background:#E2E8F0;border-color:#CBD5E1}
+body.light .chat-drawer{background:#0E131D;border-color:rgba(242,185,56,.32)}
+body.light .chat-bar{background:#090D16}
+body.light .chat-bar input{background:#141A27}
+
+/* ===== Bright Yellow & Bright White Theme Override (Default Light Mode) ===== */
+body.light{
+  --bg:#FFFDF5; --surface:#FFFFFF; --panel:#FFFFFF; --panel2:#FFFBEB;
+  --line:#E5E7EB; --gold:#CA8A04; --gold2:#92400E; --gold-dark:#A16207;
+  --pink:#EAB308; --pink-light:#CA8A04; --green:#16A34A; --green-light:#15803D;
+  --blue:#0284C7; --blue-light:#0369A1; --red:#DC2626; --red-light:#B91C1C;
+  --yellow:#D97706; --muted:#475569; --text:#0F172A;
+  background:radial-gradient(ellipse at 50% -10%,rgba(255,214,0,.22) 0%,#FFFDF5 62%) !important;
+  color:#0F172A !important;
+  color-scheme:light;
+}
+body.light .phone{
+  background:#FFFDF5 !important;
+  border-color:#FDE68A !important;
+  box-shadow:0 0 42px rgba(202,138,4,.1) !important;
+  color:#0F172A !important;
+}
+body.light .login{
+  background:radial-gradient(circle at 50% 8%,rgba(255,214,0,.26) 0%,#FFFDF5 62%) !important;
+}
+body.light .login h1{color:#0F172A !important;}
+body.light .login p{color:#475569 !important;}
+body.light .live-label,
+body.light .live-tag{
+  background:#DCFCE7 !important;color:#15803D !important;border-color:#86EFAC !important;
+}
+body.light .login-form{
+  background:#FFFFFF !important;
+  border:1.5px solid #FACC15 !important;
+  box-shadow:0 18px 44px rgba(202,138,4,.14) !important;
+}
+body.light .login-form label{color:#334155 !important;}
+body.light .login-form input,
+body.light .search,
+body.light .filter-select,
+body.light .balance-request-form input,
+body.light .balance-request-form textarea,
+body.light .dlg-field select,
+body.light .dlg-field textarea,
+body.light .dlg-field input{
+  background:#FFFFFF !important;
+  border:1px solid #CBD5E1 !important;
+  color:#0F172A !important;
+}
+body.light .login-form input:focus,
+body.light .search:focus,
+body.light .filter-select:focus,
+body.light .balance-request-form input:focus,
+body.light .balance-request-form textarea:focus,
+body.light .dlg-field select:focus,
+body.light .dlg-field textarea:focus,
+body.light .dlg-field input:focus{
+  border-color:#EAB308 !important;
+  box-shadow:0 0 0 3px rgba(250,204,21,.28) !important;
+}
+body.light .warning{
+  background:#FEF9C3 !important;border:1px solid #FACC15 !important;color:#78350F !important;
+}
+body.light .logo .w,
+body.light .logo .r,
+body.light header .w,
+body.light header .r{color:#111827 !important;}
+body.light .logo .lm{color:#CA8A04 !important;}
+body.light .logo .tag{color:#92400E !important;}
+body.light .lo{filter:none !important;}
+body.light .lo circle[stroke="#fff"],
+body.light header .lo circle[stroke="#fff"]{stroke:#111827 !important;}
+body.light .lo circle[stroke*="255,255,255"]{stroke:rgba(17,24,39,.25) !important;}
+body.light header,
+body.light .bottom{
+  background:rgba(255,255,255,.95) !important;
+  border-color:#FDE68A !important;
+}
+body.light .headbtn{
+  background:#FFFBEB !important;
+  border:1px solid #FDE68A !important;
+  color:#0F172A !important;
+}
+body.light .balance{
+  background:linear-gradient(135deg,#FEF08A 0%,#FFE14D 55%,#FFD000 100%) !important;
+  border:1.5px solid #EAB308 !important;
+  color:#111827 !important;
+  box-shadow:0 12px 28px -8px rgba(234,179,8,.38) !important;
+}
+body.light .balance small,
+body.light .balance h1,
+body.light .balance p{color:#111827 !important;}
+body.light .stat,
+body.light .card,
+body.light .quick button,
+body.light .menu,
+body.light .profile,
+body.light .balance-request-form,
+body.light .report-card,
+body.light .ag-wsetup,
+body.light .home-wallet-bar{
+  background:#FFFFFF !important;
+  border:1px solid #E5E7EB !important;
+  color:#0F172A !important;
+  box-shadow:0 2px 10px rgba(15,23,42,.05) !important;
+}
+body.light .stat:hover,
+body.light .quick button:hover{border-color:#FACC15 !important;}
+body.light .reportlink{
+  background:linear-gradient(135deg,#FEF9C3,#FFFFFF) !important;
+  border:1.5px solid #FACC15 !important;
+  color:#0F172A !important;
+}
+body.light .reportlink b{color:#92400E !important;}
+body.light .primary{
+  background:linear-gradient(135deg,#FFE84D,#FFD000) !important;
+  color:#111827 !important;
+  border:1px solid #EAB308 !important;
+  box-shadow:0 8px 20px -8px rgba(234,179,8,.45) !important;
+  font-weight:800 !important;
+}
+body.light .tabs{
+  background:#FEF9C3 !important;
+  border:1px solid #FDE68A !important;
+}
+body.light .tab{color:#78350F !important;}
+body.light .tab.active{
+  background:linear-gradient(135deg,#FFE84D,#FFD000) !important;
+  color:#111827 !important;
+  font-weight:800 !important;
+  box-shadow:0 3px 10px rgba(234,179,8,.28) !important;
+}
+body.light .ag-wrow{
+  background:#FFFDF5 !important;
+  border:1px solid #FDE68A !important;
+}
+body.light .ag-wrow input{color:#0F172A !important;}
+body.light .ag-wrow-lbl{color:#92400E !important;}
+body.light .ag-whead{border-bottom-color:#F1F5F9 !important;}
+body.light .walletrow{border-bottom-color:#F1F5F9 !important;}
+body.light .walletrow b,
+body.light .menu button,
+body.light .profile b,
+body.light .home-wallet-bar b{color:#0F172A !important;}
+body.light .menu button{border-bottom-color:#F1F5F9 !important;}
+body.light .avatar{
+  background:linear-gradient(135deg,#FFE84D,#FFD000) !important;
+  color:#111827 !important;
+}
+body.light .rseg,
+body.light .bars,
+body.light .report-stats > div{
+  background:#FFFBEB !important;
+  border-color:#FDE68A !important;
+  color:#0F172A !important;
+}
+body.light .rseg button.active{
+  background:#FFD600 !important;
+  color:#111827 !important;
+}
+body.light .report-footer{border-top-color:#E5E7EB !important;color:#475569 !important;}
+body.light .nav{color:#64748B !important;}
+body.light .nav.active{color:#92400E !important;}
+body.light .nav.active:before{background:linear-gradient(90deg,#FFD600,#EAB308) !important;}
+body.light .dlgback,
+body.light .modalback{background:rgba(15,23,42,.45) !important;}
+body.light .dlg,
+body.light .modal{
+  background:#FFFFFF !important;
+  border:1.5px solid #FACC15 !important;
+  color:#0F172A !important;
+  box-shadow:0 24px 60px rgba(15,23,42,.18) !important;
+}
+body.light .dlg h3,
+body.light .modal h3{color:#0F172A !important;}
+body.light .modal p{color:#475569 !important;}
+body.light .dlg-info{background:#FFFBEB !important;border-color:#FDE68A !important;}
+body.light .dlg-info div{border-bottom-color:#FDE68A !important;}
+body.light .dlg-cancel{background:#FFFBEB !important;color:#0F172A !important;border-color:#FDE68A !important;}
+body.light .toast{
+  background:#FFFFFF !important;
+  color:#0F172A !important;
+  border:1px solid #FDE68A !important;
+  border-left:4px solid #FFD600 !important;
+  box-shadow:0 12px 30px rgba(15,23,42,.15) !important;
+}
+body.light .notification-item{background:#FFFDF5 !important;border-color:#E5E7EB !important;color:#0F172A !important;}
+body.light .notification-item.unread{background:#FEF9C3 !important;border-color:#EAB308 !important;}
+body.light .notification-tools button{background:#FFFBEB !important;border-color:#FDE68A !important;color:#0F172A !important;}
+body.light #agentCmsBanner{
+  background:#FEF9C3 !important;border:1.5px solid #EAB308 !important;color:#0F172A !important;
+}
+body.light #agentCmsBanner [style*="#ffd23f" i]{color:#92400E !important;}
+body.light #agentCmsBanner [style*="#eaf0ff" i]{color:#0F172A !important;}
+body.light #agentCmsBanner [style*="#4ade80" i]{color:#15803D !important;}
+body.light .chat-fab{
+  background:linear-gradient(135deg,#FFE84D,#FFD000) !important;
+  color:#111827 !important;
+  border:2px solid #FFFFFF !important;
+  box-shadow:0 10px 24px rgba(234,179,8,.4) !important;
+}
+body.light .chat-fab::after{border-color:#FFFFFF !important;}
+body.light .chat-drawer{
+  background:#FFFFFF !important;
+  color:#0F172A !important;
+  border:1.5px solid #FACC15 !important;
+  box-shadow:0 20px 50px rgba(15,23,42,.18) !important;
+}
+body.light .chat-head{
+  background:linear-gradient(135deg,#FEF9C3,#FFFFFF) !important;
+  border-bottom:1px solid #FDE68A !important;
+  color:#0F172A !important;
+}
+body.light .chat-av,
+body.light .cmsg.me,
+body.light .chat-bar button{
+  background:linear-gradient(135deg,#FFE84D,#FFD000) !important;
+  color:#111827 !important;
+}
+body.light .chat-head b,
+body.light .chat-officer-info strong,
+body.light .chat-officer-lbl strong{color:#0F172A !important;}
+body.light .chat-head small,
+body.light .chat-officer-lbl,
+body.light .chat-div{color:#475569 !important;}
+body.light .chat-close{background:#FFFBEB !important;border-color:#FDE68A !important;color:#0F172A !important;}
+body.light .chat-officer{background:#FFFBEB !important;border-bottom:1px solid #FDE68A !important;}
+body.light .chat-officer-av{background:#FEF08A !important;border-color:#EAB308 !important;}
+body.light .chat-officer-av::after{border-color:#FFFFFF !important;}
+body.light .chat-notice{background:#FEF9C3 !important;color:#78350F !important;border-bottom-color:#FDE68A !important;}
+body.light .cmsg:not(.me){background:#F8FAFC !important;color:#0F172A !important;border-color:#E2E8F0 !important;}
+body.light .chat-bar{background:#FFFDF5 !important;border-top:1px solid #FDE68A !important;}
+body.light .chat-bar input{background:#FFFFFF !important;color:#0F172A !important;border-color:#CBD5E1 !important;}
+
+/* ===== Deep Yellow & Deep Black Dark Mode Override ===== */
+body:not(.light){
+  --bg:#040405; --surface:#0A0A0D; --panel:#101014; --panel2:#17171C;
+  --line:rgba(250,204,21,.18); --gold:#F59E0B; --gold2:#FACC15; --gold-dark:#CA8A04;
+  --pink:#F59E0B; --pink-light:#FACC15; --green:#10B981; --green-light:#34D399;
+  --blue:#FBBF24; --blue-light:#FDE047; --red:#EF4444; --red-light:#F87171;
+  --yellow:#F59E0B; --muted:#A1A1AA; --text:#F8FAFC;
+  background:radial-gradient(ellipse at 50% -15%,rgba(234,179,8,.15) 0%,#040405 65%) !important;
+  color:#F8FAFC !important;
+  color-scheme:dark;
+}
+body:not(.light) .phone{
+  background:#09090B !important;
+  border-color:rgba(245,158,11,.22) !important;
+  color:#F8FAFC !important;
+}
+body:not(.light) .login{
+  background:radial-gradient(circle at 50% 8%,rgba(234,179,8,.16) 0%,#040405 62%) !important;
+}
+body:not(.light) .login-form{
+  background:#0E0E12 !important;
+  border:1.5px solid #D97706 !important;
+  box-shadow:0 20px 50px rgba(0,0,0,.85) !important;
+}
+body:not(.light) .login-form input,
+body:not(.light) .search,
+body:not(.light) .filter-select,
+body:not(.light) .balance-request-form input,
+body:not(.light) .balance-request-form textarea,
+body:not(.light) .dlg-field select,
+body:not(.light) .dlg-field textarea,
+body:not(.light) .dlg-field input{
+  background:#141419 !important;
+  border:1px solid rgba(245,158,11,.28) !important;
+  color:#F8FAFC !important;
+}
+body:not(.light) .login-form input:focus,
+body:not(.light) .search:focus,
+body:not(.light) .filter-select:focus,
+body:not(.light) .balance-request-form input:focus,
+body:not(.light) .balance-request-form textarea:focus,
+body:not(.light) .dlg-field select:focus,
+body:not(.light) .dlg-field textarea:focus,
+body:not(.light) .dlg-field input:focus{
+  border-color:#F59E0B !important;
+  box-shadow:0 0 0 3px rgba(245,158,11,.22) !important;
+}
+body:not(.light) header,
+body:not(.light) .bottom{
+  background:rgba(9,9,11,.94) !important;
+  border-color:rgba(245,158,11,.24) !important;
+}
+body:not(.light) .headbtn{
+  background:#141419 !important;
+  border:1px solid rgba(245,158,11,.32) !important;
+  color:#FACC15 !important;
+}
+body:not(.light) .balance{
+  background:linear-gradient(135deg,#251B04 0%,#12100A 58%,#09090B 100%) !important;
+  border:1.5px solid #EAB308 !important;
+  color:#F8FAFC !important;
+  box-shadow:0 14px 32px -12px rgba(0,0,0,.85) !important;
+}
+body:not(.light) .balance h1{color:#FACC15 !important;}
+body:not(.light) .stat,
+body:not(.light) .quick button,
+body:not(.light) .card,
+body:not(.light) .report-card,
+body:not(.light) .balance-request-form,
+body:not(.light) .ag-wsetup,
+body:not(.light) .home-wallet-bar,
+body:not(.light) .profile,
+body:not(.light) .menu{
+  background:#101014 !important;
+  border:1px solid rgba(250,204,21,.18) !important;
+  color:#F8FAFC !important;
+}
+body:not(.light) .stat:hover,
+body:not(.light) .quick button:hover{border-color:#EAB308 !important;}
+body:not(.light) .reportlink{
+  background:linear-gradient(135deg,#1C1504,#101014) !important;
+  border-color:rgba(245,158,11,.4) !important;
+}
+body:not(.light) .primary{
+  background:linear-gradient(135deg,#FACC15,#CA8A04) !important;
+  color:#09090B !important;
+  border:1px solid #F59E0B !important;
+  font-weight:800 !important;
+  box-shadow:0 8px 20px -8px rgba(234,179,8,.42) !important;
+}
+body:not(.light) .tabs{background:#121216 !important;border:1px solid rgba(245,158,11,.2) !important;}
+body:not(.light) .tab{color:#A1A1AA !important;}
+body:not(.light) .tab.active{background:linear-gradient(135deg,#FACC15,#CA8A04) !important;color:#09090B !important;font-weight:800 !important;box-shadow:none !important;}
+body:not(.light) .avatar{background:linear-gradient(135deg,#FACC15,#CA8A04) !important;color:#09090B !important;}
+body:not(.light) .ag-wrow,
+body:not(.light) .dlg-info,
+body:not(.light) .rseg,
+body:not(.light) .bars,
+body:not(.light) .report-stats > div{
+  background:#141419 !important;border-color:rgba(245,158,11,.22) !important;
+}
+body:not(.light) .rseg button.active{background:#F59E0B !important;color:#09090B !important;}
+body:not(.light) .nav{color:#A1A1AA !important;}
+body:not(.light) .nav.active{color:#FACC15 !important;}
+body:not(.light) .nav.active:before{background:linear-gradient(90deg,#FACC15,#D97706) !important;}
+body:not(.light) .dlg,
+body:not(.light) .modal,
+body:not(.light) .toast{
+  background:#101014 !important;border:1.5px solid #D97706 !important;color:#F8FAFC !important;
+}
+body:not(.light) .dlg-cancel,
+body:not(.light) .notification-tools button{background:#18181D !important;border-color:rgba(245,158,11,.24) !important;color:#F8FAFC !important;}
+body:not(.light) .notification-item{background:#121216 !important;border-color:rgba(245,158,11,.18) !important;}
+body:not(.light) .notification-item.unread{background:#1F1704 !important;border-color:#F59E0B !important;}
+body:not(.light) .chat-fab{
+  background:linear-gradient(135deg,#FACC15,#CA8A04) !important;color:#09090B !important;border:1.5px solid #FDE047 !important;
+}
+body:not(.light) .chat-fab::after{border-color:#040405 !important;}
+body:not(.light) .chat-drawer{background:#0A0A0D !important;border:1.5px solid #D97706 !important;color:#F8FAFC !important;}
+body:not(.light) .chat-head{background:#121216 !important;border-bottom-color:rgba(245,158,11,.24) !important;}
+body:not(.light) .chat-av,
+body:not(.light) .cmsg.me,
+body:not(.light) .chat-bar button{background:linear-gradient(135deg,#FACC15,#CA8A04) !important;color:#09090B !important;}
+body:not(.light) .chat-officer{background:#101014 !important;}
+body:not(.light) .chat-officer-av{background:#1C1504 !important;border-color:#EAB308 !important;}
+body:not(.light) .chat-notice{background:#1A1508 !important;color:#FDE68A !important;}
+body:not(.light) .chat-bar{background:#09090B !important;border-top-color:rgba(245,158,11,.22) !important;}
+body:not(.light) .chat-bar input{background:#141419 !important;border-color:rgba(245,158,11,.28) !important;color:#F8FAFC !important;}
+
+/* ===== Clean Human-Crafted App UI Polish (Zero AI Glare) ===== */
+body.light,body.light .login{background:#F5F6F8 !important;}
+body:not(.light),body:not(.light) .login{background:#09090B !important;}
+body.light .phone{background:#F5F6F8 !important;}
+body:not(.light) .phone{background:#09090B !important;}
+body.light header,body.light .bottom{background:#FFFFFF !important;border-color:#E5E7EB !important;backdrop-filter:none !important;}
+body:not(.light) header,body:not(.light) .bottom{background:#0C0C0E !important;border-color:#1E1E24 !important;backdrop-filter:none !important;}
+.stat,.card,.quick button,.menu,.profile,.balance-request-form,.report-card,.ag-wsetup,.home-wallet-bar,.login-form,.dlg,.modal,.toast{border-radius:8px !important;box-shadow:none !important;}
+body.light .stat,body.light .card,body.light .quick button,body.light .menu,body.light .profile,body.light .balance-request-form,body.light .report-card,body.light .ag-wsetup,body.light .home-wallet-bar,body.light .login-form{background:#FFFFFF !important;border:1px solid #E5E7EB !important;}
+body:not(.light) .stat,body:not(.light) .card,body:not(.light) .quick button,body:not(.light) .menu,body:not(.light) .profile,body:not(.light) .balance-request-form,body:not(.light) .report-card,body:not(.light) .ag-wsetup,body:not(.light) .home-wallet-bar,body:not(.light) .login-form{background:#111115 !important;border:1px solid #222228 !important;}
+.balance{border-radius:8px !important;box-shadow:none !important;}
+body.light .balance{background:#FFFFFF !important;border:1px solid #E5E7EB !important;border-left:4px solid #EAB308 !important;}
+body:not(.light) .balance{background:#111115 !important;border:1px solid #27272A !important;border-left:4px solid #EAB308 !important;}
+.primary,.headbtn,.tabs,.tab,.rseg button,.dlg-cancel,input,select,textarea{border-radius:6px !important;box-shadow:none !important;}
+body.light .primary,body.light .tab.active,body.light .rseg button.active{background:#FACC15 !important;border:1px solid #CA8A04 !important;color:#111827 !important;font-weight:600 !important;}
+body:not(.light) .primary,body:not(.light) .tab.active,body:not(.light) .rseg button.active{background:#EAB308 !important;border:1px solid #CA8A04 !important;color:#09090B !important;font-weight:700 !important;}
+</style>
+</head>
+<body>
+<script>try{if(localStorage.getItem('mw_agent_theme_v3')==='light'){document.body.classList.add('light');var _am=document.querySelector('meta[name="theme-color"]');if(_am)_am.setAttribute('content','#FFFFFF');}}catch(e){}</script>
+
+<div class="phone">
+
+<!-- LOGIN -->
+<section id="login" class="login" style="position:relative;">
+ <button type="button" class="headbtn" id="loginThemeToggle" onclick="toggleTheme()" title="ডার্ক / লাইট থিম" style="position:absolute;top:14px;right:14px;z-index:5;">☀</button>
+ <div class="loginbox">
+  <div class="logo" id="loginLogoWrap">
+   <span class="lm"><span class="w">M</span><span class="lo"><svg viewBox="0 0 100 100" aria-hidden="true"><g class="lo-r"><circle cx="50" cy="50" r="43" fill="none" stroke="rgba(255,255,255,.4)" stroke-width="14"/><circle cx="50" cy="50" r="43" fill="none" stroke="#fff" stroke-width="14" stroke-dasharray="7.4 3.86"/></g><circle cx="50" cy="50" r="18" fill="#ffd23f"/><circle cx="50" cy="50" r="18" fill="none" stroke="#fff2b3" stroke-width="3"/></svg></span><span class="w">ST</span>WIN<span class="r">88</span></span>
+   <span class="tag" id="loginTag">PLAY BIG, WIN BIGGER</span>
+  </div>
+  <h1>AGENT WORKSPACE</h1>
+  <p>MOSTWIN88 প্রো ক্যাসিনো লাইভ এজেন্ট প্যানেল</p>
+  <div class="live-label">● LIVE BACKEND CONNECTED (mostwin88-febbf)</div>
+  <form class="login-form" onsubmit="agentLogin(event)">
+   <div id="loginError" class="login-err"></div>
+   <label for="agentLoginId">Agent Email বা Username</label>
+   <input id="agentLoginId" type="text" value="" placeholder="এজেন্ট ইমেইল বা ইউজারনেম লিখুন" required autocomplete="username">
+   <label for="agentLoginPassword">পাসওয়ার্ড (Password)</label>
+   <div class="pw-wrap">
+    <input id="agentLoginPassword" type="password" value="" placeholder="আপনার পাসওয়ার্ড লিখুন" required autocomplete="current-password">
+    <button type="button" class="pw-eye" onclick="toggleAgentPw(this)">দেখুন</button>
+   </div>
+   <button class="primary" id="btnAgentLogin" type="submit">AGENT LOGIN →</button>
+  </form>
+  <div class="warning">🔒 শুধুমাত্র Master Admin বা User Admin কর্তৃক অনুমোদিত ও সক্রিয় Agent অ্যাকাউন্ট দিয়েই লগইন করা যাবে।</div>
+ </div>
+</section>
+
+<!-- MAIN APP -->
+<div id="mainApp" class="hidden">
+<header>
+ <div class="brand">
+  <div class="logo sm" id="headerLogoWrap">
+   <span class="lm"><span class="w">M</span><span class="lo"><svg viewBox="0 0 100 100" aria-hidden="true"><g class="lo-r"><circle cx="50" cy="50" r="43" fill="none" stroke="rgba(255,255,255,.4)" stroke-width="14"/><circle cx="50" cy="50" r="43" fill="none" stroke="#fff" stroke-width="14" stroke-dasharray="7.4 3.86"/></g><circle cx="50" cy="50" r="18" fill="#ffd23f"/><circle cx="50" cy="50" r="18" fill="none" stroke="#fff2b3" stroke-width="3"/></svg></span><span class="w">ST</span>WIN<span class="r">88</span></span>
+   <span class="tag" id="headerTag">PLAY BIG, WIN BIGGER</span>
+  </div>
+ </div>
+ <div class="header-right">
+  <button class="headbtn compact" id="languageToggle" onclick="toggleLanguage()">EN</button>
+  <button class="headbtn" id="themeToggle" onclick="toggleTheme()">☾</button>
+  <button class="headbtn notification-btn" onclick="showNotifications()">🔔<span id="notificationBadge" class="notification-badge hidden">0</span></button>
+ </div>
+</header>
+
+<div class="content">
+
+<!-- HOME -->
+<section class="page active" id="home">
+ <div class="title" id="welcomeTitle">স্বাগতম, Agent 👋</div>
+ <div class="subtitle" id="welcomeSub">আপনার লাইভ Agent Dashboard</div>
+ <div class="live-tag" id="connStatusTag">● রিয়েলটাইম সার্ভার সংযুক্ত</div>
+
+ <!-- BALANCE CARD -->
+ <div class="balance">
+  <small>MY AGENT WALLET BALANCE</small>
+  <h1 id="agentBalanceHome">৳ 0</h1>
+  <p id="agentParentMeta">রিয়েল অপারেশনাল ব্যালেন্স • সরাসরি অ্যাডমিন প্যানেল যুক্ত</p>
+ </div>
+
+ <!-- QUICK USER PANEL WALLET ON/OFF -->
+ <div class="home-wallet-bar">
+  <div style="min-width:0;flex:1" onclick="go('wallet')">
+   <b id="homeWalletBarTitle">User Panel Wallet: 🔴 বন্ধ (OFF)</b>
+   <small id="homeWalletBarSub">নম্বর সেট ও ON/OFF করতে ট্যাপ করুন</small>
+  </div>
+  <label class="sw" title="User Panel-এ ওয়ালেট নম্বর ON/OFF"><input type="checkbox" id="homeWalletToggle" onchange="toggleAgentWalletMaster(this.checked)"><i></i></label>
+ </div>
+
+ <!-- LIVE ADMIN / MASTER CMS BANNER -->
+ <div id="agentCmsBanner" style="display:none;margin:10px 0 12px;padding:12px 14px;border-radius:14px;background:rgba(255,210,63,.08);border:1px solid rgba(255,210,63,.28);font-size:12.5px;line-height:1.55"></div>
+
+ <!-- 4 STATS BOXES -->
+ <div class="sectiontitle"><h3 id="secOverviewTitle">আজকের সারাংশ (Live Overview)</h3></div>
+ <div class="stats">
+  <div class="stat stat-pending" onclick="go('deposit')">
+   <div class="stat-top">
+    <div class="stat-icon">📥</div>
+    <span class="stat-chip">Pending</span>
+   </div>
+   <h2 id="pendingCount">0</h2>
+   <small>পেন্ডিং ডিপোজিট</small>
+  </div>
+
+  <div class="stat stat-withdraw" onclick="go('withdraw')">
+   <div class="stat-top">
+    <div class="stat-icon">📤</div>
+    <span class="stat-chip">Assigned</span>
+   </div>
+   <h2 id="withdrawCount">0</h2>
+   <small>অ্যাসাইনড উইথড্র</small>
+  </div>
+
+  <div class="stat stat-approved" onclick="go('deposit')">
+   <div class="stat-top">
+    <div class="stat-icon">✅</div>
+    <span class="stat-chip">Approved</span>
+   </div>
+   <h2 id="approvedCount">0</h2>
+   <small>অনুমোদিত ডিপোজিট</small>
+  </div>
+
+  <div class="stat stat-completed" onclick="go('withdraw')">
+   <div class="stat-top">
+    <div class="stat-icon">💰</div>
+    <span class="stat-chip">Completed</span>
+   </div>
+   <h2 id="completedCount">0</h2>
+   <small>সম্পন্ন উইথড্র</small>
+  </div>
+ </div>
+
+ <div class="sectiontitle"><h3>Quick Actions</h3></div>
+ <div class="quick">
+  <button onclick="go('deposit')"><span>📥</span><b>Deposit Verification</b><small>প্লেয়ার ডিপোজিট যাচাই ও অনুমোদন</small></button>
+  <button onclick="go('withdraw')"><span>📤</span><b>Withdrawal Payment</b><small>অ্যাসাইন করা ক্যাশআউট পেমেন্ট</small></button>
+  <button onclick="go('report')"><span>📊</span><b>1-Month Reports</b><small>দৈনিক · সাপ্তাহিক · মাসিক হিসাব</small></button>
+  <button onclick="go('wallet')"><span>💳</span><b>My Wallet</b><small>ব্যালেন্স ও অ্যাডমিন রিকোয়েস্ট</small></button>
+ </div>
+</section>
+
+<!-- DEPOSIT -->
+<section class="page" id="deposit">
+ <div class="title">Deposit Verification</div>
+ <div class="subtitle">Player Deposit Request যাচাই করুন ও অনুমোদন/বাতিল করুন।</div>
+ <select class="filter-select" id="depositFilterSelect" aria-label="Deposit Status Filter" onchange="setFilter('deposit', this.value)">
+  <option value="Pending" id="optDepPending">Pending (0)</option>
+  <option value="Approved" id="optDepApproved">Approved (0)</option>
+  <option value="Rejected" id="optDepRejected">Rejected (0)</option>
+  <option value="All" id="optDepAll">All (0)</option>
+ </select>
+ <input class="search" id="depositSearch" placeholder="Search ID / Player / TRX / Method / Sender" oninput="renderDeposits()">
+ <div id="depositList"></div>
+</section>
+
+<!-- WITHDRAW -->
+<section class="page" id="withdraw">
+ <div class="title">Assigned Withdrawals</div>
+ <div class="subtitle">User Admin যাচাই করে আপনার কাছে পাঠানো পেমেন্টসমূহ · টাকা পাঠিয়ে Confirm করলে আপনার Wallet-এ যোগ হবে।</div>
+ <select class="filter-select" id="withdrawFilterSelect" aria-label="Withdraw Status Filter" onchange="setFilter('withdraw', this.value)">
+  <option value="Assigned" id="optWdAssigned">Pending / Assigned (0)</option>
+  <option value="Completed" id="optWdCompleted">Completed (0)</option>
+  <option value="All" id="optWdAll">All (0)</option>
+ </select>
+ <input class="search" id="withdrawSearch" placeholder="Search ID / Player / Method / Number" oninput="renderWithdrawals()">
+ <div id="withdrawList"></div>
+</section>
+
+<!-- REPORT -->
+<section class="page" id="report">
+ <div class="title">Reports & Analytics</div>
+ <div class="subtitle">কোন দিনে কত টাকা Deposit (+) ও Withdraw (−) হয়েছে তা রিয়েলটাইমে দেখুন (সর্বোচ্চ ৩১ দিন)।</div>
+ <div class="report-card">
+  <div class="report-heading"><div><b>TRANSACTION ANALYTICS</b><small>Daily · Weekly · Monthly · Custom (১ মাস পর্যন্ত)</small></div><span style="font-size:24px">📊</span></div>
+  <div class="rseg" id="reportSeg">
+   <select id="reportModeSelect" class="filter-select" aria-label="Report Mode" onchange="setReportMode(this.value)">
+    <option value="daily">Daily</option>
+    <option value="weekly">Weekly</option>
+    <option value="monthly">Monthly</option>
+    <option value="range">Custom Range</option>
+   </select>
+  </div>
+  <div class="rdate" id="dateRow"><button type="button" onclick="shiftReport(-1)">‹</button><input id="reportDate" type="date" onchange="renderTransactionReport()"><button type="button" onclick="shiftReport(1)">›</button></div>
+  <div class="rrange hidden" id="rangeRow"><div><label for="reportFrom">শুরুর তারিখ</label><input id="reportFrom" type="date" onchange="renderTransactionReport()"></div><div><label for="reportTo">শেষ তারিখ</label><input id="reportTo" type="date" onchange="renderTransactionReport()"></div></div>
+  <div class="rnote" id="reportNote"></div>
+  <div class="report-range" id="reportRange"></div>
+  <div class="report-stats">
+   <div><small>Total Deposit (+)</small><b id="reportPlus">+৳ 0</b></div>
+   <div><small>Total Withdrawal (−)</small><b id="reportMinus">−৳ 0</b></div>
+   <div><small>Net Amount</small><b id="reportNet">৳ 0</b></div>
+  </div>
+  <div class="bars hidden" id="reportBars"></div>
+  <div id="transactionReportList" class="transaction-report-list"></div>
+  <div class="report-footer" id="reportFooter">সরাসরি লাইভ সার্ভার থেকে ৬০ দিনের রিয়েল লেনদেন ইতিহাস প্রদর্শিত হচ্ছে।</div>
+ </div>
+</section>
+
+<!-- WALLET -->
+<section class="page" id="wallet">
+ <div class="title">My Wallet</div>
+ <div class="subtitle">Agent Wallet Overview ও Admin-এর কাছে ব্যালেন্স রিকোয়েস্ট।</div>
+ <div class="balance">
+  <small>AVAILABLE AGENT BALANCE</small>
+  <h1 id="agentBalanceWallet">৳ 0</h1>
+  <p>রিয়েল অপারেশনাল ব্যালেন্স • সরাসরি সিঙ্ককৃত</p>
+ </div>
+ <div class="card">
+  <div class="walletrow"><span>Available Balance</span><b id="availableBalanceText" style="color:var(--green-light)">৳ 0</b></div>
+  <div class="walletrow"><span>Reserved (Pending Withdrawals)</span><b id="reservedBalanceText">৳ 0</b></div>
+  <div class="walletrow"><span>Received from Admin</span><b id="receivedBalanceText">৳ 0</b></div>
+  <div class="walletrow"><span>Completed Deposits</span><b id="completedDepositsText" style="color:var(--blue-light)">৳ 0</b></div>
+  <div class="walletrow"><span>Completed Withdrawals</span><b id="completedPaymentsText" style="color:var(--gold2)">৳ 0</b></div>
+ </div>
+ <button class="reportlink" type="button" onclick="go('report')"><span style="font-size:24px">📊</span><span style="flex:1"><b>পূর্ণ লেনদেন রিপোর্ট দেখুন</b><small>Daily · Weekly · Monthly · Custom (১ মাস পর্যন্ত)</small></span><em style="font-size:22px;font-style:normal">›</em></button>
+
+ <div class="sectiontitle"><h3>আমার ডিপোজিট ওয়ালেট নম্বর (ON / OFF)</h3></div>
+ <div class="ag-wsetup">
+  <div class="ag-whead">
+   <div>
+    <b style="font-size:13.5px;display:block">User Panel-এ নম্বর প্রদর্শন</b>
+    <small style="color:var(--muted);font-size:10.5px">ON করলে User Panel ডিপোজিটে আপনার নম্বর দেখাবে, OFF করলে লুকানো থাকবে</small>
+   </div>
+   <label class="sw" title="Master Wallet ON/OFF"><input type="checkbox" id="agWalletMasterToggle" onchange="toggleAgentWalletMaster(this.checked)"><i></i></label>
+  </div>
+  <div id="agWalletLiveStatus" class="ag-wstatus off">🔴 ওয়ালেট বন্ধ (OFF) — User Panel-এ আপনার নম্বর শো করছে না</div>
+  <div class="ag-wrow"><span class="ag-wrow-lbl">bKash</span><input id="agNum_bKash" type="tel" inputmode="numeric" placeholder="01XXXXXXXXX"><label class="sw" title="bKash ON/OFF"><input type="checkbox" id="agOn_bKash" checked onchange="toggleAgentMethodSwitch()"><i></i></label></div>
+  <div class="ag-wrow"><span class="ag-wrow-lbl">Nagad</span><input id="agNum_Nagad" type="tel" inputmode="numeric" placeholder="01XXXXXXXXX"><label class="sw" title="Nagad ON/OFF"><input type="checkbox" id="agOn_Nagad" checked onchange="toggleAgentMethodSwitch()"><i></i></label></div>
+  <div class="ag-wrow"><span class="ag-wrow-lbl">Rocket</span><input id="agNum_Rocket" type="tel" inputmode="numeric" placeholder="01XXXXXXXXX"><label class="sw" title="Rocket ON/OFF"><input type="checkbox" id="agOn_Rocket" checked onchange="toggleAgentMethodSwitch()"><i></i></label></div>
+  <div class="ag-wrow"><span class="ag-wrow-lbl">Upay</span><input id="agNum_Upay" type="tel" inputmode="numeric" placeholder="01XXXXXXXXX"><label class="sw" title="Upay ON/OFF"><input type="checkbox" id="agOn_Upay" checked onchange="toggleAgentMethodSwitch()"><i></i></label></div>
+  <button class="primary" id="btnSaveAgentWallet" type="button" style="margin-top:14px" onclick="saveAgentWalletNumbers()">💾 ওয়ালেট নম্বর ও ON/OFF সেভ করুন</button>
+ </div>
+
+ <div class="sectiontitle"><h3>Request Balance from Admin</h3></div>
+ <div class="balance-request-form">
+  <div class="subtitle" style="margin-top:0">আপনার Wallet-এ পর্যাপ্ত টাকা না থাকলে Admin-এর কাছে নতুন Balance Request পাঠান।</div>
+  <label for="balanceRequestAmount">কত টাকা প্রয়োজন? (৳)</label>
+  <input id="balanceRequestAmount" type="number" min="1" step="1" placeholder="যেমন: 5000">
+  <label for="balanceRequestReason">Request-এর কারণ</label>
+  <textarea id="balanceRequestReason" placeholder="কেন Balance প্রয়োজন তা লিখুন..."></textarea>
+  <button class="primary" id="btnSubmitBalanceReq" type="button" onclick="submitBalanceRequest()">📨 SEND REQUEST TO ADMIN</button>
+ </div>
+ <div class="sectiontitle"><h3>My Balance Requests</h3></div>
+ <div id="balanceRequestList"></div>
+</section>
+
+<!-- PROFILE -->
+<section class="page" id="profile">
+ <div class="title">My Profile</div>
+ <div class="subtitle">Agent Account Information ও সেটিংস।</div>
+ <div class="profile">
+  <div class="avatar" id="profileAvatar">A</div>
+  <div><b id="profileName">Agent</b><small id="profileMeta">—</small></div>
+ </div>
+ <div class="menu">
+  <button onclick="openAccountModal()">👤 Account Information　›</button>
+  <button onclick="openSupportModal()">💬 Admin Support　›</button>
+  <button onclick="openSettingsModal()">⚙️ App Settings　›</button>
+  <button onclick="openSecurityModal()">🔐 Security & Activity　›</button>
+  <div id="mw-biometric-slot"></div>
+  <button onclick="logout()" style="color:#ff8198">↪ Sign Out</button>
+ </div>
+</section>
+
+</div>
+
+<!-- BOTTOM NAV -->
+<nav class="bottom">
+ <button class="nav active" onclick="go('home',this)"><span>⌂</span>Home</button>
+ <button class="nav" onclick="go('deposit',this)"><span>↓</span>Deposit</button>
+ <button class="nav" onclick="go('withdraw',this)"><span>↑</span>Withdraw</button>
+ <button class="nav" onclick="go('report',this)"><span>▤</span>Report</button>
+ <button class="nav" onclick="go('wallet',this)"><span>▣</span>Wallet</button>
+ <button class="nav" onclick="go('profile',this)"><span>●</span>Profile</button>
+</nav>
+</div>
+</div>
+
+<!-- CENTER POPUP DIALOG -->
+<div id="dlgBack" class="dlgback" onclick="if(event.target===this)closeDialog()">
+ <div id="dlgBox" class="dlg ok" role="dialog" aria-modal="true">
+  <div class="dlg-icon" id="dlgIcon">✓</div>
+  <h3 id="dlgTitle"></h3>
+  <div class="dlg-info" id="dlgInfo"></div>
+  <div class="dlg-field hidden" id="dlgTrxWrap">
+   <label for="dlgTrxInput">পেমেন্ট ট্রানজেকশন আইডি (Payment TrxID / Reference):</label>
+   <input id="dlgTrxInput" type="text" maxlength="60" placeholder="যেমন: BKX9823412">
+  </div>
+  <div class="dlg-field" id="dlgReasonWrap">
+   <label for="dlgReason">বাতিলের কারণ নির্বাচন করুন (আবশ্যক):</label>
+   <select id="dlgReason" onchange="dlgReasonChange()"></select>
+  </div>
+  <div class="dlg-field hidden" id="dlgNoteWrap">
+   <label for="dlgNote">কারণটি বিস্তারিত লিখুন:</label>
+   <textarea id="dlgNote" maxlength="160" placeholder="সংক্ষেপে কারণ উল্লেখ করুন..."></textarea>
+  </div>
+  <div class="dlg-err hidden" id="dlgErr"></div>
+  <div class="dlg-btns">
+   <button type="button" class="dlg-cancel" onclick="closeDialog()">ফিরে যান</button>
+   <button type="button" id="dlgOk" class="dlg-ok ok" onclick="confirmDialog()">নিশ্চিত করুন</button>
+  </div>
+ </div>
+</div>
+
+<div id="toast" class="toast"></div>
+
+<!-- GENERAL MODAL -->
+<div id="modalBack" class="modalback" onclick="if(event.target===this)closeModal()">
+ <div class="modal">
+  <h3 id="modalTitle"></h3>
+  <p id="modalText"></p>
+  <button class="primary" onclick="closeModal()">CLOSE</button>
+ </div>
+</div>
+
+<!-- FLOATING LIVE CHAT FAB & DRAWER (user.html Style) -->
+<button type="button" id="liveChatFab" class="chat-fab hidden" onclick="toggleAgentLiveChat()" aria-label="Customer Support" title="অ্যাডমিনের সাথে লাইভ চ্যাট">
+ <i>🎧</i><span class="fab-lbl">SUPPORT</span>
+ <span id="liveChatFabBadge" class="chat-fab-badge">0</span>
+</button>
+<div id="liveChatDrawer" class="chat-drawer" role="dialog" aria-label="User Admin Live Chat">
+ <div class="chat-head">
+  <div class="chat-head-left">
+   <span class="chat-av">MW</span>
+   <div>
+    <b>MOSTWIN88</b>
+    <small><i class="cdot"></i><span>Agent Support Center</span></small>
+   </div>
+  </div>
+  <button type="button" class="chat-close" onclick="toggleAgentLiveChat(false)" aria-label="Close">✕</button>
+ </div>
+ <div class="chat-officer">
+  <div class="chat-officer-av">👑</div>
+  <div class="chat-officer-info">
+   <strong>Admin Support <span style="color:#4aa8ff">✓</span></strong>
+   <span id="agentChatSub">● Online Support</span>
+  </div>
+  <div class="chat-officer-lbl"><strong>Support Desk</strong>আমরা পাশে আছি</div>
+ </div>
+ <div id="agentChatNotice" class="chat-notice">🔒 আপনার পাসওয়ার্ড, PIN বা OTP কখনো শেয়ার করবেন না।</div>
+ <div id="agentChatMsgs" class="chat-msgs"></div>
+ <form class="chat-bar" onsubmit="sendAgentLiveChat(event)">
+  <input id="agentChatInput" type="text" placeholder="অ্যাডমিনকে সরাসরি লাইভ মেসেজ লিখুন..." autocomplete="off" maxlength="1000">
+  <button type="submit" aria-label="Send">➤</button>
+ </form>
+</div>
+
+<script>
+const FIREBASE_CONFIG = window.NP_FIREBASE_CONFIG || {
+  apiKey: "AIzaSyACoy90K8WHdxSU3_KtUiwWNPHGErT0P3w",
+  authDomain: "mostwin88-febbf.firebaseapp.com",
+  databaseURL: "https://mostwin88-febbf-default-rtdb.asia-southeast1.firebasedatabase.app",
+  projectId: "mostwin88-febbf",
+  storageBucket: "mostwin88-febbf.firebasestorage.app",
+  messagingSenderId: "1091271266801",
+  appId: "1:1091271266801:web:0b4da03572189864077450",
+  measurementId: "G-5Q07GB1YD6"
+};
+
+const agentApp = firebase.apps.find(a => a.name === 'mwAgentApp') || firebase.initializeApp(FIREBASE_CONFIG, 'mwAgentApp');
+const auth = agentApp.auth();
+const db = agentApp.database();
+const TS = firebase.database.ServerValue.TIMESTAMP;
+try { auth.setPersistence(firebase.auth.Auth.Persistence.LOCAL).catch(() => {}); } catch (e) {}
+
+let currentAgentUid = null;
+let agentProfile = null;
+let deposits = [];
+let withdrawals = [];
+let balanceRequests = [];
+let agentTransactions = [];
+let usersMap = {};
+let globalSettings = {};
+let globalCms = {};
+let adminCms = {};
+let depositPromotions = {};
+let boundParentAdminId = '';
+let parentAdminCmsRef = null;
+let rawNotifications = [];
+let notifications = [];
+let readNotifIds = {};
+try { readNotifIds = JSON.parse(localStorage.getItem('mw_agent_read_notifs') || '{}'); } catch (e) {}
+
+let depFilter = 'Pending';
+let wdFilter = 'Assigned';
+let reportMode = 'daily';
+let currentLanguage = 'bn';
+let currentTheme = (function(){ try { return localStorage.getItem('mw_agent_theme_v3') === 'light' ? 'light' : 'dark'; } catch (e) { return 'dark'; } })();
+let listeners = [];
+
+/* Exact logo tagline alignment */
+function fitLogo(wrapId, tagId) {
+  const wrap = document.getElementById(wrapId);
+  const tag = document.getElementById(tagId);
+  if (!wrap || !tag) return;
+  const m = wrap.querySelector('.lm');
+  if (!m) return;
+  const mRect = m.getBoundingClientRect();
+  if (mRect.width <= 0) return;
+  const fs = parseFloat(getComputedStyle(m).fontSize) || 24;
+  const bleed = fs * 0.025;
+  const W = mRect.width - 2 * bleed;
+  if (W <= 0) return;
+  if (!tag.dataset.baseFs) tag.dataset.baseFs = parseFloat(getComputedStyle(tag).fontSize) || 8;
+  const baseFs = parseFloat(tag.dataset.baseFs) || 8;
+  tag.style.fontSize = baseFs + 'px';
+  tag.style.letterSpacing = '0px';
+  tag.style.width = 'max-content';
+  tag.style.display = 'block';
+  tag.style.position = 'relative';
+  tag.style.left = '0px';
+  tag.style.marginLeft = '0px';
+  tag.style.marginRight = '0px';
+  let w0 = tag.getBoundingClientRect().width;
+  if (w0 > W && w0 > 0) {
+    const adjFs = Math.max(5.0, baseFs * (W / w0) * 0.98);
+    tag.style.fontSize = adjFs.toFixed(2) + 'px';
+    w0 = tag.getBoundingClientRect().width;
+  }
+  const chars = Array.from(tag.textContent.trim()).length;
+  if (chars > 1 && w0 > 0) {
+    const ls = Math.max(-0.5, (W - w0) / (chars - 1));
+    tag.style.letterSpacing = ls.toFixed(3) + 'px';
+    tag.style.marginRight = (-ls).toFixed(3) + 'px';
+  }
+  const dx = Math.max(-8, Math.min(8, (mRect.left + bleed) - tag.getBoundingClientRect().left));
+  tag.style.left = dx.toFixed(2) + 'px';
+}
+function fitAllLogos() {
+  fitLogo('loginLogoWrap', 'loginTag');
+  fitLogo('headerLogoWrap', 'headerTag');
+}
+window.mwFitLogos = fitAllLogos;
+window.addEventListener('load', fitAllLogos);
+window.addEventListener('resize', fitAllLogos);
+if (document.fonts && document.fonts.ready) document.fonts.ready.then(fitAllLogos);
+
+function detachListeners() {
+  listeners.forEach(r => { try { r.off(); } catch (e) {} });
+  listeners = [];
+  if (parentAdminCmsRef) {
+    try { parentAdminCmsRef.off(); } catch (e) {}
+    parentAdminCmsRef = null;
+  }
+  boundParentAdminId = '';
+}
+
+function attachListener(ref, cb, errCb) {
+  ref.on('value', cb, errCb || function (err) {
+    console.warn('Listener error:', err && err.message ? err.message : err);
+  });
+  listeners.push(ref);
+}
+
+function sanitizeAgentMsg(v) {
+  return String(v || '')
+    .replace(/Firebase:\s*/gi, '')
+    .replace(/\s*\(auth\/[^)]+\)\.?/gi, '')
+    .replace(/\b(firebase|github|render)\b/gi, 'server')
+    .replace(/ফায়ারবেস|ফায়ারবেস|গিটহাব|রেন্ডার/g, 'সার্ভার')
+    .trim();
+}
+function translateAgentAuthErr(err) {
+  const code = (err && err.code) || '';
+  if (code === 'auth/invalid-credential' || code === 'auth/wrong-password' || code === 'auth/user-not-found' || code === 'auth/invalid-login-credentials') {
+    return 'ভুল এজেন্ট ইমেইল/ইউজারনেম অথবা পাসওয়ার্ড! সঠিক তথ্য দিয়ে আবার চেষ্টা করুন।';
+  }
+  if (code === 'auth/invalid-email') return 'সঠিক ইমেইল ঠিকানা লিখুন।';
+  if (code === 'auth/too-many-requests') return 'অনেকবার ভুল চেষ্টার কারণে সাময়িকভাবে ব্লক হয়েছে। কিছুক্ষণ পর চেষ্টা করুন।';
+  if (code === 'auth/network-request-failed') return 'নেটওয়ার্ক সংযোগ সমস্যা। ইন্টারনেট চেক করে আবার চেষ্টা করুন।';
+  return sanitizeAgentMsg((err && err.message) || err) || 'লগইন ব্যর্থ হয়েছে।';
+}
+function toggleAgentPw(btn) {
+  const p = document.getElementById('agentLoginPassword');
+  if (!p) return;
+  const show = p.type === 'password';
+  p.type = show ? 'text' : 'password';
+  if (btn) btn.textContent = show ? 'লুকান' : 'দেখুন';
+}
+function showLoginError(msg) {
+  const el = document.getElementById('loginError');
+  if (!el) return;
+  const clean = sanitizeAgentMsg(msg);
+  el.textContent = clean;
+  el.style.display = clean ? 'block' : 'none';
+}
+
+async function agentLogin(event) {
+  event.preventDefault();
+  showLoginError('');
+  const rawId = document.getElementById('agentLoginId').value.trim();
+  const pass = document.getElementById('agentLoginPassword').value;
+  if (!rawId || !pass) { showLoginError('এজেন্ট ইমেইল বা ইউজারনেম এবং পাসওয়ার্ড দিন'); return; }
+
+  const btn = document.getElementById('btnAgentLogin');
+  btn.disabled = true;
+  btn.textContent = 'যাচাই হচ্ছে...';
+
+  try {
+    let email = rawId;
+    if (!rawId.includes('@')) {
+      const clean = rawId.toLowerCase().replace(/[^a-z0-9_]/g, '');
+      let foundEmail = '';
+      try {
+        const uSnap = await db.ref('usernames/' + clean).once('value');
+        if (uSnap.exists() && uSnap.val().email) foundEmail = uSnap.val().email;
+      } catch (_) {}
+      email = foundEmail || (clean + '@npapp.local');
+    }
+    const cred = await auth.signInWithEmailAndPassword(email, pass);
+    const agSnap = await db.ref('agents/' + cred.user.uid).once('value');
+    if (!agSnap.exists() || agSnap.val().active === false || agSnap.val().status === 'suspended' || agSnap.val().status === 'inactive') {
+      await auth.signOut();
+      showLoginError('এই অ্যাকাউন্টের অনুমোদিত সক্রিয় Agent অ্যাক্সেস নেই। Admin-এর সাথে যোগাযোগ করুন।');
+      btn.disabled = false;
+      btn.textContent = 'AGENT LOGIN →';
+      return;
+    }
+  } catch (err) {
+    showLoginError(translateAgentAuthErr(err));
+  } finally {
+    btn.disabled = false;
+    btn.textContent = 'AGENT LOGIN →';
+  }
+}
+
+async function logout() {
+  detachListeners();
+  currentAgentUid = null;
+  agentProfile = null;
+  await auth.signOut().catch(() => {});
+  document.getElementById('mainApp').classList.add('hidden');
+  document.getElementById('login').classList.remove('hidden');
+  setTimeout(fitAllLogos, 60);
+}
+
+auth.onAuthStateChanged(async user => {
+  if (!user) {
+    detachListeners();
+    currentAgentUid = null;
+    agentProfile = null;
+    const fab = document.getElementById('liveChatFab'); if (fab) fab.classList.add('hidden');
+    const dr = document.getElementById('liveChatDrawer'); if (dr) dr.classList.remove('open');
+    document.getElementById('mainApp').classList.add('hidden');
+    document.getElementById('login').classList.remove('hidden');
+    setTimeout(fitAllLogos, 60);
+    return;
+  }
+  try {
+    const snap = await db.ref('agents/' + user.uid).once('value');
+    if (!snap.exists() || snap.val().active === false || snap.val().status === 'suspended' || snap.val().status === 'inactive') {
+      await auth.signOut();
+      showLoginError('আপনার Agent অ্যাকাউন্ট সক্রিয় নয় বা অনুমোদন পাওয়া যায়নি।');
+      return;
+    }
+    currentAgentUid = user.uid;
+    agentProfile = { id: user.uid, ...snap.val() };
+    document.getElementById('login').classList.add('hidden');
+    document.getElementById('mainApp').classList.remove('hidden');
+    const fab = document.getElementById('liveChatFab'); if (fab) fab.classList.remove('hidden');
+    setTimeout(fitAllLogos, 60);
+    startLiveAgentSync();
+    go('home');
+  } catch (e) {
+    showLoginError('সংযোগ ত্রুটি: ' + e.message);
+  }
+});
+
+let rawDeposits = [];
+let rawWithdrawals = [];
+
+function applyAgentScopeFilters() {
+  const myAdmin = (agentProfile && (agentProfile.parentAdminId || agentProfile.adminUid)) || '';
+  const myNums = new Set(Object.values((agentProfile && agentProfile.paymentNumbers) || {}).map(x => String(x || '').trim()).filter(Boolean));
+  deposits = rawDeposits
+    .filter(d =>
+      d.assignedAgentId === currentAgentUid ||
+      (d.agentWalletNumber && myNums.has(String(d.agentWalletNumber).trim())) ||
+      (!d.assignedAgentId && myAdmin && d.adminUid === myAdmin) ||
+      (!d.assignedAgentId && !d.adminUid && !myAdmin) ||
+      d.approvedByAgent === currentAgentUid ||
+      d.rejectedByAgent === currentAgentUid
+    )
+    .sort((a, b) => (b.timestamp || b.createdAt || 0) - (a.timestamp || a.createdAt || 0));
+  withdrawals = rawWithdrawals
+    .filter(w =>
+      w.adminVerified === true &&
+      w.forwardedToAgent === true &&
+      (w.assignedAgentId === currentAgentUid || w.completedByAgent === currentAgentUid)
+    )
+    .sort((a, b) => (b.timestamp || b.createdAt || 0) - (a.timestamp || a.createdAt || 0));
+}
+
+function startLiveAgentSync() {
+  detachListeners();
+  if (!currentAgentUid) return;
+
+  attachListener(db.ref('.info/connected'), snap => {
+    const tag = document.getElementById('connStatusTag');
+    if (!tag) return;
+    if (snap.val() === true) {
+      tag.textContent = '● রিয়েলটাইম সার্ভার সংযুক্ত (Live)';
+      tag.classList.remove('offline');
+    } else {
+      tag.textContent = '⚡ সার্ভার পুনঃসংযোগ হচ্ছে...';
+      tag.classList.add('offline');
+    }
+  });
+
+  // 1. Live Agent Profile & Wallet
+  attachListener(db.ref('agents/' + currentAgentUid), snap => {
+    if (!snap.exists()) { logout(); return; }
+    const val = snap.val() || {};
+    if (val.active === false || val.status === 'suspended' || val.status === 'inactive') {
+      toast('আপনার Agent অ্যাক্সেস সাময়িকভাবে বন্ধ করা হয়েছে।');
+      logout();
+      return;
+    }
+    agentProfile = { id: currentAgentUid, ...val };
+    document.getElementById('welcomeTitle').textContent = 'স্বাগতম, ' + (agentProfile.name || 'Agent') + ' 👋';
+    document.getElementById('welcomeSub').textContent = (agentProfile.email || '') + ' · Authorized Agent';
+    document.getElementById('agentParentMeta').textContent = 'Parent Admin: ' + (agentProfile.parentAdminName || agentProfile.parentAdminId || 'Master Admin');
+    document.getElementById('profileAvatar').textContent = (agentProfile.name || 'A').charAt(0).toUpperCase();
+    document.getElementById('profileName').textContent = agentProfile.name || 'Agent';
+    document.getElementById('profileMeta').textContent = (agentProfile.email || currentAgentUid) + ' · Active Agent';
+    // Ensure agentWallets stays created & synced with parentAdminId, numbers, and active state
+    db.ref('agentWallets/' + currentAgentUid).once('value').then(ws => {
+      const wv = ws.val();
+      const adm = agentProfile.parentAdminId || agentProfile.adminUid || '';
+      const profEnabled = agentProfile.walletEnabled === true;
+      const profNums = agentProfile.paymentNumbers || {};
+      const profTogs = agentProfile.paymentToggles || {};
+      const hasAnyNum = Object.values(profNums).some(v => !!String(v || '').trim());
+      if (!wv) {
+        if (profEnabled || hasAnyNum) {
+          db.ref('agentWallets/' + currentAgentUid).set({
+            agentUid: currentAgentUid,
+            agentName: agentProfile.name || 'Agent',
+            parentAdminId: adm,
+            adminUid: adm,
+            enabled: profEnabled,
+            active: agentProfile.active !== false,
+            numbers: profNums,
+            toggles: profTogs,
+            updatedAt: TS
+          }).catch(() => {});
+        }
+      } else if (wv.parentAdminId !== adm || wv.adminUid !== adm || wv.active !== (agentProfile.active !== false) || (profEnabled && wv.enabled !== true)) {
+        const up = {
+          parentAdminId: adm,
+          adminUid: adm,
+          active: agentProfile.active !== false
+        };
+        if (profEnabled && hasAnyNum) {
+          up.enabled = true;
+          up.numbers = profNums;
+          up.toggles = profTogs;
+          up.updatedAt = TS;
+        }
+        db.ref('agentWallets/' + currentAgentUid).update(up).catch(() => {});
+      }
+    }).catch(() => {});
+    applyAgentScopeFilters();
+    bindParentAdminCms(agentProfile.parentAdminId || '');
+    refreshAgentNotifications();
+    applyAgentCms();
+    renderDeposits();
+    renderWallet();
+    renderWithdrawals();
+    renderTransactionReport();
+  });
+
+  // Update lastSeen
+  db.ref('agents/' + currentAgentUid + '/lastSeen').set(Date.now()).catch(() => {});
+
+  // 2. Users lookup map (scoped to this agent's parentAdminId)
+  attachListener(db.ref('users'), snap => {
+    const all = snap.val() || {};
+    const myAdmin = (agentProfile && agentProfile.parentAdminId) || '';
+    const scoped = {};
+    Object.entries(all).forEach(([k, u]) => {
+      if (u && (!myAdmin || !u.adminUid || u.adminUid === myAdmin)) scoped[k] = u;
+    });
+    usersMap = scoped;
+    renderDeposits();
+    renderWithdrawals();
+  });
+
+  // 3. Deposit Requests (Assigned to this agent OR matching wallet/admin)
+  let _initDepLoaded = false, _seenDepIds = new Set();
+  attachListener(db.ref('depositRequests'), snap => {
+    const val = snap.val() || {};
+    rawDeposits = Object.entries(val).map(([k, v]) => ({ id: k, ...v }));
+    applyAgentScopeFilters();
+    if (_initDepLoaded) {
+      const fresh = deposits.find(d => d.status === 'Pending' && !_seenDepIds.has(d.id));
+      if (fresh) toast('📥 নতুন ডিপোজিট রিকোয়েস্ট: ' + formatTaka(fresh.amount));
+    }
+    deposits.forEach(d => _seenDepIds.add(d.id));
+    _initDepLoaded = true;
+    renderDeposits();
+    renderTransactionReport();
+  });
+
+  // 4. Withdrawal Requests (Strictly Admin-Verified & Assigned to THIS Agent)
+  let _initWdLoaded = false, _seenWdIds = new Set();
+  attachListener(db.ref('withdrawalRequests').orderByChild('assignedAgentId').equalTo(currentAgentUid), snap => {
+    const val = snap.val() || {};
+    rawWithdrawals = Object.entries(val).map(([k, v]) => ({ id: k, ...v }));
+    applyAgentScopeFilters();
+    if (_initWdLoaded) {
+      const fresh = withdrawals.find(w => isWithdrawalAssigned(w) && !_seenWdIds.has(w.id));
+      if (fresh) toast('📤 নতুন উইথড্র রিকোয়েস্ট: ' + formatTaka(fresh.amount));
+    }
+    withdrawals.forEach(w => _seenWdIds.add(w.id));
+    _initWdLoaded = true;
+    renderWithdrawals();
+    renderWallet();
+    renderTransactionReport();
+  }, err => {
+    console.error('Withdrawal listener error:', err);
+    toast('⚠️ উইথড্র রিকোয়েস্ট লোড ত্রুটি (RTDB Rules চেক করুন): ' + (err && err.message ? err.message : 'Permission Denied'));
+  });
+
+  // 5. Agent Balance Requests
+  attachListener(db.ref('agentBalanceRequests').orderByChild('agentUid').equalTo(currentAgentUid), snap => {
+    const val = snap.val() || {};
+    balanceRequests = Object.entries(val).map(([k, v]) => ({ id: k, ...v }))
+      .sort((a, b) => (b.createdAt || 0) - (a.createdAt || 0));
+    renderBalanceRequests();
+  });
+
+  // 6. Agent Real Transactions (for Analytics)
+  attachListener(db.ref('transactions').orderByChild('agentUid').equalTo(currentAgentUid), snap => {
+    const val = snap.val() || {};
+    agentTransactions = Object.entries(val).map(([k, v]) => ({ id: k, ...v }))
+      .sort((a, b) => (b.timestamp || 0) - (a.timestamp || 0));
+    renderTransactionReport();
+  });
+
+  // 7. Notifications, Settings & Admin/Master CMS Sync
+  attachListener(db.ref('notifications').limitToLast(60), snap => {
+    const val = snap.val() || {};
+    rawNotifications = Object.entries(val).map(([k, v]) => ({ id: k, ...v }));
+    refreshAgentNotifications();
+  });
+
+  attachListener(db.ref('settings'), snap => {
+    globalSettings = snap.val() || {};
+    applyAgentCms();
+  });
+
+  attachListener(db.ref('userPanelConfig/global'), snap => {
+    globalCms = snap.val() || {};
+    applyAgentCms();
+  });
+
+  attachListener(db.ref('depositPromotions'), snap => {
+    depositPromotions = snap.val() || {};
+    applyAgentCms();
+  });
+
+  if (agentProfile && agentProfile.parentAdminId) {
+    bindParentAdminCms(agentProfile.parentAdminId);
+  }
+
+  // 8. Live Chat with Assigned User Admin (agent_admin_chats/{agentUid})
+  attachListener(db.ref('agent_admin_chats/' + currentAgentUid + '/messages').limitToLast(120), snap => {
+    const val = snap.val() || {};
+    agentChatMsgs = Object.entries(val).map(([k, m]) => ({ id: k, ...m })).sort((a, b) => (a.timestamp || 0) - (b.timestamp || 0));
+    let unread = 0;
+    agentChatMsgs.forEach(m => { if (m.sender !== 'AGENT' && m.read !== true) unread++; });
+    if (agentChatOpen && unread > 0) { markAgentChatRead(); unread = 0; }
+    const badge = document.getElementById('liveChatFabBadge');
+    if (badge) { badge.textContent = unread > 9 ? '9+' : String(unread); badge.style.display = unread > 0 ? 'grid' : 'none'; }
+    renderAgentChatMessages();
+  });
+}
+
+function bindParentAdminCms(adminId) {
+  const target = String(adminId || '').trim();
+  if (boundParentAdminId === target) return;
+  if (parentAdminCmsRef) {
+    try { parentAdminCmsRef.off(); } catch (e) {}
+    parentAdminCmsRef = null;
+  }
+  boundParentAdminId = target;
+  adminCms = {};
+  if (!target) { applyAgentCms(); return; }
+  parentAdminCmsRef = db.ref('userPanelConfig/byAdmin/' + target);
+  parentAdminCmsRef.on('value', snap => {
+    adminCms = snap.val() || {};
+    applyAgentCms();
+  });
+}
+
+function refreshAgentNotifications() {
+  const myAdm = (agentProfile && agentProfile.parentAdminId) || '';
+  notifications = (rawNotifications || []).filter(n => {
+    if (!n) return false;
+    if (n.adminUid && (!myAdm || n.adminUid !== myAdm)) return false;
+    if (n.targetUid) return n.targetUid === currentAgentUid;
+    if (n.target) return ['ALL', 'all', 'AGENTS', currentAgentUid].includes(n.target);
+    return true;
+  }).sort((a, b) => (b.timestamp || b.createdAt || 0) - (a.timestamp || a.createdAt || 0));
+  updateNotificationBadge();
+}
+
+function agentCmsAdminWins(g, a, metaKey, hasVal) {
+  if (!hasVal) return false;
+  const gFm = (g && g.fieldMeta) || {};
+  const aFm = (a && a.fieldMeta) || {};
+  const gT = Number(gFm[metaKey] || 0);
+  const aT = Number(aFm[metaKey] || 0);
+  if (gT > 0 && aT > 0) return aT >= gT;
+  if (gT > 0 && aT === 0) return false;
+  if (gT === 0 && aT > 0) return true;
+  return Number((a && a.updatedAt) || 0) >= Number((g && g.updatedAt) || 0);
+}
+
+function resolveAgentPromo(p, admUid) {
+  if (!p || typeof p !== 'object') return p;
+  const ov = (admUid && p.adminOverrides && p.adminOverrides[admUid]) ? p.adminOverrides[admUid] : null;
+  const masterTs = Number(p.updatedAt || p.createdAt || 0);
+  if (ov && typeof ov === 'object' && Number(ov.updatedAt || 0) >= masterTs) {
+    return Object.assign({}, p, ov);
+  }
+  return p;
+}
+
+function mergedAgentCms() {
+  const g = globalCms || {};
+  const a = adminCms || {};
+  const gFm = g.fieldMeta || {};
+  const aFm = a.fieldMeta || {};
+  const subKey = (spec, parent) => (gFm[spec] || aFm[spec]) ? spec : parent;
+
+  const out = {
+    tagline: 'PLAY BIG, WIN BIGGER',
+    notice: '',
+    partnerNotice: '',
+    agentSupportNote: '',
+    affiliatePromoText: '',
+    maintenanceMode: !!globalSettings.maintenanceMode,
+    maintenanceMessage: globalSettings.maintenanceMessage || '',
+    limits: {
+      minDeposit: Number(globalSettings.minDeposit || 500),
+      maxDeposit: Number(globalSettings.maxDeposit || 50000),
+      minWithdraw: Number(globalSettings.minWithdraw || 500),
+      maxWithdraw: Number(globalSettings.maxWithdraw || 25000)
+    },
+    chat: {
+      whatsapp: globalSettings.whatsapp || '',
+      telegram: globalSettings.telegram || ''
+    },
+    features: {}
+  };
+
+  ['tagline', 'notice', 'partnerNotice', 'agentSupportNote', 'affiliatePromoText', 'maintenanceMessage'].forEach(k => {
+    if (g[k]) out[k] = g[k];
+    if (agentCmsAdminWins(g, a, k, !!a[k])) out[k] = a[k];
+  });
+  if (typeof g.maintenanceMode === 'boolean') out.maintenanceMode = g.maintenanceMode;
+  if (agentCmsAdminWins(g, a, 'maintenanceMode', typeof a.maintenanceMode === 'boolean')) out.maintenanceMode = a.maintenanceMode;
+
+  const gLim = (g.limits && typeof g.limits === 'object') ? g.limits : {};
+  const aLim = (a.limits && typeof a.limits === 'object') ? a.limits : {};
+  Array.from(new Set([...Object.keys(out.limits), ...Object.keys(gLim), ...Object.keys(aLim)])).forEach(k => {
+    if (gLim[k] != null && gLim[k] !== '') out.limits[k] = Number(gLim[k]);
+    if (agentCmsAdminWins(g, a, subKey('lim_' + k, 'limits'), aLim[k] != null && aLim[k] !== '')) out.limits[k] = Number(aLim[k]);
+  });
+
+  const gChat = (g.chat && typeof g.chat === 'object') ? g.chat : {};
+  const aChat = (a.chat && typeof a.chat === 'object') ? a.chat : {};
+  Array.from(new Set([...Object.keys(out.chat), ...Object.keys(gChat), ...Object.keys(aChat)])).forEach(k => {
+    if (gChat[k] !== undefined && gChat[k] !== '') out.chat[k] = gChat[k];
+    if (agentCmsAdminWins(g, a, subKey('chat_' + k, 'chat'), aChat[k] !== undefined && aChat[k] !== '')) out.chat[k] = aChat[k];
+  });
+
+  const gFeat = (g.features && typeof g.features === 'object') ? g.features : {};
+  const aFeat = (a.features && typeof a.features === 'object') ? a.features : {};
+  Array.from(new Set([...Object.keys(gFeat), ...Object.keys(aFeat)])).forEach(k => {
+    if (typeof gFeat[k] === 'boolean') out.features[k] = gFeat[k];
+    if (agentCmsAdminWins(g, a, subKey('feat_' + k, 'features'), typeof aFeat[k] === 'boolean')) out.features[k] = aFeat[k];
+  });
+
+  return out;
+}
+
+function applyAgentCms() {
+  const cfg = mergedAgentCms();
+  const tag = cfg.tagline || 'PLAY BIG, WIN BIGGER';
+  ['loginTag', 'headerTag'].forEach(id => {
+    const el = document.getElementById(id);
+    if (el && el.textContent !== tag) el.textContent = tag;
+  });
+  setTimeout(fitAllLogos, 30);
+
+  const myAdm = (agentProfile && agentProfile.parentAdminId) || '';
+  const lim = cfg.limits || {};
+  const nowMs = Date.now();
+  const activePromos = Object.entries(depositPromotions || {})
+    .map(([id, p]) => resolveAgentPromo(Object.assign({ id }, p || {}), myAdm))
+    .filter(p => p && p.active && (!p.startAt || nowMs >= Number(p.startAt)) && (!p.endAt || nowMs <= Number(p.endAt)) && (!myAdm || !p.adminOff || !p.adminOff[myAdm]));
+
+  const ban = document.getElementById('agentCmsBanner');
+  if (ban) {
+    const parts = [];
+    if (cfg.maintenanceMode) {
+      parts.push(`<div style="color:#ff8198;font-weight:800;margin-bottom:4px">🛠 প্লেয়ার প্যানেল মেইনটেন্যান্স চালু: ${escapeRequestText(cfg.maintenanceMessage || globalSettings.maintenanceMessage || 'সার্ভার রক্ষণাবেক্ষণ চলছে')}</div>`);
+    }
+    if (cfg.partnerNotice) {
+      parts.push(`<div style="color:#ffd23f;font-weight:800;margin-bottom:4px">📢 অ্যাডমিন নোটিশ: <span style="color:#eaf0ff;font-weight:600">${escapeRequestText(cfg.partnerNotice)}</span></div>`);
+    }
+    if (cfg.agentSupportNote) {
+      parts.push(`<div style="color:#4ade80;font-weight:700;margin-bottom:4px">🛡️ এজেন্ট নির্দেশনা: <span style="color:#eaf0ff;font-weight:600">${escapeRequestText(cfg.agentSupportNote)}</span></div>`);
+    }
+    if (cfg.notice) {
+      parts.push(`<div style="color:#cbd5e1;font-size:11.5px;margin-bottom:4px">📰 User Notice: ${escapeRequestText(cfg.notice)}</div>`);
+    }
+    parts.push(
+      `<div style="display:flex;flex-wrap:wrap;gap:6px 12px;font-size:11.5px;color:#cbd5e1;margin-top:4px">` +
+      `<span>⬇ Dep: <b>৳${Number(lim.minDeposit||500).toLocaleString()}–৳${Number(lim.maxDeposit||50000).toLocaleString()}</b></span>` +
+      `<span>⬆ Wd: <b>৳${Number(lim.minWithdraw||500).toLocaleString()}–৳${Number(lim.maxWithdraw||25000).toLocaleString()}</b></span>` +
+      `<span>🎁 Active Promos: <b>${activePromos.length}টি</b></span>` +
+      `</div>`
+    );
+    ban.innerHTML = parts.join('');
+    ban.style.display = 'block';
+  }
+
+  const chatN = document.getElementById('agentChatNotice');
+  if (chatN) {
+    const wa = (cfg.chat && cfg.chat.whatsapp) ? (cfg.chat.whatsapp.startsWith('http') ? cfg.chat.whatsapp : 'https://wa.me/' + String(cfg.chat.whatsapp).replace(/\D/g, '')) : '';
+    const tg = (cfg.chat && cfg.chat.telegram) ? (cfg.chat.telegram.startsWith('http') ? cfg.chat.telegram : 'https://t.me/' + String(cfg.chat.telegram).replace(/^@/, '')) : '';
+    const ext = [
+      wa ? `<a href="${escapeRequestText(wa)}" target="_blank" rel="noopener" style="color:#4ade80;font-weight:700;text-decoration:underline">WhatsApp</a>` : '',
+      tg ? `<a href="${escapeRequestText(tg)}" target="_blank" rel="noopener" style="color:#60a5fa;font-weight:700;text-decoration:underline">Telegram</a>` : ''
+    ].filter(Boolean).join(' · ');
+    chatN.innerHTML = `🔒 আপনার পাসওয়ার্ড, PIN বা OTP কখনো শেয়ার করবেন না।` + (ext ? `<div style="margin-top:4px">সরাসরি সাপোর্ট: ${ext}</div>` : '');
+  }
+}
+
+function getAgentTotalBalance() { return Number(agentProfile && agentProfile.balance) || 0; }
+function getReservedAmount() {
+  const srvRes = Number(agentProfile && agentProfile.reservedBalance) || 0;
+  const locRes = withdrawals.filter(w => isWithdrawalAssigned(w))
+    .reduce((s, w) => s + (Number(w.amount) || 0), 0);
+  return Math.max(srvRes, locRes);
+}
+function getAgentAvailable() {
+  return Math.max(0, getAgentTotalBalance() - (Number(agentProfile && agentProfile.reservedBalance) || 0));
+}
+
+/* Report Engine (100% live from Firebase transactions / deposits / withdrawals) */
+const rpad = n => String(n).padStart(2, '0');
+const dkey = d => d.getFullYear() + '-' + rpad(d.getMonth() + 1) + '-' + rpad(d.getDate());
+const pkey = v => { const p = String(v).split('-').map(Number); return new Date(p[0], p[1] - 1, p[2]); };
+const retentionStart = () => { const d = new Date(); d.setHours(0, 0, 0, 0); d.setMonth(d.getMonth() - 2); return d; };
+const rtext = (bn, en) => currentLanguage === 'bn' ? bn : en;
+const rloc = () => currentLanguage === 'bn' ? 'bn-BD' : 'en-GB';
+
+function getCombinedAgentHistory() {
+  const cut = retentionStart().getTime();
+  const seen = new Set();
+  const out = [];
+  agentTransactions.forEach(t => {
+    const tm = Number(t.timestamp) || 0;
+    if (!tm || tm < cut) return;
+    const isDep = t.type === 'DEPOSIT' || t.type === 'AGENT_DEPOSIT_APPROVE';
+    const isWd = t.type === 'WITHDRAWAL' || t.type === 'AGENT_WITHDRAW_COMPLETE';
+    if (!isDep && !isWd) return;
+    if (t.refId) seen.add(t.refId);
+    out.push({
+      id: t.trxId || t.id,
+      type: isDep ? 'deposit' : 'withdrawal',
+      amount: Number(t.amount) || 0,
+      title: (isDep ? 'Player Deposit · ' : 'Withdrawal Payment · ') + (t.playerName || (usersMap[t.uid] && usersMap[t.uid].name) || t.uid || 'Player'),
+      ref: t.refId || t.paymentRef || t.trxId || t.id,
+      time: new Date(tm).toISOString()
+    });
+  });
+  deposits.forEach(d => {
+    if (d.status !== 'Approved' && d.status !== 'Completed') return;
+    if (seen.has(d.id)) return;
+    const tm = Number(d.approvedAt || d.timestamp || d.createdAt) || 0;
+    if (!tm || tm < cut) return;
+    const pl = usersMap[d.uid] || {};
+    out.push({ id: d.id, type: 'deposit', amount: Number(d.amount) || 0, title: 'Player Deposit · ' + (d.playerName || pl.name || d.uid), ref: d.trxId || d.id, time: new Date(tm).toISOString() });
+  });
+  withdrawals.forEach(w => {
+    if (w.status !== 'Completed' && w.status !== 'Approved') return;
+    if (seen.has(w.id)) return;
+    const tm = Number(w.processedAt || w.statusUpdatedAt || w.timestamp || w.createdAt) || 0;
+    if (!tm || tm < cut) return;
+    const pl = usersMap[w.uid] || {};
+    out.push({ id: w.id, type: 'withdrawal', amount: Number(w.amount) || 0, title: 'Withdrawal Payment · ' + (w.playerName || pl.name || w.uid), ref: w.paymentRef || w.id, time: new Date(tm).toISOString() });
+  });
+  return out;
+}
+
+function setReportMode(m) {
+  reportMode = m;
+  const rSel = document.getElementById('reportModeSelect');
+  if (rSel && rSel.value !== m) rSel.value = m;
+  document.getElementById('rangeRow').classList.toggle('hidden', m !== 'range');
+  document.getElementById('dateRow').classList.toggle('hidden', m === 'range');
+  renderTransactionReport();
+}
+
+function shiftReport(n) {
+  const el = document.getElementById('reportDate'), d = pkey(el.value);
+  if (reportMode === 'weekly') d.setDate(d.getDate() + 7 * n);
+  else if (reportMode === 'monthly') { d.setDate(1); d.setMonth(d.getMonth() + n); }
+  else d.setDate(d.getDate() + n);
+  const today = new Date(); if (d > today) d.setTime(today.getTime());
+  el.value = dkey(d);
+  renderTransactionReport();
+}
+
+function renderTransactionReport() {
+  const dateEl = document.getElementById('reportDate'); if (!dateEl) return;
+  const fromEl = document.getElementById('reportFrom'), toEl = document.getElementById('reportTo');
+  const min = retentionStart(), today = new Date(); today.setHours(0, 0, 0, 0);
+  [dateEl, fromEl, toEl].forEach(el => { el.min = dkey(min); el.max = dkey(today); });
+  const clamp = d => d < min ? new Date(min) : d > today ? new Date(today) : d;
+  if (!dateEl.value) dateEl.value = dkey(today);
+  if (!toEl.value) toEl.value = dkey(today);
+  if (!fromEl.value) { const f = new Date(today); f.setDate(f.getDate() - 29); fromEl.value = dkey(clamp(f)); }
+
+  let s, e, note = '';
+  if (reportMode === 'range') {
+    s = clamp(pkey(fromEl.value)); e = clamp(pkey(toEl.value));
+    if (e < s) { const t = s; s = e; e = t; }
+    if (Math.round((e - s) / 864e5) > 30) {
+      e = clamp(new Date(s.getFullYear(), s.getMonth(), s.getDate() + 30));
+      note = rtext('একবারে সর্বোচ্চ ৩১ দিনের রিপোর্ট দেখা যায়। শেষ তারিখ ঠিক করা হয়েছে।', 'Maximum 31 days at a time. End date adjusted.');
+    }
+    fromEl.value = dkey(s); toEl.value = dkey(e);
+  } else {
+    const sel = clamp(pkey(dateEl.value)); dateEl.value = dkey(sel);
+    if (reportMode === 'daily') { s = new Date(sel); e = new Date(sel); }
+    else if (reportMode === 'weekly') { s = new Date(sel); s.setDate(sel.getDate() - (sel.getDay() + 6) % 7); e = new Date(s); e.setDate(s.getDate() + 6); }
+    else { s = new Date(sel.getFullYear(), sel.getMonth(), 1); e = new Date(sel.getFullYear(), sel.getMonth() + 1, 0); }
+  }
+
+  const days = {};
+  for (let d = new Date(s); d <= e; d.setDate(d.getDate() + 1)) days[dkey(d)] = { p: 0, m: 0, tx: [] };
+  getCombinedAgentHistory().forEach(tx => {
+    const g = days[dkey(new Date(tx.time))]; if (!g) return;
+    g.tx.push(tx);
+    if (tx.type === 'deposit') g.p += Number(tx.amount);
+    else g.m += Number(tx.amount);
+  });
+
+  const keys = Object.keys(days); let P = 0, M = 0; keys.forEach(k => { P += days[k].p; M += days[k].m; });
+  const sg = n => (n < 0 ? '−' : '+') + formatTaka(Math.abs(n));
+  document.getElementById('reportPlus').textContent = '+ ' + formatTaka(P);
+  document.getElementById('reportMinus').textContent = '− ' + formatTaka(M);
+  const netEl = document.getElementById('reportNet'); netEl.textContent = sg(P - M); netEl.className = P - M < 0 ? 'negative' : 'positive';
+  const fmt = d => d.toLocaleDateString(rloc(), { day: '2-digit', month: 'short', year: 'numeric' });
+  document.getElementById('reportRange').textContent = keys.length > 1 ? fmt(s) + ' — ' + fmt(e) : fmt(s);
+  document.getElementById('reportNote').textContent = note;
+
+  const bars = document.getElementById('reportBars'), mx = Math.max(1, ...keys.map(k => Math.max(days[k].p, days[k].m)));
+  bars.innerHTML = keys.map(k => '<i title="' + k + '"><b class="p" style="height:' + (days[k].p / mx * 100) + '%"></b><b class="m" style="height:' + (days[k].m / mx * 100) + '%"></b></i>').join('');
+  bars.classList.toggle('hidden', keys.length < 2);
+
+  const list = document.getElementById('transactionReportList'), act = keys.filter(k => days[k].tx.length).reverse();
+  if (!act.length) {
+    list.innerHTML = '<div class="empty"><span>📊</span><br>' + rtext('এই সময়ের মধ্যে কোনো রিয়েল লেনদেন পাওয়া যায়নি।', 'No live transactions found for this period.') + '</div>';
+    return;
+  }
+  list.innerHTML = act.map(k => {
+    const g = days[k], lbl = pkey(k).toLocaleDateString(rloc(), { weekday: 'short', day: '2-digit', month: 'short', year: 'numeric' });
+    const rows = g.tx.sort((a, b) => new Date(b.time) - new Date(a.time)).map(tx => {
+      const pos = tx.type === 'deposit';
+      return '<div class="transaction-row"><div><b>' + escapeRequestText(tx.title) + '</b><small>' + escapeRequestText(tx.ref || tx.id) + ' · ' + new Date(tx.time).toLocaleTimeString(rloc(), { hour: '2-digit', minute: '2-digit' }) + '</small></div><strong class="' + (pos ? 'positive' : 'negative') + '">' + (pos ? '+' : '−') + formatTaka(tx.amount) + '</strong></div>';
+    }).join('');
+    return '<details class="dayrow"' + (act.length === 1 ? ' open' : '') + '><summary><span class="dl">' + lbl + '</span><span class="dv"><span class="positive">+' + formatTaka(g.p) + '</span> <span class="negative">−' + formatTaka(g.m) + '</span><div class="net">Net ' + sg(g.p - g.m) + '</div></span></summary>' + rows + '</details>';
+  }).join('');
+}
+
+function go(id, btn) {
+  if (id === 'wallet') renderWallet();
+  if (id === 'report') renderTransactionReport();
+  window.scrollTo(0, 0);
+  document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+  document.getElementById(id).classList.add('active');
+  document.querySelectorAll('.nav').forEach(n => n.classList.remove('active'));
+  if (btn) btn.classList.add('active');
+  else {
+    const index = ['home', 'deposit', 'withdraw', 'report', 'wallet', 'profile'].indexOf(id);
+    if (index >= 0) document.querySelectorAll('.nav')[index].classList.add('active');
+  }
+  try { window.dispatchEvent(new Event('mw:view')); } catch (e) {}
+}
+
+function setFilter(type, status, btn) {
+  if (type === 'deposit') {
+    depFilter = status;
+    const ds = document.getElementById('depositFilterSelect');
+    if (ds && ds.value !== status) ds.value = status;
+    renderDeposits();
+  } else {
+    wdFilter = status;
+    const ws = document.getElementById('withdrawFilterSelect');
+    if (ws && ws.value !== status) ws.value = status;
+    renderWithdrawals();
+  }
+  if (btn && btn.parentElement) {
+    btn.parentElement.querySelectorAll('.tab').forEach(x => x.classList.remove('active'));
+    btn.classList.add('active');
+  }
+}
+
+function renderDeposits() {
+  const q = (document.getElementById('depositSearch').value || '').toLowerCase();
+  const list = deposits.filter(d => {
+    const st = d.status || 'Pending';
+    const pl = usersMap[d.uid] || {};
+    const pName = d.playerName || pl.name || pl.username || d.uid || '';
+    const matchTab = depFilter === 'All' || st === depFilter;
+    const matchQ = !q || [d.id, pName, d.trxId || d.trx, d.method, d.senderNumber, d.uid].join(' ').toLowerCase().includes(q);
+    return matchTab && matchQ;
+  });
+
+  document.getElementById('depositList').innerHTML = list.length ? list.map(d => {
+    const st = d.status || 'Pending';
+    const pl = usersMap[d.uid] || {};
+    const pName = d.playerName || pl.name || pl.username || d.uid || 'Player';
+    const trx = d.trxId || d.trx || 'N/A';
+    return `
+      <div class="card">
+       <div class="cardtop">
+        <strong>${escapeRequestText(d.id)}</strong>
+        <span class="status ${st.toLowerCase()}">${escapeRequestText(st)}</span>
+       </div>
+       <div class="amount">${formatTaka(d.amount)}${Number(d.bonusAmount) > 0 ? ` <small style="font-size:12px;color:#c084fc">+ বোনাস ${formatTaka(d.bonusAmount)}</small>` : ''}</div>
+       <div class="detail"><span>Player</span><b>${escapeRequestText(pName)}</b></div>
+       <div class="detail"><span>Payment Method</span><b>${escapeRequestText(d.method || 'bKash')}</b></div>
+       ${d.senderNumber ? `<div class="detail"><span>Sender Number</span><b>${escapeRequestText(d.senderNumber)}</b></div>` : ''}
+       <div class="detail"><span>Transaction ID</span><b>${escapeRequestText(trx)}</b></div>
+       ${d.promoName || Number(d.bonusAmount) > 0 ? `<div class="detail"><span>Bonus</span><b>${escapeRequestText(d.promoName || 'Bonus')} (${formatTaka(d.bonusAmount || 0)})</b></div>` : ''}
+       ${st === 'Rejected' && (d.adminNote || d.reason) ? `<div class="reject-reason"><b>REJECT REASON</b>${escapeRequestText(d.adminNote || d.reason)}</div>` : ''}
+       ${st === 'Pending' ? `
+       <div class="actions">
+        <button class="approve" onclick="depositAction('${escapeRequestText(d.id)}','Approved')">✓ APPROVE DEPOSIT</button>
+        <button class="reject" onclick="depositAction('${escapeRequestText(d.id)}','Rejected')">✕ REJECT</button>
+       </div>` : ''}
+      </div>
+    `;
+  }).join('') : '<div class="empty"><span>📥</span><br>কোনো ডিপোজিট রিকোয়েস্ট পাওয়া যায়নি।</div>';
+  updateStats();
+}
+
+function isWithdrawalAssigned(w) {
+  const st = String((w && w.status) || '').toLowerCase();
+  return !!(w && ['pending', 'processing', 'assignedtoagent'].includes(st) && w.adminVerified === true && w.forwardedToAgent === true && w.assignedAgentId === currentAgentUid);
+}
+
+function renderWithdrawals() {
+  const q = (document.getElementById('withdrawSearch').value || '').toLowerCase();
+  const list = withdrawals.filter(w => {
+    const pl = usersMap[w.uid] || {};
+    const pName = w.playerName || w.userName || pl.name || pl.username || w.uid || '';
+    const matchTab = wdFilter === 'All' || (wdFilter === 'Assigned' ? isWithdrawalAssigned(w) : (w.status === 'Completed' || w.status === 'Approved'));
+    const matchQ = !q || [w.id, pName, w.method, w.receiverNumber, w.accountNumber, w.number, w.uid].join(' ').toLowerCase().includes(q);
+    return matchTab && matchQ;
+  });
+
+  document.getElementById('withdrawList').innerHTML = list.length ? list.map(w => {
+    const st = w.status || 'Pending';
+    const pl = usersMap[w.uid] || {};
+    const pName = w.playerName || w.userName || pl.name || pl.username || w.uid || 'Player';
+    const accNum = w.receiverNumber || w.accountNumber || w.number || w.account || 'N/A';
+    const amt = Number(w.amount) || 0;
+    const isOpen = isWithdrawalAssigned(w);
+    return `
+      <div class="card">
+       <div class="cardtop">
+        <strong>${escapeRequestText(w.id)}</strong>
+        <span class="status ${st.toLowerCase()}">${escapeRequestText(st)}</span>
+       </div>
+       <div class="amount">${formatTaka(amt)}</div>
+       <div class="detail"><span>Player</span><b>${escapeRequestText(pName)}</b></div>
+       <div class="detail"><span>Payment Method</span><b>${escapeRequestText(w.method || 'bKash')}</b></div>
+       <div class="detail"><span>Account Number</span><b>${escapeRequestText(accNum)}</b></div>
+       <div class="detail"><span>Verification</span><b style="color:#4ade80;">✓ Admin Verified (${escapeRequestText(w.verifiedByEmail || 'Admin')})</b></div>
+       ${w.adminNote ? `<div class="detail"><span>Admin Note</span><b>${escapeRequestText(w.adminNote)}</b></div>` : ''}
+       ${w.paymentRef ? `<div class="detail"><span>Agent Payment TrxID</span><b>${escapeRequestText(w.paymentRef)}</b></div>` : ''}
+       ${isOpen ? `
+       <div style="font-size:11.5px;color:#93c5fd;background:rgba(59,130,246,.12);border:1px solid rgba(59,130,246,.28);border-radius:10px;padding:8px 10px;margin:8px 0;">
+        💡 নিজ দায়িত্বে ইউজারের নম্বরে <b>${formatTaka(amt)}</b> ম্যানুয়ালি পাঠানোর পর Confirm করুন — Complete হলেই <b>+${formatTaka(amt)}</b> আপনার Agent Wallet-এ যোগ হবে।
+       </div>
+       <div class="actions">
+        <button class="complete" onclick="completeWithdrawal('${escapeRequestText(w.id)}')">✓ পেমেন্ট সম্পন্ন করুন (PAY & COMPLETE)</button>
+       </div>` : ''}
+      </div>
+    `;
+  }).join('') : '<div class="empty"><span>📤</span><br>Admin কর্তৃক যাচাই ও অ্যাসাইন করা কোনো উইথড্র রিকোয়েস্ট পাওয়া যায়নি।</div>';
+  updateStats();
+}
+
+/* CENTER DIALOG LOGIC */
+const OTHER_REASON = 'অন্যান্য (নিজে লিখুন)';
+const REJECT_REASONS = [
+  'Transaction ID (TRX) ভুল বা মিলছে না',
+  'ভুল ডকুমেন্ট / স্ক্রিনশট দেওয়া হয়েছে',
+  'পেমেন্টের টাকা আমার অ্যাকাউন্টে পাইনি',
+  'টাকার পরিমাণ মিলছে না',
+  'ভুল নম্বরে টাকা পাঠানো হয়েছে',
+  'একই TRX ID আগে ব্যবহার করা হয়েছে (ডুপ্লিকেট)',
+  'পেমেন্ট পদ্ধতি (bKash/Nagad/Rocket) মিলছে না',
+  'স্ক্রিনশট অস্পষ্ট, যাচাই করা যাচ্ছে না',
+  OTHER_REASON
+];
+let dlgCb = null, dlgHasReason = false, dlgNeedsTrx = false;
+
+function openDialog(o) {
+  dlgCb = o.onConfirm; dlgHasReason = !!o.reasons; dlgNeedsTrx = !!o.needsTrx;
+  document.getElementById('dlgBox').className = 'dlg ' + o.kind;
+  document.getElementById('dlgIcon').textContent = o.kind === 'bad' ? '✕' : '✓';
+  document.getElementById('dlgTitle').textContent = o.title;
+  document.getElementById('dlgInfo').innerHTML = o.info.map(r => '<div><span>' + escapeRequestText(r[0]) + '</span><b>' + escapeRequestText(r[1]) + '</b></div>').join('');
+  document.getElementById('dlgTrxWrap').classList.toggle('hidden', !dlgNeedsTrx);
+  document.getElementById('dlgTrxInput').value = '';
+  document.getElementById('dlgReasonWrap').classList.toggle('hidden', !o.reasons);
+  const sel = document.getElementById('dlgReason');
+  sel.innerHTML = o.reasons ? '<option value="">— কারণ নির্বাচন করুন —</option>' + o.reasons.map(r => '<option>' + escapeRequestText(r) + '</option>').join('') : '';
+  document.getElementById('dlgNote').value = '';
+  document.getElementById('dlgNoteWrap').classList.add('hidden');
+  document.getElementById('dlgErr').classList.add('hidden');
+  const ok = document.getElementById('dlgOk'); ok.textContent = o.confirmText; ok.className = 'dlg-ok ' + o.kind;
+  document.getElementById('dlgBack').classList.add('show');
+}
+function dlgReasonChange() {
+  document.getElementById('dlgNoteWrap').classList.toggle('hidden', document.getElementById('dlgReason').value !== OTHER_REASON);
+  document.getElementById('dlgErr').classList.add('hidden');
+}
+function closeDialog() { document.getElementById('dlgBack').classList.remove('show'); dlgCb = null; }
+function confirmDialog() {
+  let reason = null, trxRef = '';
+  const err = document.getElementById('dlgErr');
+  if (dlgNeedsTrx) {
+    trxRef = document.getElementById('dlgTrxInput').value.trim();
+    if (!trxRef) { err.textContent = '⚠ পেমেন্টের Transaction ID / রেফারেন্স নম্বর লিখুন।'; err.classList.remove('hidden'); return; }
+  }
+  if (dlgHasReason) {
+    const v = document.getElementById('dlgReason').value;
+    if (!v) { err.textContent = '⚠ বাতিল করতে একটি কারণ নির্বাচন করুন।'; err.classList.remove('hidden'); return; }
+    if (v === OTHER_REASON) {
+      const n = document.getElementById('dlgNote').value.trim();
+      if (n.length < 3) { err.textContent = '⚠ অনুগ্রহ করে কারণটি বিস্তারিত লিখুন।'; err.classList.remove('hidden'); return; }
+      reason = n;
+    } else reason = v;
+  }
+  const cb = dlgCb; closeDialog(); if (cb) cb(reason || trxRef);
+}
+
+function depositAction(id, status) {
+  const d = deposits.find(x => x.id === id); if (!d || d.status !== 'Pending') return;
+  const amt = Number(d.amount) || 0;
+  const ok = status === 'Approved';
+  if (ok && getAgentAvailable() < amt) {
+    toast('পর্যাপ্ত এজেন্ট ব্যালেন্স নেই! ডিপোজিট অনুমোদন করতে আগে Admin থেকে ব্যালেন্স নিন।');
+    go('wallet');
+    return;
+  }
+  const pl = usersMap[d.uid] || {};
+  const pName = d.playerName || pl.name || pl.username || d.uid;
+  const rows = [['Request ID', d.id], ['Player', pName], ['Method', d.method || 'bKash'], ['TRX ID', d.trxId || d.trx || 'N/A'], ['Amount', formatTaka(amt)]];
+  if (ok) rows.push(['আপনার Wallet থেকে কাটা হবে', '-' + formatTaka(amt)]);
+  openDialog({
+    kind: ok ? 'ok' : 'bad',
+    title: ok ? 'ডিপোজিট অনুমোদন করবেন?' : 'ডিপোজিট বাতিল করবেন?',
+    info: rows,
+    reasons: ok ? null : REJECT_REASONS,
+    confirmText: ok ? '✓ অনুমোদন করুন' : '✕ বাতিল করুন',
+    onConfirm: r => applyDeposit(d, status, r)
+  });
+}
+
+async function applyDeposit(d, status, reason) {
+  if (!currentAgentUid || !d) return;
+  try {
+    const amt = Number(d.amount) || 0;
+    await window.mwApi('/api/v1/agent/deposits/decision', {
+      depId: d.id,
+      decision: status,
+      reason: reason || ''
+    }, auth);
+    if (status === 'Approved') {
+      toast('ডিপোজিট অনুমোদিত হয়েছে ও আপনার Wallet থেকে ' + formatTaka(amt) + ' কাটা হয়েছে ✓');
+    } else {
+      toast('ডিপোজিট বাতিল করা হয়েছে');
+    }
+  } catch (err) {
+    const rawMsg = (err && (err.message || err)) || 'অজানা ত্রুটি';
+    if (/ব্যালেন্স|balance/i.test(rawMsg)) {
+      const tot = getAgentTotalBalance();
+      const resv = Number(agentProfile && agentProfile.reservedBalance) || 0;
+      const bon = Number(d.bonusAmount) || 0;
+      toast(`ত্রুটি: ${rawMsg} (ওয়ালেট: ৳${tot}, রিজার্ভ: ৳${resv}${bon ? `, বোনাস: ৳${bon}` : ''})`);
+    } else {
+      toast('ত্রুটি: ' + rawMsg);
+    }
+  }
+}
+
+function completeWithdrawal(id) {
+  const w = withdrawals.find(x => x.id === id);
+  if (!w || !isWithdrawalAssigned(w)) return;
+  const amt = Number(w.amount) || 0;
+  const pl = usersMap[w.uid] || {};
+  const pName = w.playerName || w.userName || pl.name || pl.username || w.uid;
+  openDialog({
+    kind: 'ok',
+    title: 'উইথড্র পেমেন্ট সম্পন্ন করবেন?',
+    info: [['Request ID', w.id], ['Player', pName], ['Method', w.method || 'bKash'], ['Number', w.receiverNumber || w.accountNumber || w.number || 'N/A'], ['আপনার Wallet-এ যোগ হবে', '+' + formatTaka(amt)]],
+    needsTrx: true,
+    reasons: null,
+    confirmText: '✓ পেমেন্ট সম্পন্ন করুন',
+    onConfirm: trxRef => doCompleteWithdrawal(w, trxRef)
+  });
+}
+
+async function doCompleteWithdrawal(w, trxRef) {
+  if (!currentAgentUid || !w) return;
+  try {
+    const amt = Number(w.amount) || 0;
+    await window.mwApi('/api/v1/agent/withdrawals/complete', {
+      withKey: w.id,
+      paymentRef: trxRef
+    }, auth);
+    toast('Payment Complete হয়েছে এবং আপনার Wallet-এ ' + formatTaka(amt) + ' যোগ হয়েছে ✓');
+  } catch (err) {
+    toast('ত্রুটি: ' + (err.message || err));
+  }
+}
+
+function formatTaka(amount) {
+  return '৳ ' + Math.round(Number(amount || 0)).toLocaleString('en-US');
+}
+
+function renderWallet() {
+  const avail = getAgentAvailable();
+  const res = getReservedAmount();
+  const recv = Number(agentProfile && agentProfile.receivedFromAdmin) || 0;
+  const compDep = Number(agentProfile && agentProfile.totalProcessedDeposits) || 0;
+  const compWd = Number(agentProfile && agentProfile.totalProcessedWithdrawals) || 0;
+  document.getElementById('agentBalanceHome').textContent = formatTaka(avail);
+  document.getElementById('agentBalanceWallet').textContent = formatTaka(avail);
+  document.getElementById('availableBalanceText').textContent = formatTaka(avail);
+  document.getElementById('reservedBalanceText').textContent = formatTaka(res);
+  document.getElementById('receivedBalanceText').textContent = formatTaka(recv);
+  document.getElementById('completedDepositsText').textContent = formatTaka(compDep);
+  document.getElementById('completedPaymentsText').textContent = formatTaka(compWd);
+  hydrateAgentWalletForm();
+}
+
+const AG_PAY_METHODS = ['bKash', 'Nagad', 'Rocket', 'Upay'];
+let _agWalletHydratedUid = '';
+function hydrateAgentWalletForm(force) {
+  if (!agentProfile || !currentAgentUid) return;
+  const enabled = agentProfile.walletEnabled === true;
+  const nums = agentProfile.paymentNumbers || {};
+  const togs = agentProfile.paymentToggles || {};
+  const mTog = document.getElementById('agWalletMasterToggle');
+  const hTog = document.getElementById('homeWalletToggle');
+  if (mTog) mTog.checked = enabled;
+  if (hTog) hTog.checked = enabled;
+
+  const activeEl = document.activeElement;
+  const isTypingWallet = activeEl && activeEl.id && activeEl.id.startsWith('agNum_');
+  if (force || _agWalletHydratedUid !== currentAgentUid || !isTypingWallet) {
+    AG_PAY_METHODS.forEach(m => {
+      const inp = document.getElementById('agNum_' + m);
+      const sw = document.getElementById('agOn_' + m);
+      const val = nums[m] || nums[m.toLowerCase()] || '';
+      if (inp) inp.value = val;
+      if (sw) sw.checked = togs[m] !== false;
+    });
+    _agWalletHydratedUid = currentAgentUid;
+  }
+
+  const activeMethods = AG_PAY_METHODS.filter(m => {
+    const val = (document.getElementById('agNum_' + m)?.value || nums[m] || nums[m.toLowerCase()] || '').trim();
+    const on = document.getElementById('agOn_' + m) ? document.getElementById('agOn_' + m).checked : (togs[m] !== false);
+    return !!val && on;
+  });
+
+  const stBox = document.getElementById('agWalletLiveStatus');
+  if (stBox) {
+    if (enabled && activeMethods.length) {
+      stBox.className = 'ag-wstatus on';
+      stBox.textContent = '🟢 চালু (ON) — User Panel-এ প্রদর্শিত হচ্ছে: ' + activeMethods.join(', ');
+    } else if (enabled) {
+      stBox.className = 'ag-wstatus off';
+      stBox.textContent = '⚠ ওয়ালেট ON আছে, কিন্তু কোনো সক্রিয় নম্বর সেট করা নেই';
+    } else {
+      stBox.className = 'ag-wstatus off';
+      stBox.textContent = '🔴 ওয়ালেট বন্ধ (OFF) — User Panel-এ আপনার নম্বর শো করছে না';
+    }
+  }
+  const hTitle = document.getElementById('homeWalletBarTitle');
+  const hSub = document.getElementById('homeWalletBarSub');
+  if (hTitle) hTitle.textContent = enabled ? 'User Panel Wallet: 🟢 চালু (ON)' : 'User Panel Wallet: 🔴 বন্ধ (OFF)';
+  if (hSub) hSub.textContent = enabled && activeMethods.length ? ('সক্রিয়: ' + activeMethods.join(' · ')) : 'নম্বর সেট ও ON/OFF করতে ট্যাপ করুন';
+}
+
+function collectAgentWalletPayload(overrideMaster) {
+  const nums = {}, toggles = {};
+  AG_PAY_METHODS.forEach(m => {
+    const inp = document.getElementById('agNum_' + m);
+    const sw = document.getElementById('agOn_' + m);
+    nums[m] = inp ? inp.value.trim() : ((agentProfile && agentProfile.paymentNumbers && agentProfile.paymentNumbers[m]) || '');
+    toggles[m] = sw ? !!sw.checked : true;
+  });
+  const mTog = document.getElementById('agWalletMasterToggle');
+  const enabled = typeof overrideMaster === 'boolean' ? overrideMaster : !!(mTog && mTog.checked);
+  return { enabled, nums, toggles };
+}
+
+async function persistAgentWallet(enabled, nums, toggles, msg) {
+  if (!currentAgentUid || !agentProfile) return;
+  const adm = agentProfile.parentAdminId || agentProfile.adminUid || '';
+  try {
+    await db.ref('agentWallets/' + currentAgentUid).set({
+      agentUid: currentAgentUid,
+      agentName: agentProfile.name || 'Agent',
+      parentAdminId: adm,
+      adminUid: adm,
+      enabled: !!enabled,
+      active: agentProfile.active !== false,
+      numbers: nums,
+      toggles: toggles,
+      updatedAt: TS
+    });
+    await db.ref('agents/' + currentAgentUid).update({
+      walletEnabled: !!enabled,
+      paymentNumbers: nums,
+      paymentToggles: toggles
+    }).catch(() => {});
+    agentProfile.walletEnabled = !!enabled;
+    agentProfile.paymentNumbers = nums;
+    agentProfile.paymentToggles = toggles;
+    hydrateAgentWalletForm(true);
+    if (msg) toast(msg);
+  } catch (err) {
+    toast('ওয়ালেট সেভ ব্যর্থ: ' + (err.message || err));
+    hydrateAgentWalletForm(true);
+  }
+}
+
+async function toggleAgentWalletMaster(isOn) {
+  const { nums, toggles } = collectAgentWalletPayload(isOn);
+  const hasAnyNum = AG_PAY_METHODS.some(m => nums[m] && toggles[m] !== false);
+  if (isOn && !hasAnyNum) {
+    toast('কমপক্ষে একটি পেমেন্ট নম্বর লিখে ON করুন');
+    go('wallet');
+  }
+  await persistAgentWallet(isOn, nums, toggles, isOn ? '🟢 ওয়ালেট ON করা হয়েছে — User Panel-এ নম্বর দেখাবে' : '🔴 ওয়ালেট OFF করা হয়েছে — User Panel-এ নম্বর দেখাবে না');
+}
+
+async function toggleAgentMethodSwitch() {
+  const { enabled, nums, toggles } = collectAgentWalletPayload();
+  await persistAgentWallet(enabled, nums, toggles, 'পেমেন্ট মেথড স্ট্যাটাস আপডেট হয়েছে ✓');
+}
+
+async function saveAgentWalletNumbers() {
+  const btn = document.getElementById('btnSaveAgentWallet');
+  if (btn) btn.disabled = true;
+  try {
+    const { enabled, nums, toggles } = collectAgentWalletPayload();
+    await persistAgentWallet(enabled, nums, toggles, enabled ? '✅ ওয়ালেট নম্বর সেভ ও চালু (ON) আছে' : '✅ ওয়ালেট নম্বর সেভ হয়েছে (বর্তমানে OFF)');
+  } finally {
+    if (btn) btn.disabled = false;
+  }
+}
+
+async function submitBalanceRequest() {
+  if (!currentAgentUid || !agentProfile) return;
+  const amtInput = document.getElementById('balanceRequestAmount');
+  const reasonInput = document.getElementById('balanceRequestReason');
+  const amt = Number(amtInput.value);
+  const reason = reasonInput.value.trim();
+  if (!Number.isFinite(amt) || amt <= 0) { toast('সঠিক টাকার পরিমাণ লিখুন।'); amtInput.focus(); return; }
+  if (!reason) { toast('Balance Request-এর কারণ লিখুন।'); reasonInput.focus(); return; }
+
+  const btn = document.getElementById('btnSubmitBalanceReq');
+  btn.disabled = true;
+  try {
+    await window.mwApi('/api/v1/agent/balance-request', { amount: amt, reason }, auth);
+    amtInput.value = '';
+    reasonInput.value = '';
+    toast('Admin-এর কাছে রিয়েল ব্যালেন্স রিকোয়েস্ট পাঠানো হয়েছে ✓');
+  } catch (err) {
+    toast('রিকোয়েস্ট পাঠানো ব্যর্থ: ' + (err.message || err));
+  } finally {
+    btn.disabled = false;
+  }
+}
+
+function renderBalanceRequests() {
+  const c = document.getElementById('balanceRequestList'); if (!c) return;
+  if (!balanceRequests.length) {
+    c.innerHTML = '<div class="empty"><span>💳</span><br>এখনও কোনো Balance Request পাঠানো হয়নি।</div>';
+    return;
+  }
+  c.innerHTML = balanceRequests.map(r => {
+    const st = String(r.status || 'pending').toLowerCase();
+    const tStr = r.createdAt ? new Date(r.createdAt).toLocaleString('bn-BD') : '—';
+    const stText = st === 'approved' ? 'Admin Approved ✓' : st === 'rejected' ? 'Admin Rejected' : 'Admin Approval অপেক্ষমাণ';
+    return `
+      <div class="card">
+       <div class="cardtop"><strong>${escapeRequestText(r.id)}</strong><span class="status ${st}">${escapeRequestText(st.toUpperCase())}</span></div>
+       <div class="amount">${formatTaka(r.amount)}</div>
+       <div class="detail"><span>কারণ</span><b>${escapeRequestText(r.reason || '—')}</b></div>
+       <div class="detail"><span>সময়</span><b>${escapeRequestText(tStr)}</b></div>
+       <div class="detail"><span>অবস্থা</span><b>${escapeRequestText(stText)}</b></div>
+      </div>
+    `;
+  }).join('');
+}
+
+function escapeRequestText(v) {
+  return String(v ?? '').replace(/[&<>"']/g, ch => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[ch]));
+}
+
+function updateStats() {
+  const pCount = deposits.filter(x => x.status === 'Pending').length;
+  const aCount = deposits.filter(x => x.status === 'Approved' || x.status === 'Completed').length;
+  const rCount = deposits.filter(x => x.status === 'Rejected').length;
+  const wCount = withdrawals.filter(x => isWithdrawalAssigned(x)).length;
+  const cCount = withdrawals.filter(x => x.status === 'Completed' || x.status === 'Approved').length;
+
+  document.getElementById('pendingCount').textContent = pCount;
+  document.getElementById('approvedCount').textContent = aCount;
+  document.getElementById('withdrawCount').textContent = wCount;
+  document.getElementById('completedCount').textContent = cCount;
+
+  const setOpt = (id, label) => { const el = document.getElementById(id); if (el) el.textContent = label; };
+  setOpt('optDepPending', 'Pending (' + pCount + ')');
+  setOpt('optDepApproved', 'Approved (' + aCount + ')');
+  setOpt('optDepRejected', 'Rejected (' + rCount + ')');
+  setOpt('optDepAll', 'All (' + deposits.length + ')');
+
+  setOpt('optWdAssigned', 'Pending / Assigned (' + wCount + ')');
+  setOpt('optWdCompleted', 'Completed (' + cCount + ')');
+  setOpt('optWdAll', 'All (' + withdrawals.length + ')');
+}
+
+function toast(m) {
+  const t = document.getElementById('toast'); t.textContent = sanitizeAgentMsg(m); t.classList.add('show');
+  clearTimeout(window.tTimer); window.tTimer = setTimeout(() => t.classList.remove('show'), 2600);
+}
+
+function modal(title, text) {
+  document.getElementById('modalTitle').textContent = title;
+  document.getElementById('modalText').innerHTML = text;
+  document.getElementById('modalBack').classList.add('show');
+}
+function closeModal() { document.getElementById('modalBack').classList.remove('show'); }
+
+function openAccountModal() {
+  const a = agentProfile || {};
+  const pm = a.paymentNumbers ? Object.entries(a.paymentNumbers).map(([k, v]) => `${escapeRequestText(k)}: ${escapeRequestText(v)}`).join('<br>') : 'N/A';
+  modal('Account Information',
+    `Agent Name: ${escapeRequestText(a.name || 'Agent')}<br>` +
+    `Agent UID: ${escapeRequestText(currentAgentUid || '—')}<br>` +
+    `Email: ${escapeRequestText(a.email || '—')}<br>` +
+    `Phone: ${escapeRequestText(a.phone || '—')}<br>` +
+    `Payment Numbers:<br>${pm}<br>` +
+    `Status: ${escapeRequestText(String(a.status || 'active').toUpperCase())}`
+  );
+}
+let agentChatMsgs = [];
+let agentChatOpen = false;
+function toggleAgentLiveChat(forceState) {
+  const dr = document.getElementById('liveChatDrawer');
+  if (!dr) return;
+  agentChatOpen = typeof forceState === 'boolean' ? forceState : !agentChatOpen;
+  dr.classList.toggle('open', agentChatOpen);
+  document.body.classList.toggle('chat-open', agentChatOpen);
+  const sub = document.getElementById('agentChatSub');
+  if (sub && agentProfile) sub.textContent = 'Admin: ' + (agentProfile.parentAdminName || agentProfile.parentAdminId || 'User Admin');
+  if (agentChatOpen) {
+    markAgentChatRead();
+    setTimeout(() => {
+      const inp = document.getElementById('agentChatInput'); if (inp) inp.focus();
+      const box = document.getElementById('agentChatMsgs'); if (box) box.scrollTop = box.scrollHeight;
+    }, 80);
+  }
+}
+function renderAgentChatMessages() {
+  const box = document.getElementById('agentChatMsgs');
+  if (!box) return;
+  const divider = '<div class="chat-div"><span>MOSTWIN88 • SUPPORT</span></div>';
+  box.innerHTML = divider + (agentChatMsgs.length ? agentChatMsgs.map(m => {
+    const mine = m.sender === 'AGENT';
+    const time = m.timestamp ? new Date(m.timestamp).toLocaleTimeString('bn-BD', { hour: '2-digit', minute: '2-digit' }) : '';
+    return `<div class="cmsg ${mine ? 'me' : ''}">${!mine ? `<b style="font-size:10px;color:#FFD23F;display:block;margin-bottom:2px">${escapeRequestText(m.senderName || m.sender || 'Admin')}</b>` : ''}${escapeRequestText(m.text)}<small>${escapeRequestText(time)}</small></div>`;
+  }).join('') : `<div style="color:#8E9BB8;font-size:12px;text-align:center;margin:auto;padding:24px 10px">আপনার User Admin-এর সাথে সরাসরি লাইভ চ্যাট শুরু করতে মেসেজ লিখুন...</div>`);
+  box.scrollTop = box.scrollHeight;
+}
+async function sendAgentLiveChat(e) {
+  if (e) e.preventDefault();
+  if (!currentAgentUid || !agentProfile) return;
+  const inp = document.getElementById('agentChatInput');
+  if (!inp) return;
+  const text = inp.value.trim();
+  if (!text) return;
+  inp.value = '';
+  try {
+    const base = 'agent_admin_chats/' + currentAgentUid;
+    await db.ref(base + '/messages').push({
+      sender: 'AGENT',
+      senderUid: currentAgentUid,
+      senderName: agentProfile.name || agentProfile.email || 'Agent',
+      text,
+      timestamp: TS,
+      read: false
+    });
+    await db.ref(base + '/meta').update({
+      agentUid: currentAgentUid,
+      agentName: agentProfile.name || agentProfile.email || 'Agent',
+      adminUid: agentProfile.parentAdminId || '',
+      lastMessage: text,
+      lastTimestamp: TS,
+      lastSender: 'AGENT',
+      unreadForAdmin: true,
+      unreadForAgent: false
+    });
+  } catch (err) {
+    toast('মেসেজ পাঠানো ব্যর্থ: ' + (err.message || err));
+  }
+}
+function markAgentChatRead() {
+  if (!currentAgentUid) return;
+  const badge = document.getElementById('liveChatFabBadge');
+  if (badge) badge.style.display = 'none';
+  const base = 'agent_admin_chats/' + currentAgentUid;
+  const u = {};
+  agentChatMsgs.forEach(m => { if (m.sender !== 'AGENT' && m.read !== true) u[m.id + '/read'] = true; });
+  if (Object.keys(u).length) {
+    db.ref(base + '/messages').update(u).catch(() => {});
+    db.ref(base + '/meta/unreadForAgent').set(false).catch(() => {});
+  }
+}
+function openSupportModal() {
+  toggleAgentLiveChat(true);
+}
+function openSettingsModal() {
+  modal('App Settings',
+    `MOSTWIN88 Pro Casino Agent Workspace<br>` +
+    `Sync Mode: Realtime Cloud Live<br>` +
+    `History Window: 60 Days`
+  );
+}
+function openSecurityModal() {
+  modal('Security & Activity',
+    `Signed In UID: ${escapeRequestText(currentAgentUid || '—')}<br>` +
+    `Session: Verified Account Authentication<br>` +
+    `Role: Authorized Payment Agent`
+  );
+}
+
+function updateNotificationBadge() {
+  const badge = document.getElementById('notificationBadge'); if (!badge) return;
+  const count = notifications.filter(n => !readNotifIds[n.id]).length;
+  badge.textContent = count > 99 ? '99+' : String(count);
+  badge.classList.toggle('hidden', count === 0);
+}
+
+function showNotifications() {
+  document.getElementById('modalTitle').textContent = currentLanguage === 'bn' ? 'নোটিফিকেশন সেন্টার' : 'Notifications Center';
+  document.getElementById('modalText').innerHTML = '<div id="notificationList" class="notification-list"></div><div class="notification-tools"><button type="button" onclick="markAllNotificationsRead()">' + (currentLanguage === 'bn' ? 'সব পড়া হয়েছে' : 'Mark all read') + '</button></div>';
+  document.getElementById('modalBack').classList.add('show');
+  renderNotifications();
+}
+
+function renderNotifications() {
+  const list = document.getElementById('notificationList'); if (!list) return;
+  if (!notifications.length) {
+    list.innerHTML = '<div class="empty"><span>🔔</span><br>' + (currentLanguage === 'bn' ? 'এখনও কোনো নোটিফিকেশন নেই।' : 'No notifications yet.') + '</div>';
+    return;
+  }
+  list.innerHTML = notifications.map(n => {
+    const isRead = !!readNotifIds[n.id];
+    const time = n.timestamp ? new Date(n.timestamp).toLocaleString(currentLanguage === 'bn' ? 'bn-BD' : 'en-US') : '';
+    return '<div class="notification-item ' + (isRead ? '' : 'unread') + '"><b>' + escapeRequestText(n.title || 'Notification') + '</b><div>' + escapeRequestText(n.body || n.message || '') + '</div><small>' + escapeRequestText(time) + ' · ' + (isRead ? (currentLanguage === 'bn' ? 'পড়া হয়েছে' : 'Read') : (currentLanguage === 'bn' ? 'নতুন' : 'Unread')) + '</small>' + (isRead ? '' : '<button type="button" style="margin-top:8px;padding:6px 10px;border:0;border-radius:8px;background:var(--pink);color:#fff;font-size:10px;font-weight:700" onclick="markNotificationRead(\'' + escapeRequestText(n.id) + '\')">' + (currentLanguage === 'bn' ? '✓ পড়া হয়েছে' : 'Mark read') + '</button>') + '</div>';
+  }).join('');
+}
+
+function markNotificationRead(id) {
+  readNotifIds[id] = true;
+  try { localStorage.setItem('mw_agent_read_notifs', JSON.stringify(readNotifIds)); } catch (e) {}
+  updateNotificationBadge();
+  renderNotifications();
+}
+
+function markAllNotificationsRead() {
+  notifications.forEach(n => { readNotifIds[n.id] = true; });
+  try { localStorage.setItem('mw_agent_read_notifs', JSON.stringify(readNotifIds)); } catch (e) {}
+  updateNotificationBadge();
+  renderNotifications();
+}
+
+function toggleLanguage() {
+  currentLanguage = currentLanguage === 'bn' ? 'en' : 'bn';
+  document.getElementById('languageToggle').textContent = currentLanguage === 'bn' ? 'EN' : 'বাং';
+  toast(currentLanguage === 'en' ? 'Language switched to English' : 'ভাষা বাংলা করা হয়েছে');
+  renderTransactionReport();
+}
+
+function syncAgentThemeUi() {
+  document.body.classList.toggle('light', currentTheme === 'light');
+  var ic = currentTheme === 'light' ? '☾' : '☀';
+  var t1 = document.getElementById('themeToggle'); if (t1) t1.textContent = ic;
+  var t2 = document.getElementById('loginThemeToggle'); if (t2) t2.textContent = ic;
+  const meta = document.querySelector('meta[name="theme-color"]');
+  if (meta) meta.setAttribute('content', currentTheme === 'light' ? '#FFFFFF' : '#040405');
+}
+syncAgentThemeUi();
+
+function toggleTheme() {
+  currentTheme = currentTheme === 'dark' ? 'light' : 'dark';
+  try { localStorage.setItem('mw_agent_theme_v3', currentTheme); } catch (e) {}
+  syncAgentThemeUi();
+}
+</script>
+<script src="../pwa.js"></script>
+<script src="../passkey.js"></script>
+</body>
+</html>

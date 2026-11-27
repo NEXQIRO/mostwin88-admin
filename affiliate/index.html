@@ -1,0 +1,2165 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="mw-app" content="affiliate">
+<meta name="theme-color" content="#040405">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="MOSTWIN88 Affiliate">
+<meta name="mobile-web-app-capable" content="yes">
+<link rel="manifest" href="./manifest.json">
+<link rel="icon" type="image/png" href="../affiliate-icon-192.png">
+<link rel="apple-touch-icon" href="../affiliate-icon-192.png">
+<title>MOSTWIN88 — Live Affiliate Workspace</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Hind+Siliguri:wght@400;500;600;700&family=JetBrains+Mono:wght@500;600&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-auth-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-database-compat.js"></script>
+<script src="../firebase-config.js?v=20261116c"></script>
+<script>if(typeof window.mwApi!=='function'){window.MW_DEFAULT_BACKEND_URL=window.MW_DEFAULT_BACKEND_URL||'https://mostwin88-bakend.onrender.com';window.MW_BACKEND_URL=window.MW_BACKEND_URL||(location.origin===window.MW_DEFAULT_BACKEND_URL?'':window.MW_DEFAULT_BACKEND_URL);window.mwApiUrl=function(p){p=String(p||'');if(/^https?:\/\//i.test(p))return p;var b=String(window.MW_BACKEND_URL||'').replace(/\/+$/,'');return b+(p[0]==='/'?p:'/'+p);};window.mwApi=async function(p,b,a){var ai=a;if(!ai&&typeof firebase!=='undefined'&&firebase.apps&&firebase.apps.length){try{ai=firebase.auth();}catch(_){}}var u=ai&&ai.currentUser;if(!u)throw new Error('অ্যাকাউন্ট লগইন করা নেই।');var t=await u.getIdToken();var r=await fetch(window.mwApiUrl(p),{method:'POST',headers:{'Content-Type':'application/json','Authorization':'Bearer '+t},body:JSON.stringify(b||{})});var d=null;try{d=await r.json();}catch(_){}if(!r.ok||!d||d.ok===false){var e=new Error((d&&d.error)||('সার্ভার ত্রুটি ('+r.status+')'));e.status=r.status;e.code=(d&&d.code)||'API_ERROR';throw e;}return d;};}</script>
+<style>
+:root{--bg:#0b0d10;--panel:#13171c;--panel2:#191e24;--line:#272e36;--text:#f3f5f7;--muted:#929ba6;--orange:#ff7a1a;--gold:#e7b85b;--green:#35c98a;--red:#ff6b6b;--shadow:0 18px 50px #0005}
+*{box-sizing:border-box}
+body{margin:0;background:radial-gradient(ellipse at 80% -10%,#39200f 0,transparent 34%),var(--bg);color:var(--text);font:14px/1.5 Inter,ui-sans-serif,system-ui,-apple-system,Segoe UI,sans-serif}
+button,input,select,textarea{font:inherit}
+button{cursor:pointer}
+.hidden{display:none!important}
+.app{display:flex;min-height:100vh}
+.sidebar{width:250px;background:#0d1014;border-right:1px solid var(--line);padding:24px 16px;position:fixed;inset:0 auto 0 0;z-index:5;display:flex;flex-direction:column}
+.brand{display:flex;align-items:center;gap:11px;padding:0 10px 28px}
+.brand-mark{display:inline-flex;flex-direction:column;align-items:flex-start;min-width:0;line-height:1;max-width:100%;white-space:normal}
+.brand-mark .word{display:inline-flex;width:max-content;align-items:center;white-space:nowrap;font-size:clamp(15px,1.35vw,19px);font-weight:950;letter-spacing:.15px;line-height:1;color:#ffd23f}
+.brand-mark .word .white{color:#fff}.brand-mark .word .gold{color:#ffd23f}
+.brand-mark .tagline{display:block;width:max-content;margin-top:6px;color:#ffd23f;font-size:clamp(6px,.52vw,8px);font-weight:800;letter-spacing:0;white-space:nowrap;overflow:visible;line-height:1.15}
+.brand-mark .logo-o{display:inline-block;position:relative;width:1em;height:1em;margin:0 .035em;vertical-align:middle;flex:none;overflow:visible;filter:drop-shadow(0 0 .04em #ffffff77)}
+.brand-mark .logo-o svg{position:absolute;inset:0;width:100%;height:100%;display:block;overflow:visible;transform:scale(1.12);transform-origin:50% 50%}
+.brand-mark .orbit{transform-box:view-box;transform-origin:50px 50px;animation:logoSpin 6s cubic-bezier(.2,.7,.2,1) infinite}
+@keyframes logoSpin{0%,25%{transform:rotate(0deg)}70%,100%{transform:rotate(1440deg)}}
+.nav-label{font-size:10px;color:#68727d;letter-spacing:1.6px;padding:12px 12px 8px}
+.nav{display:grid;gap:5px}
+.nav button{border:0;background:transparent;color:#aeb6bf;text-align:left;padding:11px 12px;border-radius:10px;display:flex;align-items:center;gap:12px;transition:.2s}
+.nav button:hover,.nav button.active{background:linear-gradient(90deg,#ff7a1a22,#ff7a1a08);color:#fff}
+.nav button.active{box-shadow:inset 3px 0 var(--orange)}
+.nav .ico{width:18px;text-align:center;color:var(--gold)}
+.nav .nbadge{margin-left:auto;background:var(--red);color:#fff;font-size:10px;font-weight:800;padding:1px 6px;border-radius:10px;display:none}
+.side-bottom{margin-top:auto}
+.profile-mini{border-top:1px solid var(--line);padding:17px 8px 0;display:flex;gap:10px;align-items:center}
+.avatar{width:34px;height:34px;border-radius:50%;background:linear-gradient(135deg,#f5c36c,#a95119);display:grid;place-items:center;color:#241507;font-weight:800;flex:none}
+.profile-mini small{display:block;color:var(--muted);font-size:11px}
+.main{margin-left:250px;width:calc(100% - 250px);padding:25px 32px 70px;max-width:1700px}
+.topbar{display:flex;justify-content:space-between;align-items:center;margin-bottom:24px;gap:15px}
+.crumb{color:var(--muted);font-size:12px;display:flex;align-items:center;gap:10px}
+.live-pill{display:inline-flex;align-items:center;gap:6px;font-size:11px;padding:4px 10px;border-radius:20px;background:#35c98a18;color:var(--green);border:1px solid #35c98a33}
+.live-pill.offline{background:#ff6b6b18;color:var(--red);border-color:#ff6b6b33}
+.top-actions{display:flex;align-items:center;gap:10px}
+.icon-btn,.select,.btn{border:1px solid var(--line);background:var(--panel);color:var(--text);border-radius:10px;padding:9px 12px}
+.icon-btn{width:39px;height:39px;position:relative;display:inline-grid;place-items:center}
+.dot{position:absolute;width:7px;height:7px;background:var(--orange);border-radius:50%;right:8px;top:7px}
+.btn-primary{background:linear-gradient(135deg,#ff8b2b,#d95b0b);border:0;color:white;font-weight:700;box-shadow:0 7px 20px #ff7a1a2c}
+.heading{display:flex;justify-content:space-between;align-items:flex-end;margin-bottom:22px;gap:15px}
+.heading h1{font-size:27px;letter-spacing:-.7px;margin:0 0 4px}
+.heading p{margin:0;color:var(--muted)}
+.date-tools{display:flex;gap:8px}
+.grid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:14px}
+.card{background:linear-gradient(145deg,#171c22,#111519);border:1px solid var(--line);border-radius:15px;padding:18px;box-shadow:var(--shadow)}
+.stat-top{display:flex;justify-content:space-between;align-items:center;color:var(--muted);font-size:12px}
+.stat-icon{width:34px;height:34px;border-radius:10px;background:#ff7a1a18;color:var(--orange);display:grid;place-items:center;font-size:16px}
+.stat-value{font-size:27px;font-weight:750;letter-spacing:-.7px;margin:12px 0 4px}
+.stat-foot{font-size:11px;color:var(--muted)}
+.up{color:var(--green);font-weight:700}
+.down{color:var(--red);font-weight:700}
+.content-grid{display:grid;grid-template-columns:1.65fr 1fr;gap:14px;margin-top:15px}
+.card-head{display:flex;justify-content:space-between;align-items:center;margin-bottom:17px;gap:10px}
+.card-head h3{font-size:14px;margin:0}
+.card-head small{color:var(--muted)}
+.chart{height:220px;position:relative;border-bottom:1px solid var(--line);background:repeating-linear-gradient(to bottom,transparent 0,transparent 53px,#ffffff0a 54px)}
+.chart svg{width:100%;height:100%;overflow:visible}
+.legend{display:flex;gap:16px;color:var(--muted);font-size:11px;margin-top:13px}
+.legend span:before{content:"";display:inline-block;width:7px;height:7px;border-radius:50%;background:var(--orange);margin-right:6px}
+.legend span+span:before{background:var(--gold)}
+.ring-wrap{display:flex;align-items:center;gap:24px;min-height:220px}
+.ring{width:150px;height:150px;border-radius:50%;background:conic-gradient(var(--orange) 0 68%,var(--gold) 68% 84%,#343b44 84%);display:grid;place-items:center;flex:none;position:relative}
+.ring:after{content:"";position:absolute;inset:13px;background:#151a1f;border-radius:50%}
+.ring-center{z-index:1;text-align:center}
+.ring-center strong{font-size:25px;display:block}
+.ring-center small{color:var(--muted);font-size:10px}
+.key{display:grid;gap:13px;flex:1}
+.key-row{display:flex;justify-content:space-between;gap:10px;font-size:12px;color:var(--muted)}
+.key-row b{color:var(--text)}
+.bullet{display:inline-block;width:7px;height:7px;border-radius:50%;margin-right:7px;background:var(--orange)}
+.bullet.gold{background:var(--gold)}
+.bullet.grey{background:#59616b}
+.lower-grid{display:grid;grid-template-columns:1.4fr 1fr;gap:14px;margin-top:15px}
+.table-wrap{overflow:auto}
+table{width:100%;border-collapse:collapse;white-space:nowrap}
+th{text-align:left;color:#78838f;font-size:10px;text-transform:uppercase;letter-spacing:.8px;font-weight:600;padding:10px 9px;border-bottom:1px solid var(--line)}
+td{padding:13px 9px;border-bottom:1px solid #ffffff0a;font-size:12px}
+td:first-child{font-weight:650}
+.status{padding:4px 8px;border-radius:20px;font-size:10px;background:#35c98a18;color:var(--green);display:inline-block}
+.status.pending{background:#e7b85b18;color:var(--gold)}
+.status.inactive{background:#ff6b6b18;color:var(--red)}
+.activity{display:grid;gap:17px}
+.activity-item{display:flex;gap:11px;align-items:flex-start}
+.activity-icon{width:30px;height:30px;border-radius:9px;background:#ff7a1a18;color:var(--orange);display:grid;place-items:center;flex:none}
+.activity-item b{display:block;font-size:12px}
+.activity-item small{color:var(--muted);font-size:11px}
+.ref-card{margin-top:15px;display:flex;align-items:center;justify-content:space-between;gap:20px;background:linear-gradient(110deg,#27180f,#17191d 70%);border-color:#65401f}
+.ref-card h3{margin:0 0 5px;font-size:14px}
+.ref-card p{margin:0;color:var(--muted);font-size:11px}
+.ref-link{margin-top:12px;display:flex;gap:8px;align-items:center;flex-wrap:wrap}
+.ref-link code{background:#0c0e11;border:1px solid #3b3025;border-radius:8px;padding:9px 12px;color:#f5c36c;font-size:12px;word-break:break-all}
+.ref-link button{padding:9px 13px}
+.page{display:none}.page.active{display:block}
+.simple-card{padding:22px}.simple-card h2{font-size:18px;margin:0 0 8px}.simple-card p{color:var(--muted)}
+.toolbar{display:flex;gap:9px;flex-wrap:wrap;margin:15px 0}
+.toolbar input,.toolbar select{background:#0d1115;border:1px solid var(--line);color:var(--text);border-radius:9px;padding:10px 12px}
+.mobile-menu{display:none}
+.toast{position:fixed;bottom:25px;left:25px;background:#202830;border:1px solid #3b4651;padding:12px 16px;border-radius:10px;box-shadow:var(--shadow);opacity:0;transform:translateY(10px);transition:.25s;z-index:99999}
+.toast.show{opacity:1;transform:none}
+
+/* Login Screen */
+.login-gate{min-height:100dvh;display:flex;align-items:center;justify-content:center;padding:24px;background:radial-gradient(circle at 50% 0%,#ff7a1a22,transparent 48%),var(--bg)}
+.login-card{width:100%;max-width:410px;background:linear-gradient(145deg,#171c22,#101419);border:1px solid var(--line);border-radius:18px;padding:28px;box-shadow:var(--shadow)}
+.login-card h2{margin:14px 0 6px;font-size:18px;text-align:center}
+.login-card p{margin:0 0 20px;color:var(--muted);font-size:12px;text-align:center}
+.fgrp{margin-bottom:14px}
+.fgrp label{display:block;font-size:11px;color:var(--muted);margin-bottom:6px;font-weight:600}
+.fgrp input{width:100%;background:#0c0f13;border:1px solid var(--line);color:var(--text);border-radius:10px;padding:11px 13px;outline:none}
+.fgrp input:focus{border-color:var(--orange)}
+.pw-wrap{position:relative;display:flex;align-items:center}
+.pw-wrap input{padding-right:64px}
+.pw-eye{position:absolute;right:6px;top:50%;transform:translateY(-50%);background:#1c2128;color:var(--gold);border:1px solid var(--line);border-radius:8px;padding:5px 10px;font-size:11px;font-weight:700}
+.lerr{color:var(--red);font-size:12px;margin-bottom:10px;text-align:center;min-height:16px}
+
+/* Floating Live Chat FAB & Drawer (user.html Support Popup Style) */
+@keyframes mwChatPulse{0%{box-shadow:0 0 0 0 rgba(0,230,118,.6)}70%{box-shadow:0 0 0 10px rgba(0,230,118,0)}100%{box-shadow:0 0 0 0 rgba(0,230,118,0)}}
+.chat-fab{position:fixed;right:18px;bottom:22px;width:58px;height:58px;padding:0;border-radius:50%;border:2px solid rgba(255,255,255,.35);background:linear-gradient(135deg,#ffe27a,#f5b82e 55%,#e49a00);color:#2a1c00;display:flex;flex-direction:column;align-items:center;justify-content:center;box-shadow:0 10px 24px -6px rgba(255,210,63,.55),0 0 0 4px rgba(5,11,26,.7);z-index:9990;cursor:pointer;transition:transform .2s}
+.chat-fab.hidden{display:none!important}
+body.chat-open .chat-fab{display:none!important}
+.chat-fab:hover{transform:scale(1.06)}
+.chat-fab i{font-style:normal;font-size:21px;line-height:1}
+.chat-fab .fab-lbl{font-size:7.5px;font-weight:800;letter-spacing:.3px;color:#2a1c00;margin-top:1px}
+.chat-fab::after{content:"";position:absolute;top:3px;right:3px;width:11px;height:11px;border-radius:50%;background:#00E676;border:2px solid #050B1A;animation:mwChatPulse 1.8s infinite}
+.chat-fab-badge{position:absolute;top:-4px;left:-4px;background:#ef4444;color:#fff;font-size:10px;font-weight:800;min-width:20px;height:20px;padding:0 5px;border-radius:20px;display:none;place-items:center;border:2px solid #050B1A;z-index:2}
+.chat-drawer{position:fixed;right:16px;bottom:16px;width:min(380px,calc(100vw - 24px));height:min(580px,calc(100dvh - 32px));background:linear-gradient(180deg,rgba(10,22,52,.99),rgba(5,11,26,.99));border:1px solid rgba(255,210,63,.35);border-radius:20px;box-shadow:0 24px 60px -12px rgba(0,0,0,.85);z-index:9995;display:flex;flex-direction:column;overflow:hidden;opacity:0;pointer-events:none;transform:translateY(24px) scale(.96);transform-origin:bottom right;transition:opacity .28s,transform .28s cubic-bezier(.2,.8,.2,1);color:#EAF0FF}
+.chat-drawer.open{opacity:1;pointer-events:auto;transform:none}
+.chat-head{padding:max(14px,env(safe-area-inset-top)) 14px 14px;background:linear-gradient(135deg,rgba(255,210,63,.16),rgba(255,255,255,.02));border-bottom:1px solid rgba(255,255,255,.06);color:#EAF0FF;display:flex;align-items:center;justify-content:space-between;gap:10px}
+.chat-head-left{display:flex;align-items:center;gap:12px;min-width:0}
+.chat-av{width:42px;height:42px;border-radius:50%;display:grid;place-items:center;background:linear-gradient(135deg,#ffe27a,#e49a00);color:#2a1c00;font-size:13px;font-weight:900;letter-spacing:.5px;flex:none;box-shadow:0 0 14px rgba(255,210,63,.45)}
+.chat-head b{display:block;font-size:15px;font-weight:800;color:#EAF0FF}
+.chat-head small{display:flex;align-items:center;gap:6px;font-size:11px;color:#8E9BB8}
+.chat-head .cdot{width:8px;height:8px;border-radius:50%;background:#00E676;box-shadow:0 0 8px #00E676;display:inline-block}
+.chat-close{background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.11);color:#EAF0FF;width:36px;height:36px;border-radius:10px;display:grid;place-items:center;font-size:16px;flex:none;cursor:pointer}
+.chat-officer{display:flex;align-items:center;gap:11px;padding:10px 14px;background:rgba(255,255,255,.045)}
+.chat-officer-av{position:relative;width:44px;height:44px;border-radius:50%;display:grid;place-items:center;background:linear-gradient(135deg,#1f3466,#0c1836);border:2px solid rgba(255,210,63,.55);font-size:18px;flex:none}
+.chat-officer-av::after{content:"";position:absolute;right:0;bottom:0;width:11px;height:11px;background:#00E676;border:2px solid #07102a;border-radius:50%}
+.chat-officer-info{flex:1;min-width:0}.chat-officer-info strong{display:block;font-size:13.5px;color:#EAF0FF}.chat-officer-info span{display:block;font-size:11px;color:#00E676}
+.chat-officer-lbl{font-size:10px;color:#8E9BB8;text-align:right;line-height:1.45}.chat-officer-lbl strong{display:block;font-size:11px;color:#EAF0FF}
+.chat-notice{padding:8px 14px;font-size:11.5px;line-height:1.5;color:#f5d98a;background:rgba(255,210,63,.08);border-bottom:1px solid rgba(255,210,63,.12)}
+.chat-msgs{flex:1;min-height:0;overflow-x:hidden;overflow-y:auto;overscroll-behavior:contain;padding:12px 14px 18px;display:flex;flex-direction:column;gap:8px;background:transparent}
+.chat-div{text-align:center;margin:2px 0 8px;font-size:10px;letter-spacing:1px;color:#8E9BB8}
+.cmsg{max-width:82%;padding:9px 12px;border-radius:14px 14px 14px 4px;background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.08);color:#EAF0FF;font-size:13.5px;line-height:1.5;overflow-wrap:anywhere;align-self:flex-start}
+.cmsg.me{align-self:flex-end;background:linear-gradient(135deg,#ffe27a,#e49a00);border-color:transparent;color:#2a1c00;font-weight:600;border-radius:14px 14px 4px 14px}
+.cmsg small{display:block;font-size:9.5px;opacity:.65;margin-top:3px;text-align:right}
+.chat-bar{display:flex;gap:8px;padding:10px 12px;padding-bottom:max(10px,env(safe-area-inset-bottom));border-top:1px solid rgba(255,255,255,.08);background:#08122b}
+.chat-bar input{flex:1;min-height:42px;background:#0a1530;border:1px solid rgba(255,255,255,.11);color:#EAF0FF;border-radius:21px;padding:0 14px;font-size:14px;outline:none}
+.chat-bar input:focus{border-color:#FFD23F}
+.chat-bar button{width:42px;height:42px;border-radius:50%;border:0;background:linear-gradient(135deg,#ffe27a,#e49a00);color:#2a1c00;font-size:16px;font-weight:900;flex:none;display:grid;place-items:center;cursor:pointer}
+@media(max-width:600px){.chat-drawer{inset:0;width:100%;max-width:none;height:100dvh;max-height:none;border-radius:0;border:0;transform:translateY(100%)}.chat-drawer.open{transform:none}}
+
+/* Support inline live chat card */
+.inline-chat-box{height:320px;overflow-y:auto;padding:14px;border:1px solid rgba(255,210,63,.28);border-radius:16px;background:linear-gradient(180deg,rgba(10,22,52,.98),rgba(5,11,26,.98));display:flex;flex-direction:column;gap:8px;margin-top:14px;color:#EAF0FF}
+
+.light{--bg:#f2f4f6;--panel:#fff;--panel2:#f8f9fa;--line:#dfe4e8;--text:#20262d;--muted:#66717c;--shadow:0 12px 30px #18202a0c}
+@media(max-width:1100px){.grid{grid-template-columns:repeat(2,1fr)}.content-grid,.lower-grid{grid-template-columns:1fr}.main{padding:22px}}
+@media(max-width:700px){
+ .sidebar{transform:translateX(-100%);transition:.25s;width:270px}
+ .sidebar.open{transform:none;box-shadow:20px 0 60px #0008}
+ .main{margin:0;width:100%;padding:17px 14px 96px}
+ .mobile-menu{display:inline-grid}
+ .topbar{margin-bottom:20px}
+ .heading{align-items:flex-start;flex-direction:column}
+ .heading h1{font-size:23px}
+ .date-tools{width:100%}.date-tools select{flex:1}
+ .grid{gap:9px;grid-template-columns:repeat(2,minmax(0,1fr))}
+ .card{padding:14px}.stat-value{font-size:23px}.stat-top{font-size:11px}
+ .ring-wrap{gap:14px}.ring{width:120px;height:120px}
+ .ref-card{align-items:flex-start;flex-direction:column}
+ .top-actions .language{display:none}
+ .top-actions .icon-btn{width:36px;height:36px}
+ .lower-grid{margin-bottom:20px}
+ .bottom-nav{position:fixed;bottom:0;left:0;right:0;background:#101419;border-top:1px solid var(--line);display:flex;justify-content:space-around;padding:9px 5px calc(9px + env(safe-area-inset-bottom));z-index:4}
+ .bottom-nav button{border:0;background:none;color:var(--muted);font-size:10px;display:grid;gap:3px;justify-items:center}
+ .bottom-nav button.active{color:var(--orange)}
+ .bottom-nav span{font-size:17px}
+ .crumb{display:none}
+ .chat-fab{bottom:78px;right:14px;width:54px;height:54px}
+}
+@media(min-width:701px){.bottom-nav{display:none}}
+.mobile-brand{display:none}
+@media(max-width:700px){
+ .mobile-brand{display:inline-flex;flex-direction:column;align-items:flex-start;flex:0 0 auto;min-width:0;margin-right:auto;overflow:visible}
+ .mobile-brand .word{font-size:clamp(14px,3.6vw,17px);letter-spacing:0}
+ .mobile-brand .tagline{font-size:6px;letter-spacing:0;margin-top:4px}
+ .topbar-left{flex:1;min-width:0;gap:10px!important}
+}
+
+/* Light theme base overrides handled by Bright Yellow & Bright White theme below */
+
+/* ===== Human-Crafted Charcoal & Warm Amber SaaS Polish ===== */
+:root{
+  --bg:#0A0C10;
+  --panel:#12161E;
+  --panel2:#181D27;
+  --line:rgba(255,255,255,.08);
+  --text:#F1F5F9;
+  --muted:#94A3B8;
+  --orange:#F59E0B;
+  --gold:#FBBF24;
+  --green:#10B981;
+  --red:#EF4444;
+  --shadow:0 10px 30px -10px rgba(0,0,0,.5);
+}
+body{
+  background:radial-gradient(900px 400px at 80% -10%,rgba(245,158,11,.07),transparent 55%),#0A0C10;
+  font-family:'Plus Jakarta Sans','Hind Siliguri',system-ui,-apple-system,sans-serif;
+  -webkit-font-smoothing:antialiased;
+  -moz-osx-font-smoothing:grayscale;
+  font-variant-numeric:tabular-nums;
+}
+.sidebar{background:#0E1117;border-right:1px solid rgba(255,255,255,.08)}
+.nav button{border-radius:10px;font-weight:500;color:#94A3B8}
+.nav button:hover{background:rgba(255,255,255,.04);color:#F1F5F9}
+.nav button.active{
+  background:rgba(245,158,11,.1);
+  color:#FBBF24;
+  font-weight:600;
+  box-shadow:inset 3px 0 0 #F59E0B;
+}
+.card,.simple-card,.login-card{
+  background:#12161E;
+  border:1px solid rgba(255,255,255,.08);
+  border-radius:14px;
+  box-shadow:0 2px 10px rgba(0,0,0,.22);
+}
+.ref-card{
+  background:linear-gradient(115deg,rgba(245,158,11,.1),#12161E 70%);
+  border-color:rgba(245,158,11,.28);
+}
+.ref-link code{
+  background:#090B0F;
+  border:1px solid rgba(255,255,255,.1);
+  font-family:'JetBrains Mono',monospace;
+  color:#FBBF24;
+}
+.btn-primary{
+  background:linear-gradient(135deg,#F59E0B,#D97706);
+  color:#111827;
+  font-weight:700;
+  box-shadow:0 6px 16px -6px rgba(245,158,11,.45);
+}
+.icon-btn,.select,.btn{background:#12161E;border:1px solid rgba(255,255,255,.1);border-radius:10px}
+.toolbar input,.toolbar select,.fgrp input{background:#0B0E14;border:1px solid rgba(255,255,255,.1);border-radius:10px}
+.stat-value{font-weight:800;letter-spacing:-.02em}
+table th{color:#94A3B8;font-size:11px;border-bottom:1px solid rgba(255,255,255,.08)}
+table td{border-bottom:1px solid rgba(255,255,255,.05)}
+.ring:after{background:#12161E}
+/* Harmonize Chat Drawer & Inline Chat Box with Charcoal Slate */
+.chat-fab{
+  background:linear-gradient(135deg,#F6CA5E,#D8991A);
+  color:#111827;
+  border:1.5px solid rgba(255,255,255,.28);
+  box-shadow:0 10px 24px -6px rgba(0,0,0,.65),0 0 0 3px rgba(10,12,16,.85);
+}
+.chat-fab::after{background:#10B981;border-color:#0A0C10}
+.chat-drawer,.inline-chat-box{
+  background:#0E1117 !important;
+  border:1px solid rgba(245,158,11,.28) !important;
+  border-radius:18px;
+}
+.chat-head{background:rgba(255,255,255,.03);border-bottom:1px solid rgba(255,255,255,.07)}
+.chat-av,.cmsg.me,.chat-bar button{background:linear-gradient(135deg,#F6CA5E,#D8991A);color:#111827;box-shadow:none}
+.chat-bar{background:#090B0F !important;border-top:1px solid rgba(255,255,255,.08) !important}
+.chat-bar input{background:#141922 !important;border-color:rgba(255,255,255,.1) !important}
+/* ===== Bright Yellow & Bright White Theme Override (Default Light Mode) ===== */
+body.light{
+  --bg:#FFFDF5;--panel:#FFFFFF;--panel2:#FFFBEB;--line:#E5E7EB;--text:#0F172A;--muted:#475569;--orange:#CA8A04;--gold:#92400E;--green:#15803D;--red:#DC2626;
+  background:radial-gradient(900px 420px at 80% -10%,rgba(255,214,0,.22),transparent 58%),#FFFDF5 !important;
+  color:#0F172A !important;
+  color-scheme:light;
+}
+body.light .login-gate{
+  background:radial-gradient(circle at 50% 0%,rgba(255,214,0,.25),transparent 58%),#FFFDF5 !important;
+}
+body.light .login-card{
+  background:#FFFFFF !important;
+  border:1.5px solid #FACC15 !important;
+  box-shadow:0 18px 42px -12px rgba(202,138,4,.16) !important;
+}
+body.light .brand-mark .word .white{color:#111827 !important;}
+body.light .brand-mark .word .gold{color:#CA8A04 !important;}
+body.light .brand-mark .tagline{color:#92400E !important;}
+body.light .brand-mark .logo-o{filter:none !important;}
+body.light .brand-mark .logo-o svg circle[stroke="#fff"]{stroke:#111827 !important;}
+body.light .brand-mark .logo-o svg circle[stroke*="255,255,255"]{stroke:rgba(17,24,39,.25) !important;}
+body.light .sidebar{background:#FFFFFF !important;border-right:1px solid #FDE68A !important;box-shadow:2px 0 14px rgba(15,23,42,.04) !important;}
+body.light .main{background:transparent !important;}
+body.light .bottom-nav{background:#FFFFFF !important;border-top:1px solid #FDE68A !important;}
+body.light .bottom-nav button{color:#64748B !important;}
+body.light .bottom-nav button.active{color:#92400E !important;}
+body.light .card,
+body.light .simple-card,
+body.light .toast{
+  background:#FFFFFF !important;
+  border:1px solid #E5E7EB !important;
+  box-shadow:0 2px 10px rgba(15,23,42,.05) !important;
+  color:#0F172A !important;
+}
+body.light .toast{border-left:4px solid #FFD600 !important;}
+body.light .ref-card{
+  background:linear-gradient(120deg,#FEF08A 0%,#FFFBEB 48%,#FFFFFF 100%) !important;
+  border:1.5px solid #EAB308 !important;
+  box-shadow:0 8px 24px -8px rgba(234,179,8,.22) !important;
+}
+body.light .ref-link code{
+  background:#FFFBEB !important;
+  border:1px solid #FACC15 !important;
+  color:#92400E !important;
+}
+body.light .nav button{color:#334155 !important;background:transparent !important;}
+body.light .nav button:hover{background:#FFFBEB !important;color:#0F172A !important;}
+body.light .nav button.active{
+  background:linear-gradient(90deg,#FEF08A,#FEF9C3) !important;
+  color:#92400E !important;
+  font-weight:700 !important;
+  box-shadow:inset 4px 0 0 #EAB308 !important;
+}
+body.light .btn-primary{
+  background:linear-gradient(135deg,#FFE84D,#FFD000) !important;
+  color:#111827 !important;
+  border:1px solid #EAB308 !important;
+  box-shadow:0 6px 16px -6px rgba(234,179,8,.42) !important;
+}
+body.light .stat-icon,
+body.light .activity-icon{
+  background:#FEF08A !important;
+  color:#92400E !important;
+}
+body.light .stat-top,body.light .stat-foot,body.light .heading p,body.light .card-head small,body.light .crumb,body.light .profile-mini small,body.light .activity-item small,body.light th,body.light .key-row{color:#64748B !important;}
+body.light th{background:#FEF9C3 !important;color:#78350F !important;border-bottom:1px solid #FDE68A !important;}
+body.light td{color:#0F172A !important;border-bottom:1px solid #F1F5F9 !important;}
+body.light tr:hover td{background:#FFFBEB !important;color:#0F172A !important;}
+body.light .up{color:#15803D !important;}
+body.light .down{color:#DC2626 !important;}
+body.light .status{background:#DCFCE7 !important;color:#15803D !important;}
+body.light .status.pending{background:#FEF9C3 !important;color:#92400E !important;}
+body.light .status.inactive{background:#FEE2E2 !important;color:#DC2626 !important;}
+body.light .live-pill{background:#DCFCE7 !important;color:#15803D !important;border-color:#BBF7D0 !important;}
+body.light .live-pill.offline{background:#FEE2E2 !important;color:#DC2626 !important;border-color:#FECACA !important;}
+body.light .ring:after{background:#FFFFFF !important;}
+body.light .chart{background:#FFFDF5 !important;border:1px solid #FDE68A !important;}
+body.light .icon-btn,
+body.light .select,
+body.light .btn,
+body.light .toolbar input,
+body.light .toolbar select,
+body.light .fgrp input,
+body.light select,
+body.light textarea{
+  background:#FFFFFF !important;
+  border:1px solid #CBD5E1 !important;
+  color:#0F172A !important;
+}
+body.light .chat-fab{
+  background:linear-gradient(135deg,#FFE84D,#FFD000) !important;
+  color:#111827 !important;
+  border:2px solid #FFFFFF !important;
+  box-shadow:0 10px 24px rgba(234,179,8,.4) !important;
+}
+body.light .chat-fab::after{border-color:#FFFFFF !important;}
+body.light .chat-drawer,
+body.light .inline-chat-box{
+  background:#FFFFFF !important;
+  color:#0F172A !important;
+  border:1.5px solid #FACC15 !important;
+  box-shadow:0 18px 44px rgba(15,23,42,.15) !important;
+}
+body.light .chat-head{
+  background:linear-gradient(135deg,#FEF9C3,#FFFFFF) !important;
+  border-bottom:1px solid #FDE68A !important;
+  color:#0F172A !important;
+}
+body.light .chat-av,
+body.light .cmsg.me,
+body.light .chat-bar button{
+  background:linear-gradient(135deg,#FFE84D,#FFD000) !important;
+  color:#111827 !important;
+}
+body.light .chat-head b,
+body.light .chat-officer-info strong,
+body.light .chat-officer-lbl strong{color:#0F172A !important;}
+body.light .chat-head small,
+body.light .chat-officer-lbl,
+body.light .chat-div{color:#475569 !important;}
+body.light .chat-close{background:#FFFBEB !important;border-color:#FDE68A !important;color:#0F172A !important;}
+body.light .chat-officer{background:#FFFBEB !important;border-bottom:1px solid #FDE68A !important;}
+body.light .chat-officer-av{background:#FEF08A !important;border-color:#EAB308 !important;}
+body.light .chat-officer-av::after{border-color:#FFFFFF !important;}
+body.light .chat-notice{background:#FEF9C3 !important;color:#78350F !important;border-bottom-color:#FDE68A !important;}
+body.light .cmsg:not(.me){background:#F8FAFC !important;color:#0F172A !important;border:1px solid #E2E8F0 !important;}
+body.light .chat-bar{background:#FFFDF5 !important;border-top:1px solid #FDE68A !important;}
+body.light .chat-bar input{background:#FFFFFF !important;color:#0F172A !important;border:1px solid #CBD5E1 !important;}
+
+/* ===== Dark Mode: Deep Yellow & Deep Black Theme Override ===== */
+body:not(.light){
+  --bg:#040405;--panel:#101014;--panel2:#16161B;--line:rgba(250,204,21,.16);
+  --text:#F8FAFC;--muted:#A1A1AA;--orange:#FACC15;--gold:#F59E0B;--green:#22C55E;--red:#EF4444;
+  --shadow:0 16px 40px rgba(0,0,0,.78);
+  background:radial-gradient(900px 420px at 80% -10%,rgba(234,179,8,.11),transparent 58%),#040405 !important;
+  color:#F8FAFC !important;
+  color-scheme:dark;
+}
+body:not(.light) .login-gate{
+  background:radial-gradient(circle at 50% 0%,rgba(234,179,8,.16),transparent 55%),#040405 !important;
+}
+body:not(.light) .login-card{
+  background:linear-gradient(155deg,#121216,#09090B) !important;
+  border:1.5px solid rgba(250,204,21,.34) !important;
+  box-shadow:0 24px 52px rgba(0,0,0,.86) !important;
+  color:#F8FAFC !important;
+}
+body:not(.light) .brand-mark .word .white{color:#FFFFFF !important;}
+body:not(.light) .brand-mark .word .gold{color:#FACC15 !important;}
+body:not(.light) .brand-mark .tagline{color:#FACC15 !important;}
+body:not(.light) .brand-mark .logo-o svg circle[stroke="#fff"]{stroke:#FFFFFF !important;}
+body:not(.light) .sidebar{
+  background:#09090B !important;
+  border-right:1px solid rgba(250,204,21,.16) !important;
+  box-shadow:6px 0 28px rgba(0,0,0,.7) !important;
+}
+body:not(.light) .main{background:transparent !important;}
+body:not(.light) .bottom-nav{
+  background:#09090B !important;
+  border-top:1px solid rgba(250,204,21,.18) !important;
+}
+body:not(.light) .bottom-nav button{color:#A1A1AA !important;}
+body:not(.light) .bottom-nav button.active{color:#FACC15 !important;}
+body:not(.light) .card,
+body:not(.light) .simple-card,
+body:not(.light) .toast{
+  background:linear-gradient(155deg,#141418,#0C0C0F) !important;
+  border:1px solid rgba(250,204,21,.16) !important;
+  box-shadow:0 10px 28px rgba(0,0,0,.6) !important;
+  color:#F8FAFC !important;
+}
+body:not(.light) .toast{border-left:4px solid #FACC15 !important;}
+body:not(.light) .ref-card{
+  background:linear-gradient(120deg,rgba(234,179,8,.18) 0%,#121216 55%,#09090B 100%) !important;
+  border:1.5px solid rgba(250,204,21,.36) !important;
+  box-shadow:0 14px 34px rgba(0,0,0,.72) !important;
+}
+body:not(.light) .ref-link code{
+  background:#060608 !important;
+  border:1px solid rgba(250,204,21,.32) !important;
+  color:#FACC15 !important;
+}
+body:not(.light) .nav button{color:#A1A1AA !important;background:transparent !important;}
+body:not(.light) .nav button:hover{background:rgba(250,204,21,.08) !important;color:#FEF9C3 !important;}
+body:not(.light) .nav button.active{
+  background:linear-gradient(90deg,rgba(250,204,21,.2),rgba(234,179,8,.05)) !important;
+  color:#FACC15 !important;
+  font-weight:700 !important;
+  box-shadow:inset 4px 0 0 #FACC15 !important;
+}
+body:not(.light) .btn-primary{
+  background:linear-gradient(135deg,#FACC15,#CA8A04) !important;
+  color:#050506 !important;
+  border:1px solid #FDE047 !important;
+  box-shadow:0 6px 20px rgba(234,179,8,.32) !important;
+}
+body:not(.light) .stat-icon,
+body:not(.light) .activity-icon{
+  background:rgba(250,204,21,.14) !important;
+  border:1px solid rgba(250,204,21,.24) !important;
+  color:#FACC15 !important;
+}
+body:not(.light) .stat-top,body:not(.light) .stat-foot,body:not(.light) .heading p,body:not(.light) .card-head small,body:not(.light) .crumb,body:not(.light) .profile-mini small,body:not(.light) .activity-item small,body:not(.light) .key-row{color:#A1A1AA !important;}
+body:not(.light) th{background:#121216 !important;color:#FACC15 !important;border-bottom:1px solid rgba(250,204,21,.18) !important;}
+body:not(.light) td{color:#F8FAFC !important;border-bottom:1px solid rgba(255,255,255,.06) !important;}
+body:not(.light) tr:hover td{background:#1C1C24 !important;color:#F8FAFC !important;}
+body:not(.light) .ring:after{background:#101014 !important;}
+body:not(.light) .chart{background:#09090B !important;border:1px solid rgba(250,204,21,.16) !important;}
+body:not(.light) .icon-btn,
+body:not(.light) .select,
+body:not(.light) .btn,
+body:not(.light) .toolbar input,
+body:not(.light) .toolbar select,
+body:not(.light) .fgrp input,
+body:not(.light) select,
+body:not(.light) textarea{
+  background:#09090B !important;
+  border:1px solid rgba(250,204,21,.22) !important;
+  color:#F8FAFC !important;
+}
+body:not(.light) .icon-btn:hover,
+body:not(.light) .btn:hover{border-color:#FACC15 !important;color:#FACC15 !important;}
+body:not(.light) .pw-eye{background:#18181D !important;border-color:rgba(250,204,21,.28) !important;color:#FACC15 !important;}
+body:not(.light) .chat-fab{
+  background:linear-gradient(135deg,#FACC15,#CA8A04) !important;
+  color:#050506 !important;
+  border:2px solid #040405 !important;
+  box-shadow:0 12px 28px rgba(0,0,0,.78),0 0 0 3px rgba(250,204,21,.24) !important;
+}
+body:not(.light) .chat-fab::after{border-color:#040405 !important;}
+body:not(.light) .chat-drawer,
+body:not(.light) .inline-chat-box{
+  background:#0A0A0C !important;
+  color:#F8FAFC !important;
+  border:1.5px solid rgba(250,204,21,.4) !important;
+  box-shadow:0 24px 60px rgba(0,0,0,.9) !important;
+}
+body:not(.light) .chat-head{
+  background:linear-gradient(135deg,#18181D,#0C0C0F) !important;
+  border-bottom:1px solid rgba(250,204,21,.2) !important;
+  color:#F8FAFC !important;
+}
+body:not(.light) .chat-av,
+body:not(.light) .cmsg.me,
+body:not(.light) .chat-bar button{
+  background:linear-gradient(135deg,#FACC15,#CA8A04) !important;
+  color:#050506 !important;
+}
+body:not(.light) .chat-close{background:#16161B !important;border-color:rgba(250,204,21,.24) !important;color:#F8FAFC !important;}
+body:not(.light) .chat-officer{background:#101014 !important;border-bottom:1px solid rgba(250,204,21,.14) !important;}
+body:not(.light) .chat-officer-av{background:#1A1A20 !important;border-color:#FACC15 !important;}
+body:not(.light) .chat-officer-av::after{border-color:#0A0A0C !important;}
+body:not(.light) .chat-notice{background:rgba(250,204,21,.1) !important;color:#FDE047 !important;border-bottom-color:rgba(250,204,21,.2) !important;}
+body:not(.light) .cmsg:not(.me){background:#16161B !important;color:#F8FAFC !important;border:1px solid rgba(250,204,21,.14) !important;}
+body:not(.light) .chat-bar{background:#08080A !important;border-top:1px solid rgba(250,204,21,.18) !important;}
+body:not(.light) .chat-bar input{background:#141418 !important;color:#F8FAFC !important;border:1px solid rgba(250,204,21,.22) !important;}
+
+/* ===== Clean Human-Crafted Enterprise UI Polish (Zero AI Glare) ===== */
+body.light{background:#F5F6F8 !important;}
+body:not(.light){background:#09090B !important;}
+body.light .login-gate{background:#F5F6F8 !important;}
+body:not(.light) .login-gate{background:#09090B !important;}
+body.light .sidebar{background:#FFFFFF !important;border-right:1px solid #E5E7EB !important;box-shadow:none !important;}
+body:not(.light) .sidebar{background:#0C0C0E !important;border-right:1px solid #1E1E24 !important;box-shadow:none !important;}
+.nav button{border-radius:6px !important;box-shadow:none !important;font-weight:500 !important;}
+body.light .nav button.active{background:#FEF9C3 !important;color:#78350F !important;box-shadow:inset 3px 0 0 #CA8A04 !important;font-weight:600 !important;}
+body:not(.light) .nav button.active{background:rgba(234,179,8,.13) !important;color:#FACC15 !important;box-shadow:inset 3px 0 0 #EAB308 !important;font-weight:600 !important;}
+.card,.simple-card,.login-card,.ref-card,.toast{border-radius:8px !important;box-shadow:none !important;}
+body.light .card,body.light .simple-card,body.light .login-card{background:#FFFFFF !important;border:1px solid #E5E7EB !important;}
+body:not(.light) .card,body:not(.light) .simple-card,body:not(.light) .login-card{background:#111115 !important;border:1px solid #222228 !important;}
+body.light .ref-card{background:#FFFFFF !important;border:1px solid #E5E7EB !important;border-left:4px solid #EAB308 !important;}
+body:not(.light) .ref-card{background:#111115 !important;border:1px solid #27272A !important;border-left:4px solid #EAB308 !important;}
+.btn,.btn-primary,.icon-btn,.select,.toolbar input,.toolbar select,.fgrp input,select,textarea{border-radius:6px !important;box-shadow:none !important;}
+body.light .btn-primary{background:#FACC15 !important;border:1px solid #CA8A04 !important;color:#111827 !important;font-weight:600 !important;}
+body:not(.light) .btn-primary{background:#EAB308 !important;border:1px solid #CA8A04 !important;color:#09090B !important;font-weight:700 !important;}
+table th{font-family:inherit !important;text-transform:none !important;letter-spacing:0 !important;font-size:12.5px !important;font-weight:600 !important;padding:11px 14px !important;}
+table td{padding:11px 14px !important;font-size:13.5px !important;}
+body.light th{background:#F9FAFB !important;color:#4B5563 !important;border-bottom:1px solid #E5E7EB !important;}
+body:not(.light) th{background:#15151A !important;color:#D4D4D8 !important;border-bottom:1px solid #27272A !important;}
+body.light tr:hover td{background:#F8FAFC !important;color:#0F172A !important;}
+body:not(.light) tr:hover td{background:#18181E !important;color:#F8FAFC !important;}
+</style>
+</head>
+<body>
+<script>try{var _t=JSON.parse(localStorage.getItem('mw88_aff_theme_v3')||'"dark"');if(_t==='light'){document.body.classList.add('light');var _m=document.querySelector('meta[name="theme-color"]');if(_m)_m.setAttribute('content','#FFFFFF');}}catch(e){}</script>
+
+<!-- LOGIN GATE -->
+<section id="loginGate" class="login-gate">
+ <button type="button" class="icon-btn" id="affLoginThemeBtn" title="Toggle theme" style="position:fixed;top:14px;right:14px;z-index:10" onclick="applyTheme(document.body.classList.contains('light') ? 'dark' : 'light')">☾</button>
+ <form class="login-card" onsubmit="affiliateLogin(event)">
+  <div style="display:flex;justify-content:center;">
+   <div class="brand-mark" aria-label="MOSTWIN88 — PLAY BIG, WIN BIGGER">
+    <div class="word" style="font-size:24px"><span class="gold">M</span><span class="logo-o" aria-hidden="true"><svg viewBox="0 0 100 100"><g class="orbit"><circle cx="50" cy="50" r="43" fill="none" stroke="rgba(255,255,255,.4)" stroke-width="14"/><circle cx="50" cy="50" r="43" fill="none" stroke="#fff" stroke-width="14" stroke-dasharray="7.4 3.86"/></g><circle cx="50" cy="50" r="18" fill="#ffd23f"/><circle cx="50" cy="50" r="18" fill="none" stroke="#fff2b3" stroke-width="3"/></svg></span><span class="white">ST</span><span class="gold">WIN</span><span class="white">88</span></div>
+    <span class="tagline" style="text-align:center">PLAY BIG, WIN BIGGER</span>
+   </div>
+  </div>
+  <h2>Affiliate Partner Login</h2>
+  <p>Master Admin অথবা User Admin কর্তৃক অনুমোদিত Affiliate অ্যাকাউন্ট দিয়ে লগইন করুন</p>
+  <div class="fgrp">
+   <label for="affLoginUser">ইমেইল অথবা ইউজারনেম</label>
+   <input id="affLoginUser" type="text" autocomplete="username" placeholder="affiliate@domain.com / username" required>
+  </div>
+  <div class="fgrp">
+   <label for="affLoginPass">পাসওয়ার্ড</label>
+   <div class="pw-wrap">
+    <input id="affLoginPass" type="password" autocomplete="current-password" placeholder="••••••••" required>
+    <button type="button" class="pw-eye" onclick="toggleAffPw(this)">দেখুন</button>
+   </div>
+  </div>
+  <div id="affLoginErr" class="lerr"></div>
+  <button id="affLoginBtn" type="submit" class="btn btn-primary" style="width:100%;padding:12px">SECURE AFFILIATE LOGIN</button>
+ </form>
+</section>
+
+<!-- MAIN LIVE WORKSPACE -->
+<div class="app hidden" id="appShell">
+<aside class="sidebar" id="sidebar">
+ <div class="brand">
+  <div class="brand-mark" aria-label="MOSTWIN88 — PLAY BIG, WIN BIGGER">
+   <div class="word"><span class="gold">M</span><span class="logo-o" aria-hidden="true"><svg viewBox="0 0 100 100"><g class="orbit"><circle cx="50" cy="50" r="43" fill="none" stroke="rgba(255,255,255,.4)" stroke-width="14"/><circle cx="50" cy="50" r="43" fill="none" stroke="#fff" stroke-width="14" stroke-dasharray="7.4 3.86"/></g><circle cx="50" cy="50" r="18" fill="#ffd23f"/><circle cx="50" cy="50" r="18" fill="none" stroke="#fff2b3" stroke-width="3"/></svg></span><span class="white">ST</span><span class="gold">WIN</span><span class="white">88</span></div>
+   <span class="tagline">PLAY BIG, WIN BIGGER</span>
+  </div>
+ </div>
+ <div class="nav-label">WORKSPACE</div>
+ <nav class="nav" id="nav">
+  <button class="active" data-page="dashboard"><span class="ico">▦</span>Dashboard</button>
+  <button data-page="link"><span class="ico">↗</span>My Referral Link</button>
+  <button data-page="referrals"><span class="ico">♙</span>My Referrals</button>
+  <button data-page="analytics"><span class="ico">◫</span>Referral Analytics</button>
+  <button data-page="commission"><span class="ico">◇</span>Commission</button>
+  <div class="nav-label">ACCOUNT</div>
+  <button data-page="notifications"><span class="ico">♧</span>Notifications <span id="navNotifBadge" class="nbadge">0</span></button>
+  <button data-page="support"><span class="ico">✉</span>Admin Support <span id="navChatBadge" class="nbadge">0</span></button>
+  <button data-page="profile"><span class="ico">◉</span>My Profile</button>
+  <button data-page="settings"><span class="ico">⚙</span>Settings</button>
+ </nav>
+ <div class="side-bottom">
+  <div class="profile-mini">
+   <div class="avatar" id="sideAvatar">AF</div>
+   <div><b id="sideName">Affiliate</b><small id="sideCode">Affiliate · —</small></div>
+  </div>
+ </div>
+</aside>
+
+<main class="main">
+ <header class="topbar">
+  <div class="topbar-left" style="display:flex;align-items:center;gap:12px">
+   <button class="icon-btn mobile-menu" id="menu">☰</button>
+   <div class="mobile-brand brand-mark" aria-label="MOSTWIN88 — PLAY BIG, WIN BIGGER">
+    <div class="word"><span class="gold">M</span><span class="logo-o" aria-hidden="true"><svg viewBox="0 0 100 100"><g class="orbit"><circle cx="50" cy="50" r="43" fill="none" stroke="rgba(255,255,255,.4)" stroke-width="14"/><circle cx="50" cy="50" r="43" fill="none" stroke="#fff" stroke-width="14" stroke-dasharray="7.4 3.86"/></g><circle cx="50" cy="50" r="18" fill="#ffd23f"/><circle cx="50" cy="50" r="18" fill="none" stroke="#fff2b3" stroke-width="3"/></svg></span><span class="white">ST</span><span class="gold">WIN</span><span class="white">88</span></div>
+    <span class="tagline">PLAY BIG, WIN BIGGER</span>
+   </div>
+   <div class="crumb">MOSTWIN88 <span style="color:#59616b">/</span> Affiliate Workspace <span id="liveConnPill" class="live-pill">● Live</span></div>
+  </div>
+  <div class="top-actions">
+   <select class="select language" id="language"><option value="English">English</option><option value="বাংলা">বাংলা</option></select>
+   <button class="btn" id="installApp" style="display:none">＋ Install App</button>
+   <button class="icon-btn" id="theme" title="Toggle theme">☼</button>
+   <button class="icon-btn" title="Live Chat" onclick="toggleLiveChat(true)">💬<i class="dot hidden" id="topChatDot"></i></button>
+   <button class="icon-btn" title="Notifications" onclick="showPage('notifications')">♧<i class="dot hidden" id="topNotifDot"></i></button>
+   <div class="avatar" id="topAvatar">AF</div>
+  </div>
+ </header>
+
+ <!-- DASHBOARD / HOME PAGE -->
+ <section class="page active" id="dashboard">
+  <div class="heading">
+   <div><h1 id="welcomeHeading">Welcome back 👋</h1><p id="welcomeSub">Live affiliate performance synced directly with MOSTWIN88 Server.</p></div>
+   <div class="date-tools">
+    <select class="select" id="dateRange" onchange="renderAll()"><option value="30">Last 30 days</option><option value="7">Last 7 days</option><option value="month">This month</option></select>
+    <button class="btn" onclick="exportCsv()">⇩ Export CSV</button>
+   </div>
+  </div>
+  <div id="affCmsBanner" class="card" style="display:none;margin-bottom:16px;border-color:rgba(231,184,91,.38);background:linear-gradient(135deg,rgba(231,184,91,.1),transparent)"></div>
+  <div class="grid">
+   <div class="card"><div class="stat-top">Total Referral Clicks <span class="stat-icon">↗</span></div><div class="stat-value" id="statClicks">0</div><div class="stat-foot" id="statClicksSub"><span class="up">Live</span> link visits</div></div>
+   <div class="card"><div class="stat-top">Registered Players <span class="stat-icon">♙</span></div><div class="stat-value" id="statRegistered">0</div><div class="stat-foot" id="statRegisteredSub">Under your code</div></div>
+   <div class="card"><div class="stat-top">Active Players <span class="stat-icon">◎</span></div><div class="stat-value" id="statActive">0</div><div class="stat-foot" id="statActiveSub">0% of total players</div></div>
+   <div class="card"><div class="stat-top">Conversion Rate <span class="stat-icon">⌁</span></div><div class="stat-value" id="statConv">0%</div><div class="stat-foot" id="statConvSub">Click-to-player ratio</div></div>
+  </div>
+
+  <div class="content-grid">
+   <div class="card">
+    <div class="card-head"><div><h3>Registration Overview</h3><small>Live referral registrations over time</small></div>
+     <select class="select" id="chartDays" onchange="renderChart()"><option value="7">7 days</option><option value="30">30 days</option></select>
+    </div>
+    <div class="chart" id="regChartBox"></div>
+    <div class="legend"><span>Registrations</span><span>Deposited / Confirmed referrals</span></div>
+   </div>
+   <div class="card">
+    <div class="card-head"><div><h3>Referral Conversion</h3><small>Deposited vs Pending players</small></div><span class="status" id="convHealthBadge">Live</span></div>
+    <div class="ring-wrap">
+     <div class="ring" id="convRing"><div class="ring-center"><strong id="ringConvPct">0%</strong><small>CONFIRMED</small></div></div>
+     <div class="key">
+      <div class="key-row"><span><i class="bullet"></i>Confirmed</span><b id="keyConfirmed">0%</b></div>
+      <div class="key-row"><span><i class="bullet gold"></i>Pending</span><b id="keyPending">0%</b></div>
+      <div class="key-row"><span><i class="bullet grey"></i>Inactive</span><b id="keyInactive">0%</b></div>
+     </div>
+    </div>
+   </div>
+  </div>
+
+  <div class="lower-grid">
+   <div class="card">
+    <div class="card-head"><h3>Latest Registered Players</h3><button class="btn" onclick="showPage('referrals')">View all →</button></div>
+    <div class="table-wrap"><table><thead><tr><th>Player</th><th>Registered</th><th>Status</th><th>Referral</th></tr></thead><tbody id="latestPlayersBody"></tbody></table></div>
+   </div>
+   <div class="card">
+    <div class="card-head"><h3>Recent Activity</h3><small>Real-time updates</small></div>
+    <div class="activity" id="recentActivityFeed"></div>
+   </div>
+  </div>
+
+  <div class="card ref-card">
+   <div>
+    <h3>Your unique referral link</h3>
+    <p>Share your personal link to track new player registrations &amp; earn smart commission.</p>
+    <div class="ref-link">
+     <code id="refurl">Loading...</code>
+     <button class="btn btn-primary" onclick="copyLink()">▣ Copy link</button>
+     <button class="btn" onclick="shareLink()">↗ Share</button>
+     <button class="btn" onclick="toggleLiveChat(true)">💬 Live Chat Admin</button>
+    </div>
+   </div>
+   <div style="font-size:42px;color:#e7b85b">⌗</div>
+  </div>
+ </section>
+
+ <!-- MY REFERRAL LINK -->
+ <section class="page" id="link">
+  <div class="heading"><div><h1>My Referral Link</h1><p>Your unique live affiliate tracking details.</p></div></div>
+  <div class="card simple-card">
+   <h2>Permanent referral URL</h2>
+   <p>Your assigned referral code is locked to your Affiliate profile. Create extra campaign links stored live in your account.</p>
+   <div class="ref-link">
+    <code id="refurlPage">Loading...</code>
+    <button class="btn btn-primary" onclick="copyLink()">Copy link</button>
+    <button class="btn" onclick="shareLink()">Share link</button>
+   </div>
+   <hr style="border:0;border-top:1px solid var(--line);margin:24px 0">
+   <h2>Create a campaign link</h2>
+   <p>Give each promotion a name, then generate a trackable URL using your existing referral code.</p>
+   <div class="toolbar">
+    <input id="campaignName" placeholder="Campaign name (e.g. Facebook Page)" maxlength="40" style="flex:1;min-width:190px">
+    <button class="btn btn-primary" onclick="createCampaignLink()">＋ Create new link</button>
+   </div>
+   <div class="table-wrap"><table><thead><tr><th>Campaign</th><th>Tracking link</th><th>Action</th></tr></thead><tbody id="campaignLinks"></tbody></table></div>
+   <hr style="border:0;border-top:1px solid var(--line);margin:24px 0">
+   <div class="grid">
+    <div><small style="color:var(--muted)">Referral code</small><h2 id="linkStatCode">—</h2></div>
+    <div><small style="color:var(--muted)">Total clicks</small><h2 id="linkStatClicks">0</h2></div>
+    <div><small style="color:var(--muted)">Registrations</small><h2 id="linkStatRegs">0</h2></div>
+    <div><small style="color:var(--muted)">Link status</small><h2 id="linkStatStatus" style="color:var(--green)">Active</h2></div>
+   </div>
+  </div>
+  <div id="affPromoOffersCard" class="card simple-card" style="display:none;margin-top:16px"></div>
+ </section>
+
+ <!-- MY REFERRALS + DEPOSIT/WITHDRAWAL ACTIVITY + IP SECURITY -->
+ <section class="page" id="referrals">
+  <div class="heading"><div><h1>My Referrals</h1><p>Live players attributed to your affiliate account.</p></div></div>
+  <div class="card">
+   <div class="toolbar">
+    <input id="searchPlayer" placeholder="Search player ID or name…" oninput="filterPlayers()">
+    <select id="accountFilter" onchange="filterPlayers()"><option value="all">All account status</option><option value="Active">Active</option><option value="Inactive">Inactive</option></select>
+    <select id="referralFilter" onchange="filterPlayers()"><option value="all">All referrals</option><option value="Confirmed">Confirmed</option><option value="Pending">Pending</option></select>
+   </div>
+   <p style="color:var(--muted);font-size:11px;margin:0 0 10px">Live player activity, games played, wallet balance and bet P&amp;L synced from MOSTWIN88 Server.</p>
+   <div class="table-wrap">
+    <table id="players">
+     <thead><tr><th>Player ID / Name</th><th>Registration date</th><th>Last game played</th><th>Account balance</th><th>Bet P&amp;L (− / +)</th><th>Account status</th><th>Referral status</th></tr></thead>
+     <tbody id="playersTbody"></tbody>
+    </table>
+   </div>
+  </div>
+
+  <div class="card" style="margin-top:15px" id="moneyActivity">
+   <div class="card-head"><div><h3>Deposit &amp; Withdrawal Activity</h3><small>Daily / weekly live totals from referred players</small></div><span class="status">Live RTDB</span></div>
+   <div class="toolbar" style="margin-top:8px">
+    <select id="moneyPeriod" aria-label="Report period" onchange="renderMoneyActivity()"><option value="daily">Daily (24h)</option><option value="weekly" selected>Weekly (7d)</option></select>
+    <select id="moneyScope" aria-label="User scope" onchange="renderMoneyActivity()"><option value="all">All referred users</option><option value="individual">Individual user</option></select>
+    <select id="moneyUser" aria-label="Select player" onchange="renderMoneyActivity()" disabled></select>
+   </div>
+   <div class="grid" style="grid-template-columns:repeat(2,minmax(0,1fr))">
+    <div class="card"><div class="stat-top">Total Deposits</div><div class="stat-value up" id="depositTotal">৳ 0.00</div></div>
+    <div class="card"><div class="stat-top">Total Withdrawals</div><div class="stat-value down" id="withdrawTotal">৳ 0.00</div></div>
+   </div>
+   <div class="table-wrap" style="margin-top:14px"><table><thead><tr><th>Player</th><th>Deposits</th><th>Withdrawals</th><th>Net</th></tr></thead><tbody id="moneyRows"></tbody></table></div>
+  </div>
+
+  <div class="card" style="margin-top:15px" id="ipSecurity">
+   <div class="card-head"><div><h3>Player IP History &amp; Risk Signals</h3><small>Up to 7 recent IP addresses per referred player (Live)</small></div><span class="status">Security Live</span></div>
+   <div class="toolbar"><select id="ipUser" aria-label="Choose player" onchange="renderIpHistory()"></select></div>
+   <div id="ipRiskBanner" class="status" style="display:inline-block;margin:0 0 12px">Loading player IP activity…</div>
+   <div class="table-wrap"><table><thead><tr><th>IP Address</th><th>Last Seen</th><th>Device / Network</th></tr></thead><tbody id="ipRows"></tbody></table></div>
+   <p style="font-size:11px;color:var(--muted);margin:10px 0 0">Multiple IPs trigger a review signal, not a final decision. Shared Wi-Fi, mobile data, and changing IPs can be legitimate.</p>
+  </div>
+ </section>
+
+ <!-- REFERRAL ANALYTICS -->
+ <section class="page" id="analytics">
+  <div class="heading"><div><h1>Referral Analytics</h1><p>Real-time click, deposit, wager &amp; conversion breakdown.</p></div></div>
+  <div class="grid">
+   <div class="card"><div class="stat-top">Total clicks</div><div class="stat-value" id="anaClicks">0</div></div>
+   <div class="card"><div class="stat-top">Confirmed Deposits</div><div class="stat-value up" id="anaDepTotal">৳ 0</div></div>
+   <div class="card"><div class="stat-top">Total Bet Turnover</div><div class="stat-value" id="anaTurnover">৳ 0</div></div>
+   <div class="card"><div class="stat-top">Conversion</div><div class="stat-value" id="anaConv">0%</div></div>
+  </div>
+  <div class="card" style="margin-top:15px">
+   <h3>Performance summary</h3>
+   <p id="anaSummary" style="color:var(--muted)">Loading live analytics...</p>
+  </div>
+ </section>
+
+ <!-- SMART COMMISSION -->
+ <section class="page" id="commission">
+  <div class="heading"><div><h1>Smart Commission</h1><p>Controlled dynamically by Master Admin and your assigned User Admin.</p></div></div>
+  <div class="card simple-card" id="commissionBox"></div>
+  <div class="card" style="margin-top:15px">
+   <div class="card-head"><div><h3>Commission Payout Requests</h3><small>History of your commission payout requests</small></div></div>
+   <div class="table-wrap"><table><thead><tr><th>Date</th><th>Amount</th><th>Method / Account</th><th>Status</th></tr></thead><tbody id="commReqBody"></tbody></table></div>
+  </div>
+ </section>
+
+ <!-- NOTIFICATIONS -->
+ <section class="page" id="notifications">
+  <div class="heading"><div><h1>Notifications</h1><p>Latest broadcasts from Master Admin &amp; User Admin.</p></div></div>
+  <div class="card activity" id="notificationList"></div>
+ </section>
+
+ <!-- ADMIN SUPPORT (LIVE SYNCED WITH FLOATING LIVE CHAT) -->
+ <section class="page" id="support">
+  <div class="heading"><div><h1>Admin Support — Live Chat</h1><p>Real-time direct chat with your assigned User Admin &amp; Master Admin.</p></div></div>
+  <div class="card simple-card">
+   <div style="display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:10px">
+    <div><h2 id="supportAdminTitle" style="margin:0">Assigned Admin Support Desk</h2><small id="supportAdminSub" style="color:var(--muted)">Live encrypted RTDB channel</small></div>
+    <button class="btn btn-primary" onclick="toggleLiveChat(true)">💬 Open Floating Live Chat</button>
+   </div>
+   <div id="inlineChatMsgs" class="inline-chat-box"></div>
+   <form class="toolbar" onsubmit="sendSupportChat(event,'inlineChatInput')">
+    <input id="inlineChatInput" style="flex:1;min-width:220px" placeholder="অ্যাডমিনকে সরাসরি লাইভ মেসেজ লিখুন..." autocomplete="off">
+    <button type="submit" class="btn btn-primary">Send Live Message</button>
+   </form>
+   <div id="affSupportExtLinks" style="display:none;margin-top:12px;padding-top:12px;border-top:1px solid var(--line);font-size:13px"></div>
+  </div>
+ </section>
+
+ <!-- PROFILE -->
+ <section class="page" id="profile">
+  <div class="heading"><div><h1>My Profile</h1><p>Your live MOSTWIN88 affiliate account details.</p></div></div>
+  <div class="card simple-card">
+   <div style="display:flex;align-items:center;gap:15px">
+    <div class="avatar" id="profAvatar" style="width:58px;height:58px;font-size:20px">AF</div>
+    <div><h2 id="profName" style="margin:0">Affiliate</h2><p id="profIdSub" style="margin:3px 0">Affiliate ID: —</p></div>
+   </div>
+   <hr style="border:0;border-top:1px solid var(--line);margin:22px 0">
+   <div class="grid">
+    <div><small style="color:var(--muted)">Email</small><h3 id="profEmail">—</h3></div>
+    <div><small style="color:var(--muted)">Phone</small><h3 id="profPhone">—</h3></div>
+    <div><small style="color:var(--muted)">Account status</small><h3 id="profStatus" style="color:var(--green)">Active</h3></div>
+    <div><small style="color:var(--muted)">Parent Admin</small><h3 id="profParentAdmin">—</h3></div>
+   </div>
+  </div>
+  <div id="mw-biometric-slot" style="margin-top:16px"></div>
+ </section>
+
+ <!-- SETTINGS -->
+ <section class="page" id="settings">
+  <div class="heading"><div><h1>Settings</h1><p>Personalize your live affiliate workspace.</p></div></div>
+  <div class="card simple-card">
+   <h2>Appearance</h2>
+   <p>Switch between Dark Mode and Strict White Light Mode using the ☼ icon in the top bar.</p>
+   <h2 style="margin-top:25px">Language</h2>
+   <p>Choose English or বাংলা from the top language selector.</p>
+   <h2 style="margin-top:25px">Security</h2>
+   <p>Reset your password via Email Verification or sign out safely.</p>
+   <div style="display:flex;gap:10px;flex-wrap:wrap;margin-top:12px">
+    <button class="btn" type="button" onclick="window.npOpenBiometricSetup&&npOpenBiometricSetup()">🔐 Fingerprint Lock</button>
+    <button class="btn" onclick="sendAffPasswordReset()">🔑 Send Password Reset Email</button>
+    <button class="btn btn-primary" onclick="affiliateLogout()">↪ Secure Log out</button>
+   </div>
+  </div>
+ </section>
+
+ <div class="bottom-nav">
+  <button class="active" data-page="dashboard"><span>▦</span>Home</button>
+  <button data-page="link"><span>↗</span>Link</button>
+  <button data-page="referrals"><span>♙</span>Referrals</button>
+  <button data-page="commission"><span>◇</span>Commission</button>
+  <button data-page="profile"><span>◉</span>Profile</button>
+ </div>
+</main>
+</div>
+
+<!-- FLOATING HOME/ALL-PAGE LIVE CHAT ICON + DRAWER (user.html Style) -->
+<button type="button" id="liveChatFab" class="chat-fab hidden" onclick="toggleLiveChat()" aria-label="Customer Support" title="অ্যাডমিনের সাথে লাইভ চ্যাট">
+ <i>🎧</i><span class="fab-lbl">SUPPORT</span>
+ <span id="liveChatFabBadge" class="chat-fab-badge">0</span>
+</button>
+
+<div id="liveChatDrawer" class="chat-drawer" role="dialog" aria-label="Admin Live Chat">
+ <div class="chat-head">
+  <div class="chat-head-left">
+   <span class="chat-av">MW</span>
+   <div>
+    <b>MOSTWIN88</b>
+    <small><i class="cdot"></i><span>Affiliate Support Center</span></small>
+   </div>
+  </div>
+  <button type="button" class="chat-close" onclick="toggleLiveChat(false)" aria-label="Close">✕</button>
+ </div>
+ <div class="chat-officer">
+  <span class="chat-officer-av">👑</span>
+  <div class="chat-officer-info">
+   <strong>Admin Support Officer <span style="color:#4aa8ff">✓</span></strong>
+   <span id="chatDrawerSub">● Online Support</span>
+  </div>
+  <div class="chat-officer-lbl"><strong>Live Chat</strong>আমরা পাশে আছি</div>
+ </div>
+ <div class="chat-notice">🔒 সরাসরি User Admin ও Master Admin-এর সাথে এনক্রিপ্টেড লাইভ সাপোর্ট চ্যাট</div>
+ <div id="drawerChatMsgs" class="chat-msgs"></div>
+ <form class="chat-bar" onsubmit="sendSupportChat(event,'drawerChatInput')">
+  <input id="drawerChatInput" type="text" placeholder="মেসেজ লিখুন..." autocomplete="off" maxlength="1000">
+  <button type="submit" aria-label="Send">➤</button>
+ </form>
+</div>
+
+<div class="toast" id="toast"></div>
+
+<script>
+'use strict';
+const CFG = window.NP_FIREBASE_CONFIG || {
+  apiKey: "AIzaSyACoy90K8WHdxSU3_KtUiwWNPHGErT0P3w",
+  authDomain: "mostwin88-febbf.firebaseapp.com",
+  databaseURL: "https://mostwin88-febbf-default-rtdb.asia-southeast1.firebasedatabase.app",
+  projectId: "mostwin88-febbf",
+  storageBucket: "mostwin88-febbf.firebasestorage.app",
+  messagingSenderId: "1091271266801",
+  appId: "1:1091271266801:web:0b4da03572189864077450",
+  measurementId: "G-5Q07GB1YD6"
+};
+const affApp = firebase.apps.find(a => a.name === 'mwAffApp') || firebase.initializeApp(CFG, 'mwAffApp');
+const auth = affApp.auth();
+const db = affApp.database();
+const TS = firebase.database.ServerValue.TIMESTAMP;
+try { auth.setPersistence(firebase.auth.Auth.Persistence.LOCAL).catch(() => {}); } catch (e) {}
+
+let MY_UID = '';
+let MY_PROF = null;
+let ALL_USERS = {};
+let ALL_DEPS = {};
+let ALL_WDS = {};
+let ALL_GTX = {};
+let RAW_NOTIFS = [];
+let NOTIFS = [];
+let COMM_REQS = [];
+let CAMPAIGNS = [];
+let CHAT_MSGS = [];
+let LIVE_LISTENERS = [];
+let GLOBAL_CMS = {};
+let ADMIN_CMS = {};
+let GLOBAL_SETTINGS = {};
+let DEPOSIT_PROMOS = {};
+let BOUND_CMS_ADMIN = '';
+let PARENT_CMS_REF = null;
+let LIVE_CHAT_OPEN = false;
+let UNREAD_CHAT = 0;
+
+const pages = [...document.querySelectorAll('.page')];
+const storage = {
+  get(k, fb) { try { return JSON.parse(localStorage.getItem('mw88_aff_' + k)) ?? fb; } catch { return fb; } },
+  set(k, v) { try { localStorage.setItem('mw88_aff_' + k, JSON.stringify(v)); return true; } catch { return false; } }
+};
+const esc = s => String(s ?? '').replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
+const money = n => '৳ ' + Number(n || 0).toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+const moneyShort = n => '৳ ' + Math.round(Number(n || 0)).toLocaleString('en-US');
+
+function sanitizeAffMsg(v) {
+  return String(v || '')
+    .replace(/Firebase:\s*/gi, '')
+    .replace(/\s*\(auth\/[^)]+\)\.?/gi, '')
+    .replace(/\b(firebase|github|render)\b/gi, 'server')
+    .replace(/ফায়ারবেস|ফায়ারবেস|গিটহাব|রেন্ডার/g, 'সার্ভার')
+    .trim();
+}
+function toast(msg) {
+  const t = document.getElementById('toast');
+  if (!t) return;
+  t.textContent = sanitizeAffMsg(msg);
+  t.classList.add('show');
+  clearTimeout(toast.timer);
+  toast.timer = setTimeout(() => t.classList.remove('show'), 2600);
+}
+
+function showPage(id) {
+  const target = document.getElementById(id);
+  if (!target) return;
+  pages.forEach(p => p.classList.toggle('active', p.id === id));
+  document.querySelectorAll('[data-page]').forEach(b => b.classList.toggle('active', b.dataset.page === id));
+  const sb = document.getElementById('sidebar');
+  if (sb) sb.classList.remove('open');
+  if (id === 'support') markChatRead();
+  window.scrollTo(0, 0);
+  try { window.dispatchEvent(new Event('mw:view')); } catch (e) {}
+}
+document.querySelectorAll('[data-page]').forEach(b => b.addEventListener('click', () => showPage(b.dataset.page)));
+document.getElementById('menu').addEventListener('click', () => document.getElementById('sidebar').classList.toggle('open'));
+
+function applyTheme(theme) {
+  document.body.classList.toggle('light', theme === 'light');
+  storage.set('theme_v3', theme);
+  const ic = theme === 'light' ? '☼' : '☾';
+  const tb1 = document.getElementById('theme'); if (tb1) tb1.textContent = ic;
+  const tb2 = document.getElementById('affLoginThemeBtn'); if (tb2) tb2.textContent = ic;
+  const meta = document.querySelector('meta[name="theme-color"]');
+  if (meta) meta.setAttribute('content', theme === 'light' ? '#FFFFFF' : '#040405');
+}
+document.getElementById('theme').addEventListener('click', () => applyTheme(document.body.classList.contains('light') ? 'dark' : 'light'));
+applyTheme(storage.get('theme_v3', 'dark'));
+
+function detachListeners() {
+  LIVE_LISTENERS.forEach(r => { try { r.off(); } catch (e) {} });
+  LIVE_LISTENERS = [];
+  if (PARENT_CMS_REF) {
+    try { PARENT_CMS_REF.off(); } catch (e) {}
+    PARENT_CMS_REF = null;
+  }
+  BOUND_CMS_ADMIN = '';
+}
+function attach(ref, cb) {
+  ref.on('value', cb, err => console.warn('RTDB listener:', err && err.message));
+  LIVE_LISTENERS.push(ref);
+}
+
+/* ==================== AUTH ==================== */
+function translateAffAuthErr(err) {
+  const code = (err && err.code) || '';
+  if (code === 'auth/invalid-credential' || code === 'auth/wrong-password' || code === 'auth/user-not-found' || code === 'auth/invalid-login-credentials') {
+    return 'ভুল ইমেইল/ইউজারনেম অথবা পাসওয়ার্ড! সঠিক তথ্য দিয়ে আবার চেষ্টা করুন।';
+  }
+  if (code === 'auth/invalid-email') return 'সঠিক ইমেইল ঠিকানা লিখুন।';
+  if (code === 'auth/too-many-requests') return 'অনেকবার ভুল চেষ্টার কারণে সাময়িকভাবে ব্লক হয়েছে। কিছুক্ষণ পর চেষ্টা করুন।';
+  if (code === 'auth/network-request-failed') return 'নেটওয়ার্ক সংযোগ সমস্যা। ইন্টারনেট চেক করে আবার চেষ্টা করুন।';
+  return sanitizeAffMsg((err && err.message) || err) || 'লগইন ব্যর্থ হয়েছে';
+}
+function toggleAffPw(btn) {
+  const p = document.getElementById('affLoginPass');
+  if (!p) return;
+  const show = p.type === 'password';
+  p.type = show ? 'text' : 'password';
+  if (btn) btn.textContent = show ? 'লুকান' : 'দেখুন';
+}
+async function affiliateLogin(e) {
+  if (e) e.preventDefault();
+  const raw = (document.getElementById('affLoginUser').value || '').trim();
+  const pass = document.getElementById('affLoginPass').value || '';
+  const errEl = document.getElementById('affLoginErr');
+  const btn = document.getElementById('affLoginBtn');
+  errEl.textContent = '';
+  if (!raw || !pass) { errEl.textContent = 'ইমেইল/ইউজারনেম এবং পাসওয়ার্ড দিন'; return; }
+  btn.disabled = true;
+  try {
+    let email = raw;
+    if (!email.includes('@')) {
+      const clean = raw.toLowerCase().replace(/[^a-z0-9_]/g, '');
+      let foundEmail = '';
+      try {
+        const us = await db.ref('usernames/' + clean).once('value');
+        if (us.exists() && us.val().email) foundEmail = us.val().email;
+      } catch (_) {}
+      email = foundEmail || (clean + '@npapp.local');
+    }
+    await auth.signInWithEmailAndPassword(email, pass);
+  } catch (err) {
+    errEl.textContent = translateAffAuthErr(err);
+  } finally {
+    btn.disabled = false;
+  }
+}
+
+async function affiliateLogout() {
+  detachListeners();
+  LIVE_CHAT_OPEN = false;
+  document.getElementById('liveChatDrawer').classList.remove('open');
+  await auth.signOut();
+  toast('সফলভাবে লগআউট হয়েছে');
+}
+
+async function sendAffPasswordReset() {
+  const email = (MY_PROF && MY_PROF.email) || (auth.currentUser && auth.currentUser.email);
+  if (!email) return;
+  try {
+    await auth.sendPasswordResetEmail(email);
+    toast('পাসওয়ার্ড রিসেট ইমেইল পাঠানো হয়েছে: ' + email);
+  } catch (e) {
+    toast('ব্যর্থ: ' + translateAffAuthErr(e));
+  }
+}
+
+auth.onAuthStateChanged(async user => {
+  if (!user) {
+    detachListeners();
+    MY_UID = '';
+    MY_PROF = null;
+    document.getElementById('appShell').classList.add('hidden');
+    document.getElementById('liveChatFab').classList.add('hidden');
+    document.getElementById('loginGate').classList.remove('hidden');
+    if (typeof window.mwFitLogos === 'function') setTimeout(window.mwFitLogos, 40);
+    return;
+  }
+  try {
+    const snap = await db.ref('affiliates/' + user.uid).once('value');
+    if (!snap.exists() || snap.val().active === false || snap.val().status === 'suspended') {
+      await auth.signOut();
+      document.getElementById('affLoginErr').textContent = 'এই অ্যাকাউন্টটি Affiliate হিসেবে অনুমোদিত বা সক্রিয় নয়।';
+      return;
+    }
+    MY_UID = user.uid;
+    MY_PROF = { id: user.uid, ...snap.val() };
+    document.getElementById('loginGate').classList.add('hidden');
+    document.getElementById('appShell').classList.remove('hidden');
+    document.getElementById('liveChatFab').classList.remove('hidden');
+    if (typeof window.mwFitLogos === 'function') setTimeout(window.mwFitLogos, 40);
+    startLiveSync();
+  } catch (err) {
+    document.getElementById('affLoginErr').textContent = 'সংযোগ ত্রুটি: ' + sanitizeAffMsg(err.message);
+  }
+});
+
+/* ==================== LIVE SYNC ==================== */
+function startLiveSync() {
+  detachListeners();
+  if (!MY_UID) return;
+
+  attach(db.ref('.info/connected'), snap => {
+    const p = document.getElementById('liveConnPill');
+    if (!p) return;
+    if (snap.val() === true) { p.textContent = '● Live RTDB'; p.classList.remove('offline'); }
+    else { p.textContent = '⚡ Reconnecting...'; p.classList.add('offline'); }
+  });
+
+  attach(db.ref('affiliates/' + MY_UID), snap => {
+    if (!snap.exists() || snap.val().active === false || snap.val().status === 'suspended') {
+      toast('আপনার Affiliate অ্যাক্সেস বন্ধ করা হয়েছে।');
+      affiliateLogout();
+      return;
+    }
+    const v = snap.val() || {};
+    MY_PROF = { id: MY_UID, ...v };
+    CAMPAIGNS = v.campaigns ? Object.entries(v.campaigns).map(([k, c]) => ({ id: k, ...c })).sort((a, b) => (b.createdAt || 0) - (a.createdAt || 0)) : [];
+    const afCode = String(v.referralCode || '').trim().toUpperCase();
+    if (afCode) {
+      db.ref('referralCodes/' + afCode).once('value').then(rcS => {
+        const rc = rcS.val();
+        const pa = v.parentAdminId || '';
+        if (!rc || rc.uid !== MY_UID || rc.adminUid !== pa || rc.parentAdminId !== pa || rc.affiliateUid !== MY_UID) {
+          db.ref('referralCodes/' + afCode).set({
+            uid: MY_UID, role: 'AFFILIATE', affiliateUid: MY_UID, parentAdminId: pa, adminUid: pa, active: v.active !== false, updatedAt: Date.now()
+          }).catch(() => {});
+        }
+      }).catch(() => {});
+    }
+    renderProfile();
+    renderCampaigns();
+    renderAll();
+    bindParentAdminCms(v.parentAdminId || '');
+    refreshAffNotifications();
+    applyAffCms();
+  });
+
+  db.ref('affiliates/' + MY_UID + '/lastSeen').set(Date.now()).catch(() => {});
+  window.LIVE_REF_CLICKS = window.LIVE_REF_CLICKS || 0;
+  attach(db.ref('referralClicks/' + MY_UID), snap => {
+    window.LIVE_REF_CLICKS = snap.exists() ? (typeof snap.numChildren === 'function' ? snap.numChildren() : Object.keys(snap.val() || {}).length) : 0;
+    renderAll();
+  });
+
+  attach(db.ref('users'), snap => { ALL_USERS = snap.val() || {}; renderAll(); });
+  attach(db.ref('depositRequests'), snap => { ALL_DEPS = snap.val() || {}; renderAll(); });
+  attach(db.ref('withdrawalRequests'), snap => { ALL_WDS = snap.val() || {}; renderAll(); });
+  attach(db.ref('game_transactions').limitToLast(1500), snap => { ALL_GTX = snap.val() || {}; renderAll(); });
+  attach(db.ref('settings'), snap => { GLOBAL_SETTINGS = snap.val() || {}; applyAffCms(); });
+  attach(db.ref('userPanelConfig/global'), snap => { GLOBAL_CMS = snap.val() || {}; applyAffCms(); });
+  attach(db.ref('depositPromotions'), snap => { DEPOSIT_PROMOS = snap.val() || {}; applyAffCms(); });
+
+  attach(db.ref('notifications'), snap => {
+    const val = snap.val() || {};
+    RAW_NOTIFS = Object.entries(val).map(([k, n]) => ({ id: k, ...n }));
+    refreshAffNotifications();
+  });
+
+  attach(db.ref('affiliateCommissionRequests').orderByChild('affiliateUid').equalTo(MY_UID), snap => {
+    const val = snap.val() || {};
+    COMM_REQS = Object.entries(val).map(([k, r]) => ({ id: k, ...r })).sort((a, b) => (b.createdAt || 0) - (a.createdAt || 0));
+    renderCommissionRequests();
+  });
+
+  attach(db.ref('affiliate_admin_chats/' + MY_UID + '/messages').limitToLast(120), snap => {
+    const val = snap.val() || {};
+    CHAT_MSGS = Object.entries(val).map(([k, m]) => ({ id: k, ...m })).sort((a, b) => (a.timestamp || 0) - (b.timestamp || 0));
+    let unread = 0;
+    CHAT_MSGS.forEach(m => { if (m.sender !== 'AFFILIATE' && m.read !== true) unread++; });
+    UNREAD_CHAT = (LIVE_CHAT_OPEN || document.getElementById('support').classList.contains('active')) ? 0 : unread;
+    if (!UNREAD_CHAT && unread > 0) markChatRead();
+    updateChatBadges();
+    renderChatMessages();
+  });
+}
+
+function bindParentAdminCms(adminId) {
+  const target = String(adminId || '').trim();
+  if (BOUND_CMS_ADMIN === target) return;
+  if (PARENT_CMS_REF) {
+    try { PARENT_CMS_REF.off(); } catch (e) {}
+    PARENT_CMS_REF = null;
+  }
+  BOUND_CMS_ADMIN = target;
+  ADMIN_CMS = {};
+  if (!target) { applyAffCms(); return; }
+  PARENT_CMS_REF = db.ref('userPanelConfig/byAdmin/' + target);
+  PARENT_CMS_REF.on('value', snap => {
+    ADMIN_CMS = snap.val() || {};
+    applyAffCms();
+  });
+}
+
+function refreshAffNotifications() {
+  const myAdm = (MY_PROF && MY_PROF.parentAdminId) || '';
+  NOTIFS = (RAW_NOTIFS || []).filter(n => {
+    if (!n) return false;
+    if (n.adminUid && (!myAdm || n.adminUid !== myAdm)) return false;
+    if (n.targetUid) return n.targetUid === MY_UID;
+    if (n.target) return ['ALL', 'all', 'AFFILIATES', MY_UID].includes(n.target);
+    return true;
+  }).sort((a, b) => (b.timestamp || b.createdAt || 0) - (a.timestamp || a.createdAt || 0));
+  renderNotifications();
+}
+
+function affCmsAdminWins(g, a, metaKey, hasVal) {
+  if (!hasVal) return false;
+  const gFm = (g && g.fieldMeta) || {};
+  const aFm = (a && a.fieldMeta) || {};
+  const gT = Number(gFm[metaKey] || 0);
+  const aT = Number(aFm[metaKey] || 0);
+  if (gT > 0 && aT > 0) return aT >= gT;
+  if (gT > 0 && aT === 0) return false;
+  if (gT === 0 && aT > 0) return true;
+  return Number((a && a.updatedAt) || 0) >= Number((g && g.updatedAt) || 0);
+}
+
+function resolveAffPromo(p, admUid) {
+  if (!p || typeof p !== 'object') return p;
+  const ov = (admUid && p.adminOverrides && p.adminOverrides[admUid]) ? p.adminOverrides[admUid] : null;
+  const masterTs = Number(p.updatedAt || p.createdAt || 0);
+  if (ov && typeof ov === 'object' && Number(ov.updatedAt || 0) >= masterTs) {
+    return Object.assign({}, p, ov);
+  }
+  return p;
+}
+
+function mergedAffCms() {
+  const g = GLOBAL_CMS || {};
+  const a = ADMIN_CMS || {};
+  const gFm = g.fieldMeta || {};
+  const aFm = a.fieldMeta || {};
+  const subKey = (spec, parent) => (gFm[spec] || aFm[spec]) ? spec : parent;
+
+  const out = {
+    tagline: 'PLAY BIG, WIN BIGGER',
+    notice: '',
+    partnerNotice: '',
+    affiliatePromoText: '',
+    maintenanceMode: !!GLOBAL_SETTINGS.maintenanceMode,
+    maintenanceMessage: GLOBAL_SETTINGS.maintenanceMessage || '',
+    dailyBonusAmount: 50,
+    referralBonusPercent: 20,
+    limits: {
+      minDeposit: Number(GLOBAL_SETTINGS.minDeposit || 500),
+      maxDeposit: Number(GLOBAL_SETTINGS.maxDeposit || 50000),
+      minWithdraw: Number(GLOBAL_SETTINGS.minWithdraw || 500),
+      maxWithdraw: Number(GLOBAL_SETTINGS.maxWithdraw || 25000)
+    },
+    chat: {
+      whatsapp: GLOBAL_SETTINGS.whatsapp || '',
+      telegram: GLOBAL_SETTINGS.telegram || ''
+    },
+    features: {}
+  };
+
+  ['tagline', 'notice', 'partnerNotice', 'affiliatePromoText', 'maintenanceMessage'].forEach(k => {
+    if (g[k]) out[k] = g[k];
+    if (affCmsAdminWins(g, a, k, !!a[k])) out[k] = a[k];
+  });
+  if (typeof g.maintenanceMode === 'boolean') out.maintenanceMode = g.maintenanceMode;
+  if (affCmsAdminWins(g, a, 'maintenanceMode', typeof a.maintenanceMode === 'boolean')) out.maintenanceMode = a.maintenanceMode;
+  if (g.dailyBonusAmount != null && !isNaN(Number(g.dailyBonusAmount))) out.dailyBonusAmount = Number(g.dailyBonusAmount);
+  if (affCmsAdminWins(g, a, 'dailyBonusAmount', a.dailyBonusAmount != null && !isNaN(Number(a.dailyBonusAmount)))) out.dailyBonusAmount = Number(a.dailyBonusAmount);
+  if (g.referralBonusPercent != null && !isNaN(Number(g.referralBonusPercent))) out.referralBonusPercent = Number(g.referralBonusPercent);
+  if (affCmsAdminWins(g, a, 'referralBonusPercent', a.referralBonusPercent != null && !isNaN(Number(a.referralBonusPercent)))) out.referralBonusPercent = Number(a.referralBonusPercent);
+
+  const gLim = (g.limits && typeof g.limits === 'object') ? g.limits : {};
+  const aLim = (a.limits && typeof a.limits === 'object') ? a.limits : {};
+  Array.from(new Set([...Object.keys(out.limits), ...Object.keys(gLim), ...Object.keys(aLim)])).forEach(k => {
+    if (gLim[k] != null && gLim[k] !== '') out.limits[k] = Number(gLim[k]);
+    if (affCmsAdminWins(g, a, subKey('lim_' + k, 'limits'), aLim[k] != null && aLim[k] !== '')) out.limits[k] = Number(aLim[k]);
+  });
+
+  const gChat = (g.chat && typeof g.chat === 'object') ? g.chat : {};
+  const aChat = (a.chat && typeof a.chat === 'object') ? a.chat : {};
+  Array.from(new Set([...Object.keys(out.chat), ...Object.keys(gChat), ...Object.keys(aChat)])).forEach(k => {
+    if (gChat[k] !== undefined && gChat[k] !== '') out.chat[k] = gChat[k];
+    if (affCmsAdminWins(g, a, subKey('chat_' + k, 'chat'), aChat[k] !== undefined && aChat[k] !== '')) out.chat[k] = aChat[k];
+  });
+
+  const gFeat = (g.features && typeof g.features === 'object') ? g.features : {};
+  const aFeat = (a.features && typeof a.features === 'object') ? a.features : {};
+  Array.from(new Set([...Object.keys(gFeat), ...Object.keys(aFeat)])).forEach(k => {
+    if (typeof gFeat[k] === 'boolean') out.features[k] = gFeat[k];
+    if (affCmsAdminWins(g, a, subKey('feat_' + k, 'features'), typeof aFeat[k] === 'boolean')) out.features[k] = aFeat[k];
+  });
+
+  return out;
+}
+
+function applyAffCms() {
+  const cfg = mergedAffCms();
+  const tag = cfg.tagline || 'PLAY BIG, WIN BIGGER';
+  document.querySelectorAll('.brand-mark .tagline').forEach(el => {
+    if (el.textContent !== tag) el.textContent = tag;
+  });
+  if (typeof window.mwFitLogos === 'function') setTimeout(window.mwFitLogos, 30);
+
+  const myAdm = (MY_PROF && MY_PROF.parentAdminId) || '';
+  const lim = cfg.limits || {};
+  const nowMs = Date.now();
+  const activePromos = Object.entries(DEPOSIT_PROMOS || {})
+    .map(([id, p]) => resolveAffPromo(Object.assign({ id }, p || {}), myAdm))
+    .filter(p => p && p.active && (!p.startAt || nowMs >= Number(p.startAt)) && (!p.endAt || nowMs <= Number(p.endAt)) && (!myAdm || !p.adminOff || !p.adminOff[myAdm]));
+
+  const dailyAmt = Number(cfg.dailyBonusAmount != null ? cfg.dailyBonusAmount : 50);
+  const refPct = Number(cfg.referralBonusPercent != null ? cfg.referralBonusPercent : 20);
+
+  const ban = document.getElementById('affCmsBanner');
+  if (ban) {
+    const lines = [];
+    if (cfg.maintenanceMode) {
+      lines.push(`<div style="color:var(--red);font-weight:700;margin-bottom:4px">🛠 Player Maintenance Active: ${esc(cfg.maintenanceMessage || GLOBAL_SETTINGS.maintenanceMessage || 'Server maintenance in progress')}</div>`);
+    }
+    if (cfg.partnerNotice) {
+      lines.push(`<div style="color:var(--gold);font-weight:700;margin-bottom:4px">📢 Admin Announcement: <span style="color:var(--text);font-weight:500">${esc(cfg.partnerNotice)}</span></div>`);
+    }
+    if (cfg.affiliatePromoText) {
+      lines.push(`<div style="color:var(--green);font-weight:700;margin-bottom:4px">🎯 Promo Brief: <span style="color:var(--text);font-weight:500">${esc(cfg.affiliatePromoText)}</span></div>`);
+    }
+    if (cfg.notice) {
+      lines.push(`<div style="color:var(--muted);font-size:12px;margin-bottom:6px">📰 User Ticker: ${esc(cfg.notice)}</div>`);
+    }
+    lines.push(
+      `<div style="display:flex;flex-wrap:wrap;gap:8px 16px;font-size:12px;color:var(--muted)">` +
+      `<span>🎁 Player Daily Bonus: <b style="color:var(--gold)">৳${dailyAmt}</b></span>` +
+      `<span>🤝 Referral Bonus: <b style="color:var(--gold)">${refPct}%</b></span>` +
+      `<span>⬇ Deposit: <b>৳${Number(lim.minDeposit||500).toLocaleString()}–৳${Number(lim.maxDeposit||50000).toLocaleString()}</b></span>` +
+      `<span>💎 Active Deposit Offers: <b style="color:var(--green)">${activePromos.length}</b></span>` +
+      `</div>`
+    );
+    ban.innerHTML = lines.join('');
+    ban.style.display = 'block';
+  }
+
+  const offerBox = document.getElementById('affPromoOffersCard');
+  if (offerBox) {
+    if (activePromos.length || cfg.affiliatePromoText) {
+      offerBox.innerHTML = `<h2 style="margin-top:0">🎁 Active Player Offers to Promote</h2>` +
+        (cfg.affiliatePromoText ? `<p style="color:var(--gold);font-weight:600">${esc(cfg.affiliatePromoText)}</p>` : '') +
+        (activePromos.length ? `<div style="display:grid;gap:8px">` + activePromos.map(p => `<div style="padding:10px 12px;border:1px solid var(--line);border-radius:10px;display:flex;justify-content:space-between;align-items:center;gap:10px;flex-wrap:wrap"><div><b>${esc(p.name)}</b><br><small style="color:var(--muted)">Min Deposit ৳${Number(p.minDeposit||0).toLocaleString()}${p.turnoverMultiplier?' · '+p.turnoverMultiplier+'x turnover':''}</small></div><span class="status">${esc(p.bonusType==='percent'?p.bonusValue+'% Bonus':'৳'+p.bonusValue+' Bonus')}</span></div>`).join('') + `</div>` : `<p style="color:var(--muted)">No special deposit bonus campaigns active right now.</p>`);
+      offerBox.style.display = 'block';
+    } else {
+      offerBox.style.display = 'none';
+    }
+  }
+
+  const extBox = document.getElementById('affSupportExtLinks');
+  if (extBox) {
+    const wa = (cfg.chat && cfg.chat.whatsapp) ? (cfg.chat.whatsapp.startsWith('http') ? cfg.chat.whatsapp : 'https://wa.me/' + String(cfg.chat.whatsapp).replace(/\D/g, '')) : '';
+    const tg = (cfg.chat && cfg.chat.telegram) ? (cfg.chat.telegram.startsWith('http') ? cfg.chat.telegram : 'https://t.me/' + String(cfg.chat.telegram).replace(/^@/, '')) : '';
+    const btns = [
+      wa ? `<a class="btn" href="${esc(wa)}" target="_blank" rel="noopener">💬 WhatsApp Support</a>` : '',
+      tg ? `<a class="btn" href="${esc(tg)}" target="_blank" rel="noopener">✈ Telegram Support</a>` : ''
+    ].filter(Boolean);
+    if (btns.length) {
+      extBox.innerHTML = `<div style="display:flex;gap:10px;flex-wrap:wrap;align-items:center"><span style="color:var(--muted)">Direct Channels:</span>${btns.join('')}</div>`;
+      extBox.style.display = 'block';
+    } else {
+      extBox.style.display = 'none';
+    }
+  }
+}
+
+/* ==================== DATA AGGREGATION ==================== */
+function getRefUrl() {
+  const code = (MY_PROF && MY_PROF.referralCode) || MY_UID.slice(0, 8).toUpperCase();
+  const base = (MY_PROF && MY_PROF.baseUrl) || (location.href.replace(/[?#].*$/, '').replace(/\/affiliate(?:\/index\.html)?\/?$/i, '').replace(/\/+$/, '') + '/user/');
+  return `${base}?ref=${encodeURIComponent(code)}`;
+}
+
+function getReferredPlayers() {
+  const code = String((MY_PROF && MY_PROF.referralCode) || '').toLowerCase();
+  const myAdmin = (MY_PROF && MY_PROF.parentAdminId) || '';
+  const out = [];
+  Object.entries(ALL_USERS).forEach(([uid, u]) => {
+    if (!u || typeof u !== 'object') return;
+    if (myAdmin && u.adminUid && u.adminUid !== myAdmin) return;
+    const match = (u.affiliateId && u.affiliateId === MY_UID) ||
+      (u.affiliateUid && u.affiliateUid === MY_UID) ||
+      (u.referredBy && u.referredBy === MY_UID) ||
+      (code && String(u.affCode || u.referredByCode || u.promoCode || '').toLowerCase() === code);
+    if (match) out.push({ uid, ...u });
+  });
+  out.sort((a, b) => (b.createdAt || 0) - (a.createdAt || 0));
+  return out;
+}
+
+function getPlayerBetStats(uid) {
+  let betAmt = 0, winAmt = 0, betCount = 0, lastGame = '';
+  Object.values(ALL_GTX).forEach(tx => {
+    if (!tx || tx.uid !== uid) return;
+    const tp = String(tx.type || '').toUpperCase();
+    const amt = Math.abs(parseFloat(tx.amount) || 0);
+    if (tp === 'BET') { betAmt += amt; betCount++; }
+    else if (tp === 'WIN') { winAmt += amt; }
+    if (tx.gameName || tx.game) lastGame = tx.gameName || tx.game;
+  });
+  return { betAmt, winAmt, netPl: winAmt - betAmt, betCount, lastGame };
+}
+
+function getReferredSet(players) {
+  return new Set(players.map(p => p.uid));
+}
+
+function getRangeCutoffMs() {
+  const v = document.getElementById('dateRange')?.value || '30';
+  const now = Date.now();
+  if (v === '7') return now - 7 * 86400000;
+  if (v === 'month') {
+    const d = new Date();
+    return new Date(d.getFullYear(), d.getMonth(), 1).getTime();
+  }
+  return now - 30 * 86400000;
+}
+
+function renderProfile() {
+  if (!MY_PROF) return;
+  const name = MY_PROF.name || MY_PROF.email || 'Affiliate';
+  const code = MY_PROF.referralCode || MY_UID.slice(0, 8).toUpperCase();
+  const initials = name.split(/\s+/).map(x => x[0]).join('').slice(0, 2).toUpperCase() || 'AF';
+  document.getElementById('sideAvatar').textContent = initials;
+  document.getElementById('topAvatar').textContent = initials;
+  document.getElementById('profAvatar').textContent = initials;
+  document.getElementById('sideName').textContent = name;
+  document.getElementById('sideCode').textContent = `Affiliate · ${code}`;
+  document.getElementById('welcomeHeading').textContent = `Welcome back, ${name} 👋`;
+  document.getElementById('welcomeSub').textContent = `Code: ${code} · Parent Admin: ${MY_PROF.parentAdminName || MY_PROF.parentAdminId || 'Master Admin'}`;
+  document.getElementById('refurl').textContent = getRefUrl();
+  document.getElementById('refurlPage').textContent = getRefUrl();
+  document.getElementById('linkStatCode').textContent = code;
+  document.getElementById('linkStatStatus').textContent = MY_PROF.active === false ? 'Suspended' : 'Active';
+  document.getElementById('linkStatStatus').style.color = MY_PROF.active === false ? 'var(--red)' : 'var(--green)';
+  document.getElementById('profName').textContent = name;
+  document.getElementById('profIdSub').textContent = `Affiliate ID: ${MY_UID} · Code: ${code}`;
+  document.getElementById('profEmail').textContent = MY_PROF.email || '—';
+  document.getElementById('profPhone').textContent = MY_PROF.phone || '—';
+  document.getElementById('profStatus').textContent = MY_PROF.active === false ? 'Suspended' : 'Active';
+  document.getElementById('profParentAdmin').textContent = MY_PROF.parentAdminName || MY_PROF.parentAdminId || 'Master Admin';
+  document.getElementById('supportAdminSub').textContent = `Assigned Admin: ${MY_PROF.parentAdminName || MY_PROF.parentAdminId || 'Admin Desk'}`;
+  document.getElementById('chatDrawerSub').textContent = `Chatting with ${MY_PROF.parentAdminName || 'Assigned Admin'}`;
+}
+
+function renderAll() {
+  if (!MY_PROF) return;
+  const players = getReferredPlayers();
+  const pSet = getReferredSet(players);
+  const cutoff = getRangeCutoffMs();
+
+  // Confirmed deposits map per uid
+  const depByUid = {};
+  let totalDepAll = 0;
+  Object.values(ALL_DEPS).forEach(d => {
+    if (!d || !pSet.has(d.uid)) return;
+    if (String(d.status || '').toLowerCase() === 'approved') {
+      const a = parseFloat(d.amount) || 0;
+      totalDepAll += a;
+      depByUid[d.uid] = (depByUid[d.uid] || 0) + a;
+    }
+  });
+
+  let totalBetAll = 0, totalWinAll = 0;
+  const statsByUid = {};
+  players.forEach(p => {
+    const s = getPlayerBetStats(p.uid);
+    statsByUid[p.uid] = s;
+    totalBetAll += s.betAmt;
+    totalWinAll += s.winAmt;
+  });
+
+  const clicks = Math.max(parseInt(MY_PROF.clicks || 0, 10) || 0, parseInt(window.LIVE_REF_CLICKS || 0, 10) || 0, players.length);
+  const regCount = players.length;
+  const activePlayers = players.filter(p => (p.status || 'ACTIVE').toUpperCase() === 'ACTIVE');
+  const confirmedCount = players.filter(p => (depByUid[p.uid] || 0) > 0 || (parseFloat(p.totalDeposited) || 0) > 0).length;
+  const pendingCount = Math.max(0, activePlayers.length - confirmedCount);
+  const inactiveCount = Math.max(0, regCount - activePlayers.length);
+  const convPct = clicks > 0 ? ((regCount / clicks) * 100).toFixed(2) : '0.00';
+
+  document.getElementById('statClicks').textContent = clicks.toLocaleString('en-US');
+  document.getElementById('statRegistered').textContent = regCount.toLocaleString('en-US');
+  document.getElementById('statRegisteredSub').textContent = `${players.filter(p => (p.createdAt || 0) >= cutoff).length} in selected period`;
+  document.getElementById('statActive').textContent = activePlayers.length.toLocaleString('en-US');
+  document.getElementById('statActiveSub').textContent = `${regCount ? Math.round((activePlayers.length / regCount) * 100) : 0}% of total players`;
+  document.getElementById('statConv').textContent = convPct + '%';
+
+  document.getElementById('linkStatClicks').textContent = clicks.toLocaleString('en-US');
+  document.getElementById('linkStatRegs').textContent = regCount.toLocaleString('en-US');
+
+  // Conversion ring
+  const cPct = regCount ? Math.round((confirmedCount / regCount) * 100) : 0;
+  const pPct = regCount ? Math.round((pendingCount / regCount) * 100) : 0;
+  const iPct = Math.max(0, 100 - cPct - pPct);
+  document.getElementById('ringConvPct').textContent = cPct + '%';
+  document.getElementById('keyConfirmed').textContent = cPct + '%';
+  document.getElementById('keyPending').textContent = pPct + '%';
+  document.getElementById('keyInactive').textContent = iPct + '%';
+  document.getElementById('convRing').style.background = `conic-gradient(var(--orange) 0 ${cPct}%, var(--gold) ${cPct}% ${cPct + pPct}%, #343b44 ${cPct + pPct}% 100%)`;
+
+  // Latest Registered Players (top 5)
+  const lpBody = document.getElementById('latestPlayersBody');
+  lpBody.innerHTML = players.slice(0, 5).map(p => {
+    const isAct = (p.status || 'ACTIVE').toUpperCase() === 'ACTIVE';
+    const isConf = (depByUid[p.uid] || 0) > 0 || (parseFloat(p.totalDeposited) || 0) > 0;
+    const dt = p.createdAt ? new Date(p.createdAt).toLocaleDateString() : 'Recent';
+    return `<tr>
+      <td>${esc(p.name || p.username || p.uid)}</td>
+      <td>${esc(dt)}</td>
+      <td><span class="status ${isAct ? '' : 'inactive'}">${isAct ? 'Active' : 'Inactive'}</span></td>
+      <td><span class="status ${isConf ? '' : 'pending'}">${isConf ? 'Confirmed' : 'Pending'}</span></td>
+    </tr>`;
+  }).join('') || `<tr><td colspan="4" style="color:var(--muted);text-align:center">এখনও কোনো রেফার্ড প্লেয়ার রেজিস্টার করেনি</td></tr>`;
+
+  // Recent Activity feed
+  const actFeed = document.getElementById('recentActivityFeed');
+  const feedItems = [];
+  players.slice(0, 3).forEach(p => {
+    feedItems.push(`<div class="activity-item"><div class="activity-icon">♙</div><div><b>New player registered</b><small>${esc(p.name || p.username || p.uid)} · ${p.createdAt ? new Date(p.createdAt).toLocaleString() : 'Live'}</small></div></div>`);
+  });
+  if (CHAT_MSGS.length) {
+    const lastM = CHAT_MSGS[CHAT_MSGS.length - 1];
+    feedItems.push(`<div class="activity-item"><div class="activity-icon">✉</div><div><b>${lastM.sender === 'AFFILIATE' ? 'Sent support message' : 'Admin sent a message'}</b><small>${esc((lastM.text || '').slice(0, 48))}</small></div></div>`);
+  }
+  actFeed.innerHTML = feedItems.join('') || `<div style="color:var(--muted);font-size:12px">লাইভ অ্যাক্টিভিটি এখানে দেখা যাবে।</div>`;
+
+  // Full My Referrals table
+  const pBody = document.getElementById('playersTbody');
+  pBody.innerHTML = players.map(p => {
+    const isAct = (p.status || 'ACTIVE').toUpperCase() === 'ACTIVE';
+    const isConf = (depByUid[p.uid] || 0) > 0 || (parseFloat(p.totalDeposited) || 0) > 0;
+    const bs = statsByUid[p.uid] || { netPl: 0, lastGame: '' };
+    const dt = p.createdAt ? new Date(p.createdAt).toLocaleDateString() : '—';
+    const plCls = bs.netPl > 0 ? 'up' : bs.netPl < 0 ? 'down' : '';
+    const plTxt = bs.netPl > 0 ? '+ ' + money(bs.netPl) : bs.netPl < 0 ? '− ' + money(Math.abs(bs.netPl)) : money(0);
+    return `<tr>
+      <td>${esc(p.name || p.username || p.uid)}<br><small style="color:var(--muted)">${esc(p.uid)}</small></td>
+      <td>${esc(dt)}</td>
+      <td>${esc(bs.lastGame || p.lastGame || 'Casino')}</td>
+      <td><strong>${money(p.balance)}</strong></td>
+      <td><span class="${plCls}">${plTxt}</span></td>
+      <td><span class="status ${isAct ? '' : 'inactive'}">${isAct ? 'Active' : 'Inactive'}</span></td>
+      <td><span class="status ${isConf ? '' : 'pending'}">${isConf ? 'Confirmed' : 'Pending'}</span></td>
+    </tr>`;
+  }).join('') || `<tr><td colspan="7" style="text-align:center;color:var(--muted)">আপনার রেফারেল লিংক থেকে কোনো প্লেয়ার যুক্ত হলে এখানে লাইভ দেখাবে।</td></tr>`;
+
+  // Populate user dropdowns for Money Activity & IP Security
+  const prevMoneyUser = document.getElementById('moneyUser').value;
+  const prevIpUser = document.getElementById('ipUser').value;
+  const optsHtml = players.length
+    ? players.map(p => `<option value="${esc(p.uid)}">${esc(p.name || p.username || p.uid)}</option>`).join('')
+    : '<option value="">No players yet</option>';
+  document.getElementById('moneyUser').innerHTML = optsHtml;
+  document.getElementById('ipUser').innerHTML = optsHtml;
+  if (prevMoneyUser && pSet.has(prevMoneyUser)) document.getElementById('moneyUser').value = prevMoneyUser;
+  if (prevIpUser && pSet.has(prevIpUser)) document.getElementById('ipUser').value = prevIpUser;
+
+  // Analytics page
+  document.getElementById('anaClicks').textContent = clicks.toLocaleString('en-US');
+  document.getElementById('anaDepTotal').textContent = moneyShort(totalDepAll);
+  document.getElementById('anaTurnover').textContent = moneyShort(totalBetAll);
+  document.getElementById('anaConv').textContent = convPct + '%';
+  const netHouse = totalBetAll - totalWinAll;
+  document.getElementById('anaSummary').textContent =
+    `মোট রেফার্ড প্লেয়ার: ${regCount} জন (${confirmedCount} জন কনফার্মড ডিপোজিটর)। মোট ডিপোজিট: ${moneyShort(totalDepAll)}, মোট বেট টার্নওভার: ${moneyShort(totalBetAll)}, নিট প্লেয়ার লস/হাউস প্রফিট: ${moneyShort(netHouse)}।`;
+
+  renderChart();
+  filterPlayers();
+  renderMoneyActivity();
+  renderIpHistory();
+  renderSmartCommission(totalDepAll, totalBetAll, totalWinAll, players, statsByUid);
+}
+
+function renderChart() {
+  const box = document.getElementById('regChartBox');
+  if (!box) return;
+  const days = parseInt(document.getElementById('chartDays')?.value || '7', 10) || 7;
+  const players = getReferredPlayers();
+  const buckets = Array(days).fill(0);
+  const confBuckets = Array(days).fill(0);
+  const now = new Date();
+  const todayMid = new Date(now.getFullYear(), now.getMonth(), now.getDate()).getTime();
+  players.forEach(p => {
+    const ts = Number(p.createdAt || 0);
+    if (!ts) return;
+    const diffDays = Math.floor((todayMid + 86400000 - ts) / 86400000);
+    const idx = days - 1 - diffDays;
+    if (idx >= 0 && idx < days) {
+      buckets[idx]++;
+      if ((parseFloat(p.totalDeposited) || 0) > 0) confBuckets[idx]++;
+    }
+  });
+  const maxVal = Math.max(1, ...buckets, ...confBuckets);
+  const stepX = 700 / Math.max(1, days - 1);
+  const pts = buckets.map((v, i) => [Math.round(i * stepX), Math.round(200 - (v / maxVal) * 165)]);
+  const cpts = confBuckets.map((v, i) => [Math.round(i * stepX), Math.round(200 - (v / maxVal) * 165)]);
+  const dMain = pts.map((p, i) => (i === 0 ? `M${p[0]} ${p[1]}` : `L${p[0]} ${p[1]}`)).join(' ');
+  const dFill = `${dMain} L700 220 L0 220 Z`;
+  const dConf = cpts.map((p, i) => (i === 0 ? `M${p[0]} ${p[1]}` : `L${p[0]} ${p[1]}`)).join(' ');
+  box.innerHTML = `<svg viewBox="0 0 700 220" preserveAspectRatio="none">
+    <defs><linearGradient id="fill" x1="0" x2="0" y1="0" y2="1"><stop offset="0" stop-color="#ff7a1a" stop-opacity=".35"/><stop offset="1" stop-color="#ff7a1a" stop-opacity="0"/></linearGradient></defs>
+    <path d="${dFill}" fill="url(#fill)"/>
+    <path d="${dMain}" fill="none" stroke="#ff8730" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>
+    <path d="${dConf}" fill="none" stroke="#e7b85b" stroke-width="2" stroke-dasharray="5 5"/>
+  </svg>`;
+}
+
+function renderMoneyActivity() {
+  const period = document.getElementById('moneyPeriod').value;
+  const individual = document.getElementById('moneyScope').value === 'individual';
+  const selUid = document.getElementById('moneyUser').value;
+  document.getElementById('moneyUser').disabled = !individual;
+  const cutoff = period === 'daily' ? Date.now() - 86400000 : Date.now() - 7 * 86400000;
+
+  const players = getReferredPlayers();
+  const targetPlayers = individual ? players.filter(p => p.uid === selUid) : players;
+  const tSet = new Set(targetPlayers.map(p => p.uid));
+
+  const perUser = {};
+  targetPlayers.forEach(p => { perUser[p.uid] = { name: p.name || p.username || p.uid, dep: 0, wd: 0 }; });
+
+  Object.values(ALL_DEPS).forEach(d => {
+    if (!d || !tSet.has(d.uid)) return;
+    if (String(d.status || '').toLowerCase() !== 'approved') return;
+    const ts = Number(d.approvedAt || d.timestamp || d.createdAt || 0);
+    if (ts && ts < cutoff) return;
+    perUser[d.uid].dep += parseFloat(d.amount) || 0;
+  });
+
+  Object.values(ALL_WDS).forEach(w => {
+    if (!w || !tSet.has(w.uid)) return;
+    const st = String(w.status || '').toLowerCase();
+    if (st !== 'completed' && st !== 'approved') return;
+    const ts = Number(w.processedAt || w.timestamp || w.createdAt || 0);
+    if (ts && ts < cutoff) return;
+    perUser[w.uid].wd += parseFloat(w.amount) || 0;
+  });
+
+  let totalDep = 0, totalWd = 0;
+  const body = document.getElementById('moneyRows');
+  const rows = Object.values(perUser);
+  body.innerHTML = rows.length ? rows.map(r => {
+    totalDep += r.dep;
+    totalWd += r.wd;
+    const net = r.dep - r.wd;
+    return `<tr><td>${esc(r.name)}</td><td class="up">${money(r.dep)}</td><td class="down">${money(r.wd)}</td><td>${money(net)}</td></tr>`;
+  }).join('') : `<tr><td colspan="4" style="color:var(--muted);text-align:center">নির্বাচিত সময়ে কোনো লেনদেন পাওয়া যায়নি</td></tr>`;
+
+  document.getElementById('depositTotal').textContent = money(totalDep);
+  document.getElementById('withdrawTotal').textContent = money(totalWd);
+}
+
+function renderIpHistory() {
+  const uid = document.getElementById('ipUser').value;
+  const u = ALL_USERS[uid] || null;
+  const body = document.getElementById('ipRows');
+  const banner = document.getElementById('ipRiskBanner');
+  if (!u) {
+    body.innerHTML = `<tr><td colspan="3" style="color:var(--muted);text-align:center">কোনো প্লেয়ার নির্বাচিত নেই</td></tr>`;
+    banner.textContent = 'No referred players yet';
+    banner.className = 'status pending';
+    return;
+  }
+
+  let list = [];
+  if (Array.isArray(u.ipHistory)) {
+    list = u.ipHistory;
+  } else if (u.ipHistory && typeof u.ipHistory === 'object') {
+    list = Object.values(u.ipHistory);
+  }
+  const normalized = [];
+  const seen = new Set();
+  list.slice().reverse().forEach(entry => {
+    if (typeof entry === 'string' && !seen.has(entry)) {
+      seen.add(entry);
+      normalized.push({ ip: entry, seen: u.lastSeen ? new Date(u.lastSeen).toLocaleString() : 'Recent', dev: u.lastDevice || 'Device' });
+    } else if (entry && entry.ip && !seen.has(entry.ip)) {
+      seen.add(entry.ip);
+      normalized.push({ ip: entry.ip, seen: entry.time ? new Date(entry.time).toLocaleString() : 'Recent', dev: entry.device || u.lastDevice || 'Device' });
+    }
+  });
+  if (u.lastIp && !seen.has(u.lastIp)) {
+    normalized.unshift({ ip: u.lastIp, seen: u.lastSeen ? new Date(u.lastSeen).toLocaleString() : 'Latest', dev: u.lastDevice || 'Unknown Device' });
+  }
+  const top7 = normalized.slice(0, 7);
+
+  body.innerHTML = top7.length ? top7.map(r => `<tr><td>${esc(r.ip)}</td><td>${esc(r.seen)}</td><td>${esc(r.dev)}</td></tr>`).join('')
+    : `<tr><td colspan="3" style="color:var(--muted);text-align:center">এই প্লেয়ারের IP লগ এখনও রেকর্ড হয়নি</td></tr>`;
+
+  if (top7.length > 1) {
+    banner.textContent = `⚠ Review recommended · ${top7.length} different IP addresses detected`;
+    banner.className = 'status inactive';
+  } else if (top7.length === 1) {
+    banner.textContent = '✓ Clean signal · Single IP detected';
+    banner.className = 'status';
+  } else {
+    banner.textContent = 'No IP logs recorded yet';
+    banner.className = 'status pending';
+  }
+}
+
+/* ==================== SMART COMMISSION (MASTER + USER ADMIN CONTROLLABLE) ==================== */
+function renderSmartCommission(totalDepAll, totalBetAll, totalWinAll, playersList, statsByUid) {
+  const box = document.getElementById('commissionBox');
+  if (!box || !MY_PROF) return;
+  const enabled = MY_PROF.commissionEnabled !== false;
+  const cType = MY_PROF.commissionType || 'profit_share';
+  const rate = parseFloat(MY_PROF.commissionRate ?? 25);
+  const winDedPct = parseFloat(
+    MY_PROF.winDeductionPercent != null
+      ? MY_PROF.winDeductionPercent
+      : (cType === 'profit_share' ? 35 : 0)
+  );
+  const walletBal = parseFloat(MY_PROF.commissionBalance || 0);
+  const totalPaid = parseFloat(MY_PROF.totalCommissionPaid || 0);
+  const minPayout = parseFloat(MY_PROF.minCommissionPayout || 500);
+
+  const isProfitMode = cType === 'profit_share' || cType === 'loss_share';
+  let basisLabel = 'Confirmed Deposits';
+  let basisAmount = totalDepAll;
+  let grossEarned = 0;
+  let totalPlayerWin = 0;
+  let winDeductionAmt = 0;
+  const perPlayerRows = [];
+
+  if (isProfitMode) {
+    basisLabel = 'কোম্পানির লাভ (Company Profit)';
+    let sumProfit = 0;
+    (playersList || []).forEach(p => {
+      const s = (statsByUid && statsByUid[p.uid]) || { betAmt: 0, winAmt: 0 };
+      const profit = Math.max(0, s.betAmt - s.winAmt);
+      const pWin = Math.max(0, s.winAmt - s.betAmt);
+      sumProfit += profit;
+      totalPlayerWin += pWin;
+      const plusComm = (profit * rate) / 100;
+      const minusComm = (pWin * winDedPct) / 100;
+      const netComm = plusComm - minusComm;
+      if (s.betAmt > 0 || s.winAmt > 0) {
+        perPlayerRows.push({
+          name: p.name || p.username || p.uid,
+          betAmt: s.betAmt,
+          winAmt: s.winAmt,
+          profit,
+          pWin,
+          plusComm,
+          minusComm,
+          netComm
+        });
+      }
+    });
+    basisAmount = sumProfit;
+    grossEarned = (sumProfit * rate) / 100;
+    winDeductionAmt = (totalPlayerWin * winDedPct) / 100;
+  } else if (cType === 'turnover_percent') {
+    basisLabel = 'Total Bet Turnover';
+    basisAmount = totalBetAll;
+    grossEarned = (basisAmount * rate) / 100;
+  } else {
+    grossEarned = (basisAmount * rate) / 100;
+  }
+
+  const netEstimatedEarned = enabled ? (grossEarned - winDeductionAmt) : 0;
+  const negCls = netEstimatedEarned < 0 ? 'color:var(--red)' : 'color:var(--gold)';
+  const netSignTxt = netEstimatedEarned < 0 ? '− ' + money(Math.abs(netEstimatedEarned)) : money(netEstimatedEarned);
+
+  if (!enabled) {
+    box.innerHTML = `
+      <span class="status pending">Currently disabled</span>
+      <h2 style="margin-top:16px">Commission is paused by Admin</h2>
+      <p>Master Admin অথবা আপনার Parent User Admin স্মার্ট কমিশন চালু করলে আপনার রিয়েলটাইম কমিশন ক্যালকুলেশন ও উত্তোলন চালু হয়ে যাবে।</p>
+      <div class="grid" style="margin-top:16px">
+       <div><small style="color:var(--muted)">Credited Wallet</small><h2>${money(walletBal)}</h2></div>
+       <div><small style="color:var(--muted)">Total Paid</small><h2>${money(totalPaid)}</h2></div>
+      </div>`;
+    return;
+  }
+
+  const ruleTag = isProfitMode
+    ? `${rate}% Company Profit · প্লেয়ার জিতলে −${winDedPct}%`
+    : `${rate}%`;
+
+  const breakdownHtml = isProfitMode ? `
+    <div style="margin-top:14px;padding:12px;border-radius:12px;border:1px solid var(--line);background:rgba(255,255,255,.02)">
+     <div style="display:flex;justify-content:space-between;flex-wrap:wrap;gap:8px;font-size:12.5px">
+      <span>📈 কোম্পানির লাভ (<b>${moneyShort(basisAmount)}</b> × ${rate}%)</span>
+      <strong class="up">+ ${money(grossEarned)}</strong>
+     </div>
+     <div style="display:flex;justify-content:space-between;flex-wrap:wrap;gap:8px;font-size:12.5px;margin-top:6px">
+      <span>🎯 প্লেয়ার জয় কর্তন (<b>${moneyShort(totalPlayerWin)}</b> × ${winDedPct}%)</span>
+      <strong class="down">− ${money(winDeductionAmt)}</strong>
+     </div>
+     <div style="display:flex;justify-content:space-between;flex-wrap:wrap;gap:8px;font-size:13.5px;margin-top:8px;padding-top:8px;border-top:1px dashed var(--line)">
+      <strong>নিট হিসাবকৃত কমিশন (Net Commission)</strong>
+      <strong style="${negCls}">${netSignTxt}</strong>
+     </div>
+    </div>
+    ${perPlayerRows.length ? `<div style="margin-top:14px;overflow-x:auto"><table><thead><tr><th>প্লেয়ার</th><th>বেট</th><th>জয়</th><th>লাভ (+)</th><th>জয় (−)</th><th>কমিশন প্রভাব</th></tr></thead><tbody>${perPlayerRows.map(r => `<tr><td>${esc(r.name)}</td><td>${moneyShort(r.betAmt)}</td><td>${moneyShort(r.winAmt)}</td><td class="up">+${money(r.plusComm)}</td><td class="down">−${money(r.minusComm)}</td><td><strong class="${r.netComm >= 0 ? 'up' : 'down'}">${r.netComm >= 0 ? '+' + money(r.netComm) : '−' + money(Math.abs(r.netComm))}</strong></td></tr>`).join('')}</tbody></table></div>` : ''}
+  ` : '';
+
+  box.innerHTML = `
+    <span class="status">Smart Commission Active (${esc(ruleTag)})</span>
+    <h2 style="margin-top:14px">${esc(basisLabel)} · ${rate}%${isProfitMode ? ` <small style="color:var(--red);font-size:13px">(প্লেয়ার জিতলে −${winDedPct}%)</small>` : ''}</h2>
+    <p>Master Admin ও User Admin দ্বারা সেটকৃত অটোমেটিক স্মার্ট কমিশন। ন্যূনতম পেআউট: ${moneyShort(minPayout)}।</p>
+    <div class="grid" style="margin-top:16px">
+     <div><small style="color:var(--muted)">${esc(basisLabel)}</small><h2>${moneyShort(basisAmount)}</h2></div>
+     <div><small style="color:var(--muted)">Net Commission</small><h2 style="${negCls}">${netSignTxt}</h2></div>
+     <div><small style="color:var(--muted)">Credited Commission Wallet</small><h2 style="color:var(--green)">${money(walletBal)}</h2></div>
+     <div><small style="color:var(--muted)">Total Paid</small><h2>${money(totalPaid)}</h2></div>
+    </div>
+    ${breakdownHtml}
+    <hr style="border:0;border-top:1px solid var(--line);margin:20px 0">
+    <div class="toolbar">
+     <input id="commReqAmt" type="number" min="1" placeholder="উত্তোলনের পরিমাণ (৳)">
+     <input id="commReqMethod" placeholder="bKash / Nagad / Rocket নম্বর" style="flex:1;min-width:180px">
+     <button class="btn btn-primary" onclick="requestCommissionPayout()">💸 Request Commission Payout</button>
+    </div>`;
+}
+
+async function requestCommissionPayout() {
+  if (!MY_UID || !MY_PROF) return;
+  const amt = parseFloat(document.getElementById('commReqAmt')?.value || 0);
+  const method = (document.getElementById('commReqMethod')?.value || '').trim();
+  const minP = parseFloat(MY_PROF.minCommissionPayout || 500);
+  const avail = parseFloat(MY_PROF.commissionBalance || 0);
+  if (!Number.isFinite(amt) || amt < minP) { toast(`ন্যূনতম ৳${minP} রিকোয়েস্ট করতে হবে`); return; }
+  if (amt > avail) { toast(`আপনার ক্রেডিটকৃত কমিশন ব্যালেন্স: ৳${Math.round(avail)}`); return; }
+  if (!method) { toast('পেমেন্ট মেথড ও নম্বর লিখুন'); return; }
+  try {
+    await window.mwApi('/api/v1/affiliate/commission-request', { amount: amt, paymentInfo: method }, auth);
+    toast('কমিশন পেআউট রিকোয়েস্ট পাঠানো হয়েছে ✅');
+  } catch (e) {
+    toast('ব্যর্থ: ' + e.message);
+  }
+}
+
+function renderCommissionRequests() {
+  const b = document.getElementById('commReqBody');
+  if (!b) return;
+  b.innerHTML = COMM_REQS.length ? COMM_REQS.map(r => {
+    const st = String(r.status || 'pending').toLowerCase();
+    return `<tr>
+      <td>${r.createdAt ? new Date(r.createdAt).toLocaleString() : '—'}</td>
+      <td><b>${money(r.amount)}</b></td>
+      <td>${esc(r.paymentInfo || '—')}</td>
+      <td><span class="status ${st === 'rejected' ? 'inactive' : st === 'pending' ? 'pending' : ''}">${esc(st.toUpperCase())}</span></td>
+    </tr>`;
+  }).join('') : `<tr><td colspan="4" style="color:var(--muted);text-align:center">কোনো কমিশন পেআউট রিকোয়েস্ট নেই</td></tr>`;
+}
+
+/* ==================== CAMPAIGN LINKS & FILTERS ==================== */
+function renderCampaigns() {
+  const tbody = document.getElementById('campaignLinks');
+  if (!tbody) return;
+  if (!CAMPAIGNS.length) {
+    tbody.innerHTML = '<tr><td colspan="3" style="color:var(--muted)">No campaign links created yet.</td></tr>';
+    return;
+  }
+  tbody.innerHTML = CAMPAIGNS.map(item => `<tr>
+    <td>${esc(item.name)}</td>
+    <td><code style="color:#f5c36c">${esc(item.url)}</code></td>
+    <td>
+      <button class="btn" onclick="copyText('${esc(item.url)}')">Copy</button>
+      <button class="btn" style="margin-left:6px" onclick="deleteCampaignLink('${esc(item.id)}')">Delete</button>
+    </td>
+  </tr>`).join('');
+}
+
+async function createCampaignLink() {
+  const field = document.getElementById('campaignName');
+  const name = field.value.trim();
+  if (!name) { toast('Enter a campaign name first'); field.focus(); return; }
+  const slug = name.toLowerCase().normalize('NFKD').replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '') || ('camp-' + Date.now());
+  const url = new URL(getRefUrl());
+  url.searchParams.set('campaign', slug);
+  try {
+    const ref = db.ref(`affiliates/${MY_UID}/campaigns`).push();
+    await ref.set({ name, slug, url: url.toString(), createdAt: TS });
+    field.value = '';
+    toast('ক্যাম্পেইন লিংক লাইভ সেভ হয়েছে ✅');
+  } catch (e) {
+    toast('ব্যর্থ: ' + e.message);
+  }
+}
+
+async function deleteCampaignLink(id) {
+  try {
+    await db.ref(`affiliates/${MY_UID}/campaigns/${id}`).remove();
+    toast('ক্যাম্পেইন লিংক মুছে ফেলা হয়েছে');
+  } catch (e) { toast('ব্যর্থ: ' + e.message); }
+}
+
+async function copyText(value) {
+  try {
+    if (navigator.clipboard && window.isSecureContext) await navigator.clipboard.writeText(value);
+    else {
+      const t = document.createElement('textarea'); t.value = value; t.style.position = 'fixed'; t.style.opacity = '0';
+      document.body.appendChild(t); t.select(); document.execCommand('copy'); t.remove();
+    }
+    toast('Copied to clipboard');
+  } catch { toast('Copy failed'); }
+}
+function copyLink() { copyText(getRefUrl()); }
+async function shareLink() {
+  if (navigator.share) { try { await navigator.share({ title: 'My MOSTWIN88 referral link', url: getRefUrl() }); } catch {} }
+  else copyLink();
+}
+
+function filterPlayers() {
+  const q = (document.getElementById('searchPlayer')?.value || '').toLowerCase();
+  const account = document.getElementById('accountFilter')?.value || 'all';
+  const referral = document.getElementById('referralFilter')?.value || 'all';
+  document.querySelectorAll('#players tbody tr').forEach(r => {
+    if (r.cells.length < 7) return;
+    const text = r.innerText.toLowerCase();
+    const status = r.cells[5]?.innerText.trim() || '';
+    const ref = r.cells[6]?.innerText.trim() || '';
+    r.style.display = text.includes(q) && (account === 'all' || status === account) && (referral === 'all' || ref === referral) ? '' : 'none';
+  });
+}
+
+function exportCsv() {
+  const table = document.querySelector('#players');
+  if (!table) return;
+  const rows = [...table.querySelectorAll('tr')].map(tr => [...tr.children].map(td => '"' + td.innerText.replace(/"/g, '""').trim() + '"').join(','));
+  const csv = '\uFEFF' + rows.join('\r\n');
+  const blob = new Blob([csv], { type: 'text/csv;charset=utf-8;' });
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement('a'); a.href = url; a.download = 'mostwin88-live-affiliate-referrals.csv'; a.click();
+  URL.revokeObjectURL(url);
+  toast('CSV রিপোর্ট ডাউনলোড সম্পন্ন');
+}
+
+/* ==================== NOTIFICATIONS ==================== */
+function renderNotifications() {
+  const box = document.getElementById('notificationList');
+  if (!box) return;
+  const readMap = storage.get('readNotifs', {});
+  let unread = 0;
+  const items = NOTIFS.map(n => {
+    const isRead = !!readMap[n.id];
+    if (!isRead) unread++;
+    const ts = n.timestamp ? new Date(n.timestamp).toLocaleString() : '';
+    return `<div class="activity-item" style="opacity:${isRead ? '.55' : '1'}">
+      <div class="activity-icon">🔔</div>
+      <div><b>${esc(n.title || 'Admin Notice')}</b><small>${esc(n.body || n.message || '')}${ts ? ' · ' + esc(ts) : ''}</small></div>
+    </div>`;
+  }).join('');
+  box.innerHTML = (items || '<p style="color:var(--muted)">কোনো নোটিফিকেশন নেই।</p>') +
+    (NOTIFS.length ? '<button class="btn" onclick="markNotificationsRead()">Mark all as read</button>' : '');
+  const b = document.getElementById('navNotifBadge');
+  const d = document.getElementById('topNotifDot');
+  if (b) { b.textContent = unread; b.style.display = unread > 0 ? 'inline-block' : 'none'; }
+  if (d) d.classList.toggle('hidden', unread === 0);
+}
+
+function markNotificationsRead() {
+  const readMap = storage.get('readNotifs', {});
+  NOTIFS.forEach(n => { readMap[n.id] = true; });
+  storage.set('readNotifs', readMap);
+  renderNotifications();
+  toast('সব নোটিফিকেশন পড়া হয়েছে');
+}
+
+/* ==================== FLOATING LIVE CHAT + INLINE SUPPORT ==================== */
+function toggleLiveChat(forceState) {
+  const drawer = document.getElementById('liveChatDrawer');
+  LIVE_CHAT_OPEN = typeof forceState === 'boolean' ? forceState : !LIVE_CHAT_OPEN;
+  drawer.classList.toggle('open', LIVE_CHAT_OPEN);
+  document.body.classList.toggle('chat-open', LIVE_CHAT_OPEN);
+  if (LIVE_CHAT_OPEN) {
+    markChatRead();
+    setTimeout(() => {
+      const inp = document.getElementById('drawerChatInput');
+      if (inp) inp.focus();
+      const box = document.getElementById('drawerChatMsgs');
+      if (box) box.scrollTop = box.scrollHeight;
+    }, 80);
+  }
+}
+
+function updateChatBadges() {
+  const fabBadge = document.getElementById('liveChatFabBadge');
+  const navBadge = document.getElementById('navChatBadge');
+  const topDot = document.getElementById('topChatDot');
+  const t = UNREAD_CHAT > 9 ? '9+' : String(UNREAD_CHAT);
+  if (fabBadge) { fabBadge.textContent = t; fabBadge.style.display = UNREAD_CHAT > 0 ? 'grid' : 'none'; }
+  if (navBadge) { navBadge.textContent = t; navBadge.style.display = UNREAD_CHAT > 0 ? 'inline-block' : 'none'; }
+  if (topDot) topDot.classList.toggle('hidden', UNREAD_CHAT === 0);
+}
+
+function renderChatMessages() {
+  const divider = '<div class="chat-div">MOSTWIN88 • SUPPORT</div>';
+  const html = divider + (CHAT_MSGS.length ? CHAT_MSGS.map(m => {
+    const mine = m.sender === 'AFFILIATE';
+    const time = m.timestamp ? new Date(m.timestamp).toLocaleTimeString('bn-BD', { hour: '2-digit', minute: '2-digit' }) : '';
+    return `<div class="cmsg ${mine ? 'me' : ''}">${!mine ? `<b style="font-size:10px;color:#FFD23F;display:block;margin-bottom:2px">${esc(m.senderName || m.sender || 'Admin')}</b>` : ''}${esc(m.text)}<small>${esc(time)}</small></div>`;
+  }).join('') : `<div style="color:#8E9BB8;font-size:12px;text-align:center;margin:auto;padding:24px 12px">অ্যাডমিনের সাথে সরাসরি লাইভ চ্যাট শুরু করতে মেসেজ লিখুন...</div>`);
+
+  ['drawerChatMsgs', 'inlineChatMsgs'].forEach(id => {
+    const el = document.getElementById(id);
+    if (!el) return;
+    el.innerHTML = html;
+    el.scrollTop = el.scrollHeight;
+  });
+}
+
+async function sendSupportChat(e, inputId) {
+  if (e) e.preventDefault();
+  if (!MY_UID || !MY_PROF) return;
+  const inp = document.getElementById(inputId);
+  if (!inp) return;
+  const text = inp.value.trim();
+  if (!text) return;
+  inp.value = '';
+  try {
+    const base = `affiliate_admin_chats/${MY_UID}`;
+    await db.ref(base + '/messages').push({
+      sender: 'AFFILIATE',
+      senderUid: MY_UID,
+      senderName: MY_PROF.name || MY_PROF.email || 'Affiliate',
+      text,
+      timestamp: TS,
+      read: false
+    });
+    await db.ref(base + '/meta').update({
+      affiliateUid: MY_UID,
+      affiliateName: MY_PROF.name || MY_PROF.email || 'Affiliate',
+      adminUid: MY_PROF.parentAdminId || '',
+      lastMessage: text,
+      lastTimestamp: TS,
+      lastSender: 'AFFILIATE',
+      unreadForAdmin: true,
+      unreadForAffiliate: false
+    });
+  } catch (err) {
+    toast('মেসেজ পাঠানো ব্যর্থ: ' + err.message);
+  }
+}
+
+function markChatRead() {
+  if (!MY_UID) return;
+  UNREAD_CHAT = 0;
+  updateChatBadges();
+  const base = `affiliate_admin_chats/${MY_UID}`;
+  const updates = {};
+  CHAT_MSGS.forEach(m => { if (m.sender !== 'AFFILIATE' && m.read !== true) updates[m.id + '/read'] = true; });
+  if (Object.keys(updates).length) {
+    db.ref(base + '/messages').update(updates).catch(() => {});
+    db.ref(base + '/meta/unreadForAffiliate').set(false).catch(() => {});
+  }
+}
+
+/* ==================== LANGUAGE ==================== */
+const translations = {
+  'My Referrals': 'আমার রেফারেল',
+  'Referral Analytics': 'রেফারেল বিশ্লেষণ',
+  'Commission': 'কমিশন',
+  'Notifications': 'নোটিফিকেশন',
+  'Admin Support': 'অ্যাডমিন সাপোর্ট',
+  'My Profile': 'আমার প্রোফাইল',
+  'Settings': 'সেটিংস',
+  'Your unique referral link': 'আপনার ইউনিক রেফারেল লিংক',
+  'Copy link': 'লিংক কপি',
+  'Share': 'শেয়ার',
+  'Create a campaign link': 'ক্যাম্পেইন লিংক তৈরি করুন',
+  'Create new link': 'নতুন লিংক তৈরি',
+  'Search player ID or name…': 'প্লেয়ার আইডি বা নাম খুঁজুন…',
+  'Last 30 days': 'গত ৩০ দিন',
+  'Last 7 days': 'গত ৭ দিন',
+  'This month': 'এই মাস',
+  'Export CSV': 'CSV এক্সপোর্ট'
+};
+const originalText = new Map();
+function setLanguage(lang) {
+  document.documentElement.lang = lang === 'বাংলা' ? 'bn' : 'en';
+  document.querySelectorAll('.nav button,.bottom-nav button,.heading h1,.heading p,.card h3,.btn,th,select option,input[placeholder]').forEach(el => {
+    if (!originalText.has(el)) originalText.set(el, el.matches('input') ? el.placeholder : el.textContent);
+    const orig = originalText.get(el);
+    if (lang === 'বাংলা') {
+      if (el.matches('input')) el.placeholder = translations[orig] || orig;
+      else el.textContent = translations[orig] || orig;
+    } else {
+      if (el.matches('input')) el.placeholder = orig;
+      else el.textContent = orig;
+    }
+  });
+  storage.set('language', lang);
+}
+document.getElementById('language').addEventListener('change', e => setLanguage(e.target.value));
+const savedLanguage = storage.get('language', 'English');
+document.getElementById('language').value = savedLanguage;
+if (savedLanguage === 'বাংলা') setLanguage(savedLanguage);
+</script>
+<script>
+(function(){
+  function fitAll() {
+    document.querySelectorAll('.brand-mark').forEach(function(bm) {
+      var m = bm.querySelector('.word'), t = bm.querySelector('.tagline');
+      if (!m || !t) return;
+      var mRect = m.getBoundingClientRect();
+      if (mRect.width <= 0) return;
+      var fs = parseFloat(getComputedStyle(m).fontSize) || 18;
+      var bleed = fs * 0.025;
+      var W = mRect.width - 2 * bleed;
+      if (W <= 0) return;
+      if (!t.dataset.baseFs) t.dataset.baseFs = parseFloat(getComputedStyle(t).fontSize) || 7;
+      var baseFs = parseFloat(t.dataset.baseFs) || 7;
+      t.style.fontSize = baseFs + 'px';
+      t.style.letterSpacing = '0px';
+      t.style.width = 'max-content';
+      t.style.display = 'block';
+      t.style.position = 'relative';
+      t.style.left = '0px';
+      t.style.marginLeft = '0px';
+      t.style.marginRight = '0px';
+      var w0 = t.getBoundingClientRect().width;
+      if (w0 > W && w0 > 0) {
+        var adjFs = Math.max(5.0, baseFs * (W / w0) * 0.98);
+        t.style.fontSize = adjFs.toFixed(2) + 'px';
+        w0 = t.getBoundingClientRect().width;
+      }
+      var chars = Array.from(t.textContent.trim()).length;
+      if (chars > 1 && w0 > 0) {
+        var ls = Math.max(-0.5, (W - w0) / (chars - 1));
+        t.style.letterSpacing = ls.toFixed(3) + 'px';
+        t.style.marginRight = (-ls).toFixed(3) + 'px';
+      }
+      var dx = Math.max(-8, Math.min(8, (mRect.left + bleed) - t.getBoundingClientRect().left));
+      t.style.left = dx.toFixed(2) + 'px';
+    });
+  }
+  window.mwFitLogos = fitAll;
+  var tm; function sched() { clearTimeout(tm); tm = setTimeout(fitAll, 45); }
+  window.addEventListener('load', sched);
+  window.addEventListener('resize', sched);
+  window.addEventListener('mw:view', sched);
+  if (document.fonts && document.fonts.ready) document.fonts.ready.then(sched);
+  var mb = document.getElementById('menu');
+  if (mb) mb.addEventListener('click', function(){ setTimeout(fitAll, 60); });
+  setTimeout(fitAll, 120);
+})();
+</script>
+<script src="../pwa.js"></script>
+<script src="../passkey.js"></script>
+</body>
+</html>

@@ -1,13 +1,14 @@
-const CACHE_NAME = 'mw-affiliate-v5';
-const ENTRY = './affiliate.html';
+const CACHE_NAME = 'mw-agent-folder-v1';
+const ENTRY = './';
 const PRECACHE = [
   ENTRY,
-  './pwa.js',
-  './passkey.js',
-  './firebase-config.js',
-  './affiliate-manifest.json',
-  './affiliate-icon-192.png',
-  './affiliate-icon-512.png'
+  './index.html',
+  './manifest.json',
+  '../pwa.js',
+  '../passkey.js',
+  '../firebase-config.js',
+  '../agent-icon-192.png',
+  '../agent-icon-512.png'
 ];
 
 self.addEventListener('install', (e) => {
@@ -19,7 +20,7 @@ self.addEventListener('install', (e) => {
 self.addEventListener('activate', (e) => {
   e.waitUntil(
     caches.keys().then((keys) =>
-      Promise.all(keys.filter((k) => k.startsWith('mw-affiliate-') && k !== CACHE_NAME).map((k) => caches.delete(k)))
+      Promise.all(keys.filter((k) => k.startsWith('mw-agent-') && k !== CACHE_NAME).map((k) => caches.delete(k)))
     ).then(() => self.clients.claim())
   );
 });
@@ -29,7 +30,7 @@ self.addEventListener('fetch', (e) => {
   if (req.method !== 'GET') return;
   const u = new URL(req.url);
   if (u.origin !== self.location.origin) return;
-  if (u.pathname.startsWith('/api/') || u.pathname === '/health' || u.pathname.endsWith('-sw.js')) return;
+  if (u.pathname.startsWith('/api/') || u.pathname === '/health' || u.pathname.endsWith('/sw.js') || u.pathname.endsWith('-sw.js')) return;
 
   if (req.mode === 'navigate' || u.pathname.endsWith('.html') || u.pathname.endsWith('.js')) {
     e.respondWith(

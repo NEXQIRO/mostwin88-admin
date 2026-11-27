@@ -1,13 +1,14 @@
-const CACHE_NAME = 'mw-admin-v6';
-const ENTRY = './index.html';
+const CACHE_NAME = 'mw-user-folder-v1';
+const ENTRY = './';
 const PRECACHE = [
   ENTRY,
-  './pwa.js',
-  './passkey.js',
-  './firebase-config.js',
-  './admin-manifest.json',
-  './admin-icon-192.png',
-  './admin-icon-512.png'
+  './index.html',
+  './manifest.json',
+  '../pwa.js',
+  '../passkey.js',
+  '../firebase-config.js',
+  '../icon-192.png?v=3',
+  '../icon-512.png?v=3'
 ];
 
 self.addEventListener('install', (e) => {
@@ -19,7 +20,7 @@ self.addEventListener('install', (e) => {
 self.addEventListener('activate', (e) => {
   e.waitUntil(
     caches.keys().then((keys) =>
-      Promise.all(keys.filter((k) => k.startsWith('mw-admin-') && k !== CACHE_NAME).map((k) => caches.delete(k)))
+      Promise.all(keys.filter((k) => k.startsWith('mw-user-') && k !== CACHE_NAME).map((k) => caches.delete(k)))
     ).then(() => self.clients.claim())
   );
 });
@@ -29,7 +30,7 @@ self.addEventListener('fetch', (e) => {
   if (req.method !== 'GET') return;
   const u = new URL(req.url);
   if (u.origin !== self.location.origin) return;
-  if (u.pathname.startsWith('/api/') || u.pathname === '/health' || u.pathname.endsWith('-sw.js')) return;
+  if (u.pathname.startsWith('/api/') || u.pathname === '/health' || u.pathname.endsWith('/sw.js') || u.pathname.endsWith('-sw.js')) return;
 
   if (req.mode === 'navigate' || u.pathname.endsWith('.html') || u.pathname.endsWith('.js')) {
     e.respondWith(
