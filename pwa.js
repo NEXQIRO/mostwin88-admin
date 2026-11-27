@@ -28,10 +28,10 @@
 
   var APP_META = {
     user:      { name: 'MOSTWIN88', sw: rootBase + 'user/sw.js',      scope: rootBase + 'user/',      icon: rootBase + 'icon-192.png?v=3' },
-    admin:     { name: 'Admin',     sw: rootBase + 'admin/sw.js',     scope: rootBase + 'admin/',     icon: rootBase + 'admin-logo-192.png' },
-    master:    { name: 'M Admin',   sw: rootBase + 'master/sw.js',    scope: rootBase + 'master/',    icon: rootBase + 'master-logo-192.png' },
-    agent:     { name: 'Agent',     sw: rootBase + 'agent/sw.js',     scope: rootBase + 'agent/',     icon: rootBase + 'agent-logo-192.png' },
-    affiliate: { name: 'Partner',   sw: rootBase + 'affiliate/sw.js', scope: rootBase + 'affiliate/', icon: rootBase + 'partner-logo-192.png' }
+    admin:     { name: 'Admin',     sw: rootBase + 'admin/sw.js',     scope: rootBase + 'admin/',     icon: rootBase + 'admin-logo-192.png?v=2' },
+    master:    { name: 'M Admin',   sw: rootBase + 'master/sw.js',    scope: rootBase + 'master/',    icon: rootBase + 'master-logo-192.png?v=2' },
+    agent:     { name: 'Agent',     sw: rootBase + 'agent/sw.js',     scope: rootBase + 'agent/',     icon: rootBase + 'agent-logo-192.png?v=2' },
+    affiliate: { name: 'Partner',   sw: rootBase + 'affiliate/sw.js', scope: rootBase + 'affiliate/', icon: rootBase + 'partner-logo-192.png?v=2' }
   }[appKey];
 
   var deferredPrompt = null;

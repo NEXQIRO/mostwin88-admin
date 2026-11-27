@@ -1,4 +1,4 @@
-const CACHE_NAME = 'mw-agent-folder-v3';
+const CACHE_NAME = 'mw-agent-folder-v4';
 const CDN_CACHE = 'mw-cdn-v1';
 const ENTRY = './';
 const PRECACHE = [
@@ -8,8 +8,8 @@ const PRECACHE = [
   '../pwa.js',
   '../passkey.js',
   '../firebase-config.js',
-  '../agent-logo-192.png',
-  '../agent-logo-512.png'
+  '../agent-logo-192.png?v=2',
+  '../agent-logo-512.png?v=2'
 ];
 const CDN_PRECACHE = [
   'https://www.gstatic.com/firebasejs/10.12.0/firebase-app-compat.js',
