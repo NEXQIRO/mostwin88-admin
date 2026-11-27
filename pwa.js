@@ -64,9 +64,9 @@
     alert(msg);
   }
 
-  // Register Service Worker early for instant installability & zero-lag static cache
+  // Register Service Worker early for instant Cache-First shell & zero-lag repeat opens
   if ('serviceWorker' in navigator && (location.protocol === 'https:' || location.hostname === 'localhost' || location.hostname === '127.0.0.1')) {
-    window.addEventListener('load', function () {
+    (function registerPanelSw() {
       try {
         navigator.serviceWorker.getRegistrations().then(function (regs) {
           regs.forEach(function (r) {
@@ -74,8 +74,8 @@
           });
         }).catch(function () {});
       } catch (e) {}
-      navigator.serviceWorker.register(APP_META.sw, { scope: APP_META.scope }).catch(function () {});
-    }, { once: true });
+      navigator.serviceWorker.register(APP_META.sw, { scope: APP_META.scope, updateViaCache: 'none' }).catch(function () {});
+    })();
   }
 
   var styleEl = document.createElement('style');
@@ -257,31 +257,47 @@
       hosts.add(host);
     }
 
-    function syncOne(host) {
-      var bar = host._mwTopBar;
-      var inner = host._mwTopInner;
-      if (!bar || !inner) return;
-      if (!host.isConnected) {
-        if (bar.parentNode) bar.parentNode.removeChild(bar);
-        hosts.delete(host);
-        return;
-      }
-      if (host.previousElementSibling !== bar && host.parentNode) {
-        host.parentNode.insertBefore(bar, host);
-      }
-      var sw = host.scrollWidth || 0;
-      var cw = host.clientWidth || 0;
-      var show = cw > 0 && sw > cw + 2;
-      var wantDisp = show ? 'block' : 'none';
-      if (bar.style.display !== wantDisp) bar.style.display = wantDisp;
-      if (show) {
-        var wStr = sw + 'px';
-        if (inner.style.width !== wStr) inner.style.width = wStr;
-        if (Math.abs(bar.scrollLeft - host.scrollLeft) > 1) bar.scrollLeft = host.scrollLeft;
-        var noY = host.scrollHeight <= host.clientHeight + 2;
-        if (host.classList.contains('mw-xscroll-no-y') !== noY) host.classList.toggle('mw-xscroll-no-y', noY);
-      } else {
-        if (host.classList.contains('mw-xscroll-no-y')) host.classList.remove('mw-xscroll-no-y');
+    var syncTimer = 0;
+
+    function syncBatch() {
+      var work = [];
+      hosts.forEach(function (host) {
+        var bar = host._mwTopBar;
+        var inner = host._mwTopInner;
+        if (!bar || !inner) return;
+        if (!host.isConnected) {
+          work.push({ remove: true, host: host, bar: bar });
+          return;
+        }
+        var sw = host.scrollWidth || 0;
+        var cw = host.clientWidth || 0;
+        var sh = host.scrollHeight || 0;
+        var ch = host.clientHeight || 0;
+        var sl = host.scrollLeft || 0;
+        work.push({ remove: false, host: host, bar: bar, inner: inner, sw: sw, cw: cw, sh: sh, ch: ch, sl: sl });
+      });
+      for (var k = 0; k < work.length; k++) {
+        var w = work[k];
+        if (w.remove) {
+          if (w.bar.parentNode) w.bar.parentNode.removeChild(w.bar);
+          hosts.delete(w.host);
+          continue;
+        }
+        if (w.host.previousElementSibling !== w.bar && w.host.parentNode) {
+          w.host.parentNode.insertBefore(w.bar, w.host);
+        }
+        var show = w.cw > 0 && w.sw > w.cw + 2;
+        var wantDisp = show ? 'block' : 'none';
+        if (w.bar.style.display !== wantDisp) w.bar.style.display = wantDisp;
+        if (show) {
+          var wStr = w.sw + 'px';
+          if (w.inner.style.width !== wStr) w.inner.style.width = wStr;
+          if (Math.abs(w.bar.scrollLeft - w.sl) > 1) w.bar.scrollLeft = w.sl;
+          var noY = w.sh <= w.ch + 2;
+          if (w.host.classList.contains('mw-xscroll-no-y') !== noY) w.host.classList.toggle('mw-xscroll-no-y', noY);
+        } else if (w.host.classList.contains('mw-xscroll-no-y')) {
+          w.host.classList.remove('mw-xscroll-no-y');
+        }
       }
     }
 
@@ -290,16 +306,18 @@
       if (!document.body) return;
       var tables = document.querySelectorAll('table');
       for (var i = 0; i < tables.length; i++) {
-        var host = findScrollHost(tables[i]);
+        var tbl = tables[i];
+        var host = tbl._mwResolvedHost && tbl._mwResolvedHost.isConnected ? tbl._mwResolvedHost : findScrollHost(tbl);
         if (host) {
-          if (!host._mwTopBar) attachHost(host, tables[i]);
-          else if (ro && host._mwTable !== tables[i]) {
-            host._mwTable = tables[i];
-            try { ro.observe(tables[i]); } catch (e) {}
+          tbl._mwResolvedHost = host;
+          if (!host._mwTopBar) attachHost(host, tbl);
+          else if (ro && host._mwTable !== tbl) {
+            host._mwTable = tbl;
+            try { ro.observe(tbl); } catch (e) {}
           }
         }
       }
-      hosts.forEach(syncOne);
+      syncBatch();
       var orphanBars = document.querySelectorAll('.mw-top-xscroll');
       for (var j = 0; j < orphanBars.length; j++) {
         var b = orphanBars[j];
@@ -310,8 +328,11 @@
     }
 
     function scheduleSync() {
-      if (rafId) return;
-      rafId = requestAnimationFrame(scanAndSync);
+      if (syncTimer) return;
+      syncTimer = setTimeout(function () {
+        syncTimer = 0;
+        if (!rafId) rafId = requestAnimationFrame(scanAndSync);
+      }, 90);
     }
 
     function startObserver() {
@@ -319,7 +340,10 @@
       var mo = new MutationObserver(function (muts) {
         for (var i = 0; i < muts.length; i++) {
           var t = muts[i].target;
-          if (t && t.nodeType === 1 && (t.classList.contains('mw-top-xscroll') || t.classList.contains('mw-top-xscroll-inner'))) continue;
+          if (t && t.nodeType === 1) {
+            if (t.classList.contains('mw-top-xscroll') || t.classList.contains('mw-top-xscroll-inner')) continue;
+            if (t.id === 'toast' || t.id === 'mwPwaBanner' || t.id === 'npPkLock') continue;
+          }
           scheduleSync();
           return;
         }
@@ -327,7 +351,7 @@
       mo.observe(document.body, { childList: true, subtree: true, attributes: true, attributeFilter: ['style', 'class'] });
       window.addEventListener('resize', scheduleSync, { passive: true });
       window.addEventListener('mw:view', scheduleSync);
-      document.addEventListener('click', function () { setTimeout(scheduleSync, 40); }, { passive: true });
+      document.addEventListener('click', scheduleSync, { passive: true });
       scanAndSync();
     }
 
