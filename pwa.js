@@ -27,11 +27,11 @@
   var panelScope = rootBase + appKey + '/';
 
   var APP_META = {
-    user:      { name: 'MOSTWIN88 App',       sw: rootBase + 'user/sw.js',      scope: rootBase + 'user/',      icon: rootBase + 'icon-192.png?v=3' },
-    admin:     { name: 'MOSTWIN88 Admin',     sw: rootBase + 'admin/sw.js',     scope: rootBase + 'admin/',     icon: rootBase + 'admin-icon-192.png' },
-    master:    { name: 'MOSTWIN88 Master',    sw: rootBase + 'master/sw.js',    scope: rootBase + 'master/',    icon: rootBase + 'master-icon-192.png' },
-    agent:     { name: 'MOSTWIN88 Agent',     sw: rootBase + 'agent/sw.js',     scope: rootBase + 'agent/',     icon: rootBase + 'agent-icon-192.png' },
-    affiliate: { name: 'MOSTWIN88 Affiliate', sw: rootBase + 'affiliate/sw.js', scope: rootBase + 'affiliate/', icon: rootBase + 'affiliate-icon-192.png' }
+    user:      { name: 'MOSTWIN88', sw: rootBase + 'user/sw.js',      scope: rootBase + 'user/',      icon: rootBase + 'icon-192.png?v=3' },
+    admin:     { name: 'Admin',     sw: rootBase + 'admin/sw.js',     scope: rootBase + 'admin/',     icon: rootBase + 'admin-logo-192.png' },
+    master:    { name: 'M Admin',   sw: rootBase + 'master/sw.js',    scope: rootBase + 'master/',    icon: rootBase + 'master-logo-192.png' },
+    agent:     { name: 'Agent',     sw: rootBase + 'agent/sw.js',     scope: rootBase + 'agent/',     icon: rootBase + 'agent-logo-192.png' },
+    affiliate: { name: 'Partner',   sw: rootBase + 'affiliate/sw.js', scope: rootBase + 'affiliate/', icon: rootBase + 'partner-logo-192.png' }
   }[appKey];
 
   var deferredPrompt = null;

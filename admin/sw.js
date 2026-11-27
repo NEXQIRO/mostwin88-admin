@@ -1,4 +1,4 @@
-const CACHE_NAME = 'mw-admin-folder-v2';
+const CACHE_NAME = 'mw-admin-folder-v3';
 const CDN_CACHE = 'mw-cdn-v1';
 const ENTRY = './';
 const PRECACHE = [
@@ -8,8 +8,8 @@ const PRECACHE = [
   '../pwa.js',
   '../passkey.js',
   '../firebase-config.js',
-  '../admin-icon-192.png',
-  '../admin-icon-512.png'
+  '../admin-logo-192.png',
+  '../admin-logo-512.png'
 ];
 const CDN_PRECACHE = [
   'https://www.gstatic.com/firebasejs/10.12.0/firebase-app-compat.js',

@@ -10,10 +10,10 @@
   <meta name="theme-color" content="#040405">
   <meta name="mobile-web-app-capable" content="yes">
   <meta name="apple-mobile-web-app-capable" content="yes">
-  <meta name="apple-mobile-web-app-title" content="MOSTWIN88 Admin">
+  <meta name="apple-mobile-web-app-title" content="Admin">
   <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-  <link rel="apple-touch-icon" href="../admin-icon-192.png">
-  <link rel="icon" type="image/png" href="../admin-icon-192.png">
+  <link rel="apple-touch-icon" href="../admin-logo-192.png">
+  <link rel="icon" type="image/png" href="../admin-logo-192.png">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Hind+Siliguri:wght@400;500;600;700&family=JetBrains+Mono:wght@500;600&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Rajdhani:wght@600;700&display=swap" rel="stylesheet">
@@ -11478,7 +11478,7 @@
 
     // ---- নোটিফিকেশন দেখানো ----
     function showNotif(title, body, tag, view) {
-      var opts = { body: body, icon: '../admin-icon-192.png', badge: '../admin-icon-192.png', tag: tag, renotify: true,
+      var opts = { body: body, icon: '../admin-logo-192.png', badge: '../admin-logo-192.png', tag: tag, renotify: true,
                    requireInteraction: true, vibrate: [300, 120, 300, 120, 300], data: { view: view || 'view-wallet' } };
       if (swReg && swReg.showNotification) swReg.showNotification(title, opts);
       else { try { new Notification(title, opts); } catch (e) {} }

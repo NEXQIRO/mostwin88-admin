@@ -28,10 +28,10 @@
 
   var APP_INFO = {
     user:      { title: 'MOSTWIN88',           icon: rootBase + 'icon-192.png?v=3' },
-    admin:     { title: 'MOSTWIN88 ADMIN',     icon: rootBase + 'admin-icon-192.png' },
-    master:    { title: 'MOSTWIN88 MASTER',    icon: rootBase + 'master-icon-192.png' },
-    agent:     { title: 'MOSTWIN88 AGENT',     icon: rootBase + 'agent-icon-192.png' },
-    affiliate: { title: 'MOSTWIN88 AFFILIATE', icon: rootBase + 'affiliate-icon-192.png' }
+    admin:     { title: 'MOSTWIN88 ADMIN',     icon: rootBase + 'admin-logo-192.png' },
+    master:    { title: 'MOSTWIN88 MASTER',    icon: rootBase + 'master-logo-192.png' },
+    agent:     { title: 'MOSTWIN88 AGENT',     icon: rootBase + 'agent-logo-192.png' },
+    affiliate: { title: 'MOSTWIN88 AFFILIATE', icon: rootBase + 'partner-logo-192.png' }
   }[appKey];
 
   var G = window.NPPasskey || {

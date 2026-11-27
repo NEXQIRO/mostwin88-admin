@@ -1,7 +1,7 @@
 {
   "id": "./",
-  "name": "MOSTWIN88 Admin",
-  "short_name": "MW88 Admin",
+  "name": "Admin",
+  "short_name": "Admin",
   "description": "MOSTWIN88 User Admin Operations Console",
   "start_url": "./",
   "scope": "./",
@@ -11,13 +11,13 @@
   "theme_color": "#EAB308",
   "icons": [
     {
-      "src": "../admin-icon-192.png",
+      "src": "../admin-logo-192.png",
       "sizes": "192x192",
       "type": "image/png",
       "purpose": "any maskable"
     },
     {
-      "src": "../admin-icon-512.png",
+      "src": "../admin-logo-512.png",
       "sizes": "512x512",
       "type": "image/png",
       "purpose": "any maskable"

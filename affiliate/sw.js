@@ -1,4 +1,4 @@
-const CACHE_NAME = 'mw-affiliate-folder-v2';
+const CACHE_NAME = 'mw-affiliate-folder-v3';
 const CDN_CACHE = 'mw-cdn-v1';
 const ENTRY = './';
 const PRECACHE = [
@@ -8,8 +8,8 @@ const PRECACHE = [
   '../pwa.js',
   '../passkey.js',
   '../firebase-config.js',
-  '../affiliate-icon-192.png',
-  '../affiliate-icon-512.png'
+  '../partner-logo-192.png',
+  '../partner-logo-512.png'
 ];
 const CDN_PRECACHE = [
   'https://www.gstatic.com/firebasejs/10.7.1/firebase-app-compat.js',

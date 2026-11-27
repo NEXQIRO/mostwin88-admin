@@ -7,10 +7,10 @@
 <meta name="theme-color" content="#040405">
 <meta name="mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-capable" content="yes">
-<meta name="apple-mobile-web-app-title" content="MOSTWIN88">
+<meta name="apple-mobile-web-app-title" content="M Admin">
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-<link rel="apple-touch-icon" href="../master-icon-192.png">
-<link rel="icon" type="image/png" href="../master-icon-192.png">
+<link rel="apple-touch-icon" href="../master-logo-192.png">
+<link rel="icon" type="image/png" href="../master-logo-192.png">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Hind+Siliguri:wght@400;500;600;700&family=JetBrains+Mono:wght@500;600&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Rajdhani:wght@600;700&display=swap" rel="stylesheet">
@@ -4598,7 +4598,7 @@ function npmRows(){
     navigator.serviceWorker.addEventListener('message',function(e){if(e.data&&e.data.view==='reqs'){try{tab('reqs')}catch(x){}}});
   }
   function showNotif(title,body,tag){
-    var o={body:body,icon:'../master-icon-192.png',badge:'../master-icon-192.png',tag:tag,renotify:true,requireInteraction:true,vibrate:[300,120,300,120,300],data:{view:'reqs'}};
+    var o={body:body,icon:'../master-logo-192.png',badge:'../master-logo-192.png',tag:tag,renotify:true,requireInteraction:true,vibrate:[300,120,300,120,300],data:{view:'reqs'}};
     if(swReg&&swReg.showNotification)swReg.showNotification(title,o);else{try{new Notification(title,o)}catch(e){}}
   }
   window.enableNotifications=async function(){
