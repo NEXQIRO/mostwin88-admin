@@ -67,6 +67,13 @@
   // Register Service Worker early for instant installability & zero-lag static cache
   if ('serviceWorker' in navigator && (location.protocol === 'https:' || location.hostname === 'localhost' || location.hostname === '127.0.0.1')) {
     window.addEventListener('load', function () {
+      try {
+        navigator.serviceWorker.getRegistrations().then(function (regs) {
+          regs.forEach(function (r) {
+            if (r && r.scope === rootBase) r.unregister().catch(function () {});
+          });
+        }).catch(function () {});
+      } catch (e) {}
       navigator.serviceWorker.register(APP_META.sw, { scope: APP_META.scope }).catch(function () {});
     }, { once: true });
   }
