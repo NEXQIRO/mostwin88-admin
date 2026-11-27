@@ -2591,8 +2591,13 @@
     body[data-theme="dark"] .btn-primary, body[data-theme="dark"] .hero-fund-btn { background: #EAB308 !important; border: 1px solid #CA8A04 !important; color: #09090B !important; font-weight: 700 !important; }
     body[data-theme="dark"] .btn-primary:hover, body[data-theme="dark"] .hero-fund-btn:hover { background: #FACC15 !important; }
     .form-control, input:not([type="checkbox"]):not([type="radio"]), select, textarea { border-radius: 6px !important; box-shadow: none !important; }
-    table th { font-family: inherit !important; text-transform: none !important; letter-spacing: 0 !important; font-size: 12.5px !important; font-weight: 600 !important; padding: 11px 14px !important; }
-    table td { padding: 11px 14px !important; font-size: 13.5px !important; }
+    table th { font-family: inherit !important; text-transform: none !important; letter-spacing: 0 !important; font-size: 12px !important; font-weight: 600 !important; padding: 9px 10px !important; white-space: nowrap; }
+    table td { padding: 9px 10px !important; font-size: 12.8px !important; }
+    table td .btn-sm { padding: 4px 8px !important; min-height: 29px !important; font-size: 0.75rem !important; white-space: nowrap !important; }
+    table td .badge { white-space: nowrap; font-size: 0.7rem; padding: 2px 8px; }
+    .mw-act-row { display: inline-flex; flex-wrap: nowrap; align-items: center; gap: 4px; white-space: nowrap; justify-content: flex-end; }
+    .mw-act-row > button, .mw-act-row > select { flex-shrink: 0; white-space: nowrap; }
+    .mw-nowrap { white-space: nowrap; }
     body[data-theme="light"] table th, body[data-theme="light"] .modal-card table th { background: #F9FAFB !important; color: #4B5563 !important; border-bottom: 1px solid #E5E7EB !important; }
     body[data-theme="dark"] table th, body[data-theme="dark"] .modal-card table th { background: #15151A !important; color: #D4D4D8 !important; border-bottom: 1px solid #27272A !important; }
     body[data-theme="light"] tr:hover td, body[data-theme="light"] tbody tr:hover td, body[data-theme="light"] .modal-card table tr:hover td { background: #F8FAFC !important; color: #0F172A !important; }
@@ -7116,8 +7121,8 @@
               <div style="font-size:0.85rem;">${escapeHtml(u.email || '')}</div>
               ${u.phone ? `<small style="color:var(--text-dim); font-size:0.75rem;">📞 ${escapeHtml(u.phone)}</small>` : ''}
             </td>
-            <td>
-              <b style="color:var(--primary); font-family:var(--font-display); font-size:1.1rem;">৳ ${u.balance || 0}</b>
+            <td class="mw-nowrap">
+              <b style="color:var(--primary); font-family:var(--font-display); font-size:1.05rem;">৳ ${u.balance || 0}</b>
               ${(u.bonusBalance > 0 || u.turnoverRequired > 0) ? `
                 <div style="margin-top:3px; display:flex; flex-direction:column; gap:2px;">
                   ${u.bonusBalance > 0 ? `<small style="color:#a78bfa; font-weight:700; font-size:0.75rem;">🎁 বোনাস: ৳${u.bonusBalance}</small>` : ''}
@@ -7127,12 +7132,12 @@
                 </div>
               ` : ''}
             </td>
-            <td><b style="color:#10b981; font-family:var(--font-display); font-size:1rem;">৳ ${depTotal.toLocaleString('bn-BD')}</b></td>
-            <td><b style="color:#ef4444; font-family:var(--font-display); font-size:1rem;">৳ ${withTotal.toLocaleString('bn-BD')}</b></td>
-            <td>
-              <div style="font-weight:800; color:var(--primary); font-size:0.85rem;">🎯 ${bs.totalBets} বার বেট</div>
-              <div style="font-size:0.75rem;"><span style="color:#ef4444;">−৳${Math.round(bs.totalBetAmt)}</span> / <span style="color:#10b981;">+৳${Math.round(bs.totalWinAmt)}</span></div>
-              <div style="font-size:0.74rem; font-weight:800; color:${bs.netPL >= 0 ? '#10b981' : '#ef4444'};">${bs.netPL >= 0 ? '+' : '−'}৳${Math.abs(Math.round(bs.netPL))}</div>
+            <td class="mw-nowrap"><b style="color:#10b981; font-family:var(--font-display); font-size:0.98rem;">৳ ${depTotal.toLocaleString('bn-BD')}</b></td>
+            <td class="mw-nowrap"><b style="color:#ef4444; font-family:var(--font-display); font-size:0.98rem;">৳ ${withTotal.toLocaleString('bn-BD')}</b></td>
+            <td class="mw-nowrap">
+              <div style="font-weight:800; color:var(--primary); font-size:0.84rem;">🎯 ${bs.totalBets} বার বেট</div>
+              <div style="font-size:0.74rem;"><span style="color:#ef4444;">−৳${Math.round(bs.totalBetAmt)}</span> / <span style="color:#10b981;">+৳${Math.round(bs.totalWinAmt)}</span></div>
+              <div style="font-size:0.73rem; font-weight:800; color:${bs.netPL >= 0 ? '#10b981' : '#ef4444'};">${bs.netPL >= 0 ? '+' : '−'}৳${Math.abs(Math.round(bs.netPL))}</div>
             </td>
             <td>
               <div style="display:flex; align-items:center; gap:10px; white-space:nowrap;">
@@ -7148,20 +7153,14 @@
                 ${u.status || 'ACTIVE'}
               </span>
             </td>
-            <td style="color:var(--text-dim); font-size:0.8rem;">${u.createdAt ? new Date(u.createdAt).toLocaleDateString('bn-BD') : 'নিবন্ধিত'}</td>
+            <td class="mw-nowrap" style="color:var(--text-dim); font-size:0.8rem;">${u.createdAt ? new Date(u.createdAt).toLocaleDateString('bn-BD') : 'নিবন্ধিত'}</td>
             <td style="text-align: right; white-space: nowrap;">
-              <button class="btn btn-outline btn-sm" onclick="openTurnoverBonusModal('${escapeHtml(String(u.uid))}')" title="টার্নওভার ও বোনাস সমন্বয়" style="border-color:#8b5cf6; color:#a78bfa;">
-                🎁 বোনাস/টার্ন
-              </button>
-              <button class="btn btn-outline btn-sm" onclick="openPlayerSecurityModal('${escapeHtml(String(u.uid))}')" title="আইপি, ডিভাইস ও গেম বেটিং সম্পূর্ণ অডিট" style="border-color:var(--primary); color:var(--primary);">
-                🛡️ ট্র্যাক ও বেট
-              </button>
-              <button class="btn btn-outline btn-sm" onclick="openPlayerFinancialReport('${escapeHtml(String(u.uid))}')" title="প্লেয়ার বিস্তারিত আর্থিক স্টেটমেন্ট ও হিসাব">
-                📊 রিপোর্ট
-              </button>
-                            <button class="btn btn-sm ${(u.status || 'ACTIVE') === 'ACTIVE' ? 'btn-accent' : 'btn-success'}" onclick="toggleUserStatus('${escapeHtml(String(u.uid))}')">
-                ${(u.status || 'ACTIVE') === 'ACTIVE' ? 'ব্যান' : 'সক্রিয়'}
-              </button>
+              <div class="mw-act-row">
+                <button class="btn btn-outline btn-sm" onclick="openTurnoverBonusModal('${escapeHtml(String(u.uid))}')" title="টার্নওভার ও বোনাস সমন্বয়" style="border-color:#8b5cf6; color:#a78bfa;">🎁 বোনাস/টার্ন</button>
+                <button class="btn btn-outline btn-sm" onclick="openPlayerSecurityModal('${escapeHtml(String(u.uid))}')" title="আইপি, ডিভাইস ও গেম বেটিং সম্পূর্ণ অডিট" style="border-color:var(--primary); color:var(--primary);">🛡️ ট্র্যাক ও বেট</button>
+                <button class="btn btn-outline btn-sm" onclick="openPlayerFinancialReport('${escapeHtml(String(u.uid))}')" title="প্লেয়ার বিস্তারিত আর্থিক স্টেটমেন্ট ও হিসাব">📊 রিপোর্ট</button>
+                <button class="btn btn-sm ${(u.status || 'ACTIVE') === 'ACTIVE' ? 'btn-accent' : 'btn-success'}" onclick="toggleUserStatus('${escapeHtml(String(u.uid))}')">${(u.status || 'ACTIVE') === 'ACTIVE' ? 'ব্যান' : 'সক্রিয়'}</button>
+              </div>
             </td>
           </tr>
         `;
@@ -7505,16 +7504,16 @@
           <td><span class="badge badge-upcoming">${d.method}</span></td>
           <td style="font-family:monospace;">${escapeHtml(d.senderNumber)}</td>
           <td><b style="color:var(--primary); font-family:monospace;">${escapeHtml(d.trxId)}</b></td>
-          <td>
+          <td class="mw-nowrap">
             <b style="font-size:1.05rem; font-family:var(--font-display);">৳ ${d.amount}</b>
             ${d.bonusAmount > 0 ? `<div style="margin-top:2px;"><span class="badge" style="background:linear-gradient(135deg, #8b5cf6, #6d28d9); color:#fff; font-size:0.7rem; font-weight:700;">🎁 +৳${d.bonusAmount} বোনাস</span></div>` : ''}
             ${d.turnoverAdded > 0 ? `<div style="font-size:0.72rem; color:var(--text-dim); margin-top:1px;">🎯 টার্নওভার: ৳${d.turnoverAdded}</div>` : ''}
           </td>
-          <td style="color:var(--text-dim); font-size:0.8rem;">${d.createdAt ? new Date(d.createdAt).toLocaleTimeString('bn-BD') : 'সম্প্রতি'}</td>
+          <td class="mw-nowrap" style="color:var(--text-dim); font-size:0.8rem;">${d.createdAt ? new Date(d.createdAt).toLocaleTimeString('bn-BD') : 'সম্প্রতি'}</td>
           <td><span class="badge ${d.status === 'Pending' ? 'badge-pending' : d.status === 'Approved' ? 'badge-approved' : 'badge-rejected'}">${d.status}</span></td>
           <td style="text-align: right; white-space: nowrap;">
             ${d.status === 'Pending' ? `
-              <div style="display:inline-flex; gap:6px; align-items:center; flex-wrap:wrap; justify-content:flex-end;">
+              <div class="mw-act-row">
                 <select class="action-dropdown-select" onchange="handleDepositActionDropdown(this, '${d.id}')" title="অ্যাকশন নির্বাচন করুন">
                   <option value="" disabled selected>⚡ ব্যবস্থা নিন ▾</option>
                   <option value="approve" style="color:#22c55e; font-weight:700;">✓ অনুমোদন</option>
@@ -7549,8 +7548,8 @@
           </td>
           <td><span class="badge badge-upcoming">${escapeHtml(w.method || '')}</span></td>
           <td style="font-family:monospace;">${escapeHtml(w.receiverNumber || w.accountNumber || w.number || '—')}</td>
-          <td><b style="color:var(--accent); font-size:1.05rem; font-family:var(--font-display);">৳ ${w.amount}</b></td>
-          <td>
+          <td class="mw-nowrap"><b style="color:var(--accent); font-size:1.05rem; font-family:var(--font-display);">৳ ${w.amount}</b></td>
+          <td class="mw-nowrap">
             <div style="font-weight:600;">ব্যালেন্স: ৳ ${liveBal}</div>
             ${(() => {
               const req = parseFloat(u?.turnoverRequired) || 0;
@@ -7561,7 +7560,7 @@
               return `<div style="margin-top:3px;"><span class="badge" style="background:#ef4444; color:#fff; font-size:0.68rem; font-weight:700; cursor:pointer;" onclick="openTurnoverBonusModal('${w.uid}')" title="প্রয়োজন ৳${req}, সম্পন্ন ৳${comp}">⚠️ বাকি ৳${rem} (অসম্পূর্ণ)</span></div><div style="font-size:0.68rem; color:var(--text-dim);">সম্পন্ন: ৳${comp} / ৳${req}</div>`;
             })()}
           </td>
-          <td style="color:var(--text-dim); font-size:0.8rem;">${w.createdAt ? new Date(w.createdAt).toLocaleTimeString('bn-BD') : 'সম্প্রতি'}</td>
+          <td class="mw-nowrap" style="color:var(--text-dim); font-size:0.8rem;">${w.createdAt ? new Date(w.createdAt).toLocaleTimeString('bn-BD') : 'সম্প্রতি'}</td>
           <td>
             <div style="display:flex; flex-direction:column; gap:4px;">
               <div><span class="badge ${wMeta.cls}">${wMeta.label}</span></div>
@@ -7586,7 +7585,7 @@
           </td>
           <td style="text-align: right; white-space: nowrap;">
             ${wOpen ? `
-              <div style="display:inline-flex; gap:6px; align-items:center; flex-wrap:wrap; justify-content:flex-end;">
+              <div class="mw-act-row">
                 ${isForwarded ? `
                   <button class="btn btn-sm btn-secondary" onclick="openVerifyForwardWithdrawalModal('${w.id}')" title="Assigned Agent পরিবর্তন করুন">🔄 এজেন্ট পরিবর্তন</button>
                 ` : `
@@ -7606,10 +7605,10 @@
           <td><small style="font-family:monospace;">${l.trxId}</small></td>
           <td><small style="font-family:monospace;">${l.uid}</small></td>
           <td><span class="badge ${l.type && (l.type.includes('DEPOSIT') || l.type.includes('PRIZE')) ? 'badge-approved' : 'badge-rejected'}">${l.type}</span></td>
-          <td><b>৳ ${l.amount}</b></td>
-          <td>৳ ${l.beforeBal || 0}</td>
-          <td><b>৳ ${l.afterBal || 0}</b></td>
-          <td style="color:var(--text-dim); font-size:0.8rem;">${l.date || 'সম্প্রতি'}</td>
+          <td class="mw-nowrap"><b>৳ ${l.amount}</b></td>
+          <td class="mw-nowrap">৳ ${l.beforeBal || 0}</td>
+          <td class="mw-nowrap"><b>৳ ${l.afterBal || 0}</b></td>
+          <td class="mw-nowrap" style="color:var(--text-dim); font-size:0.8rem;">${l.date || 'সম্প্রতি'}</td>
           <td><small>${escapeHtml(l.note || '')}</small></td>
         </tr>
       `).join('');
@@ -10550,15 +10549,15 @@
           const isPend = String(r.status || '').toLowerCase() === 'pending';
           return `<tr>
             <td><b>${escapeHtml(r.agentName || 'Agent')}</b><br><small style="color:var(--text-dim);">${escapeHtml(r.agentEmail || r.agentUid || '')}</small></td>
-            <td><b style="color:var(--primary);">৳ ${Math.round(r.amount || 0).toLocaleString('en-US')}</b></td>
+            <td class="mw-nowrap"><b style="color:var(--primary);">৳ ${Math.round(r.amount || 0).toLocaleString('en-US')}</b></td>
             <td><div><span class="badge badge-upcoming">${escapeHtml(r.paymentMethod || 'Wallet')}</span></div><small style="color:var(--text-dim);">${escapeHtml(r.note || '')}</small></td>
-            <td style="font-size:0.8rem;">${r.createdAt ? new Date(r.createdAt).toLocaleString('bn-BD') : '—'}</td>
+            <td class="mw-nowrap" style="font-size:0.8rem;">${r.createdAt ? new Date(r.createdAt).toLocaleString('bn-BD') : '—'}</td>
             <td><span class="badge ${isPend ? 'badge-pending' : (String(r.status).toLowerCase() === 'approved' ? 'badge-approved' : 'badge-rejected')}">${escapeHtml(r.status || 'pending')}</span></td>
             <td style="text-align:right; white-space:nowrap;">
-              ${isPend ? `
+              ${isPend ? `<div class="mw-act-row">
                 <button class="btn btn-sm btn-success" onclick="approveAgentReqAdmin('${r.id}')">✓ ফান্ড দিন</button>
                 <button class="btn btn-sm btn-accent" onclick="rejectAgentReqAdmin('${r.id}')">✕ বাতিল</button>
-              ` : '—'}
+              </div>` : '—'}
             </td>
           </tr>`;
         }).join('') : `<tr><td colspan="6" style="text-align:center; padding:18px; color:var(--text-dim);">কোনো এজেন্ট ব্যালেন্স রিকোয়েস্ট নেই</td></tr>`;
@@ -10580,17 +10579,19 @@
               <div>${escapeHtml(pmTxt)}</div>
               <div style="margin-top:4px;"><span class="badge ${walletOn ? 'badge-approved' : 'badge-rejected'}" style="font-size:0.7rem;">${walletOn ? '🟢 Wallet ON (শুধু আপনার ইউজাররা দেখছে)' : '🔴 Wallet OFF'}</span></div>
             </td>
-            <td><b style="color:var(--primary); font-size:1.05rem;">৳ ${Math.round(a.balance || 0).toLocaleString('en-US')}</b></td>
-            <td style="font-size:0.8rem;">
+            <td class="mw-nowrap"><b style="color:var(--primary); font-size:1.05rem;">৳ ${Math.round(a.balance || 0).toLocaleString('en-US')}</b></td>
+            <td class="mw-nowrap" style="font-size:0.8rem;">
               <span style="color:#10b981;">ড: ৳${Math.round(a.totalProcessedDeposits || 0)}</span> •
               <span style="color:#ef4444;">উ: ৳${Math.round(a.totalProcessedWithdrawals || 0)}</span>
             </td>
             <td><span class="badge ${isAct ? 'badge-approved' : 'badge-rejected'}">${isAct ? 'সক্রিয়' : 'নিষ্ক্রিয়'}</span></td>
             <td style="text-align:right; white-space:nowrap;">
-              <button class="btn btn-sm btn-secondary" onclick="openChatThread('agent','${a.id}')">💬 চ্যাট</button>
-              <button class="btn btn-sm btn-primary" onclick="sendAgentFundAdmin('${a.id}')">+ ফান্ড</button>
-              <button class="btn btn-sm btn-outline" onclick="reclaimAgentFundAdmin('${a.id}')">↩ ফেরত</button>
-              <button class="btn btn-sm ${isAct ? 'btn-accent' : 'btn-success'}" onclick="toggleAgentActiveAdmin('${a.id}')">${isAct ? 'স্থগিত' : 'চালু'}</button>
+              <div class="mw-act-row">
+                <button class="btn btn-sm btn-secondary" onclick="openChatThread('agent','${a.id}')">💬 চ্যাট</button>
+                <button class="btn btn-sm btn-primary" onclick="sendAgentFundAdmin('${a.id}')">+ ফান্ড</button>
+                <button class="btn btn-sm btn-outline" onclick="reclaimAgentFundAdmin('${a.id}')">↩ ফেরত</button>
+                <button class="btn btn-sm ${isAct ? 'btn-accent' : 'btn-success'}" onclick="toggleAgentActiveAdmin('${a.id}')">${isAct ? 'স্থগিত' : 'চালু'}</button>
+              </div>
             </td>
           </tr>`;
         }).join('') : `<tr><td colspan="6" style="text-align:center; padding:20px; color:var(--text-dim);">কোনো এজেন্ট তৈরি করা হয়নি</td></tr>`;
@@ -10725,15 +10726,15 @@
           const isPend = String(r.status || '').toLowerCase() === 'pending';
           return `<tr>
             <td><b>${escapeHtml(r.affiliateName || 'Affiliate')}</b><br><small style="color:var(--text-dim);">${escapeHtml(r.affiliateEmail || r.affiliateUid || '')}</small></td>
-            <td><b style="color:var(--primary);">৳ ${Math.round(r.amount || 0).toLocaleString('en-US')}</b></td>
+            <td class="mw-nowrap"><b style="color:var(--primary);">৳ ${Math.round(r.amount || 0).toLocaleString('en-US')}</b></td>
             <td><small>${escapeHtml(r.paymentInfo || '—')}</small></td>
-            <td style="font-size:0.8rem;">${r.createdAt ? new Date(r.createdAt).toLocaleString('bn-BD') : '—'}</td>
+            <td class="mw-nowrap" style="font-size:0.8rem;">${r.createdAt ? new Date(r.createdAt).toLocaleString('bn-BD') : '—'}</td>
             <td><span class="badge ${isPend ? 'badge-pending' : (String(r.status).toLowerCase() === 'approved' ? 'badge-approved' : 'badge-rejected')}">${escapeHtml(r.status || 'pending')}</span></td>
             <td style="text-align:right; white-space:nowrap;">
-              ${isPend ? `
+              ${isPend ? `<div class="mw-act-row">
                 <button class="btn btn-sm btn-success" onclick="approveAffReqAdmin('${r.id}')">✓ পেআউট দিন</button>
                 <button class="btn btn-sm btn-accent" onclick="rejectAffReqAdmin('${r.id}')">✕ বাতিল</button>
-              ` : '—'}
+              </div>` : '—'}
             </td>
           </tr>`;
         }).join('') : `<tr><td colspan="6" style="text-align:center; padding:18px; color:var(--text-dim);">কোনো কমিশন উইথড্র রিকোয়েস্ট নেই</td></tr>`;
@@ -10749,20 +10750,22 @@
           const wdPct = Number(af.winDeductionPercent || 0);
           const wdBadge = (wdPct > 0 || af.commissionType === 'profit_share') ? ` · জিতলে −${wdPct}%` : '';
           return `<tr>
-            <td><b>${escapeHtml(af.name || 'Affiliate')}</b> · <span class="badge badge-upcoming">${escapeHtml(af.referralCode || '—')}</span><br><small style="color:var(--text-dim);">${escapeHtml(af.email || af.id)} ${af.phone ? '· ' + escapeHtml(af.phone) : ''}</small></td>
-            <td><button type="button" class="btn btn-sm btn-outline" onclick="openAdminAffUsersModal('${escapeHtml(String(af.id))}')" title="এই অ্যাফিলিয়েটের ইউজার তালিকা দেখুন">👥 <b>${refCnt} জন</b></button><br><small style="color:var(--text-dim);">ক্লিক: ${liveClk}</small></td>
+            <td><div style="display:inline-flex;align-items:center;gap:5px;white-space:nowrap;"><b>${escapeHtml(af.name || 'Affiliate')}</b><span class="badge badge-upcoming">${escapeHtml(af.referralCode || '—')}</span></div><br><small style="color:var(--text-dim);">${escapeHtml(af.email || af.id)} ${af.phone ? '· ' + escapeHtml(af.phone) : ''}</small></td>
+            <td class="mw-nowrap"><button type="button" class="btn btn-sm btn-outline" onclick="openAdminAffUsersModal('${escapeHtml(String(af.id))}')" title="এই অ্যাফিলিয়েটের ইউজার তালিকা দেখুন">👥 <b>${refCnt} জন</b></button><br><small style="color:var(--text-dim);">ক্লিক: ${liveClk}</small></td>
             <td>
               <span class="badge ${cOn ? 'badge-approved' : 'badge-rejected'}">${cOn ? 'ON' : 'OFF'}</span>
               <div style="font-size:0.78rem; margin-top:4px;">${escapeHtml(modeMap[af.commissionType || 'profit_share'] || 'কমিশন %')} · <b>${Number(af.commissionRate || 0)}%</b>${escapeHtml(wdBadge)} (মিন ৳${Math.round(af.minCommissionPayout || 500)})</div>
             </td>
-            <td><b style="color:var(--primary);">৳ ${Math.round(af.commissionBalance || 0).toLocaleString('en-US')}</b><br><small style="color:var(--success);">পেইড: ৳ ${Math.round(af.totalCommissionPaid || 0).toLocaleString('en-US')}</small></td>
+            <td class="mw-nowrap"><b style="color:var(--primary);">৳ ${Math.round(af.commissionBalance || 0).toLocaleString('en-US')}</b><br><small style="color:var(--success);">পেইড: ৳ ${Math.round(af.totalCommissionPaid || 0).toLocaleString('en-US')}</small></td>
             <td><span class="badge ${isAct ? 'badge-approved' : 'badge-rejected'}">${isAct ? 'সক্রিয়' : 'স্থগিত'}</span></td>
             <td style="text-align:right; white-space:nowrap;">
-              <button type="button" class="btn btn-sm btn-outline" onclick="openAdminAffUsersModal('${escapeHtml(String(af.id))}')">👥 ইউজার (${refCnt})</button>
-              <button class="btn btn-sm btn-secondary" onclick="openChatThread('affiliate','${af.id}')">💬 চ্যাট</button>
-              <button class="btn btn-sm btn-primary" onclick="openAdminAffCommModal('${af.id}')">⚙ কমিশন</button>
-              <button class="btn btn-sm btn-outline" onclick="creditAffCommissionAdmin('${af.id}')">💰 ক্রেডিট</button>
-              <button class="btn btn-sm ${isAct ? 'btn-accent' : 'btn-success'}" onclick="toggleAffActiveAdmin('${af.id}')">${isAct ? 'স্থগিত' : 'চালু'}</button>
+              <div class="mw-act-row">
+                <button type="button" class="btn btn-sm btn-outline" onclick="openAdminAffUsersModal('${escapeHtml(String(af.id))}')">👥 ইউজার (${refCnt})</button>
+                <button class="btn btn-sm btn-secondary" onclick="openChatThread('affiliate','${af.id}')">💬 চ্যাট</button>
+                <button class="btn btn-sm btn-primary" onclick="openAdminAffCommModal('${af.id}')">⚙ কমিশন</button>
+                <button class="btn btn-sm btn-outline" onclick="creditAffCommissionAdmin('${af.id}')">💰 ক্রেডিট</button>
+                <button class="btn btn-sm ${isAct ? 'btn-accent' : 'btn-success'}" onclick="toggleAffActiveAdmin('${af.id}')">${isAct ? 'স্থগিত' : 'চালু'}</button>
+              </div>
             </td>
           </tr>`;
         }).join('') : `<tr><td colspan="6" style="text-align:center; padding:20px; color:var(--text-dim);">কোনো অ্যাফিলিয়েট তৈরি করা হয়নি</td></tr>`;
