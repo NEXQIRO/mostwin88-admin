@@ -1,4 +1,4 @@
-const CACHE_NAME = 'mw-user-folder-v2';
+const CACHE_NAME = 'mw-user-folder-v3';
 const CDN_CACHE = 'mw-cdn-v1';
 const ENTRY = './';
 const PRECACHE = [

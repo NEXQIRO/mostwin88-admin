@@ -100,7 +100,9 @@
     '.mw-top-xscroll::-webkit-scrollbar-thumb:hover{background:var(--mw-xbar-thumb-hover,#CA8A04);border:1px solid transparent;background-clip:content-box}' +
     '.mw-top-xscroll-inner{height:1px;pointer-events:none}' +
     '.mw-xscroll-host::-webkit-scrollbar:horizontal{height:0 !important;display:none !important}' +
-    '.mw-xscroll-host.mw-xscroll-no-y{scrollbar-width:none}';
+    '.mw-xscroll-host.mw-xscroll-no-y{scrollbar-width:none}' +
+    '.m-chat-fab,.ua-chat-fab,.chat-fab,#fsup{border-radius:50% !important;touch-action:none !important;user-select:none !important;-webkit-user-select:none !important;cursor:grab}' +
+    '.m-chat-fab.mw-fab-drag,.ua-chat-fab.mw-fab-drag,.chat-fab.mw-fab-drag{transition:none !important;transform:scale(1.08) !important;cursor:grabbing !important}';
   document.head.appendChild(styleEl);
 
   var banner = null;
@@ -357,5 +359,132 @@
 
     if (document.body) startObserver();
     else document.addEventListener('DOMContentLoaded', startObserver);
+  })();
+
+  // Universal Draggable Floating Live Chat Icon (placeable anywhere on display across all panels)
+  (function initDraggableChatFab() {
+    if (appKey === 'user') return; // user/index.html initializes its own #fsup draggable handler
+    var POS_KEY = 'mw_chat_fab_pos_' + appKey;
+    var SELECTOR = '.m-chat-fab, .ua-chat-fab, .chat-fab, #mLiveChatFab, #uaLiveChatFab, #liveChatFab';
+    var suppressClickUntil = 0;
+
+    function loadPos() {
+      try {
+        var raw = localStorage.getItem(POS_KEY);
+        if (!raw) return null;
+        var p = JSON.parse(raw);
+        if (p && typeof p.fx === 'number' && typeof p.fy === 'number' && isFinite(p.fx) && isFinite(p.fy)) return p;
+      } catch (e) {}
+      return null;
+    }
+
+    function savePos(x, y) {
+      try {
+        var vw = Math.max(window.innerWidth || 1, 1);
+        var vh = Math.max(window.innerHeight || 1, 1);
+        localStorage.setItem(POS_KEY, JSON.stringify({ fx: x / vw, fy: y / vh }));
+      } catch (e) {}
+    }
+
+    function applyPos(el, x, y) {
+      if (!el) return null;
+      var w = el.offsetWidth || 58;
+      var h = el.offsetHeight || 58;
+      var vw = window.innerWidth || document.documentElement.clientWidth || 360;
+      var vh = window.innerHeight || document.documentElement.clientHeight || 640;
+      var nx = Math.max(6, Math.min(vw - w - 6, x));
+      var ny = Math.max(6, Math.min(vh - h - 6, y));
+      el.style.setProperty('left', Math.round(nx) + 'px', 'important');
+      el.style.setProperty('top', Math.round(ny) + 'px', 'important');
+      el.style.setProperty('right', 'auto', 'important');
+      el.style.setProperty('bottom', 'auto', 'important');
+      return [nx, ny];
+    }
+
+    var activeDragEl = null;
+
+    function restoreIfSaved(el) {
+      if (!el || !el.isConnected || el === activeDragEl || el.classList.contains('mw-fab-drag')) return;
+      var w = el.offsetWidth;
+      if (!w) return;
+      var saved = loadPos();
+      if (!saved) return;
+      var vw = window.innerWidth || 360;
+      var vh = window.innerHeight || 640;
+      var targetX = Math.round(Math.max(6, Math.min(vw - w - 6, saved.fx * vw)));
+      var targetY = Math.round(Math.max(6, Math.min(vh - (el.offsetHeight || 58) - 6, saved.fy * vh)));
+      if (el.style.left === targetX + 'px' && el.style.top === targetY + 'px') return;
+      applyPos(el, targetX, targetY);
+    }
+
+    function bindFab(el) {
+      if (!el || el._mwDragBound) return;
+      el._mwDragBound = true;
+      var drag = null;
+
+      el.addEventListener('pointerdown', function (e) {
+        if (e.button && e.button !== 0) return;
+        var rect = el.getBoundingClientRect();
+        if (!rect.width) return;
+        activeDragEl = el;
+        applyPos(el, rect.left, rect.top);
+        drag = { sx: e.clientX, sy: e.clientY, ox: rect.left, oy: rect.top, moved: false };
+        el.classList.add('mw-fab-drag');
+        try { el.setPointerCapture(e.pointerId); } catch (err) {}
+      });
+
+      el.addEventListener('pointermove', function (e) {
+        if (!drag) return;
+        var dx = e.clientX - drag.sx;
+        var dy = e.clientY - drag.sy;
+        if (!drag.moved && Math.abs(dx) + Math.abs(dy) > 5) drag.moved = true;
+        if (drag.moved) applyPos(el, drag.ox + dx, drag.oy + dy);
+      });
+
+      function endDrag() {
+        if (!drag) return;
+        var moved = drag.moved;
+        drag = null;
+        if (activeDragEl === el) activeDragEl = null;
+        el.classList.remove('mw-fab-drag');
+        if (moved) {
+          suppressClickUntil = Date.now() + 400;
+          var r = el.getBoundingClientRect();
+          var finalPos = applyPos(el, r.left, r.top);
+          if (finalPos) savePos(finalPos[0], finalPos[1]);
+        }
+      }
+
+      el.addEventListener('pointerup', endDrag);
+      el.addEventListener('pointercancel', endDrag);
+      restoreIfSaved(el);
+    }
+
+    window.addEventListener('click', function (e) {
+      if (Date.now() < suppressClickUntil && e.target && e.target.closest && e.target.closest(SELECTOR)) {
+        e.preventDefault();
+        e.stopPropagation();
+        if (e.stopImmediatePropagation) e.stopImmediatePropagation();
+      }
+    }, true);
+
+    function scan() {
+      var fabs = document.querySelectorAll(SELECTOR);
+      for (var i = 0; i < fabs.length; i++) {
+        bindFab(fabs[i]);
+        restoreIfSaved(fabs[i]);
+      }
+    }
+
+    function boot() {
+      scan();
+      if (!document.body) return;
+      var mo = new MutationObserver(function () { scan(); });
+      mo.observe(document.body, { childList: true, subtree: true, attributes: true, attributeFilter: ['style', 'class'] });
+      window.addEventListener('resize', scan, { passive: true });
+    }
+
+    if (document.body) boot();
+    else document.addEventListener('DOMContentLoaded', boot);
   })();
 })();

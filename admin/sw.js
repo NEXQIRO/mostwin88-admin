@@ -1,4 +1,4 @@
-const CACHE_NAME = 'mw-admin-folder-v4';
+const CACHE_NAME = 'mw-admin-folder-v5';
 const CDN_CACHE = 'mw-cdn-v1';
 const ENTRY = './';
 const PRECACHE = [

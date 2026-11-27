@@ -4541,7 +4541,7 @@ if (ibBtn) ibBtn.onclick = () => { if (typeof window.mwTriggerInstall === 'funct
   let fp = null; try { fp = JSON.parse(localStorage.getItem('mw_sup_pos')); } catch (e) {}
   const fPlace = (x, y) => {
     x = Math.max(6, Math.min(FW() - FS_ - 6, x));
-    y = Math.max(70, Math.min(FH() - FS_ - 90, y));
+    y = Math.max(6, Math.min(FH() - FS_ - 6, y));
     fb.style.left = x + 'px'; fb.style.top = y + 'px';
     return [x, y];
   };
@@ -4554,8 +4554,8 @@ if (ibBtn) ibBtn.onclick = () => { if (typeof window.mwTriggerInstall === 'funct
     if (!fd) return;
     const m = fd.m; fd = null; fb.classList.remove('drag');
     if (m) {
-      const [, y] = fPlace(fb.offsetLeft + FS_ / 2 < FW() / 2 ? 8 : FW() - FS_ - 8, fb.offsetTop);
-      fp = {fx: fb.offsetLeft / FW(), fy: y / FH()};
+      const [x, y] = fPlace(fb.offsetLeft, fb.offsetTop);
+      fp = {fx: x / FW(), fy: y / FH()};
       try { localStorage.setItem('mw_sup_pos', JSON.stringify(fp)); } catch (e) {}
     } else openChat();
   };
