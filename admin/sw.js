@@ -1,15 +1,15 @@
-const CACHE_NAME = 'mw-admin-folder-v5';
+const CACHE_NAME = 'mw-admin-folder-v6';
 const CDN_CACHE = 'mw-cdn-v1';
 const ENTRY = './';
 const PRECACHE = [
   ENTRY,
   './index.html',
-  './manifest.json',
+  './manifest.json?v=3',
   '../pwa.js',
   '../passkey.js',
   '../firebase-config.js',
-  '../admin-logo-192.png?v=2',
-  '../admin-logo-512.png?v=2'
+  '../admin-logo-192.png?v=3',
+  '../admin-logo-512.png?v=3'
 ];
 const CDN_PRECACHE = [
   'https://www.gstatic.com/firebasejs/10.12.0/firebase-app-compat.js',
@@ -46,7 +46,7 @@ async function revalidateIfChanged(req, cached) {
     if (self.navigator && self.navigator.onLine === false) return;
     if (self.navigator && self.navigator.connection && self.navigator.connection.saveData) return;
     const u = new URL(req.url);
-    const cacheKey = u.origin + u.pathname;
+    const cacheKey = req.mode === 'navigate' ? (u.origin + u.pathname) : req.url;
     const now = Date.now();
     if (now - (lastReval.get(cacheKey) || 0) < REVAL_COOLDOWN_MS) return;
     lastReval.set(cacheKey, now);
@@ -89,6 +89,19 @@ self.addEventListener('fetch', (e) => {
 
   if (u.origin !== self.location.origin) return;
   if (u.pathname.startsWith('/api/') || u.pathname === '/health' || u.pathname.endsWith('/sw.js') || u.pathname.endsWith('-sw.js')) return;
+
+  if (u.pathname.endsWith('/manifest.json') || u.pathname === '/manifest.json') {
+    e.respondWith((async () => {
+      const c = await caches.open(CACHE_NAME);
+      try {
+        const res = await fetch(req, { cache: 'no-cache' });
+        if (res && res.ok) { c.put(req, res.clone()).catch(() => {}); return res; }
+      } catch (err) {}
+      const hit = await c.match(req, { ignoreSearch: true });
+      return hit || fetch(req);
+    })());
+    return;
+  }
 
   if (req.mode === 'navigate' || u.pathname.endsWith('.html') || u.pathname.endsWith('.js') || u.pathname.endsWith('.json')) {
     e.respondWith((async () => {
